@@ -1,0 +1,14 @@
+export { default as HeroImage } from "./hero.png";
+export { default as Status } from "./statusbar.png";
+export { default as Ellipse } from "./ellipse.png";
+export { default as Avatar } from "./avatar.png";
+export { default as Hotels } from "./hotel.png";
+export { default as Attractions } from "./attraction.png";
+export { default as Restaurants } from "./restaurants.png";
+export { default as NotFound } from "./NotFound.png";
+export { default as f } from "./f.jpeg";
+export { default as plus } from "./plus.png";
+export { default as Home} from "./home.png";
+export { default as User} from "./user (2).png";
+export { default as Vector } from "./Vector.png";
+export { default as HomeImage } from "./HomeBackGround.jpg";
