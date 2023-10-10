@@ -9,6 +9,7 @@ import Hotel from './Screens/Hotel';
 import GuideHome from './Screens/GuideHome';
 import GuidePersonalDetail from './Screens/GuidePersonalDetail';
 import GuideDocument from './Screens/GuideDocument';
+import GuideExperience from './Screens/GuideExperience';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +24,8 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name='Hotel' component={Hotel}/>
         <Stack.Screen options={{headerShown: false}} name='GuideHome' component={GuideHome}/>
         <Stack.Screen options={{headerShown: false}} name='GuidePersonalDetail' component={GuidePersonalDetail}/>    
-        <Stack.Screen options={{headerShown: false}} name='GuideDocument' component={GuideDocument}/>       
+        <Stack.Screen options={{headerShown: false}} name='GuideDocument' component={GuideDocument}/>
+        <Stack.Screen options={{headerShown: false}} name='GuideExperience' component={GuideExperience}/>       
       </Stack.Navigator>
      </NavigationContainer>
   );

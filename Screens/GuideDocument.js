@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
@@ -62,6 +62,11 @@ const GuideDocument = () => {
             </View>
         </View>
       </View>
+      <TouchableOpacity 
+        style={styles.SubmitButton}
+      >
+        <Text style={styles.SubmitButtonText}>Submit</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -117,7 +122,7 @@ const styles = StyleSheet.create({
     width: 320,
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 10,
     paddingHorizontal: 20,
   },
   Button: {
@@ -137,8 +142,17 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     justifyContent: 'center',
   },
-  ButtonText: {
-    color: 'black',
+  SubmitButton: {
+    backgroundColor: '#319BD6',
+    width: 200, // Set your desired width
+    height: 60, // Set your desired height
+    borderRadius: 40, // Set your desired border radius
+    marginTop: 100, // Add space between the UploadContainer and SubmitButton
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  SubmitButtonText: {
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },

@@ -11,6 +11,10 @@ const GuideHome = () => {
     navigation.navigate(GuidePersonalDetail);
   };
 
+  const GuideExperience = () => {
+    navigation.navigate(GuideExperience);
+  };
+
   return (
     <View style={styles.Container}>
       <View style={styles.Rectangle}/>
@@ -30,6 +34,7 @@ const GuideHome = () => {
         <TouchableOpacity
         activeOpacity={0.5} 
         style={styles.Buttons}
+        onPress={GuideExperience}
         >
           <Text style={styles.ButtonText}>Experience</Text>
         </TouchableOpacity>
