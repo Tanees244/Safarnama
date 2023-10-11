@@ -6,10 +6,10 @@ import Login from "./Screens/Login";
 import Register from "./Screens/Register";
 import Discover from './Screens/Discover';
 import Hotel from './Screens/Hotel';
-import GuideHome from './Screens/GuideHome';
-import GuidePersonalDetail from './Screens/GuidePersonalDetail';
-import GuideDocument from './Screens/GuideDocument';
-import GuideExperience from './Screens/GuideExperience';
+import GuideHome from './Screens/Guide/GuideHome';
+import GuidePersonalDetail from './Screens/Guide/GuidePersonalDetail';
+import GuideDocument from './Screens/Guide/GuideDocument';
+import GuideExperience from './Screens/Guide/GuideExperience';
 
 const Stack = createNativeStackNavigator();
 

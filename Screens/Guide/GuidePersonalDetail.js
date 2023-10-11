@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image,TouchableOpacity } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-import GuideDocument from './GuideDocument';
+import GuideDocument from './Guide/GuideDocument';
 
 const GuidePersonalDetail = () => {
   

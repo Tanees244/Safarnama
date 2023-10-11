@@ -7,7 +7,7 @@ import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler'
 import { FIREBASE_AUTH, auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import Register from './Register';
-import GuideHome from './GuideHome';
+import GuideHome from './Guide/GuideHome';
 
 const Login = () => {
 
