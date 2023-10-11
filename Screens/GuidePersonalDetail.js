@@ -4,7 +4,6 @@ import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import GuideDocument from './GuideDocument';
 
-
 const GuidePersonalDetail = () => {
   
   const navigation = useNavigation();
