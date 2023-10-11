@@ -1,120 +1,128 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
+import { Button } from 'react-native-material-design';
 
 const GuideHome = () => {
+  const [text, setText] = useState('');
+  const textInputRef = useRef(null);
 
-    const [text, setText] = useState('');
-    const textInputRef = useRef(null);
+  const handleTextChange = (newText) => {
+    setText(newText);
+    const totalHeight = (newText.split('\n').length * 25) + 50;
 
-    const handleTextChange = (newText) => {
-        setText(newText);
-
-    // Calculate the total height including the button and some padding
-    const totalHeight = (newText.split('\n').length * 25) + 50; // Adjust the multiplier for desired padding
-
-    // Set the TextInput's height
     if (textInputRef.current) {
       textInputRef.current.setNativeProps({
-        height: Math.max(55, totalHeight), // Minimum height is 70
+        height: Math.max(55, totalHeight),
       });
     }
   };
 
+  const screenWidth = Dimensions.get('window').width;
+  const inputContainerWidth = screenWidth * 0.9;
+  const inputBoxWidth = inputContainerWidth - 40; // Subtract padding
+
   return (
-    <View style={styles.Container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.text}>Experience</Text>
 
-        <Text style={styles.Text}>
-            Experience
-        </Text>
-
-      <View style={styles.Indicator}>
-        <View style={styles.PageIndicatorActive} />
-        <View style={styles.PageIndicatorActive} />
-        <View style={styles.PageIndicator} />
-        <View style={styles.PageIndicator} />
+      <View style={styles.indicator}>
+        <View style={styles.pageIndicatorActive} />
+        <View style={styles.pageIndicatorActive} />
+        <View style={styles.pageIndicator} />
+        <View style={styles.pageIndicator} />
       </View>
 
-      <View style={styles.InputContainer}>
-        <View style={styles.InputHeading}>
-            <Text style={styles.InputText}>Your Past Experience</Text>
-        </View>
-        <View style={styles.InputBox}>
-            <TextInput
-                ref={textInputRef}
-                multiline={true}
-                style={styles.Input}
-                onChangeText={handleTextChange}
-            />  
+      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+        <Text style={styles.inputHeading}>Your Past Experience</Text>
+        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+          <TextInput
+            ref={textInputRef}
+            multiline={true}
+            style={styles.input}
+            onChangeText={handleTextChange}
+          />
         </View>
       </View>
 
-      <View style={styles.InputContainer}>
-        <View style={styles.InputHeading}>
-            <Text style={styles.InputText}>Motivation to become a guide</Text>
-        </View>
-        <View style={styles.InputBox}>
-            <TextInput
-                ref={textInputRef}
-                multiline={true}
-                style={styles.Input}
-                onChangeText={handleTextChange}
-            />  
+      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+        <Text style={styles.inputHeading}>Motivation to become a guide</Text>
+        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+          <TextInput
+            ref={textInputRef}
+            multiline={true}
+            style={styles.input}
+            onChangeText={handleTextChange}
+          />
         </View>
       </View>
-    </View>
-  )
-}
+      <View>
+        <TouchableOpacity activeOpacity={0.5} 
+            style={styles.buttonText}
+           >
+            <Text style={styles.Text1}>Forgot Password?</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
+  container: {
+    flexGrow: 1,
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    top: 120,
+    padding: 80,
   },
-  Text: {
+  text: {
     fontSize: 32,
     color: 'black',
     fontWeight: 'bold',
-    right: 75,
+    marginTop: 20,
+    right: 60,
   },
-  Indicator: {
+  indicator: {
     flexDirection: 'row',
-    top: 30,
+    marginTop: 20,
   },
-  PageIndicator: {
+  pageIndicator: {
     borderWidth: 1,
     borderRadius: 30,
-    width: 80, 
+    width: 80,
     height: 15,
     borderColor: 'black',
-    backgroundColor: '#CCCCCC',
-    marginHorizontal: 2, 
+    backgroundColor: '#D9D9D9',
+    marginHorizontal: 2,
   },
-  PageIndicatorActive: {
+  pageIndicatorActive: {
     borderWidth: 1,
     borderRadius: 30,
     width: 80,
     height: 15,
     borderColor: 'white',
-    backgroundColor: '#071B26',
-    marginHorizontal: 5, 
+    backgroundColor: '#071B40',
+    marginHorizontal: 5,
   },
-  InputContainer: {
-    top : 100,
+  inputContainer: {
+    marginTop: 30,
     alignItems: 'flex-start',
   },
-  InputText: {
+  inputHeading: {
     fontSize: 20,
   },
-  InputBox: {
-    top: 20,
-    backgroundColor: 'grey',
+  inputBox: {
+    marginTop: 10,
+    backgroundColor:  '#D9D9D9',
     height: 140,
-    width: 320,
     borderRadius: 20,
-    marginBottom: 50,
-  },
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'black',
 
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+  },
 });
 
 export default GuideHome;
