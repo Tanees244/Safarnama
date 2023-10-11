@@ -1,99 +1,100 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+//done
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import GuidePersonalDetail from './GuidePersonalDetail';
-import GuideHomeScreen from './GuideHomeScreen';
 
 const GuideHome = () => {
-
   const navigation = useNavigation();
- 
-  const GuidePersonal = () => {
-    navigation.navigate(GuidePersonalDetail);
+
+  const screenWidth = Dimensions.get('window').width;
+  const containerWidth = screenWidth * 0.8;
+  const buttonWidth = containerWidth * 0.8; // 80% of container width
+
+  const navigateToPersonalDetails = () => {
+    navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
   };
 
-  const GuideExperience = () => {
-    navigation.navigate(GuideExperience);
+  const navigateToExperience = () => {
+    navigation.navigate('GuideExperience'); // Replace with your screen name
   };
 
   return (
-    <View style={styles.Container}>
-      <View style={styles.Rectangle}/>
-      <View style={styles.InfoContainer}>
-        <Image style={styles.GuideImage} source={require('../../assets/ellipse.png')}/>
-        <Text style={styles.GuideName}>GUIDE'S NAME</Text>
-        <Text style={styles.GuideId}>GUIDE'S ID</Text>
+    <View style={styles.container}>
+      <View style={styles.rectangle} />
+      <View style={[styles.infoContainer, { width: containerWidth }]}>
+        <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
+        <Text style={styles.guideName}>GUIDE'S NAME</Text>
+        <Text style={styles.guideId}>GUIDE'S ID</Text>
       </View>
-      <View style={styles.ButtonContainer}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
-        activeOpacity={0.9} 
-        style={styles.Buttons}
-        onPress={GuidePersonal}
+          activeOpacity={0.9}
+          style={[styles.buttons, { width: buttonWidth }]}
+          onPress={navigateToPersonalDetails}
         >
-          <Text style={styles.ButtonText}>Personal Details</Text>
+          <Text style={styles.buttonText}>Personal Details</Text>
         </TouchableOpacity>
         <TouchableOpacity
-        activeOpacity={0.5} 
-        style={styles.Buttons}
-        onPress={GuideExperience}
+          activeOpacity={0.5}
+          style={[styles.buttons, { width: buttonWidth }]}
+          onPress={navigateToExperience}
         >
-          <Text style={styles.ButtonText}>Experience</Text>
+          <Text style={styles.buttonText}>Experience</Text>
         </TouchableOpacity>
         <TouchableOpacity
-        activeOpacity={0.5} 
-        style={styles.Buttons}
+          activeOpacity={0.5}
+          style={[styles.buttons, { width: buttonWidth }]}
         >
-          <Text style={styles.ButtonText}>Bank Details</Text>
+          <Text style={styles.buttonText}>Bank Details</Text>
         </TouchableOpacity>
         <TouchableOpacity
-        activeOpacity={0.5} 
-        style={styles.Buttons}
+          activeOpacity={0.5}
+          style={[styles.buttons, { width: buttonWidth }]}
         >
-          <Text style={styles.ButtonText}>Questionnaire</Text>
+          <Text style={styles.buttonText}>Questionnaire</Text>
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     backgroundColor: '#A4B0B2',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  Rectangle: {
+  rectangle: {
     backgroundColor: '#071B26',
     borderRadius: 46,
     height: 320,
-    top: -10,
     width: '100%',
     position: 'absolute',
+    top: -10,
   },
-  InfoContainer: {
+  infoContainer: {
     backgroundColor: 'white',
-    width: '80%',
     height: 280,
     alignItems: 'center',
     position: 'absolute',
     top: 120,
     borderRadius: 40,
-  }, 
-  GuideImage: {
+  },
+  guideImage: {
     top: 30,
   },
-  GuideName: {
+  guideName: {
     fontWeight: 'bold',
     fontSize: 20,
     marginTop: 50,
   },
-  GuideId: {
+  guideId: {
     fontWeight: '400',
     fontSize: 14,
     marginTop: 5,
   },
-  ButtonContainer: {
+  buttonContainer: {
     width: '90%',
     backgroundColor: '#D9D9D9',
     borderRadius: 33,
@@ -102,16 +103,15 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 30,
   },
-  Buttons: {
+  buttons: {
     backgroundColor: 'white',
-    width: '80%',
     height: 70,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
   },
-  ButtonText: {
+  buttonText: {
     fontSize: 18,
     fontWeight: '600',
   },
