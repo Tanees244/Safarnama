@@ -18,6 +18,15 @@ const GuideHome = () => {
     navigation.navigate('GuideExperience'); // Replace with your screen name
   };
 
+  const navigateToQuestionnaire = () => {
+    navigation.navigate('GuideQuestionnaire'); // Replace with your screen name
+  };
+
+  const navigateToGuideBankDetail = () => {
+    navigation.navigate('GuideBankDetail'); // Replace with your screen name
+  };
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.rectangle} />
@@ -44,12 +53,14 @@ const GuideHome = () => {
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
+          onPress={navigateToGuideBankDetail}
         >
           <Text style={styles.buttonText}>Bank Details</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
+          onPress={navigateToQuestionnaire}
         >
           <Text style={styles.buttonText}>Questionnaire</Text>
         </TouchableOpacity>

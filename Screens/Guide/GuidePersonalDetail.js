@@ -1,12 +1,16 @@
+//done
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import GuideDocument from './GuideDocument';
 
 const GuidePersonalDetail = () => {
-  
   const navigation = useNavigation();
+  const screenWidth = Dimensions.get('window').width;
+  const containerWidth = screenWidth * 0.9;
+  const inputWidth = containerWidth * 0.9;
+  const uploadButtonWidth = containerWidth * 0.8;
 
   const handleUploadDocuments = () => {
     navigation.navigate(GuideDocument);
@@ -18,13 +22,11 @@ const GuidePersonalDetail = () => {
   const handleTextChange = (newText) => {
     setText(newText);
 
-    // Calculate the total height including the button and some padding
-    const totalHeight = (newText.split('\n').length * 25) + 50; // Adjust the multiplier for desired padding
+    const totalHeight = (newText.split('\n').length * 25) + 50;
 
-    // Set the TextInput's height
     if (textInputRef.current) {
       textInputRef.current.setNativeProps({
-        height: Math.max(55, totalHeight), // Minimum height is 70
+        height: Math.max(55, totalHeight),
       });
     }
   };
@@ -42,61 +44,52 @@ const GuidePersonalDetail = () => {
         Personal <Text style={[styles.Text, { color: 'white' }]}>Details</Text>
       </Text>
 
-      <View style={styles.Indicator}>
-        <View style={styles.PageIndicatorActive} />
-        <View style={styles.PageIndicator} />
-        <View style={styles.PageIndicator} />
-        <View style={styles.PageIndicator} />
-      </View>
-
       <View style={styles.ButtonContainer}>
         <TextInput
           placeholder='Enter Your Full Name'
           ref={textInputRef}
           multiline={true}
-          style={styles.Input}
+          style={[styles.Input, { width: inputWidth }]}
           onChangeText={handleTextChange}
         />
         <TextInput
           placeholder='Enter Your Age'
           ref={textInputRef}
           multiline={true}
-          style={styles.Input}
+          style={[styles.Input, { width: inputWidth }]}
           onChangeText={handleTextChange}
         />
         <TextInput
           placeholder='Enter Your Email'
           ref={textInputRef}
           multiline={true}
-          style={styles.Input}
+          style={[styles.Input, { width: inputWidth }]}
           onChangeText={handleTextChange}
         />
         <TextInput
           placeholder='Enter Your Address'
           ref={textInputRef}
           multiline={true}
-          style={styles.Input}
+          style={[styles.Input, { width: inputWidth }]}
           onChangeText={handleTextChange}
         />
         <TextInput
           placeholder='Enter Your Phone Number'
           ref={textInputRef}
           multiline={true}
-          style={styles.Input}
+          style={[styles.Input, { width: inputWidth }]}
           onChangeText={handleTextChange}
         />
         <TextInput
           placeholder='Enter Your CNIC Number'
           ref={textInputRef}
           multiline={true}
-          style={styles.Input}
+          style={[styles.Input, { width: inputWidth }]}
           onChangeText={handleTextChange}
         />
-        <View style={styles.UploadButton}>
+        <View style={[styles.UploadButton, { width: uploadButtonWidth }]}>
           <Text style={styles.UploadButtonText}>Upload Your Documents</Text> 
-          <TouchableOpacity
-          onPress={handleUploadDocuments}
-          > 
+          <TouchableOpacity onPress={handleUploadDocuments}> 
             <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')}/>
           </TouchableOpacity>
         </View>

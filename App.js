@@ -11,6 +11,8 @@ import GuidePersonalDetail from './Screens/Guide/GuidePersonalDetail';
 import GuideDocument from './Screens/Guide/GuideDocument';
 import GuideExperience from './Screens/Guide/GuideExperience';
 import GuideHomeScreen from './Screens/Guide/GuideHomeScreen';
+import GuideQuestionnaire from './Screens/Guide/GuideQuestionnaire';
+import GuideBankDetail from './Screens/Guide/GuideBankDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +29,11 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name='GuidePersonalDetail' component={GuidePersonalDetail}/>    
         <Stack.Screen options={{headerShown: false}} name='GuideDocument' component={GuideDocument}/>
         <Stack.Screen options={{headerShown: false}} name='GuideExperience' component={GuideExperience}/>  
-        <Stack.Screen options={{headerShown: false}} name='GuideHomeScreen' component={GuideHomeScreen}/>       
+        <Stack.Screen options={{headerShown: false}} name='GuideHomeScreen' component={GuideHomeScreen}/> 
+        <Stack.Screen options={{headerShown: false}} name='GuideQuestionnaire' component={GuideQuestionnaire}/> 
+        <Stack.Screen options={{headerShown: false}} name='GuideBankDetail' component={GuideBankDetail}/> 
+              
+
       </Stack.Navigator>
      </NavigationContainer>
   );
