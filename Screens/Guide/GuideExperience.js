@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
-import { Button } from 'react-native-material-design';
 
 const GuideHome = () => {
   const [text, setText] = useState('');
