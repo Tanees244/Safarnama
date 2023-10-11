@@ -40,7 +40,20 @@ const GuideHome = () => {
         </View>
         <View style={styles.InputBox}>
             <TextInput
-                placeholder='Enter Your Address'
+                ref={textInputRef}
+                multiline={true}
+                style={styles.Input}
+                onChangeText={handleTextChange}
+            />  
+        </View>
+      </View>
+
+      <View style={styles.InputContainer}>
+        <View style={styles.InputHeading}>
+            <Text style={styles.InputText}>Motivation to become a guide</Text>
+        </View>
+        <View style={styles.InputBox}>
+            <TextInput
                 ref={textInputRef}
                 multiline={true}
                 style={styles.Input}
@@ -87,9 +100,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 5, 
   },
   InputContainer: {
-    top : 50,
+    top : 100,
     alignItems: 'flex-start',
   },
+  InputText: {
+    fontSize: 20,
+  },
+  InputBox: {
+    top: 20,
+    backgroundColor: 'grey',
+    height: 140,
+    width: 320,
+    borderRadius: 20,
+    marginBottom: 50,
+  },
+
 });
 
 export default GuideHome;

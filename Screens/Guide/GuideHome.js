@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import GuidePersonalDetail from './Guide/GuidePersonalDetail';
+import GuidePersonalDetail from './GuidePersonalDetail';
 
 const GuideHome = () => {
 
@@ -19,7 +19,7 @@ const GuideHome = () => {
     <View style={styles.Container}>
       <View style={styles.Rectangle}/>
       <View style={styles.InfoContainer}>
-        <Image style={styles.GuideImage} source={require('../assets/ellipse.png')}/>
+        <Image style={styles.GuideImage} source={require('../../assets/ellipse.png')}/>
         <Text style={styles.GuideName}>GUIDE'S NAME</Text>
         <Text style={styles.GuideId}>GUIDE'S ID</Text>
       </View>

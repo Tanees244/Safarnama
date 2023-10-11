@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image,TouchableOpacity } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-import GuideDocument from './Guide/GuideDocument';
+import GuideDocument from './GuideDocument';
 
 const GuidePersonalDetail = () => {
   
@@ -97,7 +97,7 @@ const GuidePersonalDetail = () => {
           <TouchableOpacity
           onPress={handleUploadDocuments}
           > 
-            <Image style={styles.UploadButtonImage} source={require('../assets/plus.png')}/>
+            <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')}/>
           </TouchableOpacity>
         </View>
       </View>

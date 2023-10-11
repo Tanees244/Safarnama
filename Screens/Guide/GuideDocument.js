@@ -25,7 +25,7 @@ const GuideDocument = () => {
             <TouchableOpacity 
             style={styles.Button}
             >
-                <Image source={require('../assets/upload.png')} style={styles.Image}/>
+                <Image source={require('../../assets/upload.png')} style={styles.Image}/>
             </TouchableOpacity>
             <View style={styles.TextContainer}>
                 <Text>Picture Of Yourself</Text>
@@ -35,7 +35,7 @@ const GuideDocument = () => {
             <TouchableOpacity 
             style={styles.Button}
             >
-                <Image source={require('../assets/upload.png')} style={styles.Image}/>
+                <Image source={require('../../assets/upload.png')} style={styles.Image}/>
             </TouchableOpacity>
             <View style={styles.TextContainer}>
                 <Text>CNIC (FRONT)</Text>
@@ -45,7 +45,7 @@ const GuideDocument = () => {
             <TouchableOpacity 
             style={styles.Button}
             >
-                <Image source={require('../assets/upload.png')} style={styles.Image}/>
+                <Image source={require('../../assets/upload.png')} style={styles.Image}/>
             </TouchableOpacity>
             <View style={styles.TextContainer}>
                 <Text>CNIC (BACK)</Text>
@@ -55,7 +55,7 @@ const GuideDocument = () => {
             <TouchableOpacity 
             style={styles.Button}
             >
-                <Image source={require('../assets/upload.png')} style={styles.Image}/>
+                <Image source={require('../../assets/upload.png')} style={styles.Image}/>
             </TouchableOpacity>
             <View style={styles.TextContainer}>
                 <Text>Tour Guide License</Text>
