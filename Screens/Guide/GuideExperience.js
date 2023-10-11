@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
-import { Button } from 'react-native-material-design';
 
 const GuideHome = () => {
   const [text, setText] = useState('');
@@ -19,6 +18,7 @@ const GuideHome = () => {
 
   const screenWidth = Dimensions.get('window').width;
   const inputContainerWidth = screenWidth * 0.9;
+  const buttonWidth = screenWidth * 0.4;
   const inputBoxWidth = inputContainerWidth - 40; // Subtract padding
 
   return (
@@ -57,9 +57,8 @@ const GuideHome = () => {
       </View>
       <View>
         <TouchableOpacity activeOpacity={0.5} 
-            style={styles.buttonText}
-           >
-            <Text style={styles.Text1}>Forgot Password?</Text>
+            style={[styles.buttonText, { width: buttonWidth }]}>
+            <Text style={styles.TextDesign}>Next</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -123,6 +122,22 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
   },
+  buttonText: {
+    marginTop: 30,
+    flexDirection: 'row',
+    borderRadius: 38,
+    backgroundColor: '#319BD6',
+    justifyContent: 'center',
+   
+
+  },
+  TextDesign: {
+    fontSize: 20,
+    fontWeight: '900',
+    padding: 10,
+    color: 'white',
+  },
+
 });
 
 export default GuideHome;
