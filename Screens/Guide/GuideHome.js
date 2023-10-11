@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GuidePersonalDetail from './GuidePersonalDetail';
+import GuideHomeScreen from './GuideHomeScreen';
 
 const GuideHome = () => {
 
