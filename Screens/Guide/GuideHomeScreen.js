@@ -1,11 +1,17 @@
 //done
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const GuideHome = () => {
+  const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.8;
   const buttonWidth = containerWidth * 0.8;
+
+  const navigateToGuideCurrentPackage = () => {
+    navigation.navigate('GuideCurrentPackage'); // Replace with your screen name
+  };
 
   return (
     <View style={styles.Container}>
@@ -18,7 +24,7 @@ const GuideHome = () => {
         <TouchableOpacity activeOpacity={0.9} style={[styles.Buttons, { width: buttonWidth }]}>
           <Text style={styles.ButtonText}>Personal Details</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
+        <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideCurrentPackage} style={[styles.Buttons, { width: buttonWidth }]}>
           <Text style={styles.ButtonText}>Experience</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
@@ -88,3 +94,4 @@ const styles = StyleSheet.create({
 });
 
 export default GuideHome;
+
