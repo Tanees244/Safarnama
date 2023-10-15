@@ -2,6 +2,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native';
+import { Image } from 'react-native-elements';
 
 
 const GuideCurrentPackage = () => {
@@ -14,53 +16,71 @@ const GuideCurrentPackage = () => {
 
 
     return (
-        <View style={styles.Container}>
+        <ScrollView contentContainerStyle={styles.Container} >
             <View style={styles.Rectangle}>
-                <View style={styles.heading1}>
-                    <Text>
-                        Safarnama
-                    </Text>
-                </View>
-                <View style={styles.subheading1}>
-                    <Text>
-                        Welcome Guide!
-                    </Text>
-                </View>
+                <Text style={styles.text}>Safarnama</Text>
+                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Guide!</Text>
+
             </View>
 
             <View style={[styles.ButtonContainer, { width: containerWidth }]}>
                 <TouchableOpacity activeOpacity={0.9} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Personal Details</Text>
+                    <Text style={styles.ButtonText}>Current Packages</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Experience</Text>
+                    <Text style={styles.ButtonText}>Past Packages</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Bank Details</Text>
+                    <Text style={styles.ButtonText}>User Reviews </Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Questionnaire</Text>
+                    <Text style={styles.ButtonText}>Client's Feedback</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+            <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/camera-indoor-black.png")}/>
+                         <Text style={styles.home}>Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/account-circle-black.png")}/>
+                         <Text style={styles.home}>Home</Text>
+                </TouchableOpacity>
+            </View>
+
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     Container: {
-        backgroundColor: '#A4B0B2',
-        flex: 1,
+        backgroundColor: 'white',
+        flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    heading1: {
+    text: {
+        fontSize: 50,
+        fontWeight: '900',
         color: 'white',
-        fontSize: 50
     },
-    subheading1: {
+    homeicon: {
+        width: 24,
+        height: 24,
+        overflow: "hidden",
+      },
+      home: {
+        fontSize: 10,
+        lineHeight: 14,
+        fontWeight: "700",
+        marginTop: 2,
+        textAlign: "center",
         color: 'white',
-        fontSize: 50
-    },
+      },
     Rectangle: {
         backgroundColor: '#A5A2D8',
         borderRadius: 46,
@@ -68,44 +88,45 @@ const styles = StyleSheet.create({
         top: -10,
         width: '100%',
         position: 'absolute',
-    },
-    InfoContainer: {
-        backgroundColor: 'white',
-        height: 280,
+        flex: 1,
         alignItems: 'center',
-        position: 'absolute',
-        top: 120,
-        borderRadius: 40,
+        justifyContent: 'center',
     },
-    GuideName: {
-        fontWeight: 'bold',
-        fontSize: 20,
-        marginTop: 50,
-    },
-    GuideId: {
-        fontWeight: '400',
-        fontSize: 14,
-        marginTop: 5,
-    },
+
     ButtonContainer: {
-        backgroundColor: '#D9D9D9',
+
         borderRadius: 33,
-        marginTop: 360,
+        marginTop: 220,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
     },
     Buttons: {
-        backgroundColor: 'white',
-        height: 70,
+        backgroundColor: '#071B26',
+        height: 100,
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
     },
+    ButtonContainer1: {
+        flexDirection: 'row',
+        padding: 20,
+        backgroundColor: '#071B26',
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginBottom: 50,
+        marginTop:50,
+        width: 160,
+        
+    },
+   
     ButtonText: {
         fontSize: 18,
         fontWeight: '600',
+        color: 'white',
     },
 });
 

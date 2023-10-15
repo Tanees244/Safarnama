@@ -129,8 +129,6 @@ const styles = StyleSheet.create({
     borderRadius: 38,
     backgroundColor: '#319BD6',
     justifyContent: 'center',
-   
-
   },
   TextDesign: {
     fontSize: 20,
