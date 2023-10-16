@@ -43,11 +43,7 @@ const GuideHome = () => {
                 <TouchableOpacity activeOpacity={0.9} onPress={navigateToGuideCurrentPackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Current Packages</Text>
                 </TouchableOpacity>
-<<<<<<< HEAD
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} style={[styles.Buttons, { width: buttonWidth }]}>
-=======
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuidePastPackage} style={[styles.Buttons, { width: buttonWidth }]}>
->>>>>>> 00ea9350fc0e398704217ff54335b692718dd76f
                     <Text style={styles.ButtonText}>Past Packages</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideUserReview} style={[styles.Buttons, { width: buttonWidth }]}>
