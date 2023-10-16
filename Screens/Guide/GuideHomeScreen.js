@@ -15,6 +15,9 @@ const GuideHome = () => {
     const navigateToGuideCurrentPackage = () => {
       navigation.navigate('GuideCurrentPackage'); // Replace with your screen name
     };
+    const navigateToGuideProfile = () => {
+      navigation.navigate('GuideProfile'); // Replace with your screen name
+    };
 
 
     return (
@@ -29,7 +32,7 @@ const GuideHome = () => {
                 <TouchableOpacity activeOpacity={0.9} onPress={navigateToGuideCurrentPackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Current Packages</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Past Packages</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
@@ -46,11 +49,11 @@ const GuideHome = () => {
                         source={require("../../assets/camera-indoor-black.png")}/>
                          <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} >
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")}/>
-                         <Text style={styles.home}>Home</Text>
+                         <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
 
