@@ -14,6 +14,9 @@ import GuideHomeScreen from './Screens/Guide/GuideHomeScreen';
 import GuideQuestionnaire from './Screens/Guide/GuideQuestionnaire';
 import GuideBankDetail from './Screens/Guide/GuideBankDetail';
 import GuideCurrentPackage from './Screens/Guide/GuideCurrentPackage';
+import GuidePastPackage from './Screens/Guide/GuidePastPackage';
+import GuideUserReview from './Screens/Guide/GuideUserReview';
+import GuideClientsFeedback from './Screens/Guide/GuideClientsFeedback';
 import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -46,6 +49,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideQuestionnaire' component={GuideQuestionnaire} />
         <Stack.Screen options={{ headerShown: false }} name='GuideBankDetail' component={GuideBankDetail} />
         <Stack.Screen options={{ headerShown: false }} name='GuideCurrentPackage' component={GuideCurrentPackage} />
+        <Stack.Screen options={{ headerShown: false }} name='GuidePastPackage' component={GuidePastPackage} />
+        <Stack.Screen options={{ headerShown: false }} name='GuideUserReview' component={GuideUserReview} />
+        <Stack.Screen options={{ headerShown: false }} name='GuideClientsFeedback' component={GuideClientsFeedback} />
+        
 
 
       </Stack.Navigator>

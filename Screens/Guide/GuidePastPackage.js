@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, 
 import { ScrollView } from 'react-native';
 
 
-const GuideCurrentPackage = () => {
+const GuidePastPackage = () => {
 
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.8;
@@ -12,8 +12,8 @@ const GuideCurrentPackage = () => {
     return (
         <ScrollView contentContainerStyle={styles.Container} >
             
-            <ImageBackground style={styles.Rectangle1} source={require("../../assets/2.jpg")}>
-                <Text style={{ color: 'white', fontSize: 28, fontFamily:'Poppins-SemiBold', left: 20, top: 200}}>Current Packages</Text>
+            <ImageBackground style={styles.Rectangle1} source={require("../../assets/1.jpg")}>
+                <Text style={{ color: 'black', fontSize: 28, fontFamily:'Poppins-SemiBold', left: 20, top: 200}}>Past Packages</Text>
                 <View style={styles.Rectangle}> 
                     <View style={styles.Package}>
                     <Image
@@ -161,4 +161,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GuideCurrentPackage;
+export default GuidePastPackage;
