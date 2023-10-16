@@ -1,9 +1,10 @@
 //done
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 import { Image } from 'react-native-elements';
+
 
 
 const GuideCurrentPackage = () => {
@@ -18,7 +19,7 @@ const GuideCurrentPackage = () => {
     return (
         <ScrollView contentContainerStyle={styles.Container} >
             <View style={styles.Rectangle}>
-            <Image style={styles.Rectangle1}
+            <ImageBackground style={styles.Rectangle1}
                         source={require("../../assets/current-rectangle.png")}/>
                 <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10, paddingRight: 60 }}>Current Packages</Text>
 
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     },
 
     Rectangle1: {
-        borderRadius: 46,
+        borderRadius: 50,
         height: 320,
         top: -10,
         width: '100%',
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
     },
 
     ButtonContainer: {
-
         borderRadius: 33,
         marginTop: 220,
         alignItems: 'center',
