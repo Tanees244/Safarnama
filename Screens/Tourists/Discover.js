@@ -1,26 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Hotel from './Hotel';
+import Hotel from '../Hotel';
 
 const data = [
   {
     id: '1',
-    image: require('../assets/Place1.jpg'),
+    image: require('../../assets/Place1.jpg'),
     title: 'Naran',
     description: 'Naran is a town and popular tourist destination in upper Kaghan Valley in the Mansehra District of the Khyber Pakhtunkhwa province of Pakistan. It is located 119 kilometers from Mansehra city at the altitude of 2,409 meters. It is located about 65 kilometers away from Babusar Top',
     ratings: '4.5/5.0',
   },
   {
     id: '2',
-    image: require('../assets/Place2.jpg'),
+    image: require('../../assets/Place2.jpg'),
     title: 'Kalam',
     description: 'Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.',
     ratings: '3.3/5.0',
   },
   {
     id: '3',
-    image: require('../assets/Place3.jpg'),
+    image: require('../../assets/Place3.jpg'),
     title: 'Kashmir',
     description: 'Kashmir is the northernmost geographical region of the Indian subcontinent. Until the mid-19th century, the term "Kashmir" denoted only the Kashmir Valley between the Great Himalayas and the Pir Panjal Range',
     ratings: '3.9/5.0',
@@ -30,21 +30,21 @@ const data = [
 const data2 = [
   {
     id: '1',
-    image: require('../assets/Hotel1.jpg'),
+    image: require('../../assets/Hotel1.jpg'),
     title: 'Marriot Hotel',
     description: 'Marriott Hotels & Resorts is Marriott International`s brand of full-service hotels and resorts based in Bethesda, Maryland. As of June 30, 2020, there were 582 hotels and resorts with 205,053 rooms operating under the brand, in addition to 160 hotels with 47,765 rooms planned for development.',
     ratings: '4.5/5.0',
   },
   {
     id: '2',
-    image: require('../assets/Hotel2.jpg'),
+    image: require('../../assets/Hotel2.jpg'),
     title: 'Pearl Continental',
     description: 'Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.',
     ratings: '3.3/5.0',
   },
   {
     id: '3',
-    image: require('../assets/Hotel3.jpg'),
+    image: require('../../assets/Hotel3.jpg'),
     title: 'Ramada',
     description: 'Ramada is a large American multinational hotel chain owned by Wyndham Hotels & Resorts. As of December 31, 2022, it operates 851 hotels with 120,3444 rooms across 63 countries under the Ramada brand',
     ratings: '3.9/5.0',
@@ -58,7 +58,7 @@ const HorizontalCard = ({item}) => {
       <View style={styles.imageContainer}>
         <ImageBackground source={item.image} style={styles.image} >
           <View style={styles.ratingContainer}>
-            <Image source={require('../assets/star.png')} style={styles.iconStar}/>
+            <Image source={require('../../assets/star.png')} style={styles.iconStar}/>
           <Text style={styles.ratingValue}>{item.ratings}</Text>
           </View>
         </ImageBackground>
@@ -97,7 +97,7 @@ const Discover = () => {
           <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../assets/plane-departure.png')} 
+              source={require('../../assets/plane-departure.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Flights</Text>
@@ -106,7 +106,7 @@ const Discover = () => {
           <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../assets/bed.png')} 
+              source={require('../../assets/bed.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Hotels</Text>
@@ -115,7 +115,7 @@ const Discover = () => {
           <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../assets/island-tropical.png')} 
+              source={require('../../assets/island-tropical.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Places</Text>
@@ -124,7 +124,7 @@ const Discover = () => {
           <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../assets/box.png')} 
+              source={require('../../assets/box.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Deals</Text>

@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/Homescreen';
 import Login from "./Screens/Login";
 import Register from "./Screens/Register";
-import Discover from './Screens/Discover';
+import Discover from './Screens/Tourists/Discover';
 import VendorCategory from './Screens/VendorCategory';
 import TransportCategory from './Screens/TransportCategory';
 import Hotel from './Screens/Hotel';

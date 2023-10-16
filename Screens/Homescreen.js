@@ -5,7 +5,7 @@ import { HomeImage, Vector } from '../assets';
 import * as Animatable from "react-native-animatable";
 import Login from "./Login";
 import Register from "./Register";
-import Discover from './Discover';
+import Discover from './Tourists/Discover';
 
 
 const HomeScreen = () => {
