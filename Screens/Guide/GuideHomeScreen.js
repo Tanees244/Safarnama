@@ -1,4 +1,3 @@
-//done
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -19,6 +18,18 @@ const GuideHome = () => {
       navigation.navigate('GuideProfile'); // Replace with your screen name
     };
 
+    const navigateToGuidePastPackage = () => {
+        navigation.navigate('GuidePastPackage'); // Replace with your screen name
+      };
+
+    const navigateToGuideUserReview = () => {
+        navigation.navigate('GuideUserReview'); // Replace with your screen name
+      };
+
+    const navigateToGuideClientsFeedback = () => {
+        navigation.navigate('GuideClientsFeedback'); // Replace with your screen name
+      };
+
 
     return (
         <ScrollView contentContainerStyle={styles.Container} >
@@ -32,13 +43,17 @@ const GuideHome = () => {
                 <TouchableOpacity activeOpacity={0.9} onPress={navigateToGuideCurrentPackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Current Packages</Text>
                 </TouchableOpacity>
+<<<<<<< HEAD
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} style={[styles.Buttons, { width: buttonWidth }]}>
+=======
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuidePastPackage} style={[styles.Buttons, { width: buttonWidth }]}>
+>>>>>>> 00ea9350fc0e398704217ff54335b692718dd76f
                     <Text style={styles.ButtonText}>Past Packages</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideUserReview} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>User Reviews </Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideClientsFeedback} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Client's Feedback</Text>
                 </TouchableOpacity>
             </View>
@@ -99,9 +114,8 @@ const styles = StyleSheet.create({
     },
 
     ButtonContainer: {
-
         borderRadius: 33,
-        marginTop: 220,
+        marginTop: 260,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
