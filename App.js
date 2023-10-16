@@ -18,6 +18,12 @@ import GuidePastPackage  from './Screens/Guide/GuidePastPackage';
 import GuideClientsFeedback from './Screens/Guide/GuideClientsFeedback';
 import GuideUserReview from './Screens/Guide/GuideUserReview';
 import GuideProfile from './Screens/Guide/GuideProfile';
+import AirlineRegister from './Screens/Airline/AirlineRegister';
+import AirlineOperation from './Screens/Airline/AirlineOperations';
+import AirlineCreatePackages from './Screens/Airline/AirlineCreatePackages';
+import AirlineUpdatePackage from './Screens/Airline/AirlineUpdatePackage';
+import AirlineViewPackages from './Screens/Airline/AirlineViewPackages';
+import AirlineDeletePackage from './Screens/Airline/AirlineDeletePackage';
 import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -54,6 +60,16 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideClientsFeedback' component={GuideClientsFeedback} />
         <Stack.Screen options={{ headerShown: false }} name='GuideUserReview' component={GuideUserReview} />
         <Stack.Screen options={{ headerShown: false }} name='GuideProfile' component={GuideProfile} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineRegister' component={AirlineRegister} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineOperation' component={AirlineOperation} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineCreatePackages' component={AirlineCreatePackages} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineUpdatePackage' component={AirlineUpdatePackage} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineViewPackages' component={AirlineViewPackages} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineDeletePackage' component={AirlineDeletePackage} />
+        
+        
+        
+        
 
 
       </Stack.Navigator>

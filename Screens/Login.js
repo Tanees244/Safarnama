@@ -8,6 +8,7 @@ import { FIREBASE_AUTH, auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import Register from './Register';
 import GuideHome from './Guide/GuideHome';
+import AirlineRegister from './Airline/AirlineRegister';
 
 const Login = () => {
 
@@ -25,7 +26,7 @@ const Login = () => {
   useEffect (() => {
     const unsubscribe = auth.onAuthStateChanged( user => {
       if (user) {
-        navigation.navigate(GuideHome)
+        navigation.navigate(AirlineRegister)
       }
     })
 
