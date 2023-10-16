@@ -18,8 +18,9 @@ const GuideCurrentPackage = () => {
     return (
         <ScrollView contentContainerStyle={styles.Container} >
             <View style={styles.Rectangle}>
-                <Text style={styles.text}>Safarnama</Text>
-                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Guide!</Text>
+            <Image style={styles.Rectangle1}
+                        source={require("../../assets/current-rectangle.png")}/>
+                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10, paddingRight: 60 }}>Current Packages</Text>
 
             </View>
 
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
         height: 24,
         overflow: "hidden",
       },
+
       home: {
         fontSize: 10,
         lineHeight: 14,
@@ -82,7 +84,16 @@ const styles = StyleSheet.create({
         color: 'white',
       },
     Rectangle: {
-        backgroundColor: '#A5A2D8',
+        height: 320,
+        top: -10,
+        width: '100%',
+        position: 'absolute',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    Rectangle1: {
         borderRadius: 46,
         height: 320,
         top: -10,
