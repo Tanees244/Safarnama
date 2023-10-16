@@ -5,57 +5,52 @@ import { ScrollView } from 'react-native';
 import { Image } from 'react-native-elements';
 
 
-const GuideHome = () => {
+const HotelOperation = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.8;
     const buttonWidth = containerWidth * 0.8;
     const navigation = useNavigation();
 
+    const navigateToAirlineCreatePackage = () => {
+      navigation.navigate('AirlineCreatePackages'); // Replace with your screen name
+    };
     const navigateToGuideProfile = () => {
-        navigation.navigate('GuideProfile'); // Replace with your screen name
+      navigation.navigate('GuideProfile'); // Replace with your screen name
     };
 
-    const navigateToGuideHome = () => {
-        navigation.navigate('GuideHomeScreen'); // Replace with your screen name
-    };
+    const navigateToAirlineUpdatePackage = () => {
+        navigation.navigate('AirlineUpdatePackage'); // Replace with your screen name
+      };
 
-    const navigateToGuideCurrentPackage = () => {
-      navigation.navigate('GuideCurrentPackage'); // Replace with your screen name
-    };
+    const navigateToAirlineViewPackage = () => {
+        navigation.navigate('AirlineViewPackages'); // Replace with your screen name
+      };
 
-    const navigateToGuidePastPackage = () => {
-        navigation.navigate('GuidePastPackage'); // Replace with your screen name
-    };
-
-    const navigateToGuideUserReview = () => {
-        navigation.navigate('GuideUserReview'); // Replace with your screen name
-    };
-
-    const navigateToGuideClientsFeedback = () => {
-        navigation.navigate('GuideClientsFeedback'); // Replace with your screen name
-    };
+    const navigateToAirlineDeletePackage = () => {
+        navigation.navigate('AirlineDeletePackage'); // Replace with your screen name
+      };
 
 
     return (
         <ScrollView contentContainerStyle={styles.Container} >
             <View style={styles.Rectangle}>
                 <Text style={styles.text}>Safarnama</Text>
-                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Guide!</Text>
+                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Vendor!</Text>
 
             </View>
 
             <View style={[styles.ButtonContainer, { width: containerWidth }]}>
-                <TouchableOpacity activeOpacity={0.9} onPress={navigateToGuideCurrentPackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Current Packages</Text>
+                <TouchableOpacity activeOpacity={0.9} onPress={navigateToAirlineCreatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>Create Packages</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuidePastPackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Past Packages</Text>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineUpdatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>Update Packages</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideUserReview} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>User Reviews </Text>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineViewPackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>View Packages </Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideClientsFeedback} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Client's Feedback</Text>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineDeletePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>Delete Package</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer1}>
@@ -63,7 +58,7 @@ const GuideHome = () => {
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")}/>
-                         <Text style={styles.home} onPress={navigateToGuideHome}>Home</Text>
+                         <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
                     <Image style={styles.homeicon}
@@ -150,6 +145,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GuideHome;
+export default HotelOperation;
 
 

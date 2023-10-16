@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native';
 import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const GuideCurrentPackage = () => {
@@ -9,9 +10,18 @@ const GuideCurrentPackage = () => {
     const containerWidth = screenWidth * 0.8;
     const buttonWidth = containerWidth * 0.8;
 
+    const navigation = useNavigation();
+
+    const navigateToGuideProfile = () => {
+        navigation.navigate('GuideProfile'); // Replace with your screen name
+    };
+
+    const navigateToGuideHome = () => {
+        navigation.navigate('GuideHomeScreen'); // Replace with your screen name
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.Container} >
-            
             <ImageBackground style={styles.Rectangle1} source={require("../../assets/2.jpg")}>
                 <Text style={{ color: 'white', fontSize: 28, fontFamily:'Poppins-SemiBold', left: 20, top: 200}}>Current Packages</Text>
                 <View style={styles.Rectangle}> 
@@ -42,18 +52,19 @@ const GuideCurrentPackage = () => {
                             <Text style={[styles.PackageText, { textAlign: 'center', fontFamily: 'Poppins-SemiBold', }]}>Package 3</Text>
                         </View>
                     </View>
+                    
                     <View style={styles.ButtonContainer1}>
                     <TouchableOpacity activeOpacity={0.5}>
                         <Image style={styles.homeicon}
                             contentFit="cover"
                             source={require("../../assets/camera-indoor-black.png")}/>
-                            <Text style={styles.home}>Home</Text>
+                            <Text style={styles.home} onPress={navigateToGuideHome}>Home</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.5}>
                         <Image style={styles.homeicon}
                             contentFit="cover"
                             source={require("../../assets/account-circle-black.png")}/>
-                            <Text style={styles.home}>Profile</Text>
+                            <Text style={styles.home} onPress={navigateToGuideProfile}>Profile</Text>
                     </TouchableOpacity>
                 </View>
                 </View>  

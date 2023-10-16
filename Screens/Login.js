@@ -6,9 +6,7 @@ import { User, Vector } from '../assets';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FIREBASE_AUTH, auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
-import Register from './Register';
-import GuideHome from './Guide/GuideHome';
-import AirlineRegister from './Airline/AirlineRegister';
+import Category from './Category';
 
 const Login = () => {
 
@@ -26,7 +24,7 @@ const Login = () => {
   useEffect (() => {
     const unsubscribe = auth.onAuthStateChanged( user => {
       if (user) {
-        navigation.navigate(AirlineRegister)
+        navigation.navigate(Category)
       }
     })
 
