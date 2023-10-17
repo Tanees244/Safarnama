@@ -1,10 +1,12 @@
 //done
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const GuideBankDetail = () => {
     const [text, setText] = useState('');
     const textInputRef = useRef(null);
+    const navigation = useNavigation();
 
     const handleTextChange = (newText) => {
         setText(newText);
@@ -16,6 +18,10 @@ const GuideBankDetail = () => {
             });
         }
     };
+
+    const handleGuideQuestionnaire = () => {
+        navigation.navigate('GuideQuestionnaire');
+      };
 
     const screenWidth = Dimensions.get('window').width;
     const inputContainerWidth = screenWidth * 0.9;
@@ -60,7 +66,7 @@ const GuideBankDetail = () => {
                 </View>
             </View>
             <View>
-                <TouchableOpacity activeOpacity={0.5}
+                <TouchableOpacity activeOpacity={0.5} onPress={handleGuideQuestionnaire}
                     style={[styles.buttonText, { width: buttonWidth }]}>
                     <Text style={styles.TextDesign}>Next</Text>
                 </TouchableOpacity>

@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     ButtonContainer1: {
         flexDirection: 'row',
         padding: 20,
-        backgroundColor: '#071B26',
+        backgroundColor: '#213555',
         height: 60,
         borderRadius: 30,
         alignItems: 'center',

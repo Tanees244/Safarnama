@@ -1,10 +1,12 @@
 //done
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const GuideHome = () => {
+const GuideExperience = () => {
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
+  const navigation = useNavigation();
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -15,6 +17,10 @@ const GuideHome = () => {
         height: Math.max(55, totalHeight),
       });
     }
+  };
+
+  const handleGuideBankDetail = () => {
+    navigation.navigate('GuideBankDetail');
   };
 
   const screenWidth = Dimensions.get('window').width;
@@ -57,7 +63,7 @@ const GuideHome = () => {
         </View>
       </View>
       <View>
-        <TouchableOpacity activeOpacity={0.5} 
+        <TouchableOpacity activeOpacity={0.5} onPress={handleGuideBankDetail} 
             style={[styles.buttonText, { width: buttonWidth }]}>
             <Text style={styles.TextDesign}>Next</Text>
         </TouchableOpacity>
@@ -139,4 +145,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default GuideHome;
+export default GuideExperience;

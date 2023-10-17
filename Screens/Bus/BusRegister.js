@@ -14,8 +14,8 @@ const BusRegister = () => {
     navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
   };
 
-  const navigateToAirlineOperation = () => {
-    navigation.navigate('AirlineOperation'); // Replace with your screen name
+  const navigateToBusOperations = () => {
+    navigation.navigate('BusOperation'); // Replace with your screen name
   };
 
   const navigateToGuideBankDetail = () => {
@@ -28,15 +28,15 @@ const BusRegister = () => {
       <View style={styles.rectangle} />
       <View style={[styles.infoContainer, { width: containerWidth }]}>
         <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={styles.guideName}>AIRPLANE NAME</Text>
+        <Text style={styles.guideName}>BUS NAME's</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           activeOpacity={0.9}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToAirlineOperation}
+          onPress={navigateToBusOperations}
         >
-          <Text style={styles.buttonText}>Airline Operation's</Text>
+          <Text style={styles.buttonText}>Bus Operation's</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}

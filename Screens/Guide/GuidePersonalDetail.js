@@ -11,9 +11,13 @@ const GuidePersonalDetail = () => {
   const containerWidth = screenWidth * 0.9;
   const inputWidth = containerWidth * 0.9;
   const uploadButtonWidth = containerWidth * 0.8;
+  const buttonWidth = screenWidth * 0.4;
 
   const handleUploadDocuments = () => {
     navigation.navigate(GuideDocument);
+  };
+  const handleGuideExperience = () => {
+    navigation.navigate('GuideExperience');
   };
 
   const [text, setText] = useState('');
@@ -93,6 +97,11 @@ const GuidePersonalDetail = () => {
             <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')}/>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={handleGuideExperience} activeOpacity={0.9} style={[styles.buttonText, { width: buttonWidth }]}> 
+          <Text style={styles.TextDesign}>
+            NEXT
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -135,6 +144,21 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     backgroundColor: '#071B26',
     marginHorizontal: 5, 
+  },
+  buttonText: {
+    marginTop: 30,
+    flexDirection: 'row',
+    borderRadius: 38,
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    height: 50,
+    marginBottom:10,
+  },
+  TextDesign: {
+    fontSize: 20,
+    fontWeight: '900',
+    padding: 10,
+    color: 'white',
   },
   ButtonContainer: {
     marginTop: 70,

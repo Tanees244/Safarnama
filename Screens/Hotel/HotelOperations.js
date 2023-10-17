@@ -11,23 +11,23 @@ const HotelOperation = () => {
     const buttonWidth = containerWidth * 0.8;
     const navigation = useNavigation();
 
-    const navigateToAirlineCreatePackage = () => {
-      navigation.navigate('AirlineCreatePackages'); // Replace with your screen name
+    const navigateToHotelCreatePackage = () => {
+      navigation.navigate('HotelCreatePackages'); // Replace with your screen name
     };
     const navigateToGuideProfile = () => {
       navigation.navigate('GuideProfile'); // Replace with your screen name
     };
 
-    const navigateToAirlineUpdatePackage = () => {
-        navigation.navigate('AirlineUpdatePackage'); // Replace with your screen name
+    const navigateToHotelUpdatePackage = () => {
+        navigation.navigate('HotelUpdatePackage'); // Replace with your screen name
       };
 
-    const navigateToAirlineViewPackage = () => {
-        navigation.navigate('AirlineViewPackages'); // Replace with your screen name
+    const navigateToHotelViewPackages = () => {
+        navigation.navigate('HotelViewPackages'); // Replace with your screen name
       };
 
-    const navigateToAirlineDeletePackage = () => {
-        navigation.navigate('AirlineDeletePackage'); // Replace with your screen name
+    const navigateToHotelDeletePackage = () => {
+        navigation.navigate('HotelDeletePackage'); // Replace with your screen name
       };
 
 
@@ -40,16 +40,16 @@ const HotelOperation = () => {
             </View>
 
             <View style={[styles.ButtonContainer, { width: containerWidth }]}>
-                <TouchableOpacity activeOpacity={0.9} onPress={navigateToAirlineCreatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.9} onPress={navigateToHotelCreatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Create Rooms</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineUpdatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelUpdatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Update Rooms</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineViewPackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelViewPackages} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>View Rooms </Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineDeletePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelDeletePackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Delete Rooms</Text>
                 </TouchableOpacity>
             </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     ButtonContainer1: {
         flexDirection: 'row',
         padding: 20,
-        backgroundColor: '#071B26',
+        backgroundColor: '#213555',
         height: 60,
         borderRadius: 30,
         alignItems: 'center',
