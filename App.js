@@ -91,7 +91,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='BusViewPackages' component={BusViewPackages} />
         <Stack.Screen options={{ headerShown: false }} name='BusDeletePackage' component={BusDeletePackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelRegister' component={HotelRegister} />
-        <Stack.Screen options={{ headerShown: false }} name='HotelOperation' component={HotelOperations} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelOperations' component={HotelOperations} />
         <Stack.Screen options={{ headerShown: false }} name='HotelCreatePackages' component={HotelCreatePackages} />
         <Stack.Screen options={{ headerShown: false }} name='HotelUpdatePackage' component={HotelUpdatePackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelViewPackages' component={HotelViewPackages} />

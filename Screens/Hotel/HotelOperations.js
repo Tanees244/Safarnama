@@ -41,16 +41,16 @@ const HotelOperation = () => {
 
             <View style={[styles.ButtonContainer, { width: containerWidth }]}>
                 <TouchableOpacity activeOpacity={0.9} onPress={navigateToAirlineCreatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Create Packages</Text>
+                    <Text style={styles.ButtonText}>Create Rooms</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineUpdatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Update Packages</Text>
+                    <Text style={styles.ButtonText}>Update Rooms</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineViewPackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>View Packages </Text>
+                    <Text style={styles.ButtonText}>View Rooms </Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineDeletePackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Delete Package</Text>
+                    <Text style={styles.ButtonText}>Delete Rooms</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer1}>

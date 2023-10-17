@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
 import * as Animatable from "react-native-animatable";
@@ -19,6 +19,10 @@ const Category = () => {
     navigation.navigate('VendorCategory'); // Make sure to use the correct route name
   };
 
+  const screenWidth = Dimensions.get('window').width;
+  const cardWidth = screenWidth * 0.25; // Approximately 27% of screen width
+  const cardButtonWidth = cardWidth + 5; // Adding some margin
+
   return (
     <Animatable.View style={styles.container}>
       <ImageBackground style={styles.backgroundImage} source={require("../assets/background.jpg")} >
@@ -27,22 +31,22 @@ const Category = () => {
           <Text style={styles.text}>Safarnama</Text>
         </View>
         <View style={styles.CategoryContainer}>
-          <View style={styles.card}>
+          <View style={[styles.card, { width: cardWidth }]}>
             <Image style={styles.cardImage} source={require("../assets/Card1.png")} />
-            <TouchableOpacity style={styles.cardButton} onPress={navigateToTourist}>
-            <Text style={[styles.buttonText, {fontFamily: 'Poppins-SemiBold'}]}>Tourist</Text>
+            <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToTourist}>
+              <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Tourist</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.card}>
+          <View style={[styles.card, { width: cardWidth }]}>
             <Image style={styles.cardImage} source={require("../assets/Card2.png")} />
-            <TouchableOpacity style={styles.cardButton} onPress={navigateToGuide}>
-            <Text style={[styles.buttonText, {fontFamily: 'Poppins-SemiBold'}]}>Guide</Text>
+            <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToGuide}>
+              <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Guide</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.card}>
+          <View style={[styles.card, { width: cardWidth }]}>
             <Image style={styles.cardImage} source={require("../assets/Card3.png")} />
-            <TouchableOpacity style={styles.cardButton} onPress={navigateToVendor}>
-            <Text style={[styles.buttonText, {fontFamily: 'Poppins-SemiBold'}]}>Vendor</Text>
+            <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToVendor}>
+              <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Vendor</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -56,12 +60,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   Textcontainer: {
-    top: 180,
+    top: Dimensions.get('window').height * 0.25, // Approximately 25% of screen height
     alignItems: 'center',
   },
   vector: {
     top: 20,
-    right: 150,
+    right: Dimensions.get('window').width * 0.35, // Approximately 30% of screen width
   },
   backgroundImage: {
     flex: 1,
@@ -74,29 +78,27 @@ const styles = StyleSheet.create({
   CategoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 400,
+    marginTop: Dimensions.get('window').height * 0.45, // Approximately 35% of screen height
   },
   card: {
     backgroundColor: '#D9D9D9',
     borderRadius: 60,
-    width: 110,
-    height: 110,
+    height: Dimensions.get('window').width * 0.27, // Approximately 27% of screen width
     alignItems: 'center',
     justifyContent: 'center'
   },
   cardImage: {
-    width: 50,
-    height: 50,
-    top: 25,
+    width: Dimensions.get('window').width * 0.13, // Approximately 13% of screen width
+    height: Dimensions.get('window').width * 0.13,
+    top: Dimensions.get('window').width * 0.065, // Half the card's height
   },
   cardButton: {
     backgroundColor: '#071B26',
-    width: 115,
     height: 60,
     borderRadius: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    top: 80,
+    top: Dimensions.get('window').width * 0.195, // Positioning from the top of the card
   },
   buttonText: {
     color: 'white',

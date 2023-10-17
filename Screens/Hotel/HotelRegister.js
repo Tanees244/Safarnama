@@ -14,8 +14,8 @@ const HotelRegister = () => {
     navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
   };
 
-  const navigateToAirlineOperation = () => {
-    navigation.navigate('AirlineOperation'); // Replace with your screen name
+  const navigateToHotelOperation = () => {
+    navigation.navigate('HotelOperations'); // Replace with your screen name
   };
 
   const navigateToGuideBankDetail = () => {
@@ -28,15 +28,15 @@ const HotelRegister = () => {
       <View style={styles.rectangle} />
       <View style={[styles.infoContainer, { width: containerWidth }]}>
         <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={styles.guideName}>AIRPLANE NAME</Text>
+        <Text style={styles.guideName}>HOTEL NAME's</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           activeOpacity={0.9}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToAirlineOperation}
+          onPress={navigateToHotelOperation}
         >
-          <Text style={styles.buttonText}>Airline Operation's</Text>
+          <Text style={styles.buttonText}>Hotel Operation's</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}

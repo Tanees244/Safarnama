@@ -2,7 +2,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image,TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 
 
@@ -12,19 +12,7 @@ const GuideProfile = () => {
     const buttonWidth = containerWidth * 0.5;
     const inputBoxWidth = containerWidth - 40; // Subtract padding
     const navigation = useNavigation();
-    const [text, setText] = useState('');
-    const textInputRef = useRef(null);
-
-    const handleTextChange = (newText) => {
-        setText(newText);
-        const totalHeight = (newText.split('\n').length * 25) + 50;
-    
-        if (textInputRef.current) {
-          textInputRef.current.setNativeProps({
-            height: Math.max(55, totalHeight),
-          });
-        }
-      };
+   
 
 
     return (

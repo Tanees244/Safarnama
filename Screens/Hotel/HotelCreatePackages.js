@@ -12,7 +12,7 @@ const HotelCreatePackages = () => {
     return (
         <ScrollView contentContainerStyle={styles.Container} >
             <ImageBackground style={styles.Rectangle1} source={require("../../assets/2.jpg")}>
-                <Text style={{ color: 'white', fontSize: 28, fontFamily:'Poppins-SemiBold', left: 20, top: 200}}>Create Packages</Text>
+                <Text style={{ color: 'white', fontSize: 28, fontFamily:'Poppins-SemiBold', left: 20, top: 200}}>Create Rooms</Text>
                 <View style={styles.Rectangle}> 
                     <View style={styles.Package}>
                     <Image

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   vector: {
     top: 20,
-    right: 150,
+    right: 130,
   },
   backgroundImage: {
     flex: 1,
