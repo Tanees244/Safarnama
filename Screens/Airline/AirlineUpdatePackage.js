@@ -1,63 +1,53 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image,TextInput,Button } from 'react-native';
 import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-
-const AirlineUpdatePackages = () => {
-
+const AirlineUpdatePackage = () => {
     const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 0.8;
-    const buttonWidth = containerWidth * 0.8;
+    const containerWidth = screenWidth * 1;
+    const buttonWidth = containerWidth * 0.5;
+    const inputBoxWidth = containerWidth - 40; // Subtract padding
 
-    return (
-        <ScrollView contentContainerStyle={styles.Container} >
-            
-            <ImageBackground style={styles.Rectangle1} source={require("../../assets/2.jpg")}>
-                <Text style={{ color: 'white', fontSize: 28, fontFamily:'Poppins-SemiBold', left: 20, top: 200}}>Update Packages</Text>
-                <View style={styles.Rectangle}> 
-                    <View style={styles.Package}>
-                    <Image
-                        style={styles.PackageImage}
-                        source={require("../../assets/ellipse.png")}
-                    />
-                        <View style={styles.Textbox}>
-                            <Text style={[styles.PackageText, { textAlign: 'center', fontFamily: 'Poppins-SemiBold', }]}>Package 1</Text>
-                        </View>
-                    </View>
-                    <View style={styles.Package}>
-                    <Image
-                        style={styles.PackageImage}
-                        source={require("../../assets/ellipse.png")}
-                    />
-                        <View style={styles.Textbox}>
-                            <Text style={[styles.PackageText, { textAlign: 'center', fontFamily: 'Poppins-SemiBold', }]}>Package 2</Text>
-                        </View>
-                    </View>
-                    <View style={styles.Package}>
-                    <Image
-                        style={styles.PackageImage}
-                        source={require("../../assets/ellipse.png")}
-                    />
-                        <View style={styles.Textbox}>
-                            <Text style={[styles.PackageText, { textAlign: 'center', fontFamily: 'Poppins-SemiBold', }]}>Package 3</Text>
-                        </View>
-                    </View>
-                    <View style={styles.ButtonContainer1}>
-                    <TouchableOpacity activeOpacity={0.5}>
-                        <Image style={styles.homeicon}
-                            contentFit="cover"
-                            source={require("../../assets/camera-indoor-black.png")}/>
-                            <Text style={styles.home}>Home</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.5}>
-                        <Image style={styles.homeicon}
-                            contentFit="cover"
-                            source={require("../../assets/account-circle-black.png")}/>
-                            <Text style={styles.home}>Profile</Text>
-                    </TouchableOpacity>
-                </View>
-                </View>  
+  const navigation = useNavigation();
+
+  const navigateToGuideProfile = () => {
+    navigation.navigate('GuideProfile');
+  };
+
+  const navigateToGuideHome = () => {
+    navigation.navigate('GuideHomeScreen');
+  };
+
+  return (
+    <ScrollView contentContainerStyle={styles.Container} >
+    
+    <ImageBackground style={styles.Rectangle} source={require("../../assets/6.png")}>
+                <Text style={styles.Text}>
+                    Update <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
+                </Text>
             </ImageBackground>
+            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+                {/* write form here
+                 */}
+
+
+            </View>
+            <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/camera-indoor-black.png")} />
+                    <Text style={styles.home}>Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/account-circle-black.png")} />
+                    <Text style={styles.home}>Profile</Text>
+                </TouchableOpacity>
+            </View>
+
         </ScrollView>
     );
 };
@@ -73,72 +63,83 @@ const styles = StyleSheet.create({
         fontSize: 50,
         fontWeight: '900',
         color: 'white',
-        fontFamily: 'poppins-bold',
-        textAlign: 'center'
+    },
+    Text: {
+        fontSize: 30,
+        color: 'black',
+        fontWeight: 'bold',
+        marginTop: 100,
+        right: 15,
+    },
+    textBox: {
+        marginTop: 10,
+        backgroundColor:  '#D9D9D9',
+        height: 140,
+        borderRadius: 20,
+        padding: 20,
+        borderWidth: 1,
+        borderColor: 'black',
     },
     homeicon: {
         width: 24,
         height: 24,
         overflow: "hidden",
-        alignItems: 'center'
-      },
+    },
+    bio: {
+        color: 'black',
+        right: 100,
+        marginTop: 30,
+        fontSize: 27,
+    },
 
-      home: {
+    home: {
         fontSize: 10,
         lineHeight: 14,
         fontWeight: "700",
         marginTop: 2,
         textAlign: "center",
         color: 'white',
-      },
-    Rectangle: {
-        height: '100%',
-        top: 240,
-        backgroundColor: 'white',
-        borderRadius: 50,
-        alignItems: 'center',
     },
-    Rectangle1: {
-        height: '100%',
+
+    UserIcon: {
+        top: 20,
+        left: 10,
+        width: 90,
+        height: 90,
+        position: "absolute",
+    },
+
+    Rectangle: {
+        backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
+        borderRadius: 46,
+        height: 320,
+        top: -10,
         width: '100%',
         position: 'absolute',
         flex: 1,
-    },
-    Package: {
-        width: 350,
-        height: 170,
-        backgroundColor: '#D9D9D9',
-        borderRadius: 50,
-        marginTop: 40,
-        flexDirection: 'row',
         alignItems: 'center',
+      
     },
-    PackageImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 50,
-        marginLeft: 20,
-    },
-    Textbox: {
+
+    ProfileContainer: {
         backgroundColor: 'white',
-        left: 10,
-        top: 20,
-        height: 60,
-        width: 180,
-        borderRadius: 50,
-        justifyContent: 'center',
-    },
-    PackageText: {
-        fontSize: 14,
-        color: 'black',
+        borderRadius: 28,
+        marginTop: 200,
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingBottom: 30,
+        height: 480,
     },
     Buttons: {
-        backgroundColor: '#071B26',
-        height: 100,
-        borderRadius: 30,
+        backgroundColor: 'white',
+        height: 90,
+        left: 90,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
+        borderWidth: 1,
+        borderColor: 'black',
     },
     ButtonContainer1: {
         flexDirection: 'row',
@@ -149,16 +150,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginBottom: 50,
-        marginTop:50,
+        marginTop: 50,
         width: 160,
-        
+
     },
-   
-    ButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: 'white',
-    },
+
 });
 
-export default AirlineUpdatePackages;
+export default AirlineUpdatePackage;
