@@ -39,13 +39,13 @@ const HotelCreatePackages = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelProfile}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")} />
@@ -58,38 +58,95 @@ const HotelCreatePackages = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  Container: {
     backgroundColor: 'white',
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  text: {
-    fontSize: 30,
+},
+text: {
+    fontSize: 50,
+    fontWeight: '900',
     color: 'white',
+},
+Text: {
+    fontSize: 30,
+    color: 'black',
     fontWeight: 'bold',
-    marginTop: 200,
-    right: 5,
-  },
-  rectangle: {
+    marginTop: 100,
+    right: 15,
+},
+textBox: {
+    marginTop: 10,
+    backgroundColor:  '#D9D9D9',
+    height: 140,
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+},
+homeicon: {
+    width: 24,
+    height: 24,
+    overflow: "hidden",
+},
+bio: {
+    color: 'black',
+    right: 100,
+    marginTop: 30,
+    fontSize: 27,
+},
+
+home: {
+    fontSize: 10,
+    lineHeight: 14,
+    fontWeight: "700",
+    marginTop: 2,
+    textAlign: "center",
+    color: 'white',
+},
+
+UserIcon: {
+    top: 20,
+    left: 10,
+    width: 90,
+    height: 90,
+    position: "absolute",
+},
+
+Rectangle: {
+    backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
     borderRadius: 46,
-    height: 600,
+    height: 320,
     top: -10,
     width: '100%',
     position: 'absolute',
     flex: 1,
     alignItems: 'center',
-  },
-  profileContainer: {
+  
+},
+
+ProfileContainer: {
     backgroundColor: 'white',
     borderRadius: 28,
-    marginTop: 280,
+    marginTop: 200,
     alignItems: 'center',
     paddingTop: 20,
     paddingBottom: 30,
     height: 480,
-  },
-  buttonContainer: {
+},
+Buttons: {
+    backgroundColor: 'white',
+    height: 90,
+    left: 90,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+},
+ButtonContainer1: {
     flexDirection: 'row',
     padding: 20,
     backgroundColor: '#213555',
@@ -100,29 +157,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     marginTop: 50,
     width: 160,
-  },
-  homeIcon: {
-    width: 24,
-    height: 24,
-    overflow: 'hidden',
-  },
-  home: {
-    fontSize: 10,
-    lineHeight: 14,
-    fontWeight: '700',
-    marginTop: 2,
-    textAlign: 'center',
-    color: 'white',
-  },
-  input: {
-    width: 200,
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingLeft: 10,
-  },
+
+},
 });
 
 export default HotelCreatePackages;
