@@ -40,7 +40,7 @@ const HotelViewPackage = () => {
                         Package # 1
                     </Text>
                     <Text>
-                    Learn More -->
+                    Learn More --
                     </Text>
                 </View>
                 </TouchableOpacity>
@@ -55,7 +55,7 @@ const HotelViewPackage = () => {
                         Package # 2
                     </Text>
                     <Text>
-                    Learn More -->
+                    Learn More --
                     </Text>
                 </View>
                 </TouchableOpacity><TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
@@ -69,7 +69,7 @@ const HotelViewPackage = () => {
                         Package # 3
                     </Text>
                     <Text>
-                        Learn More -->
+                        Learn More --
                     </Text>
                 </View>
                 </TouchableOpacity>
