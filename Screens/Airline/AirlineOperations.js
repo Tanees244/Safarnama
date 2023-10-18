@@ -14,9 +14,13 @@ const AirlineOperation = () => {
     const navigateToAirlineCreatePackage = () => {
       navigation.navigate('AirlineCreatePackages'); // Replace with your screen name
     };
-    const navigateToGuideProfile = () => {
-      navigation.navigate('GuideProfile'); // Replace with your screen name
-    };
+    const navigateToAirlineProfile = () => {
+        navigation.navigate('AirlineProfile');
+      };
+    
+      const navigateToAirlineOperations = () => {
+        navigation.navigate('AirlineOperation');
+      };
 
     const navigateToAirlineUpdatePackage = () => {
         navigation.navigate('AirlineUpdatePackage'); // Replace with your screen name
@@ -54,13 +58,13 @@ const AirlineOperation = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")}/>
                          <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineProfile} >
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")}/>

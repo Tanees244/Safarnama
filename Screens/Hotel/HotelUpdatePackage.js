@@ -11,12 +11,12 @@ const HotelUpdatePackage = () => {
 
   const navigation = useNavigation();
 
-  const navigateToGuideProfile = () => {
-    navigation.navigate('GuideProfile');
+  const navigateToHotelProfile = () => {
+    navigation.navigate('HotelProfile');
   };
 
-  const navigateToGuideHome = () => {
-    navigation.navigate('GuideHomeScreen');
+  const navigateToHotelOperations = () => {
+    navigation.navigate('HotelOperations');
   };
 
   return (
@@ -34,13 +34,13 @@ const HotelUpdatePackage = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelProfile}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")} />

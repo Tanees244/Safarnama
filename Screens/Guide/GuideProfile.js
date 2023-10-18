@@ -14,6 +14,13 @@ const GuideProfile = () => {
     const navigation = useNavigation();
    
 
+    const navigateToGuideProfile = () => {
+        navigation.navigate('GuideProfile');
+      };
+    
+      const navigateToGuideHomeScreen = () => {
+        navigation.navigate('GuideHomeScreen');
+      };
 
     return (
         <ScrollView contentContainerStyle={styles.Container} >
@@ -57,13 +64,13 @@ const GuideProfile = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHomeScreen}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")} />

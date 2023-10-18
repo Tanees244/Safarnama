@@ -11,12 +11,12 @@ const BusupdatePackage = () => {
 
   const navigation = useNavigation();
 
-  const navigateToGuideProfile = () => {
-    navigation.navigate('GuideProfile');
+  const navigateToBusProfile = () => {
+    navigation.navigate('BusProfile');
   };
 
-  const navigateToGuideHome = () => {
-    navigation.navigate('GuideHomeScreen');
+  const navigateToBusOperations = () => {
+    navigation.navigate('BusOperation');
   };
 
   return (
@@ -34,13 +34,13 @@ const BusupdatePackage = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusProfile}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")} />

@@ -11,12 +11,12 @@ const AirlineUpdatePackage = () => {
 
   const navigation = useNavigation();
 
-  const navigateToGuideProfile = () => {
-    navigation.navigate('GuideProfile');
+  const navigateToAirlineProfile = () => {
+    navigation.navigate('AirlineProfile');
   };
 
-  const navigateToGuideHome = () => {
-    navigation.navigate('GuideHomeScreen');
+  const navigateToAirlineOperations = () => {
+    navigation.navigate('AirlineOperation');
   };
 
   return (
@@ -34,13 +34,13 @@ const AirlineUpdatePackage = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineProfile}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")} />

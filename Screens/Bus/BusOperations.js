@@ -14,9 +14,13 @@ const BusOperation = () => {
     const navigateToBusCreatePackages = () => {
       navigation.navigate('BusCreatePackages'); // Replace with your screen name
     };
-    const navigateToGuideProfile = () => {
-      navigation.navigate('GuideProfile'); // Replace with your screen name
-    };
+    const navigateToBusProfile = () => {
+        navigation.navigate('BusProfile');
+      };
+    
+      const navigateToBusOperations = () => {
+        navigation.navigate('BusOperation');
+      };
 
     const navigateToBusUpdatePackage = () => {
         navigation.navigate('BusUpdatePackage'); // Replace with your screen name
@@ -54,13 +58,13 @@ const BusOperation = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")}/>
                          <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusProfile} >
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")}/>

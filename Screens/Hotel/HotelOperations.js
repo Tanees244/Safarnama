@@ -14,9 +14,13 @@ const HotelOperation = () => {
     const navigateToHotelCreatePackage = () => {
       navigation.navigate('HotelCreatePackages'); // Replace with your screen name
     };
-    const navigateToGuideProfile = () => {
-      navigation.navigate('GuideProfile'); // Replace with your screen name
-    };
+    const navigateToHotelProfile = () => {
+        navigation.navigate('HotelProfile');
+      };
+
+      const navigateToHotelOperations = () => {
+        navigation.navigate('HotelOperations');
+      };
 
     const navigateToHotelUpdatePackage = () => {
         navigation.navigate('HotelUpdatePackage'); // Replace with your screen name
@@ -54,13 +58,13 @@ const HotelOperation = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")}/>
                          <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelProfile} >
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")}/>

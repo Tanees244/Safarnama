@@ -1,93 +1,76 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native';
-import { ScrollView } from 'react-native';
+//done
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image,TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native';
+import React from 'react';
 
-const BusDeletePackage = () => {
+
+
+const HotelProfile = () => {
     const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 1;
+    const containerWidth = screenWidth * 0.8;
     const buttonWidth = containerWidth * 0.5;
     const inputBoxWidth = containerWidth - 40; // Subtract padding
+    const navigation = useNavigation();
+   
 
-  const navigation = useNavigation();
-
-  const navigateToBusProfile = () => {
-    navigation.navigate('BusProfile');
-  };
-
-  const navigateToBusOperations = () => {
-    navigation.navigate('BusOperation');
-  };
-
-  return (
-    <ScrollView contentContainerStyle={styles.Container} >
+    const navigateToHotelProfile = () => {
+        navigation.navigate('HotelProfile');
+      };
     
-    <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
+      const navigateToHotelOperation = () => {
+        navigation.navigate('HotelOperations');
+      };
+
+    return (
+        <ScrollView contentContainerStyle={styles.Container} >
+            <View style={styles.Rectangle}>
                 <Text style={styles.Text}>
-                    Delete <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
+                    My <Text style={[styles.Text, { color: 'white' }]}> Account</Text>
                 </Text>
 
-            </ImageBackground>
+            </View>
             <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
                 <Image
                     style={styles.UserIcon}
                     contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
+                    source={require("../../assets/USER.png")} />
 
                 <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 1
+                    <Text>
+                        Hotel's Name
                     </Text>
-                    <Image
-                    style={styles.DeleteIcon}
-                    contentFit="cover"
-                    source={require("../../assets/deleteicon.png")} />
                 </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
                 <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 2
+                    <Text>
+                        Hotel ID
                     </Text>
-                    <Image
-                    style={styles.DeleteIcon}
-                    contentFit="cover"
-                    source={require("../../assets/deleteicon.png")} />
                 </View>
-                </TouchableOpacity><TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
+                <Text style={styles.bio}>BIO</Text>
+                <View style={[styles.textBox, {width: inputBoxWidth}]}>
+                    <Text>
+                    We are hotel vendor based on northern pakistan 
+                    </Text>
+                </View>
 
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 3
-                    </Text>
-                    <Image
-                    style={styles.DeleteIcon}
-                    contentFit="cover"
-                    source={require("../../assets/deleteicon.png")} />
+                <View style={styles.ButtonContainer1}>
+                    <TouchableOpacity activeOpacity={0.5}>
+                        <Text style={{color:'white', fontWeight:'bold'}}>
+                            LOGOUT
+                        </Text>
+                    </TouchableOpacity>
                 </View>
-                </TouchableOpacity>
-                
 
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusOperations}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelOperation}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusProfile}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelProfile}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/account-circle-black.png")} />
@@ -112,11 +95,11 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     Text: {
-        fontSize: 30,
+        fontSize: 40,
         color: 'black',
         fontWeight: 'bold',
         marginTop: 100,
-        right: 15,
+        right: 30,
     },
     textBox: {
         marginTop: 10,
@@ -131,12 +114,6 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         overflow: "hidden",
-    },
-    DeleteIcon:{
-        width: 28,
-        height: 28,
-        overflow: "hidden",
-        marginTop: 10,
     },
     bio: {
         color: 'black',
@@ -163,7 +140,7 @@ const styles = StyleSheet.create({
     },
 
     Rectangle: {
-        backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
+        backgroundColor: '#A5A2D8',
         borderRadius: 46,
         height: 320,
         top: -10,
@@ -175,19 +152,19 @@ const styles = StyleSheet.create({
     },
 
     ProfileContainer: {
-        backgroundColor: 'white',
+        backgroundColor: '#BCCADF',
         borderRadius: 28,
         marginTop: 200,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
-        height: 480,
+        height: 460,
     },
     Buttons: {
-        backgroundColor: 'white',
-        height: 90,
-        left: 90,
-        borderRadius: 10,
+        backgroundColor: '#D9D9D9',
+        height: 35,
+        left: 40,
+        borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
@@ -208,6 +185,13 @@ const styles = StyleSheet.create({
 
     },
 
+    ButtonText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: 'white',
+    },
 });
 
-export default BusDeletePackage;
+export default HotelProfile;
+
+

@@ -39,6 +39,9 @@ import HotelCreatePackages from './Screens/Hotel/HotelCreatePackages';
 import HotelUpdatePackage from './Screens/Hotel/HotelUpdatePackage';
 import HotelViewPackages from './Screens/Hotel/HotelViewPackage';
 import HotelDeletePackage from './Screens/Hotel/HotelDeletePackage';
+import HotelProfile from './Screens/Hotel/HotelProfile';
+import AirlineProfile from './Screens/Airline/AirlineProfile';
+import BusProfile from './Screens/Bus/BusProfile';
 import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -96,6 +99,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='HotelUpdatePackage' component={HotelUpdatePackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelViewPackages' component={HotelViewPackages} />
         <Stack.Screen options={{ headerShown: false }} name='HotelDeletePackage' component={HotelDeletePackage} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelProfile' component={HotelProfile} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineProfile' component={AirlineProfile} />
+        <Stack.Screen options={{ headerShown: false }} name='BusProfile' component={BusProfile} />
+        
 
       </Stack.Navigator>
     </NavigationContainer>
