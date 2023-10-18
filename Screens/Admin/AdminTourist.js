@@ -12,7 +12,7 @@ const AdminTourist = () => {
     const navigation = useNavigation();
 
     const navigateToAirlineCreatePackage = () => {
-      navigation.navigate('AirlineCreatePackages'); // Replace with your screen name
+      navigation.navigate('AirlineCreatePackages');
     };
     const navigateToAirlineProfile = () => {
         navigation.navigate('AirlineProfile');
