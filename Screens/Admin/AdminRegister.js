@@ -1,4 +1,3 @@
-//done
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -10,16 +9,16 @@ const AdminRegister = () => {
   const containerWidth = screenWidth * 0.8;
   const buttonWidth = containerWidth * 0.8; // 80% of container width
 
-  const navigateToPersonalDetails = () => {
-    navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
+  const navigateToTourists = () => {
+    navigation.navigate('AdminTourist'); // Replace with your screen name
   };
 
-  const navigateToAirlineOperation = () => {
-    navigation.navigate('AirlineOperation'); // Replace with your screen name
+  const navigateToGuide = () => {
+    navigation.navigate('AdminGuide'); // Replace with your screen name
   };
 
-  const navigateToGuideBankDetail = () => {
-    navigation.navigate('GuideBankDetail'); // Replace with your screen name
+  const navigateToVendors = () => {
+    navigation.navigate('AdminVendors'); // Replace with your screen name
   };
   
 
@@ -28,29 +27,29 @@ const AdminRegister = () => {
       <View style={styles.rectangle} />
       <View style={[styles.infoContainer, { width: containerWidth }]}>
         <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={styles.guideName}>AIRPLANE NAME</Text>
+        <Text style={[styles.guideName, {fontFamily: 'Poppins-SemiBold'}]}>Safarnama</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           activeOpacity={0.9}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToAirlineOperation}
+          onPress={navigateToTourists}
         >
-          <Text style={styles.buttonText}>Airline Operation's</Text>
+          <Text style={styles.buttonText}>Tourists</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToPersonalDetails}
+          onPress={navigateToGuide}
         >
-          <Text style={styles.buttonText}>Personal Details</Text>
+          <Text style={styles.buttonText}>Guide</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToGuideBankDetail}
+          onPress={navigateToVendors}
         >
-          <Text style={styles.buttonText}>Bank Details</Text>
+          <Text style={styles.buttonText}>Vendors</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -84,9 +83,8 @@ const styles = StyleSheet.create({
     top: 30,
   },
   guideName: {
-    fontWeight: 'bold',
     fontSize: 20,
-    marginTop: 50,
+    marginTop: 70,
   },
   buttonContainer: {
     width: '90%',
