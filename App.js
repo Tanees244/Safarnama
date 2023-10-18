@@ -42,6 +42,14 @@ import HotelDeletePackage from './Screens/Hotel/HotelDeletePackage';
 import HotelProfile from './Screens/Hotel/HotelProfile';
 import AirlineProfile from './Screens/Airline/AirlineProfile';
 import BusProfile from './Screens/Bus/BusProfile';
+import AdminGuide from './Screens/Admin/AdminGuide';
+import AdminGuideApplication from './Screens/Admin/AdminGuideApplication';
+import AdminRegister from './Screens/Admin/AdminRegister';
+import AdminTourist from './Screens/Admin/AdminTourist';
+import AdminVendors from './Screens/Admin/AdminVendors';
+import GuideList from './Screens/Admin/GuideList';
+import GuideProcess from './Screens/Admin/GuideProcess';
+import TouristInfo from './Screens/Admin/TouristInfo';
 import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -102,7 +110,15 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='HotelProfile' component={HotelProfile} />
         <Stack.Screen options={{ headerShown: false }} name='AirlineProfile' component={AirlineProfile} />
         <Stack.Screen options={{ headerShown: false }} name='BusProfile' component={BusProfile} />
-        
+        <Stack.Screen options={{ headerShown: false }} name='AdminGuide' component={AdminGuide} />
+        <Stack.Screen options={{ headerShown: false }} name='AdminGuideApplication' component={AdminGuideApplication} />
+        <Stack.Screen options={{ headerShown: false }} name='AdminRegister' component={AdminRegister} />
+        <Stack.Screen options={{ headerShown: false }} name='AdminTourist' component={AdminTourist} />
+        <Stack.Screen options={{ headerShown: false }} name='AdminVendors' component={AdminVendors} />
+        <Stack.Screen options={{ headerShown: false }} name='GuideList' component={GuideList} />
+        <Stack.Screen options={{ headerShown: false }} name='GuideProcess' component={GuideProcess} />
+        <Stack.Screen options={{ headerShown: false }} name='TouristInfo' component={TouristInfo} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,70 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Svg, { Ellipse } from 'react-native-svg';
+import {Svg, Ellipse } from 'react-native-svg';
 import { User, Vector } from '../assets';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FIREBASE_AUTH, auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import Category from './Category';
+import AdminDashboard from '../Screens/Admin/AdminRegister'; 
+import Register from './Register'
 
 const Login = () => {
-
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const [loading, setLoading] = useState('false');
+  const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
-  
+
   const navigation = useNavigation();
 
   const handleRegister = () => {
     navigation.navigate(Register);
   };
 
-  useEffect (() => {
-    const unsubscribe = auth.onAuthStateChanged( user => {
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.navigate(Category)
+        // Check if the user's ID is your special admin ID
+        if (user.uid === 'I7Qez7HAXhYIADFusuhrMEdJUq63') {
+          navigation.navigate(AdminDashboard); // Redirect to the Admin Dashboard
+        } else {
+          navigation.navigate(Category); // Redirect to the regular Category screen
+        }
       }
-    })
+    });
 
-    return unsubscribe
+    return unsubscribe;
+  }, []);
 
-  } ,[])
-
-  const handleSignIn = async () =>{
+  const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(auth,email,Password);
+      const response = await signInWithEmailAndPassword(auth, email, Password);
       console.log(response);
-    }
-    catch(error){
+    } catch (error) {
       console.error(error);
-      alert('Sign in failed: ' + error.message); 
-    }
-    finally{
+      alert('Sign in failed: ' + error.message);
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
-  
   const ResetPassword = () => {
-    if(email!=null)
-    {
-      sendPasswordResetEmail(auth,email)
-      .then (() => {
-        alert("Password reset mail has been sent successfully !");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
+    if (email != null) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert('Password reset mail has been sent successfully!');
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          alert(errorMessage);
+        });
+    } else {
+      alert('Enter a valid email');
     }
-    else
-    {
-      alert("Enter a valid email");
-    }
-  }
+  };
 
   return (
     <GestureHandlerRootView style={styles.container}>
