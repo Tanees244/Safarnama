@@ -50,6 +50,8 @@ import AdminVendors from './Screens/Admin/AdminVendors';
 import GuideList from './Screens/Admin/GuideList';
 import GuideProcess from './Screens/Admin/GuideProcess';
 import TouristInfo from './Screens/Admin/TouristInfo';
+import AdminViewTouristPackages from './Screens/Admin/AdminViewTouristPackages';
+import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPackages';
 import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +63,8 @@ export default function App() {
   const [fontsLoaded, error] = useFonts({
     "Poppins-SemiBold": require("./assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Light": require("./assets/fonts/Poppins-Light.ttf"),
+    "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
   });
   if (!fontsLoaded && !error) {
     return null;
@@ -118,7 +122,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideList' component={GuideList} />
         <Stack.Screen options={{ headerShown: false }} name='GuideProcess' component={GuideProcess} />
         <Stack.Screen options={{ headerShown: false }} name='TouristInfo' component={TouristInfo} />
-
+        <Stack.Screen options={{ headerShown: false }} name='AdminViewTouristPackages' component={AdminViewTouristPackages} />
+        <Stack.Screen options={{ headerShown: false }} name='AdminDeleteTouristsPackages' component={AdminDeleteTouristsPackages} />
 
       </Stack.Navigator>
     </NavigationContainer>

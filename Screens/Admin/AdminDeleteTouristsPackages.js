@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, 
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const BusViewPackages = () => {
+const AdminDeleteTouristsPackages = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 1;
     const buttonWidth = containerWidth * 0.5;
@@ -11,20 +11,16 @@ const BusViewPackages = () => {
 
   const navigation = useNavigation();
 
-  const navigateToBusProfile = () => {
-    navigation.navigate('BusProfile');
-  };
-
-  const navigateToBusOperations = () => {
-    navigation.navigate('BusOperation');
+  const navigateToAdminRegister = () => {
+    navigation.navigate('AdminRegister');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.Container} >
     
     <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={styles.Text}>
-                    View <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
+                <Text style={[styles.Text, {fontFamily: "Poppins-Bold"}]}>
+                    Delete <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
                 </Text>
 
             </ImageBackground>
@@ -39,9 +35,10 @@ const BusViewPackages = () => {
                     <Text style={{fontSize:20, fontWeight:'bold'}}>
                         Package # 1
                     </Text>
-                    <Text>
-                    Learn More --
-                    </Text>
+                    <Image
+                    style={styles.DeleteIcon}
+                    contentFit="cover"
+                    source={require("../../assets/deleteicon.png")} />
                 </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
@@ -54,9 +51,10 @@ const BusViewPackages = () => {
                     <Text style={{fontSize:20, fontWeight:'bold'}}>
                         Package # 2
                     </Text>
-                    <Text>
-                    Learn More --
-                    </Text>
+                    <Image
+                    style={styles.DeleteIcon}
+                    contentFit="cover"
+                    source={require("../../assets/deleteicon.png")} />
                 </View>
                 </TouchableOpacity><TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
                 <Image
@@ -68,9 +66,10 @@ const BusViewPackages = () => {
                     <Text style={{fontSize:20, fontWeight:'bold'}}>
                         Package # 3
                     </Text>
-                    <Text>
-                        Learn More --
-                    </Text>
+                    <Image
+                    style={styles.DeleteIcon}
+                    contentFit="cover"
+                    source={require("../../assets/deleteicon.png")} />
                 </View>
                 </TouchableOpacity>
                 
@@ -78,17 +77,11 @@ const BusViewPackages = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusOperations}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
-                    <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
 
@@ -103,17 +96,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    text: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: 'white',
-    },
     Text: {
         fontSize: 30,
         color: 'black',
-        fontWeight: 'bold',
-        marginTop: 100,
-        right: 15,
+        marginTop: 200,
+        right: 20,
     },
     textBox: {
         marginTop: 10,
@@ -128,6 +115,12 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         overflow: "hidden",
+    },
+    DeleteIcon:{
+        width: 28,
+        height: 28,
+        overflow: "hidden",
+        marginTop: 10,
     },
     bio: {
         color: 'black',
@@ -168,7 +161,7 @@ const styles = StyleSheet.create({
     ProfileContainer: {
         backgroundColor: 'white',
         borderRadius: 28,
-        marginTop: 200,
+        marginTop: 280,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
@@ -201,4 +194,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default BusViewPackages;
+export default AdminDeleteTouristsPackages;

@@ -1,114 +1,156 @@
-//done
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native';
+import { Image } from 'react-native-elements';
 
-const AdminRegister = () => {
-  const navigation = useNavigation();
+const AdminGuide = () => {
+    const screenWidth = Dimensions.get('window').width;
+    const containerWidth = screenWidth * 0.8;
+    const buttonWidth = containerWidth * 0.8;
+    const navigation = useNavigation();
 
-  const screenWidth = Dimensions.get('window').width;
-  const containerWidth = screenWidth * 0.8;
-  const buttonWidth = containerWidth * 0.8; // 80% of container width
+    const navigateToAdminRegister = () => {
+        navigation.navigate('AdminRegister');
+      };
 
-  const navigateToPersonalDetails = () => {
-    navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
-  };
+    const navigateToGuideApplicationRequest = () => {
+        navigation.navigate('AdminGuideApplication'); // Replace with your screen name
+      };
 
-  const navigateToAirlineOperation = () => {
-    navigation.navigate('AirlineOperation'); // Replace with your screen name
-  };
+    const navigateToGuideDetails = () => {
+        navigation.navigate('GuideList'); // Replace with your screen name
+      };
 
-  const navigateToGuideBankDetail = () => {
-    navigation.navigate('GuideBankDetail'); // Replace with your screen name
-  };
-  
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.rectangle} />
-      <View style={[styles.infoContainer, { width: containerWidth }]}>
-        <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={styles.guideName}>AIRPLANE NAME</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToAirlineOperation}
-        >
-          <Text style={styles.buttonText}>Airline Operation's</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToPersonalDetails}
-        >
-          <Text style={styles.buttonText}>Personal Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToGuideBankDetail}
-        >
-          <Text style={styles.buttonText}>Bank Details</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+    return (
+        <ScrollView contentContainerStyle={styles.Container} >
+            <View style={styles.Rectangle}>
+                <Text style={styles.text}>Safarnama</Text>
+                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Admin!</Text>
+            </View>
+
+            <View style={[styles.ButtonContainer, { width: containerWidth }]}>
+            
+            <View style={styles.Rectangle1} />
+            <View style={styles.Rectangle2} />
+                
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideApplicationRequest} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>Guide Application {'\n'}Request</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideDetails} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>Delete Package</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/camera-indoor-black.png")}/>
+                         <Text style={styles.home}>Home</Text>
+                </TouchableOpacity>
+            </View>
+
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#A4B0B2',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    Container: {
+        backgroundColor: 'white',
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    
+    Rectangle1: {
+      backgroundColor: '#d9d9d9',
+      borderRadius: 34,
+      width: 163,
+      height: 400,
+      position: 'absolute',
+      top: 80,
+      left: '0%', 
+      zIndex: -1, 
   },
-  rectangle: {
-    backgroundColor: '#071B26',
-    borderRadius: 46,
-    height: 320,
-    width: '100%',
-    position: 'absolute',
-    top: -10,
+  
+  Rectangle2: {
+      backgroundColor: '#5bc0f8', 
+      borderRadius: 34, 
+      height: 280,
+      width: 163,
+      position: 'absolute',
+      top: 200, 
+      left: '55%',
+      zIndex: -1, 
   },
-  infoContainer: {
-    backgroundColor: 'white',
-    height: 280,
-    alignItems: 'center',
-    position: 'absolute',
-    top: 120,
-    borderRadius: 40,
-  },
-  guideImage: {
-    top: 30,
-  },
-  guideName: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 50,
-  },
-  buttonContainer: {
-    width: '90%',
-    backgroundColor: '#D9D9D9',
-    borderRadius: 33,
-    marginTop: 360,
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 30,
-  },
-  buttons: {
-    backgroundColor: 'white',
-    height: 70,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
+
+    text: {
+        fontSize: 50,
+        fontWeight: '900',
+        color: 'white',
+        alignItems: 'center',
+    },
+    homeicon: {
+        width: 24,
+        height: 24,
+        overflow: "hidden",
+      },
+      home: {
+        fontSize: 10,
+        lineHeight: 14,
+        fontWeight: "700",
+        marginTop: 2,
+        textAlign: "center",
+        color: 'white',
+      },
+    Rectangle: {
+        backgroundColor: '#A5A2D8',
+        borderRadius: 46,
+        height: 360,
+        top: -10,
+        width: '100%',
+        position: 'absolute',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    ButtonContainer: {
+        borderRadius: 33,
+        marginTop: 260,
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingBottom: 30,
+    },
+    Buttons: {
+        backgroundColor: '#071B26',
+        height: 100,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+    },
+    ButtonContainer1: {
+        flexDirection: 'row',
+        padding: 20,
+        backgroundColor: '#213555',
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginTop: 70,
+        width: 120,
+    },
+   
+    ButtonText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: 'white',
+        
+    },
 });
 
-export default AdminRegister;
+export default AdminGuide;
+
+

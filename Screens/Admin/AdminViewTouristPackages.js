@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, 
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const BusViewPackages = () => {
+const AdminViewTouristPackages = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 1;
     const buttonWidth = containerWidth * 0.5;
@@ -11,19 +11,15 @@ const BusViewPackages = () => {
 
   const navigation = useNavigation();
 
-  const navigateToBusProfile = () => {
-    navigation.navigate('BusProfile');
-  };
-
-  const navigateToBusOperations = () => {
-    navigation.navigate('BusOperation');
+  const navigateToAdminRegister = () => {
+    navigation.navigate('AdminRegister');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.Container} >
     
     <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={styles.Text}>
+                <Text style={[styles.Text, {fontFamily: "Poppins-Bold"}]}>
                     View <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
                 </Text>
 
@@ -78,17 +74,11 @@ const BusViewPackages = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusOperations}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
-                    <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
 
@@ -111,9 +101,8 @@ const styles = StyleSheet.create({
     Text: {
         fontSize: 30,
         color: 'black',
-        fontWeight: 'bold',
-        marginTop: 100,
-        right: 15,
+        marginTop: 200,
+        right: 30,
     },
     textBox: {
         marginTop: 10,
@@ -168,7 +157,7 @@ const styles = StyleSheet.create({
     ProfileContainer: {
         backgroundColor: 'white',
         borderRadius: 28,
-        marginTop: 200,
+        marginTop: 280,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
@@ -201,4 +190,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default BusViewPackages;
+export default AdminViewTouristPackages;

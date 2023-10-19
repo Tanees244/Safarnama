@@ -4,34 +4,22 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 import { Image } from 'react-native-elements';
 
-
 const AdminTourist = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.8;
     const buttonWidth = containerWidth * 0.8;
     const navigation = useNavigation();
 
-    const navigateToAirlineCreatePackage = () => {
-      navigation.navigate('AirlineCreatePackages');
-    };
-    const navigateToAirlineProfile = () => {
-        navigation.navigate('AirlineProfile');
-      };
-    
-      const navigateToAirlineOperations = () => {
-        navigation.navigate('AirlineOperation');
+    const navigateToAdminRegister = () => {
+        navigation.navigate('AdminRegister');
       };
 
-    const navigateToAirlineUpdatePackage = () => {
-        navigation.navigate('AirlineUpdatePackage'); // Replace with your screen name
+    const navigateToTouristsViewPackage = () => {
+        navigation.navigate('AdminViewTouristPackages'); // Replace with your screen name
       };
 
-    const navigateToAirlineViewPackage = () => {
-        navigation.navigate('AirlineViewPackages'); // Replace with your screen name
-      };
-
-    const navigateToAirlineDeletePackage = () => {
-        navigation.navigate('AirlineDeletePackage'); // Replace with your screen name
+    const navigateToTouristsDeletePackage = () => {
+        navigation.navigate('AdminDeleteTouristsPackages'); // Replace with your screen name
       };
       
     const navigateToUserInformation = () => {
@@ -43,21 +31,18 @@ const AdminTourist = () => {
         <ScrollView contentContainerStyle={styles.Container} >
             <View style={styles.Rectangle}>
                 <Text style={styles.text}>Safarnama</Text>
-                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Vendor!</Text>
-
+                <Text style={{ color: 'black', fontSize: 28, fontWeight: '900', top: 10 }}>Welcome Admin!</Text>
             </View>
 
             <View style={[styles.ButtonContainer, { width: containerWidth }]}>
-                <TouchableOpacity activeOpacity={0.9} onPress={navigateToAirlineCreatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Create Packages</Text>
+            
+            <View style={styles.Rectangle1} />
+            <View style={styles.Rectangle2} />
+                
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToTouristsViewPackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={styles.ButtonText}>View Packages</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineUpdatePackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>Update Packages</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineViewPackage} style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={styles.ButtonText}>View Packages </Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineDeletePackage} style={[styles.Buttons, { width: buttonWidth }]}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToTouristsDeletePackage} style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={styles.ButtonText}>Delete Package</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToUserInformation} style={[styles.Buttons, { width: buttonWidth }]}>
@@ -65,17 +50,11 @@ const AdminTourist = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineOperations}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")}/>
                          <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineProfile} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")}/>
-                         <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
 
@@ -90,6 +69,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    
+    Rectangle1: {
+      backgroundColor: '#d9d9d9',
+      borderRadius: 34,
+      width: 163,
+      height: 400,
+      position: 'absolute',
+      top: 80,
+      left: '0%', 
+      zIndex: -1, 
+  },
+  
+  Rectangle2: {
+      backgroundColor: '#5bc0f8', 
+      borderRadius: 34, 
+      height: 280,
+      width: 163,
+      position: 'absolute',
+      top: 200, 
+      left: '55%',
+      zIndex: -1, 
+  },
+
     text: {
         fontSize: 50,
         fontWeight: '900',
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     Rectangle: {
         backgroundColor: '#A5A2D8',
         borderRadius: 46,
-        height: 320,
+        height: 360,
         top: -10,
         width: '100%',
         position: 'absolute',
@@ -143,10 +145,8 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        marginBottom: 50,
-        marginTop:50,
-        width: 160,
-        
+        marginTop: 70,
+        width: 120,
     },
    
     ButtonText: {

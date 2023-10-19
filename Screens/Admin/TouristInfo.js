@@ -11,20 +11,16 @@ const TouristInfo = () => {
 
   const navigation = useNavigation();
 
-  const navigateToAirlineProfile = () => {
+  const navigateToAdminRegister = () => {
     navigation.navigate('AirlineProfile');
-  };
-
-  const navigateToAirlineOperations = () => {
-    navigation.navigate('AirlineOperation');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.Container} >
     
     <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={styles.Text}>
-                    Tourists <Text style={[styles.Text, { color: 'white' }]}> Info</Text>
+                <Text style={[styles.Text, {fontFamily:'Poppins-Bold'}]}>
+                    Tourists <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
                 </Text>
 
             </ImageBackground>
@@ -58,7 +54,8 @@ const TouristInfo = () => {
                     Learn More --
                     </Text>
                 </View>
-                </TouchableOpacity><TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
                 <Image
                     style={styles.UserIcon}
                     contentFit="cover"
@@ -78,17 +75,11 @@ const TouristInfo = () => {
 
             </View>
             <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineOperations}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAirlineProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
-                    <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
 
@@ -103,17 +94,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    text: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: 'white',
-    },
     Text: {
         fontSize: 30,
         color: 'black',
-        fontWeight: 'bold',
-        marginTop: 100,
-        right: 15,
+        marginTop: 200,
+        right: 50,
     },
     textBox: {
         marginTop: 10,
@@ -168,7 +153,7 @@ const styles = StyleSheet.create({
     ProfileContainer: {
         backgroundColor: 'white',
         borderRadius: 28,
-        marginTop: 200,
+        marginTop: 280,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
