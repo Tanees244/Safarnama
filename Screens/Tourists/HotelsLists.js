@@ -56,7 +56,7 @@ const data2 = [
   },
 ];
 
-const HorizontalCard = ({ item }) => {
+const HorizontalCard = ({ item, onPress }) => {
     return (
       <View style={styles.card}>
         <View style={styles.imageContainer}>
@@ -77,7 +77,10 @@ const HorizontalCard = ({ item }) => {
           </View>
         </View>
         <View style={styles.CardbuttonContainer}>
-          <TouchableOpacity style={styles.Cardbutton}>
+          <TouchableOpacity 
+            style={styles.Cardbutton}
+            onPress={onPress}
+            >
             <Text style={styles.CardbuttonText}>Book Now</Text>
           </TouchableOpacity>
         </View>
@@ -90,14 +93,26 @@ const HorizontalCard = ({ item }) => {
 const HotelsLists = () => {
 
     const navigation = useNavigation();
+
+    const handleDiscoverPress = () => {
+        navigation.navigate('Discover')
+    }
+
+    const navigateToHotesInfo = () => {
+        navigation.navigate('HotelsInfo')
+    }
   
     return (
       <View style={styles.Container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Safarnama</Text>
         </View>
-        <TouchableOpacity style={styles.HomeButton}>
-            <Image source={require("homeicon.jpg")}/>
+        <TouchableOpacity 
+            style={styles.HomeButton}
+            onPress={handleDiscoverPress}
+            activeOpacity={0.5}
+            >
+            <Image source={require("../../assets/camera-indoor-black.png")} style = {[{width: 30, height: 30}]}/>
         </TouchableOpacity>
         <ScrollView>
           <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Hotels</Text></Text>
@@ -105,7 +120,7 @@ const HotelsLists = () => {
             data={data}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <HorizontalCard item={item} />}
+            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToHotesInfo} />}
             keyExtractor={(item) => item.id}
           />
           <Text style={styles.text}>Hotels</Text>
@@ -113,7 +128,7 @@ const HotelsLists = () => {
             data={data2}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <HorizontalCard item={item} />}
+            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToHotesInfo}/>}
             keyExtractor={(item) => item.id}
           />
         </ScrollView>
