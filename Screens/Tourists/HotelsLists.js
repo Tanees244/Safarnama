@@ -8,21 +8,21 @@ const data = [
     image: require('../../assets/Hotel3.jpg'),
     title: 'Marriot Hotel',
     city: 'Islamabad',
-    description: 'Naran is a town and popular tourist destination in upper Kaghan Valley in the Mansehra District of the Khyber Pakhtunkhwa province of Pakistan. It is located 119 kilometers from Mansehra city at the altitude of 2,409 meters. It is located about 65 kilometers away from Babusar Top',
+    description: 'Naran is a town and popular tourist destination in upper Kaghan Valley in the Mansehra District of the Khyber Pakhtunkhwa province of Pakistan. It is located 119 kilometers from Mansehra city at the altitude of 2,409 meters. ',
     ratings: '4.5/5.0',
   },
   {
     id: '2',
-    image: require('../../assets/Place2.jpg'),
-    title: 'Kalam',
+    image: require('../../assets/Hotel1.jpg'),
+    title: 'Pearl Continental',
     city: 'Islamabad',
     description: 'Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.',
     ratings: '3.3/5.0',
   },
   {
     id: '3',
-    image: require('../../assets/Place3.jpg'),
-    title: 'Kashmir',
+    image: require('../../assets/Hotel2.jpg'),
+    title: 'Ramada',
     city: 'Islamabad',
     description: 'Kashmir is the northernmost geographical region of the Indian subcontinent. Until the mid-19th century, the term "Kashmir" denoted only the Kashmir Valley between the Great Himalayas and the Pir Panjal Range',
     ratings: '3.9/5.0',
@@ -60,72 +60,79 @@ const HorizontalCard = ({ item }) => {
     return (
       <View style={styles.card}>
         <View style={styles.imageContainer}>
-        <ImageBackground source={item.image} style={styles.image}>
-          <View style={styles.ratingContainer}>
-            <Image source={require('../../assets/star.png')} style={styles.iconStar} />
-            <Text style={styles.ratingValue}>{item.ratings}</Text>
-          </View>
-        </ImageBackground>
+        <ImageBackground source={item.image} style={styles.image} borderRadius={20}>
+            <View style={styles.ratingContainer}>
+              <Image source={require('../../assets/star.png')} style={styles.iconStar} />
+              <Text style={styles.ratingValue}>{item.ratings}</Text>
+            </View>
+          </ImageBackground>
         </View>
         <View style={styles.content}>
-            <View style={styles.contentContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.subdescription}>{item.city}</Text>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.description}>{item.description}</Text>
-          </View>
-          <View style={styles.CardbuttonContainer}>
-            <TouchableOpacity style={styles.Cardbutton}>
-              <Text style={styles.CardbuttonText}>Book Now</Text>
-            </TouchableOpacity>
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.subdescription}>{item.city}</Text>
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.description}>{item.description}</Text>
             </View>
           </View>
+        </View>
+        <View style={styles.CardbuttonContainer}>
+          <TouchableOpacity style={styles.Cardbutton}>
+            <Text style={styles.CardbuttonText}>Book Now</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
 };
   
+  
 
 const HotelsLists = () => {
 
-  const navigation = useNavigation();
- 
-
-  return (
-    <ScrollView contentContainerStyle={styles.Container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Safarnama</Text>
+    const navigation = useNavigation();
+  
+    return (
+      <View style={styles.Container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Safarnama</Text>
+        </View>
+        <TouchableOpacity style={styles.HomeButton}>
+            <Image source={require("homeicon.jpg")}/>
+        </TouchableOpacity>
+        <ScrollView>
+          <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Hotels</Text></Text>
+          <FlatList
+            data={data}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => <HorizontalCard item={item} />}
+            keyExtractor={(item) => item.id}
+          />
+          <Text style={styles.text}>Hotels</Text>
+          <FlatList
+            data={data2}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => <HorizontalCard item={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        </ScrollView>
       </View>
-        <Text style={styles.text}>Hotels</Text>
-        <FlatList
-          data={data}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <HorizontalCard item={item} />}
-          keyExtractor={(item) => item.id}
-        />
-        <Text style={styles.text}>Hotels</Text>
-        <FlatList
-          data={data2}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <HorizontalCard item={item} />}
-          keyExtractor={(item) => item.id}
-        />
-    </ScrollView>
-  )
-}
+    );
+  };
+  
+
 
 const styles = StyleSheet.create({
     Container: {
         backgroundColor: '#9dd1ee',
+        flex: 1,
     },
     header: {
-        height: 150,
+        height: 140,
         backgroundColor: '#82D3DE',
         shadowColor: 'black',
         elevation: 20,
-        flex: 1,
     },
     headerText: {
         textAlign: 'center',
@@ -146,19 +153,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     card: {
-        marginLeft: 40,
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 30,
         flexDirection: 'column',
         width: 340,
-        height: 700,
+        height: 600,
         alignItems: 'center',
         overflow: 'hidden',
         borderRadius: 20,
     },
-    imageContainer: {
-    },
     image: {
         height: 200,
         width: 280,
+        shadowColor: 'black',
         elevation: 20,
     },
     contentContainer:{
@@ -169,13 +177,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 20,
         width: 340,
-        height: 700,
-        top: -100, 
+        height: 600,
+        top: -100,
         zIndex: -1,
-        shadowColor: 'black', // Shadow color
-        shadowOffset: { width: 0, height: 20 }, // Shadow offset (adjust as needed)
-        shadowOpacity: 0.5, // Shadow opacity (adjust as needed)
-        shadowRadius: 10,
     },
     title: {
         paddingLeft: 18,
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10, // Adjust top position as needed
         left: 10, // Adjust left position as needed
-        backgroundColor: 'rgba(0,0,0,0.5)', // Background color with opacity
+        backgroundColor: 'rgba(0,0,0,0.5)',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 8,
@@ -232,10 +236,25 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Bold',
     },  
     CardbuttonContainer: {
-        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 20,
+        width: '100%', 
+        alignItems: 'center',
+      },
+      HomeButton: {
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        width: 70,  // Adjust the width as needed
+        height: 70,
+        padding: 15,
+        borderRadius: 50,
+        backgroundColor: 'black',
+        alignItems: 'center',
         justifyContent: 'center',
-        top: 60,
-    },  
+        elevation: 5,
+        zIndex: 2,
+      },
 });
 
 export default HotelsLists;

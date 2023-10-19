@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { HomeImage, Vector } from '../assets';
+import { Vector } from '../assets';
 import * as Animatable from "react-native-animatable";
 import Login from "./Login";
 import Register from "./Register";
@@ -29,7 +29,7 @@ const HomeScreen = () => {
 
   return(
     <Animatable.View style={styles.container}>
-    <ImageBackground style={styles.backgroundImage} source={HomeImage} >
+    <ImageBackground style={styles.backgroundImage} source={require('../assets/3.jpg')} >
     <View style={styles.Textcontainer}>
 
         <Image style={styles.vector} source={Vector}/>
@@ -85,14 +85,14 @@ const styles = StyleSheet.create({
   },
   vector:{
     top: 20,
-    right: 150,
+    right: 160,
   },
   backgroundImage: {
     flex: 1,
   },
   text: {
-    fontSize: 50,
-    fontWeight: '900',
+    fontSize: 45,
+    fontFamily: 'Poppins-Bold',
     color: 'white',
   },
   button: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '900',
+    fontFamily: 'Poppins-Black',
     textAlign: 'center',
   },
   buttonOutline: {
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   buttonOutlineText: {
     color: '#319BD6',
     fontSize: 16,
-    fontWeight: '900',
+    fontFamily: 'Poppins-Black',
     textAlign: 'center',
   },
   guest: {
@@ -125,12 +125,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   Text2: {
-    color: '#0A1172',
+    color: '#339fe0',
+    fontFamily: 'Poppins-Black',
     fontSize: 14,
   },
   boldText: {
     fontSize: 14,
-    fontWeight: '900',
+    fontFamily: 'Poppins-Black',
     color: '#000000',
   },
   gap:{
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#59788E',
     borderWidth: 1,
     width: 70,
-    bottom: 11,
+    bottom: 18,
     left: 118,
   },
 });
