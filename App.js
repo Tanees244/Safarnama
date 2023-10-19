@@ -7,7 +7,6 @@ import Register from "./Screens/Register";
 import Discover from './Screens/Tourists/Discover';
 import VendorCategory from './Screens/VendorCategory';
 import TransportCategory from './Screens/TransportCategory';
-import Hotel from './Screens/Hotel';
 import Category from './Screens/Category';
 import GuideHome from './Screens/Guide/GuideHome';
 import GuidePersonalDetail from './Screens/Guide/GuidePersonalDetail';
@@ -53,6 +52,8 @@ import TouristInfo from './Screens/Admin/TouristInfo';
 import AdminViewTouristPackages from './Screens/Admin/AdminViewTouristPackages';
 import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPackages';
 import { useFonts } from 'expo-font';
+import HotelsLists from './Screens/Tourists/HotelsLists';
+import HotelsInfo from './Screens/Tourists/HotelsInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,20 @@ export default function App() {
     "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
     "Poppins-Light": require("./assets/fonts/Poppins-Light.ttf"),
     "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
+    "Poppins-BlackItalic": require("./assets/fonts/Poppins-BlackItalic.ttf"),
+    "Poppins-BoldItalic": require("./assets/fonts/Poppins-BoldItalic.ttf"),
+    "Poppins-ExtraBold": require("./assets/fonts/Poppins-ExtraBold.ttf"),
+    "Poppins-ExtraBoldItalic": require("./assets/fonts/Poppins-ExtraBoldItalic.ttf"),
+    "Poppins-ExtraLight": require("./assets/fonts/Poppins-ExtraLight.ttf"),
+    "Poppins-ExtraLightItalic": require("./assets/fonts/Poppins-ExtraLightItalic.ttf"),
+    "Poppins-LightItalic": require("./assets/fonts/Poppins-LightItalic.ttf"),
+    "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-MediumItalic": require("./assets/fonts/Poppins-MediumItalic.ttf"),
+    "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-SemiBold": require("./assets/fonts/Poppins-SemiBold.ttf"),
+    "Poppins-SemiBoldItalic": require("./assets/fonts/Poppins-SemiBoldItalic.ttf"),
+    "Poppins-Thin": require("./assets/fonts/Poppins-Thin.ttf"),
+    "Poppins-ThinItalic": require("./assets/fonts/Poppins-ThinItalic.ttf"),
   });
   if (!fontsLoaded && !error) {
     return null;
@@ -80,7 +95,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Category' component={Category} />
         <Stack.Screen options={{ headerShown: false }} name='VendorCategory' component={VendorCategory} />
         <Stack.Screen options={{ headerShown: false }} name='TransportCategory' component={TransportCategory} />
-        <Stack.Screen options={{ headerShown: false }} name='Hotel' component={Hotel} />
         <Stack.Screen options={{ headerShown: false }} name='GuideHome' component={GuideHome} />
         <Stack.Screen options={{ headerShown: false }} name='GuidePersonalDetail' component={GuidePersonalDetail} />
         <Stack.Screen options={{ headerShown: false }} name='GuideDocument' component={GuideDocument} />
@@ -124,6 +138,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='TouristInfo' component={TouristInfo} />
         <Stack.Screen options={{ headerShown: false }} name='AdminViewTouristPackages' component={AdminViewTouristPackages} />
         <Stack.Screen options={{ headerShown: false }} name='AdminDeleteTouristsPackages' component={AdminDeleteTouristsPackages} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelsLists' component={HotelsLists} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelsInfo' component={HotelsInfo} />
 
       </Stack.Navigator>
     </NavigationContainer>

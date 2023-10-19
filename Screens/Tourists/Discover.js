@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Hotel from '../Hotel';
 
 const data = [
   {
@@ -82,9 +81,9 @@ const Discover = () => {
 
   const navigation = useNavigation();
 
-  const handleButton1Press = () => {
-    navigation.navigate(Hotel);
-  }; 
+  const navigateToHotelsInfo = () =>{
+    navigation.navigate('HotelsLists')
+  };
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -94,7 +93,7 @@ const Discover = () => {
     <View style={styles.container}>
         <Text style={styles.text}>Creating Memories, One Trip at a Time</Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
+          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/plane-departure.png')} 
@@ -103,7 +102,7 @@ const Discover = () => {
             <Text style={styles.buttonText}>Flights</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
+          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/bed.png')} 
@@ -112,7 +111,7 @@ const Discover = () => {
             <Text style={styles.buttonText}>Hotels</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
+          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/island-tropical.png')} 
@@ -121,7 +120,7 @@ const Discover = () => {
             <Text style={styles.buttonText}>Places</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={handleButton1Press}>
+          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/box.png')} 
