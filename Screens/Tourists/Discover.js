@@ -154,18 +154,19 @@ const Discover = () => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
+    backgroundColor: '#9dd1ee',
   },
   header: {
-    height: 100,
-    backgroundColor: 'white',
+    height: 140,
+    backgroundColor: '#82D3DE',
     shadowColor: 'black',
-    elevation: 5,
+    elevation: 20,
   },
   headerText: {
-    textAlign: 'center',
-    top: 50,
-    fontSize: 20,
-    fontWeight: 'bold',
+      textAlign: 'center',
+      top: 70,
+      fontSize: 30,
+      fontFamily: 'Poppins-Bold',
   },
   text: {
     width: '75%',

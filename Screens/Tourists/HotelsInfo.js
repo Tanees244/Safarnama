@@ -16,14 +16,6 @@ const HotelsInfo = () => {
     navigation.navigate('HotelOperations');
   };
 
-  const [roomType, setRoomType] = useState('');
-  const [roomPrice, setRoomPrice] = useState('');
-
-  const handleAddRoom = () => {
-    // Handle adding the room type and price, e.g., send to an API or store in state.
-    // You can use the values of `roomType` and `roomPrice`.
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.Container} >
     
