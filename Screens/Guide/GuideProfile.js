@@ -26,7 +26,7 @@ const GuideProfile = () => {
         <ScrollView contentContainerStyle={styles.Container} >
             <View style={styles.Rectangle}>
                 <Text style={styles.Text}>
-                    My <Text style={[styles.Text, { color: 'white' }]}> Account</Text>
+                    My <Text style={[styles.Text, { color: 'white' }]}>Account</Text>
                 </Text>
 
             </View>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         height: 140,
         borderRadius: 20,
         padding: 20,
-        borderWidth: 1,
+        borderWidth: 0,
         borderColor: 'black',
     },
     homeicon: {
