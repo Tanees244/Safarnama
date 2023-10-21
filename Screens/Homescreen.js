@@ -29,7 +29,7 @@ const HomeScreen = () => {
 
   return(
     <Animatable.View style={styles.container}>
-    <ImageBackground style={styles.backgroundImage} source={require('../assets/3.jpg')} >
+    <ImageBackground style={styles.backgroundImage} source={require('../assets/5.jpg')} >
     <View style={styles.Textcontainer}>
 
         <Image style={styles.vector} source={Vector}/>

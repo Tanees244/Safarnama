@@ -157,22 +157,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#9dd1ee',
   },
   header: {
-    height: 140,
-    backgroundColor: '#82D3DE',
+    height: 120,
+    backgroundColor: 'white',
     shadowColor: 'black',
     elevation: 20,
   },
   headerText: {
       textAlign: 'center',
-      top: 70,
+      top: 50,
       fontSize: 30,
       fontFamily: 'Poppins-Bold',
   },
   text: {
-    width: '75%',
+    
     fontSize: 25,
-    padding: 15,
-    fontWeight: 'bold',
+    padding: 25,
+    fontFamily: 'Poppins-Medium',
   },
   buttonContainer:{
     paddingHorizontal: 5,

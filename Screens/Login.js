@@ -46,7 +46,7 @@
     const handleSignIn = async () => {
       setLoading(true);
       try {
-        const response = await signInWithEmailAndPassword(auth, email, Password);
+        const response = await signInWithEmailAndPassword(auth, email, password);
         console.log(response);
       } catch (error) {
         console.error(error);
