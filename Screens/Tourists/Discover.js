@@ -91,7 +91,7 @@ const Discover = () => {
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
     <View style={styles.container}>
-        <Text style={styles.text}>Creating Memories, One Trip at a Time</Text>
+        <Text style={styles.text}>Creating Memories, {'\n'}One Trip at a Time</Text>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
@@ -154,11 +154,11 @@ const Discover = () => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: '#9dd1ee',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     height: 120,
-    backgroundColor: 'white',
+    backgroundColor: '#B4ADC9',
     shadowColor: 'black',
     elevation: 20,
   },
@@ -169,33 +169,33 @@ const styles = StyleSheet.create({
       fontFamily: 'Poppins-Bold',
   },
   text: {
-    
     fontSize: 25,
-    padding: 25,
+    paddingTop: 25,
+    paddingLeft: 10,
     fontFamily: 'Poppins-Medium',
   },
   buttonContainer:{
     paddingHorizontal: 5,
     paddingVertical: 20,
     flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   buttons:{
-    backgroundColor: '#319bd6',
-    marginRight: 10,
-    borderRadius: 20,
-    width: 88,
-    height: 95,
+    backgroundColor: '#5181A2',
+    borderRadius: 30,
+    width: 90,
+    height: 90,
   },
   buttonText: {
     color: 'black',
     textAlign: 'center',
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Regular',
     top: 5,
   },
   icon: {
     width: 30,
-    height: 30,
+    height: 25,
     padding: 20,
     resizeMode: 'contain',
     alignItems: 'center',
