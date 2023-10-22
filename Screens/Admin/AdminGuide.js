@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         color: 'white',
-        
+        textAlign:'center',
+        padding: 10,        
     },
 });
 
