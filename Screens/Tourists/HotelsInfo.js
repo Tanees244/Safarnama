@@ -41,7 +41,24 @@ const data = [
   },
 ];
 
-const FacilitiesList = ({ data }) => {
+const FacilityListDetails = ({ details }) => {
+    return (
+      <View style={styles.facilityDetails}>
+        {details.map((facility, index) => (
+          <View key={index} style={styles.facilityDetail}>
+            <Text style={styles.detailTitle}>{facility.title}</Text>
+            {facility.items.map((item, itemIndex) => (
+              <Text key={itemIndex} style={styles.detailText}>
+                {item}
+              </Text>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+  
+  const FacilitiesList = ({ data }) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
   
     const handleFacilityButtonClick = () => {
@@ -52,42 +69,63 @@ const FacilitiesList = ({ data }) => {
       setIsPopupVisible(false);
     };
   
+    const facilityDetails = [
+        {
+            title: 'General',
+            items: ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental'],
+        },
+        {
+            title: 'Safety & Security',
+            items: ['24-Hour Security', 'Smoke Alarms'],
+        },
+        {
+            title: 'Cleaning Services',
+            items: ['Daily Housekeeping', 'Dry Cleaning', 'Laundry'],
+        },
+        {
+            title: 'Business Facilities',
+            items: ['Meeting/Banquet facilities', 'Fax/Photocopying'],
+        },
+      ];
+  
     return (
-        <View>
-          <FlatList
-            data={data}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => (
-              <View style={styles.facilityItem}>
-                {index === data.length - 1 ? (
-                  <TouchableOpacity style={styles.facilityButton} onPress={handleFacilityButtonClick}>
-                    <Image source={item.image} style={styles.facilityImage} />
-                  </TouchableOpacity>
-                ) : (
-                  <View style={styles.facilityBox}>
-                    <Image source={item.image} style={styles.facilityImage} />
-                  </View>
-                )}
-              </View>
-            )}
-          />
-    
-          <Modal isVisible={isPopupVisible} onBackdropPress={closePopup} animationIn="slideInUp" animationOut="slideOutDown">
-            <View style={styles.popupContainer}>
-              <View style={styles.popupContent}>
-                <TouchableOpacity onPress={closePopup}>
-                  <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
+      <View>
+        <FlatList
+          data={data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <View style={styles.facilityItem}>
+              {index === data.length - 1 ? (
+                <TouchableOpacity style={styles.facilityButton} onPress={handleFacilityButtonClick}>
+                  <Image source={item.image} style={styles.facilityImage} />
                 </TouchableOpacity>
-                {/* Add your popup content here */}
-                <Text>Popup Content</Text>
-              </View>
+              ) : (
+                <View style={styles.facilityBox}>
+                  <Image source={item.image} style={styles.facilityImage} />
+                </View>
+              )}
             </View>
-          </Modal>
-        </View>
-      );
-    };
+          )}
+        />
+  
+        <Modal isVisible={isPopupVisible} onBackdropPress={closePopup} animationIn="slideInUp" animationOut="slideOutDown">
+          <View style={styles.popupContainer}>
+            <View style={styles.popupContent}>
+            <TouchableOpacity onPress={closePopup} style={styles.closeIconContainer}>
+                <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
+              </TouchableOpacity>
+              <ScrollView >
+                <Text style={styles.popupTitle}>Facilities And Services</Text>
+                <FacilityListDetails details={facilityDetails} />
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  };
   
   
 
@@ -254,12 +292,33 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     marginTop: 100, 
   },
-  closeIcon: {
+  closeIconContainer: {
     position: 'absolute',
+    top: 10,    // Adjust the top position as needed
+    right: 10,  // Adjust the right position as needed
+  },
+  closeIcon: {
     width: 40,
     height: 40,
-    top : -280,
-    right : 5,
+  },
+  facilityDetails: {
+    marginTop: 20,
+  },
+  facilityDetail: {
+    marginBottom: 10,
+  },
+  detailTitle: {
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+  },
+  detailText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+  },
+  popupTitle: {
+    fontSize: 24,
+    fontFamily: 'Poppins-Black',
+    marginBottom: 20,
   },
 });
 
