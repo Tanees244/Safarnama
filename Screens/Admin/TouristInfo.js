@@ -17,20 +17,19 @@ const TouristInfo = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.Container} >
-    
-    <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={[styles.Text, {fontFamily:'Poppins-Bold'}]}>
-                    Tourists <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
-                </Text>
-
-            </ImageBackground>
-            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+        <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
+            <Text style={styles.Text}>
+                Tourists <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
+            </Text>
+        </ImageBackground>
+        
+        <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+            <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
                 <Image
                     style={styles.UserIcon}
                     contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
+                    source={require("../../assets/ellipse.png")} 
+                />
                 <View style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={{fontSize:20, fontWeight:'bold'}}>
                         Package # 1
@@ -39,12 +38,13 @@ const TouristInfo = () => {
                     Learn More --
                     </Text>
                 </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
                 <Image
                     style={styles.UserIcon}
                     contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
+                    source={require("../../assets/ellipse.png")}
+                 />
 
                 <View style={[styles.Buttons, { width: buttonWidth }]}>
                     <Text style={{fontSize:20, fontWeight:'bold'}}>
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     Text: {
         fontSize: 30,
         color: 'black',
+        fontFamily:'Poppins-Bold',
         marginTop: 200,
         right: 50,
     },

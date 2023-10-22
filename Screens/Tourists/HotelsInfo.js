@@ -162,6 +162,10 @@ const HotelsInfo = () => {
           <Text style={styles.FacilityText}>Facilities</Text>
           <FacilitiesList data={data} />
         </View>
+        <View style={styles.ImageContainer}>
+          <Text style={styles.FacilityText}>Gallery</Text>
+          <FacilitiesList data={data} />
+        </View>
       </View>
     </ScrollView>
   );
