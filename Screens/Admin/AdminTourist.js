@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    
     Rectangle1: {
       backgroundColor: '#d9d9d9',
       borderRadius: 34,
@@ -79,9 +78,8 @@ const styles = StyleSheet.create({
       top: 80,
       left: '0%', 
       zIndex: -1, 
-  },
-  
-  Rectangle2: {
+    },
+    Rectangle2: {
       backgroundColor: '#5bc0f8', 
       borderRadius: 34, 
       height: 280,

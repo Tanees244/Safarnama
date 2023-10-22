@@ -144,14 +144,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        height: 140,
+        height: 120,
         backgroundColor: '#82D3DE',
         shadowColor: 'black',
         elevation: 20,
     },
     headerText: {
         textAlign: 'center',
-        top: 70,
+        top: 50,
         fontSize: 30,
         fontFamily: 'Poppins-Bold',
     },
