@@ -22,15 +22,68 @@ const TouristInfo = () => {
                 Tourists <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
             </Text>
         </ImageBackground>
-        <View style={styles.ButtonContainer1}>
-            <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
-                <Image style={styles.homeicon}
+        
+        <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+            <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
                     contentFit="cover"
-                    source={require("../../assets/camera-indoor-black.png")}/>
-                <Text style={styles.home}>Home</Text>
+                    source={require("../../assets/ellipse.png")} 
+                />
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 1
+                    </Text>
+                    <Text>
+                    Learn More --
+                    </Text>
+                </View>
             </TouchableOpacity>
-        </View>
-    </ScrollView>
+            <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")}
+                 />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 2
+                    </Text>
+                    <Text>
+                    Learn More --
+                    </Text>
+                </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 3
+                    </Text>
+                    <Text>
+                        Learn More --
+                    </Text>
+                </View>
+                </TouchableOpacity>
+                
+
+
+            </View>
+            <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/camera-indoor-black.png")} />
+                    <Text style={styles.home}>Home</Text>
+                </TouchableOpacity>
+            </View>
+
+        </ScrollView>
     );
 };
 
