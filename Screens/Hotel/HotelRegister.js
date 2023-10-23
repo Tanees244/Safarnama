@@ -28,7 +28,7 @@ const HotelRegister = () => {
       <View style={styles.rectangle} />
       <View style={[styles.infoContainer, { width: containerWidth }]}>
         <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={styles.guideName}>HOTEL NAME's</Text>
+        <Text style={styles.guideName}>REGISTER HOTEL</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity

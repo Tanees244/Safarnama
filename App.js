@@ -54,6 +54,7 @@ import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPack
 import { useFonts } from 'expo-font';
 import HotelsLists from './Screens/Tourists/HotelsLists';
 import HotelsInfo from './Screens/Tourists/HotelsInfo';
+import CreateHotel from './Screens/Hotel/CreateHotel';
 
 const Stack = createNativeStackNavigator();
 
@@ -140,6 +141,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='AdminDeleteTouristsPackages' component={AdminDeleteTouristsPackages} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsLists' component={HotelsLists} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsInfo' component={HotelsInfo} />
+        <Stack.Screen options={{ headerShown: false }} name='CreateHotel' component={CreateHotel} />
 
       </Stack.Navigator>
     </NavigationContainer>
