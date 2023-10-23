@@ -29,6 +29,7 @@ const BusCreatePackage = () => {
             </ImageBackground>
             <View style={[styles.ProfileContainer, { width: containerWidth }]}>
                 {/* write form here
+                
                  */}
 
 

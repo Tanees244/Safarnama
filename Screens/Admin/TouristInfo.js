@@ -1,13 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const TouristInfo = () => {
-    const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 1;
-    const buttonWidth = containerWidth * 0.5;
-    const inputBoxWidth = containerWidth - 40; // Subtract padding
+  const screenWidth = Dimensions.get('window').width;
+  const containerWidth = screenWidth * 1;
+  const buttonWidth = screenWidth * 0.9;
+  const inputBoxWidth = containerWidth - 40; // Subtract padding
 
   const navigation = useNavigation();
 
@@ -16,75 +24,94 @@ const TouristInfo = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.Container} >
-    
-    <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={[styles.Text, {fontFamily:'Poppins-Bold'}]}>
-                    Tourists <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
+    <ScrollView contentContainerStyle={styles.Container}>
+            
+            <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
+                <Text style={[styles.Text, {fontFamily: "Poppins-Bold"}]}>
+                    Tourist <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
                 </Text>
-
             </ImageBackground>
             <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 1
-                    </Text>
-                    <Text>
-                    Learn More --
-                    </Text>
-                </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 2
-                    </Text>
-                    <Text>
-                    Learn More --
-                    </Text>
-                </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 3
-                    </Text>
-                    <Text>
-                        Learn More --
-                    </Text>
-                </View>
-                </TouchableOpacity>
                 
+            <View style={[styles.textBox, { width: buttonWidth }]}>
+     
+     <View style={styles.Profile}>
+       <Image
+         style={styles.ProfileImage}
+         source={require('../../assets/USER.png')}
+       />
 
+       <View style={styles.ProfileInfoContainer}>
+         <Text style={styles.ProfileName}>Mehdi King</Text>
+         <View style={styles.ProfileButtons}>
+           <TouchableOpacity style={styles.Button}>
+             <Text style={styles.ButtonText}>Past Packages</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.Button}>
+             <Text style={styles.ButtonText}>Current Packages</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
+     </View>
+     </View>
+     <View style={[styles.textBox, { width: buttonWidth }]}>
+         <View style={styles.Profile}>
+             <Image
+                 style={styles.ProfileImage}
+                 source={require('../../assets/USER.png')}
+             />
 
-            </View>
-            <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/camera-indoor-black.png")} />
-                    <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-            </View>
+             <View style={styles.ProfileInfoContainer}>
+                 <Text style={styles.ProfileName}>Afnan Iqbal</Text>
+                 <View style={styles.ProfileButtons}>
+                 <TouchableOpacity style={styles.Button}>
+                     <Text style={styles.ButtonText}>Past Packages</Text>
+                 </TouchableOpacity>
+                 <TouchableOpacity style={styles.Button}>
+                     <Text style={styles.ButtonText}>Current Packages</Text>
+                 </TouchableOpacity>
+                 </View>
+             </View>
+         </View>
+     </View>
 
-        </ScrollView>
-    );
+     <View style={[styles.textBox, { width: buttonWidth }]}>
+
+         <View style={styles.Profile}>
+             <Image
+             style={styles.ProfileImage}
+             source={require('../../assets/USER.png')}
+             />
+
+             <View style={styles.ProfileInfoContainer}>
+             <Text style={styles.ProfileName}>Tanees Shakeel</Text>
+             <View style={styles.ProfileButtons}>
+                 <TouchableOpacity style={styles.Button}>
+                 <Text style={styles.ButtonText}>Past Packages</Text>
+                 </TouchableOpacity>
+                 <TouchableOpacity style={styles.Button}>
+                 <Text style={styles.ButtonText}>Current Packages</Text>
+                 </TouchableOpacity>
+             </View>
+             </View>
+         </View>
+   </View>
+   
+
+                
+                  </View>
+      <View style={styles.ButtonContainer1}>
+        <TouchableOpacity activeOpacity={0.5} onPress={navigateToAdminRegister}>
+          <Image
+            style={styles.homeicon}
+            source={require('../../assets/camera-indoor-black.png')}
+          />
+          <Text style={styles.home}>Home</Text>
+        </TouchableOpacity>
+      </View>
+      
+      </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -94,20 +121,49 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    text: {
+        fontSize: 50,
+        fontWeight: '900',
+        color: 'white',
+    },
     Text: {
         fontSize: 30,
         color: 'black',
-        marginTop: 200,
-        right: 50,
+        marginTop: 190,
+        right: 65,
     },
+   
+      Profile: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+      },
+      ProfileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginRight: 20,
+      },
+      ProfileInfoContainer: {
+        flex: 1,
+      },
+      ProfileName: {
+        fontSize: 22,
+        fontFamily: "Poppins-SemiBold",
+      },
+      ProfileButtons: {
+        flexDirection: 'row',
+        marginTop: 1,
+      },
     textBox: {
         marginTop: 10,
-        backgroundColor:  '#D9D9D9',
-        height: 140,
-        borderRadius: 20,
+        backgroundColor:  '#CDEDFF',
+        height: 150,
+        borderRadius: 30,
         padding: 20,
-        borderWidth: 1,
-        borderColor: 'black',
+        elevation:20,
+        shadowColor:'black',
+       
     },
     homeicon: {
         width: 24,
@@ -130,14 +186,6 @@ const styles = StyleSheet.create({
         color: 'white',
     },
 
-    UserIcon: {
-        top: 20,
-        left: 10,
-        width: 90,
-        height: 90,
-        position: "absolute",
-    },
-
     Rectangle: {
         backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
         borderRadius: 46,
@@ -149,11 +197,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       
     },
-
+    Button: {
+        backgroundColor: '#213555',
+        borderRadius: 10,
+        padding: 5, // Reduce padding
+        marginRight: 5, // Reduce margin
+        width:95,
+        alignItems:'center',
+      },
+      ButtonText: {
+        fontFamily: "Poppins-Regular",
+        textAlign:'center',
+        fontSize: 12,
+        color:'white', // Reduce font size
+      },
     ProfileContainer: {
         backgroundColor: 'white',
         borderRadius: 28,
-        marginTop: 280,
+        marginTop: 250,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
@@ -179,8 +240,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginBottom: 50,
-        marginTop: 50,
-        width: 160,
+        marginTop: 100,
+        width: 100,
 
     },
 
