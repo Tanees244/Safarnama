@@ -176,11 +176,11 @@ const Discover = () => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: '#A7D6E2',
+    backgroundColor: '#fce47c',
   },
   header: {
     height: 120,
-    backgroundColor: '#0B4C8E',
+    backgroundColor: '#6ddabd',
     shadowColor: 'black',
     elevation: 20,
   },
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingTop: 25,
     paddingLeft: 15,
+    color: 'black',
     fontFamily: 'Poppins-Medium',
   },
   buttonContainer:{
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#6cdeeb',
+    backgroundColor: '#4cbcb4',
     borderRadius: 30,
     height: 80,
     justifyContent: 'center',
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
       borderRadius: 20,
   },
   image: {
-      height: 200,
+      height: 220,
       width: 280,
       shadowColor: 'black',
       elevation: 20,
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 10,
-    backgroundColor: '#E4E7EA',
+    backgroundColor: '#e1ffbd',
     borderRadius:30,
     top: -100,
     zIndex: -1,

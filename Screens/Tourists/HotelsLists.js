@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
         width: '75%',
         fontSize: 30,
         padding: 30,
-        color: 'white',
+        color: '#1f4084',
         fontFamily: 'Poppins-Bold',
     },
     buttonContainer:{

@@ -102,7 +102,7 @@ const Register = () => {
           </View>
 
           <View style={styles.Signup}>
-            <Text style={styles.text2}>Signup as a </Text>
+            <Text style={styles.text2}>SIGNUP AS A</Text>
             <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleVendor}

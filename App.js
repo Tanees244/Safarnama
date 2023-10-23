@@ -51,14 +51,12 @@ import GuideProcess from './Screens/Admin/GuideProcess';
 import TouristInfo from './Screens/Admin/TouristInfo';
 import AdminViewTouristPackages from './Screens/Admin/AdminViewTouristPackages';
 import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPackages';
-import { useFonts } from 'expo-font';
 import HotelsLists from './Screens/Tourists/HotelsLists';
 import HotelsInfo from './Screens/Tourists/HotelsInfo';
 import CreateHotel from './Screens/Hotel/CreateHotel';
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
-
-
 
 export default function App() {
 
