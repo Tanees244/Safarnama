@@ -1,7 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image,TextInput,Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image, TextInput } from 'react-native';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const BusCreatePackage = () => {
     const screenWidth = Dimensions.get('window').width;
@@ -9,45 +10,89 @@ const BusCreatePackage = () => {
     const buttonWidth = containerWidth * 0.5;
     const inputBoxWidth = containerWidth - 40; // Subtract padding
 
-  const navigation = useNavigation();
+    const navigation = useNavigation();
 
-  const navigateToBusProfile = () => {
-    navigation.navigate('BusProfile');
-  };
+    const navigateToBusProfile = () => {
+        navigation.navigate('BusProfile');
+    };
 
-  const navigateToBusOperations = () => {
-    navigation.navigate('BusOperation');
-  };
+    const navigateToBusOperations = () => {
+        navigation.navigate('BusOperation');
+    };
 
-  return (
-    <ScrollView contentContainerStyle={styles.Container} >
-    
-    <ImageBackground style={styles.Rectangle} source={require("../../assets/6.png")}>
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [price, setPrice] = useState('');
+    const [discount, setDiscount] = useState('');
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleDateChange = (event, date) => {
+        hideDatePicker();
+        if (date) {
+            setSelectedDate(date);
+        }
+    };
+
+    return (
+        <ScrollView contentContainerStyle={styles.Container} >
+            <ImageBackground style={styles.Rectangle} source={require("../../assets/6.png")}>
                 <Text style={styles.Text}>
                     Create <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
                 </Text>
             </ImageBackground>
+
             <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                {/* write form here
-                 */}
+                <Text>Destination</Text>
+                <Text>Origin</Text>
 
+                <View>
+                    <TouchableOpacity onPress={showDatePicker}>
+                        <Text>Open Date Picker</Text>
+                    </TouchableOpacity>
+                    {isDatePickerVisible && (
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode="date"
+                            display="default"
+                            onChange={handleDateChange}
+                        />
+                    )}
+                    <Text>Selected Date: {selectedDate.toLocaleDateString()}</Text>
+                </View>
 
+                <Text>Return Date</Text>
+                <Text>Tour Type</Text>
+                <Text>Price PKR</Text>
+                <TextInput
+                    value={price}
+                    onChangeText={(text) => setPrice(text)}
+                    style={styles.textBox}
+                />
+                <Text>Discount (%)</Text>
+                <TextInput
+                    value={discount}
+                    onChangeText={(text) => setDiscount(text)}
+                    style={styles.textBox}
+                />
             </View>
+
             <View style={styles.ButtonContainer1}>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusOperations}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/camera-indoor-black.png")} />
+                    <Image style={styles.homeicon} contentFit="cover" source={require("../../assets/camera-indoor-black.png")} />
                     <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToBusProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
+                    <Image style={styles.homeicon} contentFit="cover" source={require("../../assets/account-circle-black.png")} />
                     <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
-
         </ScrollView>
     );
 };
@@ -58,11 +103,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    text: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: 'white',
     },
     Text: {
         fontSize: 30,
@@ -85,13 +125,6 @@ const styles = StyleSheet.create({
         height: 24,
         overflow: "hidden",
     },
-    bio: {
-        color: 'black',
-        right: 100,
-        marginTop: 30,
-        fontSize: 27,
-    },
-
     home: {
         fontSize: 10,
         lineHeight: 14,
@@ -100,15 +133,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: 'white',
     },
-
-    UserIcon: {
-        top: 20,
-        left: 10,
-        width: 90,
-        height: 90,
-        position: "absolute",
-    },
-
     Rectangle: {
         backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
         borderRadius: 46,
@@ -118,9 +142,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         flex: 1,
         alignItems: 'center',
-      
     },
-
     ProfileContainer: {
         backgroundColor: 'white',
         borderRadius: 28,
@@ -129,17 +151,6 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 30,
         height: 480,
-    },
-    Buttons: {
-        backgroundColor: 'white',
-        height: 90,
-        left: 90,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'black',
     },
     ButtonContainer1: {
         flexDirection: 'row',
@@ -152,9 +163,7 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         marginTop: 50,
         width: 160,
-
     },
-
 });
 
 export default BusCreatePackage;
