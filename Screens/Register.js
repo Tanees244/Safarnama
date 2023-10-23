@@ -21,6 +21,10 @@ const Register = () => {
     navigation.navigate(Login);
   };
 
+  const handleVendor = () => {
+    navigation.navigate('CreateHotel');
+  };
+  
   useEffect (() => {
     const unsubscribe = auth.onAuthStateChanged( user => {
       if (user) {
@@ -94,6 +98,16 @@ const Register = () => {
             onPress={handleLogin}
             >
               <Text style={styles.boldText}> LOGIN !</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.Signup}>
+            <Text style={styles.text2}>Signup as a </Text>
+            <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={handleVendor}
+            >
+              <Text style={styles.boldText}> VENDOR !</Text>
             </TouchableOpacity>
           </View>
 
