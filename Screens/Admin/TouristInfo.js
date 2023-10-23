@@ -24,79 +24,61 @@ const TouristInfo = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.Container}>
-            
-            <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={[styles.Text, {fontFamily: "Poppins-Bold"}]}>
-                    Tourist <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
+    <ScrollView contentContainerStyle={styles.Container} >
+    
+    <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
+                <Text style={[styles.Text, {fontFamily:'Poppins-Bold'}]}>
+                    Tourists <Text style={[styles.Text, { color: 'white' }]}>Info</Text>
                 </Text>
+
             </ImageBackground>
             <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 1
+                    </Text>
+                    <Text>
+                    Learn More --
+                    </Text>
+                </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 2
+                    </Text>
+                    <Text>
+                    Learn More --
+                    </Text>
+                </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 3
+                    </Text>
+                    <Text>
+                        Learn More --
+                    </Text>
+                </View>
+                </TouchableOpacity>
                 
-            <View style={[styles.textBox, { width: buttonWidth }]}>
-     
-     <View style={styles.Profile}>
-       <Image
-         style={styles.ProfileImage}
-         source={require('../../assets/USER.png')}
-       />
-
-       <View style={styles.ProfileInfoContainer}>
-         <Text style={styles.ProfileName}>Mehdi King</Text>
-         <View style={styles.ProfileButtons}>
-           <TouchableOpacity style={styles.Button}>
-             <Text style={styles.ButtonText}>Past Packages</Text>
-           </TouchableOpacity>
-           <TouchableOpacity style={styles.Button}>
-             <Text style={styles.ButtonText}>Current Packages</Text>
-           </TouchableOpacity>
-         </View>
-       </View>
-     </View>
-     </View>
-     <View style={[styles.textBox, { width: buttonWidth }]}>
-         <View style={styles.Profile}>
-             <Image
-                 style={styles.ProfileImage}
-                 source={require('../../assets/USER.png')}
-             />
-
-             <View style={styles.ProfileInfoContainer}>
-                 <Text style={styles.ProfileName}>Afnan Iqbal</Text>
-                 <View style={styles.ProfileButtons}>
-                 <TouchableOpacity style={styles.Button}>
-                     <Text style={styles.ButtonText}>Past Packages</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity style={styles.Button}>
-                     <Text style={styles.ButtonText}>Current Packages</Text>
-                 </TouchableOpacity>
-                 </View>
-             </View>
-         </View>
-     </View>
-
-     <View style={[styles.textBox, { width: buttonWidth }]}>
-
-         <View style={styles.Profile}>
-             <Image
-             style={styles.ProfileImage}
-             source={require('../../assets/USER.png')}
-             />
-
-             <View style={styles.ProfileInfoContainer}>
-             <Text style={styles.ProfileName}>Tanees Shakeel</Text>
-             <View style={styles.ProfileButtons}>
-                 <TouchableOpacity style={styles.Button}>
-                 <Text style={styles.ButtonText}>Past Packages</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity style={styles.Button}>
-                 <Text style={styles.ButtonText}>Current Packages</Text>
-                 </TouchableOpacity>
-             </View>
-             </View>
-         </View>
-   </View>
-   
 
                 
                   </View>
@@ -129,32 +111,9 @@ const styles = StyleSheet.create({
     Text: {
         fontSize: 30,
         color: 'black',
-        marginTop: 190,
-        right: 65,
+        marginTop: 200,
+        right: 50,
     },
-   
-      Profile: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
-      },
-      ProfileImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginRight: 20,
-      },
-      ProfileInfoContainer: {
-        flex: 1,
-      },
-      ProfileName: {
-        fontSize: 22,
-        fontFamily: "Poppins-SemiBold",
-      },
-      ProfileButtons: {
-        flexDirection: 'row',
-        marginTop: 1,
-      },
     textBox: {
         marginTop: 10,
         backgroundColor:  '#CDEDFF',
