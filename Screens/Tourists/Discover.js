@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const data = [
@@ -57,8 +57,15 @@ const data2 = [
 ];
 
 const HorizontalCard = ({ item, onPress }) => {
+
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const containerHeight = screenHeight * 0.8;
+  const containerWidth = screenWidth * 0.9;
+  const buttonWidth = containerWidth * 0.22;
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { width: containerWidth, height: containerHeight }]}>
       <View style={styles.imageContainer}>
       <ImageBackground source={item.image} style={styles.image} borderRadius={20}>
           <View style={styles.ratingContainer}>
@@ -67,7 +74,7 @@ const HorizontalCard = ({ item, onPress }) => {
           </View>
         </ImageBackground>
       </View>
-      <View style={styles.content}>
+      <View style={[styles.content, { width: containerWidth, height: containerHeight }]}>
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.subdescription}>{item.city}</Text>
@@ -90,6 +97,10 @@ const HorizontalCard = ({ item, onPress }) => {
 
 const Discover = () => {
 
+  const screenWidth = Dimensions.get('window').width;
+  const containerWidth = screenWidth * 1;
+  const buttonWidth = containerWidth * 0.22;
+
   const navigation = useNavigation();
 
   const navigateToHotelsInfo = () =>{
@@ -103,8 +114,8 @@ const Discover = () => {
       </View>
     <ScrollView >
         <Text style={styles.text}>Creating Memories, {'\n'}One Trip at a Time</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
+        <View style={[styles.buttonContainer, { width: containerWidth }]}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/plane-departure.png')} 
@@ -113,7 +124,7 @@ const Discover = () => {
             <Text style={styles.buttonText}>Flights</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/bed.png')} 
@@ -122,7 +133,7 @@ const Discover = () => {
             <Text style={styles.buttonText}>Hotels</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/island-tropical.png')} 
@@ -131,7 +142,7 @@ const Discover = () => {
             <Text style={styles.buttonText}>Places</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons} onPress={navigateToHotelsInfo}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/box.png')} 
@@ -183,20 +194,19 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 25,
     paddingTop: 25,
-    paddingLeft: 10,
+    paddingLeft: 15,
     fontFamily: 'Poppins-Medium',
   },
   buttonContainer:{
-    paddingHorizontal: 5,
-    paddingVertical: 20,
+    paddingTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#00CBFF',
+    backgroundColor: '#6cdeeb',
     borderRadius: 30,
-    width: 90,
-    height: 90,
+    height: 80,
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
@@ -208,7 +218,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 30,
     height: 25,
-    padding: 20,
+    padding: 15,
     resizeMode: 'contain',
     alignItems: 'center',
   },
@@ -222,8 +232,6 @@ const styles = StyleSheet.create({
       marginBottom: 30,
       marginTop: 15,
       flexDirection: 'column',
-      width: 340,
-      height: 600,
       alignItems: 'center',
       overflow: 'hidden',
       borderRadius: 20,
@@ -240,9 +248,7 @@ const styles = StyleSheet.create({
   content: {
     padding: 10,
     backgroundColor: '#E4E7EA',
-    borderRadius: 20,
-    width: 340,
-    height: 600,
+    borderRadius:30,
     top: -100,
     zIndex: -1,
   },
