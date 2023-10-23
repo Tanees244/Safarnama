@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const data = [
@@ -57,8 +57,15 @@ const data2 = [
 ];
 
 const HorizontalCard = ({ item, onPress }) => {
+
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+    const containerHeight = screenHeight * 0.8;
+    const containerWidth = screenWidth * 0.9;
+    const buttonWidth = containerWidth * 0.22;
+
     return (
-      <View style={styles.card}>
+      <View style={[styles.card, { width: containerWidth, height: containerHeight }]}>
         <View style={styles.imageContainer}>
         <ImageBackground source={item.image} style={styles.image} borderRadius={20}>
             <View style={styles.ratingContainer}>
@@ -67,7 +74,7 @@ const HorizontalCard = ({ item, onPress }) => {
             </View>
           </ImageBackground>
         </View>
-        <View style={styles.content}>
+        <View style={[styles.content, { width: containerWidth, height: containerHeight }]}>
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.subdescription}>{item.city}</Text>
