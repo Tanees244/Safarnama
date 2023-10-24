@@ -1,22 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Dropdown from 'react-native-modal-dropdown';
 import Modal from 'react-native-modal';
-import { useNavigation } from '@react-navigation/native';
 
 const CreateHotel = () => {
-  const navigation = useNavigation();
+
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
   const inputWidth = containerWidth * 0.9;
   
   const cities = ['Balakot', 'Naran', 'Kaghan', 'Gilgit Baltistan', 'Kashmir', 'Muzaffarabad'];
   const facilities = ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental','24-Hour Security', 'Smoke Alarms','Daily Housekeeping', 'Dry Cleaning', 'Laundry', 'Meeting/Banquet \nfacilities', 'Fax/Photocopying'];
+  const types = ['Single Bed', 'Double Bed', 'Standard', 'Executive', 'King Size'];
 
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
   const [isFacilitiesPopupVisible, setIsFacilitiesPopupVisible] = useState(false);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
+  const [isRoomTypePopupVisible, setIsRoomTypePopupVisible] = useState(false);
+  const [roomType, setRoomType] = useState('');
+  const [roomTypeList, setRoomTypeList] = useState([]);
+  const [isAddRoomTypeEnabled, setIsAddRoomTypeEnabled] = useState(false);
+  const [numberOfRooms, setNumberOfRooms] = useState('1');
+  const [selectedRoomType, setSelectedRoomType] = useState('Select Room Type');
+  const [roomTypeCount, setRoomTypeCount] = useState(0);
+
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -30,10 +38,15 @@ const CreateHotel = () => {
     }
   };
 
+  const handleRoomTypeSelect = (index, value) => {
+    setSelectedRoomType(value);
+    setRoomType(value); // Update the room type input field
+  };
+
   const toggleFacilitiesPopup = () => {
     setIsFacilitiesPopupVisible(!isFacilitiesPopupVisible);
   };
-
+  
   const toggleFacility = (facility) => {
     if (selectedFacilities.includes(facility)) {
       // Deselect the facility
@@ -43,6 +56,109 @@ const CreateHotel = () => {
       setSelectedFacilities([...selectedFacilities, facility]);
     }
   };
+
+  const toggleRoomTypePopup = () => {
+    setIsRoomTypePopupVisible(!isRoomTypePopupVisible);
+  };
+
+  const [roomInfo, setRoomInfo] = useState({
+    price: '',
+    adultCapacity: 1,
+    childCapacity: 0,
+  });
+
+  const updateCapacity = (type, increment) => {
+    if (type === 'adult' && increment && roomInfo.adultCapacity < 4) {
+      setRoomInfo({ ...roomInfo, adultCapacity: roomInfo.adultCapacity + 1 });
+    } else if (type === 'adult' && !increment && roomInfo.adultCapacity > 0) {
+      setRoomInfo({ ...roomInfo, adultCapacity: roomInfo.adultCapacity - 1 });
+    } else if (type === 'child' && increment && roomInfo.childCapacity < 4) {
+      setRoomInfo({ ...roomInfo, childCapacity: roomInfo.childCapacity + 1 });
+    } else if (type === 'child' && !increment && roomInfo.childCapacity > 0) {
+      setRoomInfo({ ...roomInfo, childCapacity: roomInfo.childCapacity - 1 });
+    }
+  };
+
+  const addRoomType = (roomType) => {
+    if (roomType && roomInfo.price && roomInfo.adultCapacity >= 1 && numberOfRooms) {
+      if (roomTypeCount < 5) {
+        // Create a new room type object with details
+        const newRoomType = {
+          roomType,
+          price: roomInfo.price,
+          adultCapacity: roomInfo.adultCapacity,
+          childCapacity: roomInfo.childCapacity,
+          numberOfRooms,
+        };
+  
+        // Add the new room type to the list
+        setRoomTypeList([...roomTypeList, newRoomType]);
+  
+        // Increment the room type count
+        setRoomTypeCount(roomTypeCount + 1);
+  
+        // Clear the input fields
+        setRoomType('');
+        setRoomInfo({
+          price: '',
+          adultCapacity: 1,
+          childCapacity: 0,
+        });
+        setNumberOfRooms('1');
+      }
+    }
+  };
+  
+
+  useEffect(() => {
+    // Enable the "Add Room Type" button if all conditions are met
+    if (roomType && roomInfo.price && roomInfo.adultCapacity >= 1) {
+      setIsAddRoomTypeEnabled(true);
+    } else {
+      setIsAddRoomTypeEnabled(false);
+    }
+  }, [roomType, roomInfo.price, roomInfo.adultCapacity]);
+
+  useEffect(() => {
+    // Enable the "Add Room Type" button if all conditions are met and the count is less than 5
+    if (roomType && roomInfo.price && roomInfo.adultCapacity >= 1 && roomTypeCount < 3) {
+      setIsAddRoomTypeEnabled(true);
+    } else {
+      setIsAddRoomTypeEnabled(false);
+    }
+  }, [roomType, roomInfo.price, roomInfo.adultCapacity, roomTypeCount]);
+  
+
+  const removeRoomType = (roomType) => {
+    // Filter out the selected room type to remove it from the list
+    setRoomTypeList(roomTypeList.filter((room) => room.roomType !== roomType));
+  };
+
+  const renderRoomDetails = (roomType) => {
+    // Find the selected room type object from the list
+    const selectedRoom = roomTypeList.find((room) => room.roomType === roomType);
+  
+    if (selectedRoom) {
+      return (
+        <View key={selectedRoom.roomType} style={styles.selectedRoomStyle}>
+          <TouchableOpacity
+            onPress={() => removeRoomType(selectedRoom.roomType)}
+            style={styles.closeIconContainer}
+          >
+            <Image style={styles.SelectedcloseIcon} source={require('../../assets/cross.png')} />
+          </TouchableOpacity>
+          <Text style={styles.selectedRoomTextStyle}>Room Type: {selectedRoom.roomType}</Text>
+          <Text style={styles.selectedRoomTextStyle}>Price: {selectedRoom.price} PKR</Text>
+          <Text style={styles.selectedRoomTextStyle}>Number Of Rooms: {selectedRoom.numberOfRooms}</Text>
+          <Text style={styles.selectedRoomTextStyle}>Adult Capacity: {selectedRoom.adultCapacity}</Text>
+          <Text style={styles.selectedRoomTextStyle}>Child Capacity: {selectedRoom.childCapacity}</Text>
+        </View>
+      );
+    }
+  
+    return null;
+  };  
+
 
   return (
     <View style={styles.Container}>
@@ -81,7 +197,6 @@ const CreateHotel = () => {
               textStyle={styles.DropdownText}
               dropdownStyle={styles.DropdownContainer}
               onSelect={(index, value) => {
-                // Handle the selected city here (e.g., store it in state)
               }}
               dropdownTextStyle={styles.CustomDropdownText}
               dropdownPosition={0}
@@ -96,7 +211,7 @@ const CreateHotel = () => {
             style={[styles.Input, { width: inputWidth }]}
             onChangeText={handleTextChange}
           />
-            <Text style={styles.Heading}>Facilities</Text>
+          <Text style={styles.Heading}>Facilities</Text>
           <View style={styles.PopupButton}>
             <Text style={styles.OpenFacilitiesPopupText}>Add Facilities</Text>
             <TouchableOpacity onPress={toggleFacilitiesPopup}>
@@ -104,14 +219,24 @@ const CreateHotel = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Selected Facilities */}
-          <Text style={styles.SelectedFacilitiesHeading}>Selected Facilities:</Text>
+          <Text style={styles.Heading}>Selected Facilities:</Text>
           <View style={styles.SelectedFacilitiesContainer}>
             {selectedFacilities.map((facility) => (
               <Text key={facility} style={styles.SelectedFacility}>
                 {facility}
               </Text>
             ))}
+          </View>
+          <Text style={styles.Heading}>Number Of Rooms</Text>
+          <View style={styles.PopupButton}>
+            <Text style={styles.AddRoomTypeButtonText}>Add Room Type</Text>
+            <TouchableOpacity onPress={toggleRoomTypePopup}>
+              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.Heading}>Selected Room Types:</Text>
+          <View style={styles.SelectedFacilitiesContainer}>
+            {roomTypeList.map((roomType) => renderRoomDetails(roomType.roomType))}
           </View>
         </View>
       </ScrollView>
@@ -145,6 +270,74 @@ const CreateHotel = () => {
           </TouchableOpacity>
         </ScrollView>
       </Modal>
+
+      <Modal
+        isVisible={isRoomTypePopupVisible}
+        backdropColor="#000"
+        backdropOpacity={0.5}
+      >
+        <View style={styles.RoomTypePopup}>
+          <Text style={styles.RoomTypePopupHeading}>Add Room Type</Text>
+          <View style={styles.RoomTypeNameInput}>
+            <Dropdown
+              options={types}
+              defaultValue={selectedRoomType}
+              textStyle={styles.DropdownText}
+              dropdownStyle={styles.DropdownContainer}
+              onSelect={handleRoomTypeSelect}
+              dropdownTextStyle={styles.CustomDropdownText}
+              dropdownPosition={0}
+              dropdownOffset={{ top: 0, left: 10 }}
+            />
+          </View>
+          <TextInput
+            placeholder="Price in PKR"
+            keyboardType="numeric"
+            style={styles.RoomTypePriceInput}
+            value={roomInfo.price}
+            onChangeText={(text) => setRoomInfo({ ...roomInfo, price: text })}
+          />
+          <Text style={styles.CapacityText}>Number Of Rooms:</Text>
+          <TextInput
+            placeholder="Number of Rooms"
+            keyboardType="numeric"
+            style={styles.RoomTypeCapacityInput}
+            value={numberOfRooms}
+            onChangeText={(text) => setNumberOfRooms(text)}
+          />
+          <Text style={styles.CapacityText}>Adults: {roomInfo.adultCapacity}</Text>
+          <View style={styles.CapacityButtons}>
+            <TouchableOpacity onPress={() => updateCapacity('adult', true)} style={styles.CapacityButton}>
+              <Text style={styles.CapacityButtonText}>+</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => updateCapacity('adult', false)} style={styles.CapacityButton}>
+              <Text style={styles.CapacityButtonText}>-</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.CapacityText}>Children: {roomInfo.childCapacity}</Text>
+          <View style={styles.CapacityButtons}>
+            <TouchableOpacity onPress={() => updateCapacity('child', true)} style={styles.CapacityButton}>
+              <Text style={styles.CapacityButtonText}>+</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => updateCapacity('child', false)} style={styles.CapacityButton}>
+              <Text style={styles.CapacityButtonText}>-</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={() => addRoomType(roomType)}
+            style={[
+              styles.AddRoomTypeSubmitButton,
+              isAddRoomTypeEnabled ? {} : styles.DisabledAddRoomTypeSubmitButton
+            ]}
+            disabled={!isAddRoomTypeEnabled}
+          >
+            <Text style={styles.AddRoomTypeSubmitText}>Add Room Type</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleRoomTypePopup} style={styles.RoomTypeCloseIconContainer}>
+            <Image style={styles.RoomTypeCloseIcon} source={require('../../assets/cross.png')} />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -158,17 +351,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 220,
+    height: 200,
     backgroundColor: '#032844',
     shadowColor: 'black',
     elevation: 20,
     zIndex: 1,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   headerText: {
     textAlign: 'center',
-    top: 80,
+    top: 60,
     color: 'white',
     fontSize: 30,
     fontFamily: 'Poppins-Bold',
@@ -176,9 +369,12 @@ const styles = StyleSheet.create({
   RegisterContainer: {
     backgroundColor: '#54aaec',
     marginHorizontal: 10,
-    borderRadius: 20,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    borderBottomLeftRadius: 200,
+    borderBottomRightRadius: 200,
     paddingVertical: 20,
-    marginTop: -60,
+    marginTop: -50,
     height: 120,
     zIndex: 2,
     justifyContent: 'center',
@@ -200,7 +396,8 @@ const styles = StyleSheet.create({
   },
   Heading: {
     fontFamily: 'Poppins-SemiBold',
-    paddingVertical: 10,
+    marginTop: 20,
+    marginBottom: 10,
     fontSize: 16,
   },
   SubHeading: {
@@ -238,6 +435,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#b6daf7',
     borderRadius: 30,
     padding: 20,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '80%',
@@ -264,14 +462,18 @@ const styles = StyleSheet.create({
   },
   closeIconContainer: {
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: 5,
+    right: 5,
     backgroundColor: '#C4C8CB',
     borderRadius: 60,
   },
   closeIcon: {
     width: 40,
     height: 40,
+  },
+  SelectedcloseIcon: {
+    width: 20,
+    height: 20,
   },
   FacilityText: {
     marginBottom: 10,
@@ -297,22 +499,120 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Poppins-Light',
   },
-  SelectedFacilitiesHeading: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    marginTop: 20,
-  },
   SelectedFacilitiesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   SelectedFacility: {
     backgroundColor: '#54aaec',
-    padding: 5,
+    padding: 10,
     borderRadius: 15,
     margin: 5,
     fontSize: 14,
     fontFamily: 'Poppins-Light',
+  },
+  AddRoomTypeButtonText: {
+    fontSize: 15,
+    fontFamily: 'Poppins-Light',
+  },
+  RoomTypePopup: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 15,
+    margin: 10,
+  },
+  RoomTypePopupHeading: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+    paddingTop: 10,
+  },
+  RoomTypeNameInput: {
+    backgroundColor: '#b6daf7',
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    fontFamily: 'Poppins-Regular',
+    height: 50,
+    marginBottom: 10,
+  },
+  RoomTypePriceInput: {
+    backgroundColor: '#b6daf7',
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    fontFamily: 'Poppins-Regular',
+    height: 50,
+    marginBottom: 10,
+  },
+  RoomTypeCapacityInput: {
+    backgroundColor: '#b6daf7',
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    fontFamily: 'Poppins-Regular',
+    height: 50,
+    marginBottom: 10,
+  },
+  AddRoomTypeSubmitButton: {
+    backgroundColor: '#b6daf7',
+    borderRadius: 30,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  DisabledAddRoomTypeSubmitButton: {
+    backgroundColor: 'grey',  // Specify your desired background color for the disabled button
+    borderRadius: 30,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  AddRoomTypeSubmitText: {
+    fontSize: 15,
+    fontFamily: 'Poppins-Light',
+  },
+  RoomTypeCloseIconContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: '#C4C8CB',
+    borderRadius: 60,
+  },
+  RoomTypeCloseIcon: {
+    width: 40,
+    height: 40,
+  },
+  CapacityText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+    marginBottom: 5,
+  },
+  CapacityButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+  },
+  CapacityButton: {
+    backgroundColor: '#b6daf7',
+    width: 40,
+    height: 40,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 5,
+  },
+  CapacityButtonText: {
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  selectedRoomStyle: {
+    backgroundColor: '#021b2e', // Specify your desired background color
+    padding: 15,
+    width: '90%',
+    marginVertical: 5,
+    borderRadius: 15,
+  },
+  selectedRoomTextStyle:{
+    color: 'white',
+    fontFamily: 'Poppins-Regular',
   },
 });
 
