@@ -98,7 +98,8 @@ const HorizontalCard = ({ item, onPress }) => {
 const Discover = () => {
 
   const screenWidth = Dimensions.get('window').width;
-  const containerWidth = screenWidth * 1;
+  const containerWidth = screenWidth;
+  const PackageWidth = screenWidth * 0.8;
   const buttonWidth = containerWidth * 0.22;
 
   const navigation = useNavigation();
@@ -152,6 +153,12 @@ const Discover = () => {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={styles.PackageContainer}>
+          <View style={styles.Rectangle}/>
+          <TouchableOpacity style={[styles.Package , {width: PackageWidth}]}>
+            <Text style={styles.PackageText}>Create Your Package !</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.text}>Places</Text>
         <FlatList
           data={data}
@@ -176,11 +183,11 @@ const Discover = () => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: '#fce47c',
+    backgroundColor: '#f7dbb6',
   },
   header: {
     height: 120,
-    backgroundColor: '#6ddabd',
+    backgroundColor: '#3d5e94',
     shadowColor: 'black',
     elevation: 20,
   },
@@ -204,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#4cbcb4',
+    backgroundColor: '#f0977a',
     borderRadius: 30,
     height: 80,
     justifyContent: 'center',
@@ -227,6 +234,32 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     padding: 15,
   },
+  PackageContainer:{
+    alignItems: 'center',
+    paddingTop: 30,
+    paddingBottom: 20,
+  },
+  Rectangle:{
+    width: '90%',
+    height: 120,
+    backgroundColor: '#974455',
+    borderRadius: 40,
+  },
+  Package:{
+    backgroundColor: '#c18f99',
+    borderRadius: 30,
+    padding: 20,
+    marginTop: -80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 20,
+    shadowColor: 'white',
+  },
+  PackageText:{
+    fontFamily: 'Poppins-Bold',
+    fontSize: 15,
+    color: 'white',
+  },
   card: {
       marginLeft: 20,
       marginRight: 20,
@@ -248,7 +281,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 10,
-    backgroundColor: '#e1ffbd',
+    backgroundColor: '#f49c7c',
     borderRadius:30,
     top: -100,
     zIndex: -1,

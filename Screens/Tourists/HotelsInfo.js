@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image, ScrollView, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 
 const data = [
@@ -202,7 +203,21 @@ const HotelsInfo = () => {
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
 
+  const navigation = useNavigation();
+
+  const handleDiscoverPress = () => {
+    navigation.navigate('Discover')
+  }
+
   return (
+    <View >
+    <TouchableOpacity 
+            style={styles.HomeButton}
+            onPress={handleDiscoverPress}
+            activeOpacity={0.5}
+            >
+            <Image source={require("../../assets/camera-indoor-black.png")} style = {[{width: 30, height: 30}]}/>
+        </TouchableOpacity>
     <ScrollView contentContainerStyle={styles.Container} >
         <TouchableOpacity
             style={styles.MapButton}
@@ -257,6 +272,7 @@ const HotelsInfo = () => {
           </View>
         </View>
     </ScrollView>
+    </View>
   );
 };
 
@@ -269,6 +285,20 @@ const styles = StyleSheet.create({
         height: 450,
         width: '100%',
         position: 'absolute',
+    },
+    HomeButton: {
+      position: 'absolute',
+      bottom: 20,
+      left: 20,
+      width: 70,  // Adjust the width as needed
+      height: 70,
+      padding: 15,
+      borderRadius: 50,
+      backgroundColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      elevation: 5,
+      zIndex: 2,
     },
     ContentContainer: {
         flexGrow: 1,

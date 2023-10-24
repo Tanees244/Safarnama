@@ -1,5 +1,4 @@
 export { default as HeroImage } from "./hero.png";
-export { default as Status } from "./statusbar.png";
 export { default as Ellipse } from "./ellipse.png";
 export { default as Avatar } from "./avatar.png";
 export { default as Hotels } from "./hotel.png";
