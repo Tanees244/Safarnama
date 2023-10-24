@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Dropdown from 'react-native-modal-dropdown';
 import Modal from 'react-native-modal';
+import * as ImagePicker from 'expo-image-picker';
 
 const CreateHotel = () => {
 
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
+  const RegisterContainer = containerWidth * 0.7;
   const inputWidth = containerWidth * 0.9;
   
   const cities = ['Balakot', 'Naran', 'Kaghan', 'Gilgit Baltistan', 'Kashmir', 'Muzaffarabad'];
@@ -24,7 +26,8 @@ const CreateHotel = () => {
   const [numberOfRooms, setNumberOfRooms] = useState('1');
   const [selectedRoomType, setSelectedRoomType] = useState('Select Room Type');
   const [roomTypeCount, setRoomTypeCount] = useState(0);
-
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [image, setImage] = useState(null);
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -157,20 +160,41 @@ const CreateHotel = () => {
     }
   
     return null;
-  };  
+  }; 
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+  
 
   return (
     <View style={styles.Container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
-      <View style={styles.RegisterContainer}>
-        <Text style={styles.Text}>
-          Register <Text style={[styles.Text, { color: 'white' }]}>Hotel</Text>
-        </Text>
-      </View>
       <ScrollView contentContainerStyle={styles.container}>
+        <View style={[styles.RegisterContainer, { width: RegisterContainer }]}>
+          <Text style={styles.Text}>
+            Register <Text style={[styles.Text, { color: 'white' }]}>Hotel</Text>
+          </Text>
+        </View>
+        <View style={[styles.HeadingContainer, { width: RegisterContainer }]}>
+          <Text style={styles.Text}>
+            Hotel <Text style={[styles.Text, { color: 'white' }]}>Details</Text>
+          </Text>
+        </View>
         <View style={styles.ButtonContainer}>
           <Text style={styles.Heading}>Name Of Hotel</Text>
           <TextInput
@@ -237,6 +261,32 @@ const CreateHotel = () => {
           <Text style={styles.Heading}>Selected Room Types:</Text>
           <View style={styles.SelectedFacilitiesContainer}>
             {roomTypeList.map((roomType) => renderRoomDetails(roomType.roomType))}
+          </View>
+          <Text style={styles.Heading}>Email Address Of Hotel</Text>
+          <TextInput
+            placeholder='Enter Email Address Of Your Hotel'
+            ref={textInputRef}
+            multiline={true}
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={handleTextChange}
+          />
+          <Text style={styles.Heading}>Phone Number</Text>
+          <TextInput
+            placeholder="Enter 11-digit Phone Number"
+            style={[styles.Input, { width: inputWidth }]}
+            keyboardType="numeric"
+            value={phoneNumber}
+            onChangeText={text => {
+              const formattedPhoneNumber = text.replace(/[^0-9]/g, '').slice(0, 11);
+              setPhoneNumber(formattedPhoneNumber);
+            }}
+          />
+          <Text style={styles.Heading}>Upload Your Images</Text>
+          <View style={styles.PopupButton}>
+            <Text style={styles.AddRoomTypeButtonText}>Upload Images</Text>
+            <TouchableOpacity onPress={pickImage}>
+              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -351,11 +401,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 200,
+    height: 160,
     backgroundColor: '#032844',
     shadowColor: 'black',
     elevation: 20,
-    zIndex: 1,
+    zIndex: -1,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
@@ -366,24 +416,33 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Poppins-Bold',
   },
+  HeadingContainer:{
+    backgroundColor: '#0a78cd',
+    marginHorizontal: 10,
+    borderRadius: 20,
+    paddingVertical: 15,
+    marginTop: -60,
+    marginLeft: 130,
+    elevation: 10,
+    shadowColor: 'black',
+    zIndex: 3,
+  },
   RegisterContainer: {
     backgroundColor: '#54aaec',
     marginHorizontal: 10,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    borderBottomLeftRadius: 200,
-    borderBottomRightRadius: 200,
+    borderRadius: 20,
     paddingVertical: 20,
-    marginTop: -50,
-    height: 120,
+    marginTop: 30,
+    marginBottom: 10,
     zIndex: 2,
     justifyContent: 'center',
+
   },
   Text: {
     fontSize: 32,
     color: 'black',
     fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
+    paddingLeft: 15,
   },
   ButtonContainer: {
     marginTop: 20,
@@ -435,7 +494,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#b6daf7',
     borderRadius: 30,
     padding: 20,
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '80%',
