@@ -52,6 +52,7 @@ import CreateHotel from './Screens/VendorRegisteration/CreateHotel';
 import VendorDashboard from './Screens/VendorRegisteration/VendorDashboard';
 import VendorPersonalDetails from './Screens/VendorRegisteration/VendorPersonalDetails';
 import GetStarted from './Screens/CreatePackage/GetStarted';
+import CreatePackage from './Screens/Tourists/CreatePackage';
 
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
@@ -139,6 +140,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='VendorPersonalDetails' component={VendorPersonalDetails} />
         <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
         <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
+        <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
+        
         
       </Stack.Navigator>
     </NavigationContainer>
