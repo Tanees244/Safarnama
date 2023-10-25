@@ -5,8 +5,8 @@ import HomeScreen from './Screens/Homescreen';
 import Login from "./Screens/Login";
 import Register from "./Screens/Register";
 import Discover from './Screens/Tourists/Discover';
-import VendorCategory from './Screens/VendorCategory';
-import TransportCategory from './Screens/TransportCategory';
+import VendorCategory from './Screens/VendorRegisteration/VendorCategory';
+import TransportCategory from './Screens/VendorRegisteration/TransportCategory';
 import Category from './Screens/Category';
 import GuideHome from './Screens/Guide/GuideHome';
 import GuidePersonalDetail from './Screens/Guide/GuidePersonalDetail';
@@ -56,6 +56,7 @@ import HotelsInfo from './Screens/Tourists/HotelsInfo';
 import CreateHotel from './Screens/VendorRegisteration/CreateHotel';
 import VendorDashboard from './Screens/VendorRegisteration/VendorDashboard';
 import VendorPersonalDetails from './Screens/VendorRegisteration/VendorPersonalDetails';
+import GetStarted from './Screens/CreatePackage/GetStarted';
 
 import { useFonts } from 'expo-font';
 
@@ -145,7 +146,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='CreateHotel' component={CreateHotel} />
         <Stack.Screen options={{ headerShown: false }} name='VendorDashboard' component={VendorDashboard} />
         <Stack.Screen options={{ headerShown: false }} name='VendorPersonalDetails' component={VendorPersonalDetails} />
-
+        <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

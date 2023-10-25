@@ -22,7 +22,7 @@ const Register = () => {
   };
 
   const handleVendor = () => {
-    navigation.navigate('CreateHotel');
+    navigation.navigate('VendorCategory');
   };
   
   useEffect (() => {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 50,
-    fontWeight: '900',
+    fontFamily: 'Poppins-Bold',
     color: 'white',
   },
   ButtonContainer: {

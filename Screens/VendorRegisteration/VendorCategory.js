@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Vector } from '../assets';
+import { Vector } from '../../assets';
 import * as Animatable from "react-native-animatable";
 
 const Category = () => {  
@@ -12,25 +12,25 @@ const Category = () => {
   };
 
   const navigateToHotel = () => {
-    navigation.navigate('HotelRegister'); // Make sure to use the correct route name
+    navigation.navigate('CreateHotel'); // Make sure to use the correct route name
   };
 
   return (
     <Animatable.View style={styles.container}>
-      <ImageBackground style={styles.backgroundImage} source={require("../assets/background.jpg")} >
+      <ImageBackground style={styles.backgroundImage} source={require("../../assets/background.jpg")} >
         <View style={styles.Textcontainer}>
           <Image style={styles.vector} source={Vector} />
           <Text style={styles.text}>Safarnama</Text>
         </View>
         <View style={styles.CategoryContainer}>
           <View style={styles.card}>
-            <Image style={styles.cardImage} source={require("../assets/vendor1.png")} />
+            <Image style={styles.cardImage} source={require("../../assets/vendor1.png")} />
             <TouchableOpacity style={styles.cardButton} onPress={navigateToTransport}>
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Transport</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.card}>
-            <Image style={styles.cardImage} source={require("../assets/vendor2.png")} />
+            <Image style={styles.cardImage} source={require("../../assets/vendor2.png")} />
             <TouchableOpacity style={styles.cardButton} onPress={navigateToHotel}>
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Hotel</Text>
             </TouchableOpacity>
