@@ -8,7 +8,7 @@ const TransportCategory = () => {
   const navigation = useNavigation();
 
   const navigateToAirline = () => {
-    navigation.navigate('AirlineRegister'); // Make sure to use the correct route name
+    navigation.navigate('CreateAirline'); // Make sure to use the correct route name
   };
 
   const navigateToBus = () => {
