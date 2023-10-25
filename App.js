@@ -21,7 +21,7 @@ import GuideClientsFeedback from './Screens/Guide/GuideClientsFeedback';
 import GuideUserReview from './Screens/Guide/GuideUserReview';
 import GuideProfile from './Screens/Guide/GuideProfile';
 import AirlineRegister from './Screens/Airline/AirlineRegister';
-import AirlineOperation from './Screens/Airline/AirlineOperations';
+import AirlineOperation from './Screens/Airline/AirlineDashboard';
 import AirlineCreatePackages from './Screens/Airline/AirlineCreatePackages';
 import AirlineUpdatePackage from './Screens/Airline/AirlineUpdatePackage';
 import AirlineViewPackages from './Screens/Airline/AirlineViewPackages';
@@ -59,6 +59,7 @@ import VendorPersonalDetails from './Screens/VendorRegisteration/VendorPersonalD
 import GetStarted from './Screens/CreatePackage/GetStarted';
 
 import { useFonts } from 'expo-font';
+import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
 
 const Stack = createNativeStackNavigator();
 
@@ -147,6 +148,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='VendorDashboard' component={VendorDashboard} />
         <Stack.Screen options={{ headerShown: false }} name='VendorPersonalDetails' component={VendorPersonalDetails} />
         <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
+        <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
         
       </Stack.Navigator>
     </NavigationContainer>
