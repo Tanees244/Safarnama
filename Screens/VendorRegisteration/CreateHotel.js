@@ -401,13 +401,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 160,
+    height: 140,
     backgroundColor: '#032844',
     shadowColor: 'black',
     elevation: 20,
     zIndex: -1,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
   headerText: {
     textAlign: 'center',
@@ -436,7 +436,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     zIndex: 2,
     justifyContent: 'center',
-
   },
   Text: {
     fontSize: 32,

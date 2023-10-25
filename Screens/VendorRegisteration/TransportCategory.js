@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Vector } from '../assets';
+import { Vector } from '../../assets';
 import * as Animatable from "react-native-animatable";
 
 const TransportCategory = () => {  
@@ -21,20 +21,20 @@ const TransportCategory = () => {
 
   return (
     <Animatable.View style={styles.container}>
-      <ImageBackground style={styles.backgroundImage} source={require("../assets/background.jpg")} >
+      <ImageBackground style={styles.backgroundImage} source={require("../../assets/background.jpg")} >
         <View style={styles.Textcontainer}>
           <Image style={styles.vector} source={Vector} />
           <Text style={styles.text}>Safarnama</Text>
         </View>
         <View style={styles.CategoryContainer}>
           <View style={[styles.card, { width: cardWidth }]}>
-            <Image style={styles.cardImage} source={require("../assets/vendor1.png")} />
+            <Image style={styles.cardImage} source={require("../../assets/vendor1.png")} />
             <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToAirline}>
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Airline</Text>
             </TouchableOpacity>
           </View>
           <View style={[styles.card, { width: cardWidth }]}>
-            <Image style={styles.cardImage} source={require("../assets/vendor3.png")} />
+            <Image style={styles.cardImage} source={require("../../assets/vendor3.png")} />
             <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToBus}>
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Bus</Text>
             </TouchableOpacity>
