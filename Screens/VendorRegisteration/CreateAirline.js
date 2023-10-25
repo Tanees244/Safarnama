@@ -1,20 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 const CreateAirline = () => {
-
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
   const RegisterContainer = containerWidth * 0.7;
   const inputWidth = containerWidth * 0.9;
   
-  const [text, setText] = useState('');
-  const textInputRef = useRef(null);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [email, setEmail] = useState('');
   const [image, setImage] = useState(null);
 
-  const handleTextChange = (newText) => {
-    setText(newText);
+  const textInputRef = useRef(null);
+
+  const handleTextChange = (newText, field) => {
+    if (field === 'name') {
+      setName(newText);
+    } else if (field === 'description') {
+      setDescription(newText);
+    } else if (field === 'email') {
+      setEmail(newText);
+    }
 
     const totalHeight = (newText.split('\n').length * 25) + 50;
 
@@ -39,7 +47,8 @@ const CreateAirline = () => {
       setImage(result.assets[0].uri);
     }
   };
-  
+
+  const isSubmitButtonEnabled = name !== '' && description !== '' && email !== '';
 
   return (
     <View style={styles.Container}>
@@ -64,7 +73,7 @@ const CreateAirline = () => {
             ref={textInputRef}
             multiline={true}
             style={[styles.Input, { width: inputWidth }]}
-            onChangeText={handleTextChange}
+            onChangeText={(text) => handleTextChange(text, 'name')}
           />
           <Text style={styles.Heading}>Description Of Airline</Text>
           <TextInput
@@ -72,7 +81,7 @@ const CreateAirline = () => {
             ref={textInputRef}
             multiline={true}
             style={[styles.Input, { width: inputWidth }]}
-            onChangeText={handleTextChange}
+            onChangeText={(text) => handleTextChange(text, 'description')}
           />
           <Text style={styles.Heading}>Email Address Of Airline</Text>
           <TextInput
@@ -80,7 +89,7 @@ const CreateAirline = () => {
             ref={textInputRef}
             multiline={true}
             style={[styles.Input, { width: inputWidth }]}
-            onChangeText={handleTextChange}
+            onChangeText={(text) => handleTextChange(text, 'email')}
           />
           <Text style={styles.Heading}>Upload Your Logo</Text>
           <View style={styles.PopupButton}>
@@ -89,6 +98,9 @@ const CreateAirline = () => {
               <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
             </TouchableOpacity>
           </View>
+          {isSubmitButtonEnabled && (
+            <Button title="Apply" onPress={handleApply} />
+          )}
         </View>
       </ScrollView>
     </View>
@@ -161,11 +173,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
   },
-  SubHeading: {
-    fontFamily: 'Poppins-Medium',
-    paddingVertical: 10,
-    paddingLeft: 10,
-  },
   Input: {
     backgroundColor: '#b6daf7',
     paddingHorizontal: 15,
@@ -173,7 +180,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     height: 70,
     width: 320,
-    justifyContent: 'center',
   },
   PopupButton: {
     backgroundColor: '#b6daf7',
