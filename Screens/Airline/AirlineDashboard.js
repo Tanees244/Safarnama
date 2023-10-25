@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-const CreateAirline = () => {
+const AirlineDashboard = () => {
 
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
@@ -194,4 +194,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateAirline;
+export default AirlineDashboard;

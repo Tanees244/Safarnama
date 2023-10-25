@@ -108,6 +108,10 @@ const Discover = () => {
     navigation.navigate('HotelsLists')
   };
 
+  const navigateToCreatePackage = () =>{
+    navigation.navigate('CreatePackage')
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -155,7 +159,7 @@ const Discover = () => {
         </View>
         <View style={styles.PackageContainer}>
           <View style={styles.Rectangle}/>
-          <TouchableOpacity style={[styles.Package , {width: PackageWidth}]}>
+          <TouchableOpacity onPress={navigateToCreatePackage} style={[styles.Package , {width: PackageWidth}]}>
             <Text style={styles.PackageText}>Create Your Package !</Text>
           </TouchableOpacity>
         </View>

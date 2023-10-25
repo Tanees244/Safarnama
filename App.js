@@ -20,12 +20,7 @@ import GuidePastPackage  from './Screens/Guide/GuidePastPackage';
 import GuideClientsFeedback from './Screens/Guide/GuideClientsFeedback';
 import GuideUserReview from './Screens/Guide/GuideUserReview';
 import GuideProfile from './Screens/Guide/GuideProfile';
-import AirlineRegister from './Screens/Airline/AirlineRegister';
-import AirlineOperation from './Screens/Airline/AirlineDashboard';
-import AirlineCreatePackages from './Screens/Airline/AirlineCreatePackages';
-import AirlineUpdatePackage from './Screens/Airline/AirlineUpdatePackage';
-import AirlineViewPackages from './Screens/Airline/AirlineViewPackages';
-import AirlineDeletePackage from './Screens/Airline/AirlineDeletePackage';
+import AirlineDashboard from './Screens/Airline/AirlineDashboard';
 import BusRegister from './Screens/Bus/BusRegister';
 import BusOperations from './Screens/Bus/BusOperations';
 import BusCreatePackages from './Screens/Bus/BusCreatePackage';
@@ -57,6 +52,7 @@ import CreateHotel from './Screens/VendorRegisteration/CreateHotel';
 import VendorDashboard from './Screens/VendorRegisteration/VendorDashboard';
 import VendorPersonalDetails from './Screens/VendorRegisteration/VendorPersonalDetails';
 import GetStarted from './Screens/CreatePackage/GetStarted';
+import CreatePackage from './Screens/Tourists/CreatePackage';
 
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
@@ -111,12 +107,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideClientsFeedback' component={GuideClientsFeedback} />
         <Stack.Screen options={{ headerShown: false }} name='GuideUserReview' component={GuideUserReview} />
         <Stack.Screen options={{ headerShown: false }} name='GuideProfile' component={GuideProfile} />
-        <Stack.Screen options={{ headerShown: false }} name='AirlineRegister' component={AirlineRegister} />
-        <Stack.Screen options={{ headerShown: false }} name='AirlineOperation' component={AirlineOperation} />
-        <Stack.Screen options={{ headerShown: false }} name='AirlineCreatePackages' component={AirlineCreatePackages} />
-        <Stack.Screen options={{ headerShown: false }} name='AirlineUpdatePackage' component={AirlineUpdatePackage} />
-        <Stack.Screen options={{ headerShown: false }} name='AirlineViewPackages' component={AirlineViewPackages} />
-        <Stack.Screen options={{ headerShown: false }} name='AirlineDeletePackage' component={AirlineDeletePackage} />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineDashboard' component={AirlineDashboard} />
         <Stack.Screen options={{ headerShown: false }} name='BusRegister' component={BusRegister} />
         <Stack.Screen options={{ headerShown: false }} name='BusOperation' component={BusOperations} />
         <Stack.Screen options={{ headerShown: false }} name='BusCreatePackages' component={BusCreatePackages} />
@@ -149,6 +140,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='VendorPersonalDetails' component={VendorPersonalDetails} />
         <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
         <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
+        <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
+        
         
       </Stack.Navigator>
     </NavigationContainer>
