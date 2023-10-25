@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateAirline = () => {
+
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
   const RegisterContainer = containerWidth * 0.7;
   const inputWidth = containerWidth * 0.9;
+
+  const navigation = useNavigation();
   
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -49,6 +53,10 @@ const CreateAirline = () => {
   };
 
   const isSubmitButtonEnabled = name !== '' && description !== '' && email !== '';
+
+  const handleDashboard = () => {
+    navigation.navigate('AirlineDashboard');
+  };
 
   return (
     <View style={styles.Container}>
@@ -99,7 +107,9 @@ const CreateAirline = () => {
             </TouchableOpacity>
           </View>
           {isSubmitButtonEnabled && (
-            <Button title="Apply" onPress={handleApply} />
+            <TouchableOpacity style={styles.SubmitButton} onPress={handleDashboard}>
+                <Text style={styles.SubmitText}>Apply</Text>
+            </TouchableOpacity>
           )}
         </View>
       </ScrollView>
@@ -197,6 +207,19 @@ const styles = StyleSheet.create({
   ButtonText: {
     fontSize: 15,
     fontFamily: 'Poppins-Light',
+  },
+  SubmitButton:{
+    backgroundColor: '#0a78cd',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+  },
+  SubmitText:{
+    fontSize: 15,
+    fontFamily: 'Poppins-Medium',
+    color: 'white',
   },
 });
 
