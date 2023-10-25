@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity,
 import Dropdown from 'react-native-modal-dropdown';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
+import DatePicker from 'react-native-datepicker';
+import { getToday, getFormatedDate } from 'react-native-modern-datepicker';
 
 const CreatePackage = () => {
 
@@ -15,6 +17,11 @@ const CreatePackage = () => {
   const facilities = ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental','24-Hour Security', 'Smoke Alarms','Daily Housekeeping', 'Dry Cleaning', 'Laundry', 'Meeting/Banquet \nfacilities', 'Fax/Photocopying'];
   const types = ['Single Bed', 'Double Bed', 'Standard', 'Executive', 'King Size'];
 
+
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState(false);
+   const today = new Date();
+    const startDate = getFormatedDate(today.setDate(today.getDate() + 1), 'YYYY/MM/DD')
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
   const [isFacilitiesPopupVisible, setIsFacilitiesPopupVisible] = useState(false);
@@ -28,6 +35,14 @@ const CreatePackage = () => {
   const [roomTypeCount, setRoomTypeCount] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [image, setImage] = useState(null);
+
+function handleOnPress (){
+    setOpen(!open);
+}
+
+function handleChange () {
+    setDate(propDate)
+}
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -192,28 +207,11 @@ const CreatePackage = () => {
         </View>
         
         <View style={styles.ButtonContainer}>
-          <Text style={styles.Heading}>Name Of Hotel</Text>
-          <TextInput
-            placeholder='Enter Your Hotel Name'
-            ref={textInputRef}
-            multiline={true}
-            style={[styles.Input, { width: inputWidth }]}
-            onChangeText={handleTextChange}
-          />
-          <Text style={styles.Heading}>Address</Text>
-          <Text style={styles.SubHeading}>Area:</Text>
-          <TextInput
-            placeholder='Enter Your Area'
-            ref={textInputRef}
-            multiline={true}
-            style={[styles.Input, { width: inputWidth }]}
-            onChangeText={handleTextChange}
-          />
-          <Text style={styles.SubHeading}>City:</Text>
+          <Text style={styles.Heading}>Where Do You Want To Go?</Text>
           <View style={styles.Input}>
             <Dropdown
               options={cities}
-              defaultValue="Select A City"
+              defaultValue="Select Destination"
               textStyle={styles.DropdownText}
               dropdownStyle={styles.DropdownContainer}
               onSelect={(index, value) => {
@@ -223,7 +221,35 @@ const CreatePackage = () => {
               dropdownOffset={{ top: 0, left: 10 }}
             />
           </View>
-          <Text style={styles.Heading}>Description Of Hotel</Text>
+          
+          <Text style={styles.Heading}>When do you want to go?</Text>
+          <TouchableOpacity onPress={handleOnPress}>
+              <Text>
+                Open
+              </Text>
+
+          </TouchableOpacity>
+          <Modal 
+        isVisible={open}
+        backdropColor="#000"
+        backdropOpacity={0.5}  >
+            <View style={styles.dateselector} >
+                <View style={styles.ModalView}>
+                <DatePicker 
+                    mode='calendar'
+                    minDate={startDate}
+                    date={date}
+                    onDateChange={handleChange}
+                />
+                <TouchableOpacity onPress={handleOnPress}>
+              <Text>
+                Close
+              </Text>
+
+          </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
           <TextInput
             placeholder='Enter Description Of Your Hotel'
             ref={textInputRef}
@@ -423,6 +449,31 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     zIndex: 3,
   },
+
+  dateselector:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop:22,
+  },
+
+  ModalView: {
+    margin:20,
+    backdropColor:'white',
+    borderRadius: 20,
+    width:'80%',
+    padding:35,
+    alignItems:'center',
+    shadowColor:'#000',
+    shadowOffset:{
+        width:0,
+        height:2,
+    },
+    shadowOpacity:0.25,
+    shadowRadius:4,
+    elevation:5,
+  },
+
   RegisterContainer: {
     backgroundColor: '#54aaec',
     marginHorizontal: 10,
@@ -433,12 +484,14 @@ const styles = StyleSheet.create({
     zIndex: 2,
     flex:1,
     justifyContent: 'center',
+    left:50,
   },
   Text: {
     fontSize: 32,
     color: 'black',
     fontFamily: 'Poppins-Bold',
     paddingLeft: 15,
+    textAlign:'center',
   },
   ButtonContainer: {
     marginTop: 20,
@@ -466,7 +519,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     fontFamily: 'Poppins-Regular',
     height: 70,
-    width: 320,
+    width: 280,
     justifyContent: 'center',
   },
   DropdownText: {
