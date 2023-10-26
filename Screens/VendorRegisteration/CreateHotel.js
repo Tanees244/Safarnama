@@ -14,7 +14,7 @@ const CreateHotel = () => {
   const cities = ['Balakot', 'Naran', 'Kaghan', 'Gilgit Baltistan', 'Kashmir', 'Muzaffarabad'];
   const facilities = ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental','24-Hour Security', 'Smoke Alarms','Daily Housekeeping', 'Dry Cleaning', 'Laundry', 'Meeting/Banquet \nfacilities', 'Fax/Photocopying'];
   const types = ['Single Bed', 'Double Bed', 'Standard', 'Executive', 'King Size'];
-
+  
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
   const [isFacilitiesPopupVisible, setIsFacilitiesPopupVisible] = useState(false);
@@ -94,14 +94,11 @@ const CreateHotel = () => {
           numberOfRooms,
         };
   
-        // Add the new room type to the list
         setRoomTypeList([...roomTypeList, newRoomType]);
   
-        // Increment the room type count
         setRoomTypeCount(roomTypeCount + 1);
   
-        // Clear the input fields
-        setRoomType('');
+       setRoomType('');
         setRoomInfo({
           price: '',
           adultCapacity: 1,
@@ -481,7 +478,7 @@ const styles = StyleSheet.create({
   DropdownContainer: {
     backgroundColor: '#b6daf7',
     borderRadius: 15,
-    width: 320,
+    width: 260,
   },
   CustomDropdownText: {
     fontSize: 18,
