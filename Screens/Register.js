@@ -22,7 +22,7 @@ const Register = () => {
   };
 
   const handleVendor = () => {
-    navigation.navigate('VendorCategory');
+    navigation.navigate('AirlineDashboard');
   };
   
   useEffect (() => {
