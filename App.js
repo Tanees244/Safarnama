@@ -49,8 +49,8 @@ import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPack
 import HotelsLists from './Screens/Tourists/HotelsLists';
 import HotelsInfo from './Screens/Tourists/HotelsInfo';
 import CreateHotel from './Screens/VendorRegisteration/CreateHotel';
-import VendorDashboard from './Screens/VendorRegisteration/VendorDashboard';
-import VendorPersonalDetails from './Screens/VendorRegisteration/VendorPersonalDetails';
+import HotelVendorPersonalDetails from './Screens/Hotel/HotelVendorPersonalDetails'
+import HotelDashboard from './Screens/Hotel/HotelDashboard'
 import GetStarted from './Screens/CreatePackage/GetStarted';
 import CreatePackage from './Screens/Tourists/CreatePackage';
 
@@ -136,8 +136,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='HotelsLists' component={HotelsLists} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsInfo' component={HotelsInfo} />
         <Stack.Screen options={{ headerShown: false }} name='CreateHotel' component={CreateHotel} />
-        <Stack.Screen options={{ headerShown: false }} name='VendorDashboard' component={VendorDashboard} />
-        <Stack.Screen options={{ headerShown: false }} name='VendorPersonalDetails' component={VendorPersonalDetails} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelDashboard' component={HotelDashboard} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelVendorPersonalDetails' component={HotelVendorPersonalDetails} />
         <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
         <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
