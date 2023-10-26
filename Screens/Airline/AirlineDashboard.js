@@ -11,35 +11,42 @@ const AirlineDashboard = () => {
     const RegisterContainer = containerWidth * 0.7;
     const inputWidth = containerWidth * 0.9;
     
-    const navigation = useNavigation();
+    const cityOptions = ['Karachi', 'Lahore', 'Quetta'];
     
-    const [text, setText] = useState('');
-    const textInputRef = useRef(null);
     const [isAddTicketModalVisible, setAddTicketModalVisible] = useState(false);
     const [fromCity, setFromCity] = useState('');
-    const [toCity, setToCity] = useState('');
+    const toCity = 'Islamabad';
     const [FlightNumber,setFlightNumber] = useState('');
     const [price, setPrice] = useState('');
-    const [seatType, setSeatType] = useState('Select Ticket Type'); // Initialize with null
+    const [seatType, setSeatType] = useState('Select Ticket Type'); 
     const seatTypes = ['Economy', 'Business', 'First-Class']; 
     const [submittedData, setSubmittedData] = useState([]);
-  const [isSubmitButtonEnabled, setIsSubmitButtonEnabled] = useState(false);
+    const [isSubmitButtonEnabled, setIsSubmitButtonEnabled] = useState(false);
+    const [departureDate, setDepartureDate] = useState('');
+    const [flightDuration, setFlightDuration] = useState('');
+    const [selectedCity, setSelectedCity] = useState('Select City');
+    const [editTicketIndex, setEditTicketIndex] = useState(-1);
+    const [isCityDropdownVisible, setCityDropdownVisible] = useState(false);
 
+    const toggleCityDropdown = (visible) => {
+      setCityDropdownVisible(visible);
+    };
+    
+    const handleCitySelection = (city) => {
+      setSelectedCity(city);
+      toggleCityDropdown(false);
+    };
+    
 
     const toggleAddTicketModal = () => {
     setAddTicketModalVisible(!isAddTicketModalVisible);
     };
 
-    const handleFromCityChange = (value) => {
-        setFromCity(value);
-        checkSubmitButtonState();
-    };
-    
-    const handleToCityChange = (value) => {
-        setToCity(value);
-        checkSubmitButtonState();
-    };
-    
+    const handleEditTicket = (index) => {
+      setEditTicketIndex(index);
+      toggleAddTicketModal(); // Open the same modal used for adding tickets
+    };    
+
     const handlePriceChange = (value) => {
         setPrice(value);
         checkSubmitButtonState();
@@ -55,28 +62,80 @@ const AirlineDashboard = () => {
       checkSubmitButtonState();
     };
 
+    const handleDepartureDateChange = (value) => {
+      setDepartureDate(value);
+      checkSubmitButtonState();
+    };
+    
+    const handleFlightDurationChange = (value) => {
+      setFlightDuration(value);
+      checkSubmitButtonState();
+    };
+    
+
     const checkSubmitButtonState = () => {
-      if (fromCity && toCity && FlightNumber && price && seatType !== 'Select Ticket Type') {
+      if (
+        fromCity &&
+        toCity &&
+        FlightNumber &&
+        price &&
+        seatType !== 'Select Ticket Type' &&
+        departureDate &&
+        flightDuration
+      ) {
         setIsSubmitButtonEnabled(true); // Enable the button when all fields are filled
       } else {
         setIsSubmitButtonEnabled(false); // Disable the button if any field is empty
       }
     };
     
-    const handleSubmission = () => {
-      if (fromCity && toCity && FlightNumber && price && seatType !== 'Select Ticket Type') {
-        const newTicket = {
-          fromCity,
-          toCity,
-          FlightNumber,
-          price,
-          seatType,
-        };
     
-        setSubmittedData([...submittedData, newTicket]);
-        setIsSubmitButtonEnabled(false); // Disable the button after submission
+    const handleSubmission = () => {
+      if (fromCity && toCity && FlightNumber && price && seatType && departureDate && flightDuration !== 'Select Ticket Type') {
+        if (editTicketIndex >= 0) {
+          // Editing an existing ticket
+          const editedTicket = {
+            fromCity,
+            toCity,
+            FlightNumber,
+            price,
+            seatType,
+            departureDate,
+            flightDuration,
+          };
+    
+          const updatedData = [...submittedData];
+          updatedData[editTicketIndex] = editedTicket;
+    
+          setSubmittedData(updatedData);
+        } else {
+          const newTicket = {
+            fromCity,
+            FlightNumber,
+            price,
+            seatType,
+            departureDate,
+            flightDuration,
+          };
+    
+          setSubmittedData([...submittedData, newTicket]);
+        }
+    
+        setIsSubmitButtonEnabled(false);
         toggleAddTicketModal();
       }
+    };
+    
+    
+    const handleCancelTicket = (index) => {
+      // Create a copy of the submittedData array
+      const updatedSubmittedData = [...submittedData];
+      
+      // Remove the ticket at the specified index
+      updatedSubmittedData.splice(index, 1);
+      
+      // Update the state with the modified array
+      setSubmittedData(updatedSubmittedData);
     };
     
 
@@ -107,6 +166,16 @@ const AirlineDashboard = () => {
                   <Text>Flight Number: {ticket.FlightNumber}</Text>
                   <Text>Price: {ticket.price}</Text>
                   <Text>Seat Type: {ticket.seatType}</Text>
+                  <Text>Flight Duration: {ticket.flightDuration}</Text>
+                  <Text>Departure Date: {ticket.departureDate}</Text>
+
+                  <TouchableOpacity onPress={() => handleEditTicket(index)} style={styles.editIconContainer}>
+                    <Image style={styles.editIcon} source={require('../../assets/edit.png')} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => handleCancelTicket(index)} style={styles.closeIconContainer}>
+                    <Image style={styles.closeIcon} source={require('../../assets/deleteicon.png')} />
+                  </TouchableOpacity>
                 </View>
               ))}
           </View>
@@ -115,31 +184,51 @@ const AirlineDashboard = () => {
 
       <Modal isVisible={isAddTicketModalVisible}>
         <View style={styles.modalContent}>
-            <Text style={styles.PopupHeading}>Add Ticket</Text>
-            <TextInput
-            placeholder="From City"
-            value={fromCity}
-            onChangeText={handleFromCityChange}
-            style={styles.input}
+          <Text style={styles.PopupHeading}>
+            {editTicketIndex >= 0 ? 'Edit Ticket' : 'Add Ticket'}
+          </Text>
+          <View style={styles.input}>
+          <Dropdown
+              options={cityOptions}
+              defaultValue='Select A City'
+              textStyle={styles.DropdownText}
+              dropdownStyle={[styles.DropdownContainer, isCityDropdownVisible ? {} : { display: 'none' }]} // Apply the display style to control visibility
+              initialScrollIndex={0}
+              isVisible={isCityDropdownVisible}
+              onClose={() => toggleCityDropdown(false)}
+              onSelect={(index, city) => handleCitySelection(city)}
+              dropdownTextStyle={styles.CustomDropdownText}
+              dropdownPosition={0}
+              dropdownOffset={{ top: 0, left: 0 }}
             />
-            <TextInput
-            placeholder="To City"
-            value={toCity}
-            onChangeText={handleToCityChange}
-            style={styles.input}
-            />
+          </View>
+          <View style={styles.input}>
+            <Text style={styles.DropdownText}>{toCity}</Text>
+            </View>
             <TextInput
             placeholder="Flight Number"
-            value={FlightNumber}
-            onChangeText={handleFlightNumberChange}
+            value={editTicketIndex >= 0 ? submittedData[editTicketIndex]?.FlightNumber : FlightNumber}
+            onChangeText={(value) => handleFlightNumberChange(value, editTicketIndex)}
             style={styles.input}
             />
             <TextInput
             placeholder="Price"
-            value={price}
-            onChangeText={handlePriceChange}
+            value={editTicketIndex >= 0 ? submittedData[editTicketIndex]?.price : price}
+            onChangeText={(value) => handlePriceChange(value, editTicketIndex)}
             keyboardType="numeric"
             style={styles.input}
+            />
+            <TextInput
+              placeholder="Departure Date"
+              value={editTicketIndex >= 0 ? submittedData[editTicketIndex]?.departureDate : departureDate}
+              onChangeText={(value) => handleDepartureDateChange(value, editTicketIndex)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Flight Duration"
+              value={editTicketIndex >= 0 ? submittedData[editTicketIndex]?.flightDuration : flightDuration}
+              onChangeText={(value) => handleFlightDurationChange(value, editTicketIndex)}
+              style={styles.input}
             />
             <View style={styles.input}>
               <Dropdown
@@ -153,9 +242,16 @@ const AirlineDashboard = () => {
                 dropdownOffset={{ top: 0, left: 10 }}
               />
             </View>
-            <TouchableOpacity onPress={handleSubmission} style={styles.AddTicketButton} disabled={!isSubmitButtonEnabled}>
-              <Text style={styles.AddTicketButtonText}>Submit</Text>
+            <TouchableOpacity onPress={toggleAddTicketModal} style={styles.closeIconContainer}>
+              <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSubmission}
+              style={styles.AddTicketButton}
+              disabled={!isSubmitButtonEnabled}
+            >
+              <Text style={styles.AddTicketButtonText}>Submit</Text>
+             </TouchableOpacity>
         </View>
       </Modal>
     </View>
@@ -251,6 +347,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#b6daf7',
     paddingHorizontal: 15,
     borderRadius: 15,
+    justifyContent: 'center',
     fontFamily: 'Poppins-Regular',
     height: 50,
     marginBottom: 10,
@@ -264,7 +361,7 @@ const styles = StyleSheet.create({
   DropdownContainer: {
     backgroundColor: '#b6daf7',
     borderRadius: 15,
-    width: 320,
+    width: 260,
   },
   CustomDropdownText: {
     fontSize: 18,
@@ -277,6 +374,26 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     paddingTop: 20,
+  },
+  closeIconContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: '#C4C8CB',
+    borderRadius: 60,
+  },
+  closeIcon: {
+    width: 40,
+    height: 40,
+  },
+  editIconContainer:{
+
+  },
+  ActiveTicketItem:{
+    backgroundColor: 'white',
+    borderRadius: 30,
+    padding: 20,
+    marginTop: 20,
   },
 });
 
