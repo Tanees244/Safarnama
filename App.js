@@ -58,6 +58,7 @@ import CreatePackage3 from './Screens/Tourists/CreatePackage3';
 import Flight from './Screens/Tourists/Flight';
 import Train from './Screens/Tourists/Train';
 import Bus from './Screens/Tourists/Bus';
+import PlacesInfo from './Screens/Tourists/PlacesInfo';
 
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
@@ -152,6 +153,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Flight' component={Flight } />
         <Stack.Screen options={{ headerShown: false }} name='Train' component={Train } />
         <Stack.Screen options={{ headerShown: false }} name='Bus' component={Bus } />
+        <Stack.Screen options={{ headerShown: false }} name='PlacesInfo' component={PlacesInfo } />
+        
         
         
         

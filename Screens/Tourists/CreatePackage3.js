@@ -15,8 +15,8 @@ const CreatePackage3 = () => {
   const handleCreatePackage3 = () => {
       navigation.navigate('CreatePackage3');
     };
-  const navigateToPersonalDetails = () => {
-    navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
+  const navigateToHotelsLists = () => {
+    navigation.navigate('HotelsLists'); // Replace with your screen name
   };
 
   const navigateToExperience = () => {
@@ -27,8 +27,8 @@ const CreatePackage3 = () => {
     navigation.navigate('GuideQuestionnaire'); // Replace with your screen name
   };
 
-  const navigateToGuideBankDetail = () => {
-    navigation.navigate('GuideBankDetail'); // Replace with your screen name
+  const navigateToPlacesInfo = () => {
+    navigation.navigate('PlacesInfo'); // Replace with your screen name
   };
   
 
@@ -53,7 +53,7 @@ const CreatePackage3 = () => {
         <TouchableOpacity
           activeOpacity={0.9}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToPersonalDetails}
+          onPress={navigateToHotelsLists}
         >
           <Text style={styles.buttonText}>Hotel </Text>
         </TouchableOpacity>
@@ -67,7 +67,7 @@ const CreatePackage3 = () => {
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToGuideBankDetail}
+          onPress={navigateToPlacesInfo}
         >
           <Text style={styles.buttonText}>Places</Text>
         </TouchableOpacity>
