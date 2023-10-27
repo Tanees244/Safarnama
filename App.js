@@ -53,6 +53,10 @@ import HotelVendorPersonalDetails from './Screens/Hotel/HotelVendorPersonalDetai
 import HotelDashboard from './Screens/Hotel/HotelDashboard'
 import GetStarted from './Screens/CreatePackage/GetStarted';
 import CreatePackage from './Screens/Tourists/CreatePackage';
+import CreatePackage2 from './Screens/Tourists/CreatePackage2';
+import Flight from './Screens/Tourists/Flight';
+import Train from './Screens/Tourists/Train';
+import Bus from './Screens/Tourists/Bus';
 
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
@@ -141,6 +145,13 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
         <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
+        <Stack.Screen options={{ headerShown: false }} name='CreatePackage2' component={CreatePackage2 } />
+        <Stack.Screen options={{ headerShown: false }} name='Flight' component={Flight } />
+        <Stack.Screen options={{ headerShown: false }} name='Train' component={Train } />
+        <Stack.Screen options={{ headerShown: false }} name='Bus' component={Bus } />
+        
+        
+        
         
         
       </Stack.Navigator>

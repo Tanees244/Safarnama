@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Pressable, Platform } from 'react-native';
 import Dropdown from 'react-native-modal-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 
 
 const CreatePackage = () => {
@@ -15,7 +16,7 @@ const CreatePackage = () => {
     const cities = ['Balakot', 'Naran', 'Kaghan', 'Gilgit Baltistan', 'Kashmir', 'Muzaffarabad'];
     const preference = ['Going Solo', 'Partner', 'Friends', 'Family']
 
-
+    const navigation = useNavigation();
     const [date, setDate] = useState(new Date());
     const [showPicker1, setShowPicker1] = useState(false);
     const [showPicker2, setShowPicker2] = useState(false);
@@ -56,6 +57,10 @@ const CreatePackage = () => {
             toggleDatepicker2();
         }
     };
+
+    const handleCreatePackage2 = () => {
+        navigation.navigate('CreatePackage2');
+      };
 
     return (
         <View style={styles.Container}>
@@ -168,9 +173,9 @@ const CreatePackage = () => {
                     </View>
                 </View>
                 <View>
-                    <TouchableOpacity activeOpacity={0.5}
+                    <TouchableOpacity activeOpacity={0.5} onPress={handleCreatePackage2}
                         style={[styles.buttonText, { width: inputWidth }]}>
-                        <Text style={styles.TextDesign}>Next</Text>
+                        <Text style={styles.TextDesign}>NEXT</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -192,8 +197,8 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         elevation: 20,
         zIndex: -1,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 40,
+        borderBottomRightRadius: 40,
     },
     buttonText: {
         margin: 10,
@@ -206,9 +211,9 @@ const styles = StyleSheet.create({
     },
     TextDesign: {
         fontSize: 24,
-        fontWeight: 'bold',
         padding: 10,
-        color: 'white',
+        color: '#092547',
+        fontFamily: 'Poppins-ExtraBold',
     },
     headerText: {
         textAlign: 'center',
@@ -232,14 +237,15 @@ const styles = StyleSheet.create({
     RegisterContainer: {
         backgroundColor: '#092547',
         marginHorizontal: 10,
-        borderRadius: 20,
+        borderRadius: 50,
         paddingVertical: 20,
         marginTop: 30,
         marginBottom: 10,
         zIndex: 2,
         flex: 1,
         justifyContent: 'center',
-        left: 50,
+        alignContent:'center',
+        alignSelf:'center',
     },
     Text: {
         fontSize: 40,
