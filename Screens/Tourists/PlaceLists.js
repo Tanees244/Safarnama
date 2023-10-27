@@ -5,25 +5,25 @@ import { useNavigation } from '@react-navigation/native';
 const data = [
   {
     id: '1',
-    image: require('../../assets/Hotel3.jpg'),
-    title: 'Marriot Hotel',
-    city: 'Islamabad',
+    image: require('../../assets/Place1.jpg'),
+    title: 'Naran',
+    city: 'KPK',
     description: 'Naran is a town and popular tourist destination in upper Kaghan Valley in the Mansehra District of the Khyber Pakhtunkhwa province of Pakistan. It is located 119 kilometers from Mansehra city at the altitude of 2,409 meters. ',
     ratings: '4.5/5.0',
   },
   {
     id: '2',
-    image: require('../../assets/Hotel1.jpg'),
-    title: 'Pearl Continental',
-    city: 'Islamabad',
+    image: require('../../assets/Place3.jpg'),
+    title: 'Kalam',
+    city: 'GB',
     description: 'Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.',
     ratings: '3.3/5.0',
   },
   {
     id: '3',
-    image: require('../../assets/Hotel2.jpg'),
-    title: 'Ramada',
-    city: 'Islamabad',
+    image: require('../../assets/Place2.jpg'),
+    title: 'Kashmir',
+    city: 'PUNJAB',
     description: 'Kashmir is the northernmost geographical region of the Indian subcontinent. Until the mid-19th century, the term "Kashmir" denoted only the Kashmir Valley between the Great Himalayas and the Pir Panjal Range',
     ratings: '3.9/5.0',
   },
@@ -32,26 +32,26 @@ const data = [
 const data2 = [
   {
     id: '1',
-    image: require('../../assets/Hotel1.jpg'),
-    title: 'Marriot Hotel',
-    city: 'Islamabad',
-    description: 'Marriott Hotels & Resorts is Marriott International`s brand of full-service hotels and resorts based in Bethesda, Maryland. As of June 30, 2020, there were 582 hotels and resorts with 205,053 rooms operating under the brand, in addition to 160 hotels with 47,765 rooms planned for development.',
+    image: require('../../assets/Place1.jpg'),
+    title: 'Naran',
+    city: 'KPK',
+    description: 'Naran is a town and popular tourist destination in upper Kaghan Valley in the Mansehra District of the Khyber Pakhtunkhwa province of Pakistan. It is located 119 kilometers from Mansehra city at the altitude of 2,409 meters.',
     ratings: '4.5/5.0',
   },
   {
     id: '2',
-    image: require('../../assets/Hotel2.jpg'),
-    title: 'Pearl Continental',
-    city: 'Islamabad',
-    description: 'Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.',
+    image: require('../../assets/Place2.jpg'),
+    title: 'Kashmir',
+    city: 'PUNJAB',
+    description: 'Kashmir is the northernmost geographical region of the Indian subcontinent. Until the mid-19th century, the term "Kashmir" denoted only the Kashmir Valley between the Great Himalayas and the Pir Panjal Range',
     ratings: '3.3/5.0',
   },
   {
     id: '3',
-    image: require('../../assets/Hotel3.jpg'),
-    title: 'Ramada',
-    city: 'Islamabad',
-    description: 'Ramada is a large American multinational hotel chain owned by Wyndham Hotels & Resorts. As of December 31, 2022, it operates 851 hotels with 120,3444 rooms across 63 countries under the Ramada brand',
+    image: require('../../assets/Place3.jpg'),
+    title: 'KALAM',
+    city: 'GB',
+    description: 'Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.',
     ratings: '3.9/5.0',
   },
 ];
@@ -97,7 +97,7 @@ const HorizontalCard = ({ item, onPress }) => {
   
   
 
-const HotelsLists = () => {
+const PlaceLists = () => {
 
     const navigation = useNavigation();
 
@@ -105,8 +105,8 @@ const HotelsLists = () => {
         navigation.navigate('Discover')
     }
 
-    const navigateToHotesInfo = () => {
-        navigation.navigate('HotelsInfo')
+    const navigateToPlacesInfo = () => {
+        navigation.navigate('PlacesInfo')
     }
   
     return (
@@ -122,20 +122,20 @@ const HotelsLists = () => {
             <Image source={require("../../assets/camera-indoor-black.png")} style = {[{width: 30, height: 30}]}/>
         </TouchableOpacity>
         <ScrollView>
-          <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Hotels</Text></Text>
+          <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Places</Text></Text>
           <FlatList
             data={data}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToHotesInfo} />}
+            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToPlacesInfo} />}
             keyExtractor={(item) => item.id}
           />
-          <Text style={styles.text}>Hotels</Text>
+          <Text style={styles.text}>Places</Text>
           <FlatList
             data={data2}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToHotesInfo}/>}
+            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToPlacesInfo}/>}
             keyExtractor={(item) => item.id}
           />
         </ScrollView>
@@ -281,4 +281,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default HotelsLists;
+export default PlaceLists;

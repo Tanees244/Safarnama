@@ -107,23 +107,64 @@ const Discover = () => {
   const navigateToHotelsInfo = () =>{
     navigation.navigate('HotelsLists')
   };
-
+  const navigateToPlaceLists = () =>{
+    navigation.navigate('PlaceLists')
+  };
+  const navigateToFlight = () =>{
+    navigation.navigate('Flight')
+  };
   const navigateToCreatePackage = () =>{
     navigation.navigate('CreatePackage')
   };
+
+  const navigateToGuideProfile = () => {
+    navigation.navigate('TouristProfile'); // Replace with your screen name
+};
+
+const navigateToGuideHome = () => {
+    navigation.navigate('Discover'); // Replace with your screen name
+};
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
+      <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/camera-indoor-black.png")}/>
+                         <Text style={styles.home} >Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToCreatePackage} >
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/searchlogo.png")}/>
+                         <Text style={styles.home}>Booking</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/itenerary.png")}/>
+                         <Text style={styles.home} >Itinerary</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/account-circle-black.png")}/>
+                         <Text style={styles.home}>Profile</Text>
+                </TouchableOpacity>
+            </View>
     <ScrollView >
-        <Text style={styles.text}>Creating Memories, {'\n'}One Trip at a Time</Text>
+        <View style={styles.quote}>
+        <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
+        </View>
         <View style={[styles.buttonContainer, { width: containerWidth }]}>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../../assets/plane-departure.png')} 
+              source={require('../../assets/plane.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Flights</Text>
@@ -132,16 +173,16 @@ const Discover = () => {
           <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../../assets/bed.png')} 
+              source={require('../../assets/hotell.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Hotels</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToPlaceLists}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../../assets/island-tropical.png')} 
+              source={require('../../assets/placess.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Places</Text>
@@ -150,7 +191,7 @@ const Discover = () => {
           <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
-              source={require('../../assets/box.png')} 
+              source={require('../../assets/deal.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Deals</Text>
@@ -158,7 +199,6 @@ const Discover = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.PackageContainer}>
-          <View style={styles.Rectangle}/>
           <TouchableOpacity onPress={navigateToCreatePackage} style={[styles.Package , {width: PackageWidth}]}>
             <Text style={styles.PackageText}>Create Your Package !</Text>
           </TouchableOpacity>
@@ -180,6 +220,7 @@ const Discover = () => {
           keyExtractor={(item) => item.id}
         />
     </ScrollView>
+ 
     </View>
   );
 };
@@ -187,14 +228,45 @@ const Discover = () => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: '#c7d4dc',
+    backgroundColor: '#cee7fa',
   },
+  home: {
+    fontSize: 10,
+    lineHeight: 14,
+    fontWeight: "700",
+    marginTop: 2,
+    textAlign: "center",
+    color: 'white',
+  },
+  homeicon: {
+    width: 24,
+    height: 24,
+    overflow: "hidden",
+  },
+  
+  ButtonContainer1: {
+    flexDirection: 'row',
+    padding: 20,
+    backgroundColor: '#213555',
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    elevation: 5,
+    zIndex: 2,
+    position: 'absolute',
+    bottom: 20,
+    alignSelf:'center',
+    width: 230,
+    
+},
   header: {
     height: 120,
-    backgroundColor: '#3d5e94',
+    backgroundColor: '#213555',
     shadowColor: 'black',
     elevation: 20,
-  },
+    borderRadius:40,
+    },
   headerText: {
       textAlign: 'center',
       top: 50,
@@ -202,12 +274,28 @@ const styles = StyleSheet.create({
       color: '#FFFFFF',
       fontFamily: 'Poppins-Bold',
   },
+
+  quote:{
+    margin:20,
+    backgroundColor:'#213555',
+    borderTopRightRadius:40,
+    borderBottomLeftRadius:40,
+    justifyContent:'center',
+  },
+  quotetext: {
+    fontSize: 25,
+    paddingTop: 25,
+    textAlign:'center',
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+  },
+
   text: {
     fontSize: 25,
     paddingTop: 25,
-    paddingLeft: 15,
+    textAlign:'center',
     color: 'black',
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-Bold',
   },
   buttonContainer:{
     paddingTop: 20,
@@ -215,7 +303,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#7ec1de',
+    backgroundColor: '#213555',
     borderRadius: 30,
     height: 80,
     justifyContent: 'center',
@@ -240,20 +328,13 @@ const styles = StyleSheet.create({
   },
   PackageContainer:{
     alignItems: 'center',
-    paddingTop: 30,
-    paddingBottom: 20,
   },
-  Rectangle:{
-    width: '90%',
-    height: 120,
-    backgroundColor: '#327492',
-    borderRadius: 40,
-  },
+
   Package:{
-    backgroundColor: '#47a6d0',
+    backgroundColor: '#213555',
     borderRadius: 30,
     padding: 20,
-    marginTop: -80,
+    marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 20,
@@ -267,7 +348,7 @@ const styles = StyleSheet.create({
   card: {
       marginLeft: 20,
       marginRight: 20,
-      marginBottom: 30,
+      marginBottom: 80,
       marginTop: 15,
       flexDirection: 'column',
       alignItems: 'center',
@@ -285,7 +366,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 10,
-    backgroundColor: '#a3d3e8',
+    backgroundColor: 'white',
     borderRadius:30,
     top: -100,
     zIndex: -1,

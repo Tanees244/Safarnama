@@ -5,44 +5,7 @@ import Modal from 'react-native-modal';
 
 const MAX_TEXT_LENGTH = 200;
 
-const data = [
-    {
-        id: '1',
-        image: require('../../assets/F1.png'),
-        title: 'WiFi',
-    },
-    {
-        id: '2',
-        image: require('../../assets/F2.png'),
-        title: 'Breakfast',
-    },
-    {
-        id: '3',
-        image: require('../../assets/F3.png'),
-        title: 'Gym',
-    },
-    {
-        id: '4',
-        image: require('../../assets/F4.png'),
-        title: 'Parking',
-    },
-    {
-        id: '5',
-        image: require('../../assets/F5.png'),
-        title: 'Parking',
-    },
-    {
-        id: '6',
-        image: require('../../assets/F6.png'),
-        title: 'Parking',
-    },
-    {
-        id: '7',
-        image: require('../../assets/plus.png'),
-        title: 'Parking',
-    },
-];
-
+const data = '';
 const imageGallery = [
     {
         id: '1',
@@ -62,93 +25,8 @@ const imageGallery = [
     },
 ];
 
-const FacilityListDetails = ({ details }) => {
-    return (
-        <View style={styles.facilityDetails}>
-            {details.map((facility, index) => (
-                <View key={index} style={styles.facilityDetail}>
-                    <Text style={styles.detailTitle}>{facility.title}</Text>
-                    {facility.items.map((item, itemIndex) => (
-                        <Text key={itemIndex} style={styles.detailText}>
-                            {item}
-                        </Text>
-                    ))}
-                </View>
-            ))}
-        </View>
-    );
-};
 
-const FacilitiesList = ({ data }) => {
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
-
-    const handleFacilityButtonClick = () => {
-        setIsPopupVisible(true);
-    };
-
-    const closePopup = () => {
-        setIsPopupVisible(false);
-    };
-
-    const facilityDetails = [
-        {
-            title: 'General',
-            items: ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental'],
-        },
-        {
-            title: 'Safety & Security',
-            items: ['24-Hour Security', 'Smoke Alarms'],
-        },
-        {
-            title: 'Cleaning Services',
-            items: ['Daily Housekeeping', 'Dry Cleaning', 'Laundry'],
-        },
-        {
-            title: 'Business Facilities',
-            items: ['Meeting/Banquet facilities', 'Fax/Photocopying'],
-        },
-    ];
-
-    return (
-        <View>
-            <FlatList
-                data={data}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => (
-                    <View style={styles.facilityItem}>
-                        {index === data.length - 1 ? (
-                            <TouchableOpacity style={styles.facilityButton} onPress={handleFacilityButtonClick}>
-                                <Image source={item.image} style={styles.facilityImage} />
-                            </TouchableOpacity>
-                        ) : (
-                            <View style={styles.facilityBox}>
-                                <Image source={item.image} style={styles.facilityImage} />
-                            </View>
-                        )}
-                    </View>
-                )}
-            />
-
-            <Modal isVisible={isPopupVisible} onBackdropPress={closePopup} animationIn="slideInUp" animationOut="slideOutDown">
-                <View style={styles.popupContainer}>
-                    <View style={styles.popupContent}>
-                        <TouchableOpacity onPress={closePopup} style={styles.closeIconContainer}>
-                            <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
-                        </TouchableOpacity>
-                        <ScrollView >
-                            <Text style={styles.popupTitle}>Facilities And Services</Text>
-                            <FacilityListDetails details={facilityDetails} />
-                        </ScrollView>
-                    </View>
-                </View>
-            </Modal>
-        </View>
-    );
-};
-
-const GalleryList = ({ data }) => {
+const GalleryList = () => {
     const [isGalleryVisible, setIsGalleryVisible] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -254,12 +132,8 @@ const PlacesInfo = () => {
                         </View>
                     </View>
                     <View style={styles.FacilityContainer}>
-                        <Text style={styles.FacilityText}>Facilities</Text>
-                        <FacilitiesList data={data} />
-                    </View>
-                    <View style={styles.FacilityContainer}>
                         <Text style={styles.FacilityText}>Gallery</Text>
-                        <GalleryList data={data} />
+                        <GalleryList  />
                     </View>
                     <View style={styles.FacilityContainer}>
                         <Text style={styles.FacilityText}>Description</Text>
@@ -321,7 +195,7 @@ const PlacesInfo = () => {
                         <TouchableOpacity
                             style={styles.Cardbutton}
                         >
-                            <Text style={styles.CardbuttonText}>Book Now</Text>
+                            <Text style={styles.CardbuttonText}>Explore Now</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

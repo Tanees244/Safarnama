@@ -23,12 +23,8 @@ const CreatePackage3 = () => {
     navigation.navigate('GuideExperience'); // Replace with your screen name
   };
 
-  const navigateToQuestionnaire = () => {
-    navigation.navigate('GuideQuestionnaire'); // Replace with your screen name
-  };
-
-  const navigateToPlacesInfo = () => {
-    navigation.navigate('PlacesInfo'); // Replace with your screen name
+  const navigateToPlacesLists = () => {
+    navigation.navigate('PlaceLists'); // Replace with your screen name
   };
   
 
@@ -67,7 +63,7 @@ const CreatePackage3 = () => {
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToPlacesInfo}
+          onPress={navigateToPlacesLists}
         >
           <Text style={styles.buttonText}>Places</Text>
         </TouchableOpacity>
