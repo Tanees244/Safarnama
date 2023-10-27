@@ -54,6 +54,7 @@ import HotelDashboard from './Screens/Hotel/HotelDashboard'
 import GetStarted from './Screens/CreatePackage/GetStarted';
 import CreatePackage from './Screens/Tourists/CreatePackage';
 import CreatePackage2 from './Screens/Tourists/CreatePackage2';
+import CreatePackage3 from './Screens/Tourists/CreatePackage3';
 import Flight from './Screens/Tourists/Flight';
 import Train from './Screens/Tourists/Train';
 import Bus from './Screens/Tourists/Bus';
@@ -146,6 +147,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage2' component={CreatePackage2 } />
+        <Stack.Screen options={{ headerShown: false }} name='CreatePackage3' component={CreatePackage3 } />
+        
         <Stack.Screen options={{ headerShown: false }} name='Flight' component={Flight } />
         <Stack.Screen options={{ headerShown: false }} name='Train' component={Train } />
         <Stack.Screen options={{ headerShown: false }} name='Bus' component={Bus } />
