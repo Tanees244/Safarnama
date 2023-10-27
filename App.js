@@ -61,6 +61,7 @@ import Bus from './Screens/Tourists/Bus';
 
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
+import GuideRegister from './Screens/Guide/GuideRegister';
 
 const Stack = createNativeStackNavigator();
 
@@ -148,11 +149,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage2' component={CreatePackage2 } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage3' component={CreatePackage3 } />
-        
         <Stack.Screen options={{ headerShown: false }} name='Flight' component={Flight } />
         <Stack.Screen options={{ headerShown: false }} name='Train' component={Train } />
         <Stack.Screen options={{ headerShown: false }} name='Bus' component={Bus } />
-        
+        <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
         
         
         
