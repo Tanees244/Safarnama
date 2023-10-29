@@ -1,6 +1,5 @@
-//done
-import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import GuideDocument from './GuideDocument';
@@ -10,102 +9,124 @@ const GuidePersonalDetail = () => {
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
   const inputWidth = containerWidth * 0.9;
-  const uploadButtonWidth = containerWidth * 0.8;
-  const buttonWidth = screenWidth * 0.4;
+  const uploadButtonWidth = containerWidth * 0.9;
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    age: '',
+    email: '',
+    address: '',
+    phoneNumber: '',
+    cnicNumber: '',
+  });
+
+  const handleFieldChange = (field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
 
   const handleUploadDocuments = () => {
-    navigation.navigate(GuideDocument);
-  };
-  const handleGuideExperience = () => {
-    navigation.navigate('GuideExperience');
-  };
+    // Your previous validation here if needed
 
-  const [text, setText] = useState('');
-  const textInputRef = useRef(null);
-
-  const handleTextChange = (newText) => {
-    setText(newText);
-
-    const totalHeight = (newText.split('\n').length * 25) + 50;
-
-    if (textInputRef.current) {
-      textInputRef.current.setNativeProps({
-        height: Math.max(55, totalHeight),
-      });
+    if (!isFormDataValid()) {
+      Alert.alert('Fill All Fields', 'Please fill in all the fields correctly before proceeding.');
+      return;
     }
+
+    const formDataToStore = formData;
+    navigation.navigate('GuideDocument', { formData: formDataToStore });
+  };
+
+  const isFormDataValid = () => {
+    return (
+      formData.fullName &&
+      formData.age &&
+      formData.email &&
+      formData.address &&
+      formData.phoneNumber &&
+      formData.cnicNumber
+    );
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
-        <Ellipse cx="20%" cy="20%" rx="300" ry="300" fill="#6FBEE9" />
-      </Svg>
-      <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
-        <Ellipse cx="80%" cy="90%" rx="250" ry="250" fill="#6FBEE9" />
-      </Svg>
+    <View style={styles.Container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Safarnama</Text>
+      </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
+          <Ellipse cx="20%" cy="20%" rx="300" ry="300" fill="#4f697c" />
+        </Svg>
+        <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
+          <Ellipse cx="80%" cy="90%" rx="250" ry="250" fill="#355369" />
+        </Svg>
 
-      <Text style={styles.Text}>
-        Personal <Text style={[styles.Text, { color: 'white' }]}>Details</Text>
-      </Text>
+        <Text style={styles.Text}>
+          Personal <Text style={[styles.Text, { color: 'white' }]}>Details</Text>
+        </Text>
 
-      <View style={styles.ButtonContainer}>
-        <TextInput
-          placeholder='Enter Your Full Name'
-          ref={textInputRef}
-          multiline={true}
-          style={[styles.Input, { width: inputWidth }]}
-          onChangeText={handleTextChange}
-        />
-        <TextInput
-          placeholder='Enter Your Age'
-          ref={textInputRef}
-          multiline={true}
-          style={[styles.Input, { width: inputWidth }]}
-          onChangeText={handleTextChange}
-        />
-        <TextInput
-          placeholder='Enter Your Email'
-          ref={textInputRef}
-          multiline={true}
-          style={[styles.Input, { width: inputWidth }]}
-          onChangeText={handleTextChange}
-        />
-        <TextInput
-          placeholder='Enter Your Address'
-          ref={textInputRef}
-          multiline={true}
-          style={[styles.Input, { width: inputWidth }]}
-          onChangeText={handleTextChange}
-        />
-        <TextInput
-          placeholder='Enter Your Phone Number'
-          ref={textInputRef}
-          multiline={true}
-          style={[styles.Input, { width: inputWidth }]}
-          onChangeText={handleTextChange}
-        />
-        <TextInput
-          placeholder='Enter Your CNIC Number'
-          ref={textInputRef}
-          multiline={true}
-          style={[styles.Input, { width: inputWidth }]}
-          onChangeText={handleTextChange}
-        />
-        <View style={[styles.UploadButton, { width: uploadButtonWidth }]}>
-          <Text style={styles.UploadButtonText}>Upload Your Documents</Text> 
-          <TouchableOpacity onPress={handleUploadDocuments}> 
-            <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')}/>
+        <View style={styles.indicator}>
+          <View style={styles.pageIndicatorActive} />
+          <View style={styles.pageIndicator} />
+          <View style={styles.pageIndicator} />
+          <View style={styles.pageIndicator} />
+        </View>
+
+        <View style={styles.ButtonContainer}>
+          <TextInput
+            placeholder='Enter Your Full Name'
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={(text) => handleFieldChange('fullName', text)}
+            value={formData.fullName}
+          />
+          <TextInput
+            placeholder='Enter Your Age'
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={(text) => handleFieldChange('age', text)}
+            value={formData.age}
+            keyboardType='numeric'
+          />
+          <TextInput
+            placeholder='Enter Your Email'
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={(text) => handleFieldChange('email', text)}
+            value={formData.email}
+          />
+          <TextInput
+            placeholder='Enter Your Address'
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={(text) => handleFieldChange('address', text)}
+            value={formData.address}
+          />
+          <TextInput
+            placeholder='Enter Your Phone Number'
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={(text) => handleFieldChange('phoneNumber', text)}
+            value={formData.phoneNumber}
+            keyboardType='numeric'
+          />
+          <TextInput
+            placeholder='Enter Your CNIC'
+            style={[styles.Input, { width: inputWidth }]}
+            onChangeText={(text) => handleFieldChange('cnicNumber', text)}
+            value={formData.cnicNumber}
+            keyboardType='numeric'
+          />
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={[styles.UploadButton, { width: uploadButtonWidth }]}
+            onPress={handleUploadDocuments}
+          >
+            <Text style={styles.UploadButtonText}>Upload Your Documents</Text>
+            <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleGuideExperience} activeOpacity={0.9} style={[styles.buttonText, { width: buttonWidth }]}> 
-          <Text style={styles.TextDesign}>
-            NEXT
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -113,19 +134,54 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
+  Container: {
+    flex: 1,
+  },
+  header: {
+    height: 140,
+    backgroundColor: '#1a1a1a',
+    shadowColor: 'black',
+    elevation: 20,
+    zIndex: -1,
+  },
+  headerText: {
+    textAlign: 'center',
+    top: 60,
+    color: 'white',
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
+  },
   backgroundEllipse: {
     position: 'absolute',
   },
   Text: {
     fontSize: 32,
     color: 'black',
-    fontWeight: 'bold',
-    marginTop: 90,
-    right: 30,
+    fontFamily: 'Poppins-Bold',
+    marginTop: 40,
+    padding: 20,
   },
-  Indicator: {
+  indicator: {
     flexDirection: 'row',
     top: 30,
+  },
+  pageIndicator: {
+    borderWidth: 1,
+    borderRadius: 30,
+    width: 80,
+    height: 15,
+    borderColor: 'black',
+    backgroundColor: '#D9D9D9',
+    marginHorizontal: 2,
+  },
+  pageIndicatorActive: {
+    borderWidth: 1,
+    borderRadius: 30,
+    width: 80,
+    height: 15,
+    borderColor: 'white',
+    backgroundColor: '#071B40',
+    marginHorizontal: 2,
   },
   PageIndicator: {
     borderWidth: 1,
@@ -145,54 +201,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#071B26',
     marginHorizontal: 5, 
   },
-  buttonText: {
-    marginTop: 30,
-    flexDirection: 'row',
-    borderRadius: 38,
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    height: 50,
-    marginBottom:10,
-  },
-  TextDesign: {
-    fontSize: 20,
-    fontWeight: '900',
-    padding: 10,
-    color: 'white',
-  },
   ButtonContainer: {
     marginTop: 70,
+    marginBottom: 70,
+    width: '100%',
     alignItems: 'center',
   },
   Input: {
-    backgroundColor: '#B1D5E9',
+    backgroundColor: '#cccccc',
     paddingHorizontal: 15,
-    paddingVertical: 16,
-    borderRadius: 10,
-    marginTop: 10,
-    height: 70,
-    width: 320,
-  },
-  UploadButton: {
-    backgroundColor: '#B1D5E9',
-    paddingHorizontal: 15,
-    paddingVertical: 16,
+    paddingVertical: 15,
     borderRadius: 10,
     marginTop: 10,
     height: 80,
-    width: 320,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  UploadButton: {
+    backgroundColor: '#cccccc',
+    borderRadius: 10,
+    marginTop: 10,
+    height: 80,
     flexDirection: 'row',
-    marginBottom: 15,   
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   UploadButtonText: {
     color: '#6E6E6E',
-    textAlignVertical: 'center',
-    flex: 1,
+    fontFamily: 'Poppins-SemiBold',
   },
   UploadButtonImage: {
     width: 50,
     height: 50,
-    marginLeft: 50,
   },
 });
 

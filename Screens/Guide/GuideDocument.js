@@ -1,66 +1,132 @@
-//done
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 const GuideDocument = () => {
   const navigation = useNavigation();
 
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = screenWidth * 0.26;
+  const submitButton = screenWidth * 0.4;
   const containerWidth = screenWidth * 0.9;
   const indicatorWidth = screenWidth * 0.2;
 
+  const [imageUri1, setImageUri1] = useState(null);
+  const [imageUri2, setImageUri2] = useState(null);
+  const [imageUri3, setImageUri3] = useState(null);
+  const [imageUri4, setImageUri4] = useState(null);
+
+  const pickImage = async (setImageUri) => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    setImageUri(result.uri);
+    console.log(result);
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (imageUri1 && imageUri2 && imageUri3 && imageUri4) {
+      // All images have been uploaded, you can navigate or perform further actions here
+      // navigation.navigate('NextScreen'); // Uncomment this line to navigate
+    } else {
+      Alert.alert('Upload Images', 'Please upload all required images before submitting.');
+    }
+  };
+  
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.text}>Documents</Text>
-
-      <View style={styles.indicator}>
-        <View style={[styles.pageIndicatorActive, { width: indicatorWidth }]} />
-        <View style={[styles.pageIndicator, { width: indicatorWidth }]} />
-        <View style={[styles.pageIndicator, { width: indicatorWidth }]} />
-        <View style={[styles.pageIndicator, { width: indicatorWidth }]} />
+    <View style={styles.Container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Safarnama</Text>
       </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.text}>Documents</Text>
 
-      <View style={[styles.uploadContainer, { width: containerWidth }]}>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={[styles.button, { width: buttonWidth, height: buttonWidth }]}>
-            <Image source={require('../../assets/upload.png')} style={styles.image} />
-          </TouchableOpacity>
-          <View style={styles.textContainer}>
-            <Text>Picture Of Yourself</Text>
-          </View>
+        <View style={styles.indicator}>
+          <View style={[styles.pageIndicatorActive, { width: indicatorWidth }]} />
+          <View style={[styles.pageIndicator, { width: indicatorWidth }]} />
+          <View style={[styles.pageIndicator, { width: indicatorWidth }]} />
+          <View style={[styles.pageIndicator, { width: indicatorWidth }]} />
         </View>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={[styles.button, { width: buttonWidth, height: buttonWidth }]}>
-            <Image source={require('../../assets/upload.png')} style={styles.image} />
-          </TouchableOpacity>
-          <View style={styles.textContainer}>
-            <Text>CNIC (FRONT)</Text>
-          </View>
-        </View>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={[styles.button, { width: buttonWidth, height: buttonWidth }]}>
-            <Image source={require('../../assets/upload.png')} style={styles.image} />
-          </TouchableOpacity>
-          <View style={styles.textContainer}>
-            <Text>CNIC (BACK)</Text>
-          </View>
-        </View>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={[styles.button, { width: buttonWidth, height: buttonWidth }]}>
-            <Image source={require('../../assets/upload.png')} style={styles.image} />
-          </TouchableOpacity>
-          <View style={styles.textContainer}>
-            <Text>Tour Guide License</Text>
-          </View>
-        </View>
-      </View>
 
-      <TouchableOpacity style={styles.submitButton}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <View style={[styles.uploadContainer, { width: containerWidth }]}>
+          <View style={styles.subContainer}>
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
+              onPress={() => pickImage(setImageUri1)}
+            >
+              {imageUri1 ? (
+                <Image source={{ uri: imageUri1 }} style={styles.image} />
+              ) : (
+                <Image source={require('../../assets/upload.png')} style={styles.image} />
+              )}
+            </TouchableOpacity>
+            <View style={styles.textContainer}>
+              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>Picture Of Yourself</Text>
+            </View>
+          </View>
+          <View style={styles.subContainer}>
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
+              onPress={() => pickImage(setImageUri2)}
+            >
+              {imageUri2 ? (
+                <Image source={{ uri: imageUri2 }} style={styles.image} />
+              ) : (
+                <Image source={require('../../assets/upload.png')} style={styles.image} />
+              )}
+            </TouchableOpacity>
+            <View style={styles.textContainer}>
+              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>CNIC (FRONT)</Text>
+            </View>
+          </View>
+          <View style={styles.subContainer}>
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
+              onPress={() => pickImage(setImageUri3)}
+            >
+              {imageUri1 ? (
+                <Image source={{ uri: imageUri3 }} style={styles.image} />
+              ) : (
+                <Image source={require('../../assets/upload.png')} style={styles.image} />
+              )}
+            </TouchableOpacity>
+            <View style={styles.textContainer}>
+              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>CNIC (BACK)</Text>
+            </View>
+          </View>
+          <View style={styles.subContainer}>
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
+              onPress={() => pickImage(setImageUri4)}
+            >
+              {imageUri1 ? (
+                <Image source={{ uri: imageUri4 }} style={styles.image} />
+              ) : (
+                <Image source={require('../../assets/upload.png')} style={styles.image} />
+              )}
+            </TouchableOpacity>
+            <View style={styles.textContainer}>
+              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>Tour Guide License</Text>
+            </View>
+          </View>
+        </View>
+
+        <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -68,13 +134,29 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     alignItems: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 40,
+    backgroundColor: '#e6e6e6',
+  },
+  Container: {
+    flex: 1,
+  },
+  header: {
+    height: 140,
+    backgroundColor: '#1a1a1a',
+    shadowColor: 'black',
+    elevation: 20,
+    zIndex: -1,
+  },
+  headerText: {
+    textAlign: 'center',
+    top: 60,
+    color: 'white',
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
   },
   text: {
     fontSize: 32,
     color: 'black',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     marginTop: 30,
     marginBottom: 20,
   },
@@ -104,17 +186,16 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     flexDirection: 'row',
-    backgroundColor: '#D9D9D9',
-    borderRadius: 66,
+    backgroundColor: '#4f697c',
+    borderRadius: 60,
     height: 120,
-    width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 10,
     paddingHorizontal: 20,
   },
   button: {
-    borderRadius: 30,
+    borderRadius: 60,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
@@ -127,20 +208,21 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
     justifyContent: 'center',
+    fontFamily: 'Poppins-Regular',
   },
   submitButton: {
+    borderRadius: 38,
     backgroundColor: '#319BD6',
-    width: 200,
-    height: 60,
-    borderRadius: 40,
-    marginTop: 40,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    marginTop: 30,
+    marginBottom: 30,
   },
   submitButtonText: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
     color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 
