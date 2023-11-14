@@ -61,7 +61,7 @@ const HotelOperation = () => {
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelOperations}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
-                        source={require("../../assets/camera-indoor-black.png")}/>
+                        source={require("../../assets/Home.png")}/>
                          <Text style={styles.home}>Home</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelProfile} >

@@ -1,12 +1,14 @@
-//done
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const GuideExperience = () => {
+
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
   const navigation = useNavigation();
+  const [experience, setExperience] = useState('');
+  const [motivation, setMotivation] = useState('');
 
   const handleTextChange = (newText) => {
     setText(newText);
@@ -19,72 +21,105 @@ const GuideExperience = () => {
     }
   };
 
+  const handleExperienceChange = (newExperience) => {
+    setExperience(newExperience);
+  };
+
+  const handleMotivationChange = (newMotivation) => {
+    setMotivation(newMotivation);
+  };
+
   const handleGuideBankDetail = () => {
-    navigation.navigate('GuideBankDetail');
+    if (experience && motivation) {
+      // Both fields are filled, you can navigate or perform further actions here
+      navigation.navigate('GuideBankDetail'); 
+    } else {
+      Alert.alert('Please fill in all fields before submitting.');
+    }
   };
 
   const screenWidth = Dimensions.get('window').width;
   const inputContainerWidth = screenWidth * 0.9;
   const buttonWidth = screenWidth * 0.4;
+  const submitButton = screenWidth * 0.4;
   const inputBoxWidth = inputContainerWidth - 40; // Subtract padding
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.text}>Experience</Text>
+    <View style={styles.Container}>
+    <View style={styles.header}>
+      <Text style={styles.headerText}>Safarnama</Text>
+    </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.text}>Experience</Text>
 
-      <View style={styles.indicator}>
-        <View style={styles.pageIndicatorActive} />
-        <View style={styles.pageIndicatorActive} />
-        <View style={styles.pageIndicator} />
-        <View style={styles.pageIndicator} />
-      </View>
-
-      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-        <Text style={styles.inputHeading}>Your Past Experience</Text>
-        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-          <TextInput
-            ref={textInputRef}
-            multiline={true}
-            style={styles.input}
-            onChangeText={handleTextChange}
-          />
+        <View style={styles.indicator}>
+          <View style={styles.pageIndicatorActive} />
+          <View style={styles.pageIndicatorActive} />
+          <View style={styles.pageIndicator} />
+          <View style={styles.pageIndicator} />
         </View>
-      </View>
 
-      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-        <Text style={styles.inputHeading}>Motivation to become a guide</Text>
-        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-          <TextInput
-            ref={textInputRef}
-            multiline={true}
-            style={styles.input}
-            onChangeText={handleTextChange}
-          />
+        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+          <Text style={styles.inputHeading}>Your Past Experience</Text>
+          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+            <TextInput
+              ref={textInputRef}
+              multiline={true}
+              style={styles.input}
+              onChangeText={handleExperienceChange}
+            />
+          </View>
         </View>
-      </View>
-      <View>
-        <TouchableOpacity activeOpacity={0.5} onPress={handleGuideBankDetail} 
-            style={[styles.buttonText, { width: buttonWidth }]}>
-            <Text style={styles.TextDesign}>Next</Text>
+
+
+        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+          <Text style={styles.inputHeading}>Motivation to become a guide</Text>
+          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+            <TextInput
+              ref={textInputRef}
+              multiline={true}
+              style={styles.input}
+              onChangeText={handleMotivationChange}
+            />
+          </View>
+        </View>
+        <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleGuideBankDetail}>
+          <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: 'space-evenly',
     alignItems: 'center',
-    padding: 80,
+    backgroundColor: 'white',
+  },
+  Container: {
+    flex: 1,
+  },
+  header: {
+    height: 140,
+    backgroundColor: '#1a1a1a',
+    shadowColor: 'black',
+    elevation: 20,
+    zIndex: -1,
+  },
+  headerText: {
+    textAlign: 'center',
+    top: 60,
+    color: 'white',
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
   },
   text: {
     fontSize: 32,
     color: 'black',
-    fontWeight: 'bold',
-    marginTop: 20,
-    right: 60,
+    fontFamily: 'Poppins-Bold',
+    marginTop: 30,
+    marginBottom: 20,
   },
   indicator: {
     flexDirection: 'row',
@@ -114,6 +149,7 @@ const styles = StyleSheet.create({
   },
   inputHeading: {
     fontSize: 20,
+    fontFamily: 'Poppins-Regular',
   },
   inputBox: {
     marginTop: 10,
@@ -123,26 +159,25 @@ const styles = StyleSheet.create({
     padding: 20,
     borderWidth: 1,
     borderColor: 'black',
-
   },
   input: {
     flex: 1,
     fontSize: 16,
   },
-  buttonText: {
-    marginTop: 30,
-    flexDirection: 'row',
+  submitButton: {
     borderRadius: 38,
     backgroundColor: '#319BD6',
     justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    marginTop: 30,
+    marginBottom: 30,
   },
-  TextDesign: {
+  submitButtonText: {
     fontSize: 20,
-    fontWeight: '900',
-    padding: 10,
+    fontFamily: 'Poppins-Bold',
     color: 'white',
   },
-
 });
 
 export default GuideExperience;

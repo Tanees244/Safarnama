@@ -43,89 +43,110 @@ const GuideQuestionnaire = () => {
     };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.indicator}>
-        <View style={styles.pageIndicatorActive} />
-        <View style={styles.pageIndicatorActive} />
-        <View style={styles.pageIndicatorActive} />
-        <View style={styles.pageIndicatorActive} />
-      </View>
+    <View style={styles.Container}>
+    <View style={styles.header}>
+      <Text style={styles.headerText}>Safarnama</Text>
+    </View>
+      <ScrollView contentContainerStyle={styles.container}>
 
-      <Text style={styles.text}>Questionnaire</Text>
+        <Text style={styles.text}>Questionnaire</Text>
 
-      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-        <Text style={styles.inputHeading}>Question#1</Text>
-        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-          <TextInput
-            ref={textInputRef}
-            multiline={true}
-            style={styles.input}
-            onChangeText={handleTextChange}
+        <View style={styles.indicator}>
+          <View style={styles.pageIndicatorActive} />
+          <View style={styles.pageIndicatorActive} />
+          <View style={styles.pageIndicatorActive} />
+          <View style={styles.pageIndicatorActive} />
+        </View>
+
+        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+          <Text style={styles.inputHeading}>Question#1</Text>
+          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+            <TextInput
+              ref={textInputRef}
+              multiline={true}
+              style={styles.input}
+              onChangeText={handleTextChange}
+            />
+          </View>
+        </View>
+
+        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+          <Text style={styles.inputHeading}>Question#2</Text>
+          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+            <TextInput
+              ref={textInputRef}
+              multiline={true}
+              style={styles.input}
+              onChangeText={handleTextChange}
+            />
+          </View>
+        </View>
+        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
+          <Text style={styles.inputHeading}>Question#3</Text>
+          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
+            <TextInput
+              ref={textInputRef}
+              multiline={true}
+              style={styles.input}
+              onChangeText={handleTextChange}
+            />
+          </View>
+        </View>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+          title='Privacy Policy'
+          checked={isChecked}
+          onPress={handleCheckBox}
           />
         </View>
-      </View>
-
-      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-        <Text style={styles.inputHeading}>Question#2</Text>
-        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-          <TextInput
-            ref={textInputRef}
-            multiline={true}
-            style={styles.input}
-            onChangeText={handleTextChange}
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+          title='Terms & Condition'
+          checked={isChecked}
+          onPress={handleCheckBox}
           />
         </View>
-      </View>
-      <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-        <Text style={styles.inputHeading}>Question#3</Text>
-        <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-          <TextInput
-            ref={textInputRef}
-            multiline={true}
-            style={styles.input}
-            onChangeText={handleTextChange}
-          />
+        <View>
+          <TouchableOpacity activeOpacity={0.5}
+          onPress={navigateToGuideHomeScreen} 
+              style={[styles.buttonText, { width: buttonWidth }]}>
+              <Text style={styles.TextDesign}>Apply</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.checkboxContainer}>
-        <CheckBox
-         title='Privacy Policy'
-        checked={isChecked}
-        onPress={handleCheckBox}
-        />
-      </View>
-      <View style={styles.checkboxContainer}>
-        <CheckBox
-         title='Terms & Condition'
-        checked={isChecked}
-        onPress={handleCheckBox}
-        />
-      </View>
-      <View>
-        <TouchableOpacity activeOpacity={0.5}
-        onPress={navigateToGuideHomeScreen} 
-            style={[styles.buttonText, { width: buttonWidth }]}>
-            <Text style={styles.TextDesign}>Apply</Text>
-        </TouchableOpacity>
-      </View>
-
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: 'space-evenly',
     alignItems: 'center',
-    padding: 80,
+    backgroundColor: 'white',
+  },
+  Container: {
+    flex: 1,
+  },
+  header: {
+    height: 140,
+    backgroundColor: '#1a1a1a',
+    shadowColor: 'black',
+    elevation: 20,
+    zIndex: -1,
+  },
+  headerText: {
+    textAlign: 'center',
+    top: 60,
+    color: 'white',
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
   },
   text: {
     fontSize: 32,
     color: '#319BD6',
-    fontWeight: 'bold',
-    marginTop: 20,
-    right: 60,
+    fontFamily: 'Poppins-Bold',
+    marginTop: 30,
+    marginBottom: 20,
   },
   checkboxContainer: {
     flexDirection: 'row',

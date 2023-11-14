@@ -30,10 +30,10 @@ const GuidePersonalDetail = () => {
   const handleUploadDocuments = () => {
     // Your previous validation here if needed
 
-    if (!isFormDataValid()) {
+    /*if (!isFormDataValid()) {
       Alert.alert('Fill All Fields', 'Please fill in all the fields correctly before proceeding.');
       return;
-    }
+    }*/
 
     const formDataToStore = formData;
     navigation.navigate('GuideDocument', { formData: formDataToStore });

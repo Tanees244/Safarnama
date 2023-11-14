@@ -119,7 +119,7 @@ const PlaceLists = () => {
             onPress={handleDiscoverPress}
             activeOpacity={0.5}
             >
-            <Image source={require("../../assets/camera-indoor-black.png")} style = {[{width: 30, height: 30}]}/>
+            <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]}/>
         </TouchableOpacity>
         <ScrollView>
           <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Places</Text></Text>

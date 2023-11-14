@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -35,9 +35,8 @@ const GuideDocument = () => {
   };
 
   const handleSubmit = () => {
-    if (imageUri1 && imageUri2 && imageUri3 && imageUri4) {
-      // All images have been uploaded, you can navigate or perform further actions here
-      // navigation.navigate('NextScreen'); // Uncomment this line to navigate
+    if (!(imageUri1 && imageUri2 && imageUri3 && imageUri4)) {
+      navigation.navigate('GuideExperience');
     } else {
       Alert.alert('Upload Images', 'Please upload all required images before submitting.');
     }

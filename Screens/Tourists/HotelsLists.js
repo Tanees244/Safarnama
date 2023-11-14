@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 
 const data = [
   {
@@ -100,27 +101,82 @@ const HorizontalCard = ({ item, onPress }) => {
 const HotelsLists = () => {
 
     const navigation = useNavigation();
-
-    const handleDiscoverPress = () => {
-        navigation.navigate('Discover')
-    }
+    const [isExpanded, setIsExpanded] = useState(false);
+    const scaleValue = new Animated.Value(0);
 
     const navigateToHotesInfo = () => {
         navigation.navigate('HotelsInfo')
     }
+
+    const toggleMenu = () => {
+      const toValue = isExpanded ? 0 : 1;
+      Animated.timing(scaleValue, {
+          toValue,
+          duration: 0,
+          useNativeDriver: true,
+      }).start();
+      setIsExpanded(!isExpanded);
+    }
+
+    const handleMenuItemPress = (menuItem) => {
+        // Handle navigation based on the selected menu item
+        // For example:
+        if (menuItem === 'Home') {
+          navigation.navigate('Discover')
+        } else if (menuItem === 'Profile') {
+          navigation.navigate('TouristProfile')
+        } else if (menuItem === 'Booking') {
+          navigation.navigate('CreatePackage')
+        }
+        // Collapse the menu after selection
+        toggleMenu();
+    }
+
+    const scale = scaleValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 4],
+    });
   
     return (
       <View style={styles.Container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Safarnama</Text>
         </View>
-        <TouchableOpacity 
-            style={styles.HomeButton}
-            onPress={handleDiscoverPress}
-            activeOpacity={0.5}
+        {isExpanded && (
+                <View style={styles.expandedMenu}>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Home')}
+                    >
+                        <Image source={require("../../assets/Home.png")} style = {[{width: 40, height: 40}]} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Profile')}
+                    >
+                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 40, height: 40}]}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Booking')}
+                    >
+                        <Image source={require("../../assets/booking.png")} style = {[{width: 40, height: 40}]}/>
+                    </TouchableOpacity>
+                </View>
+            )}
+            <TouchableOpacity
+                style={styles.HomeButton}
+                onPress={toggleMenu}
+                activeOpacity={0.5}
             >
-            <Image source={require("../../assets/camera-indoor-black.png")} style = {[{width: 30, height: 30}]}/>
-        </TouchableOpacity>
+                {isExpanded ? (
+                    // Render close icon or any icon you prefer
+                    <Image source={require("../../assets/WhiteClose.png")} style = {[{width: 30, height: 30}]}/>
+                ) : (
+                    // Your existing Home button content
+                    <Image source={require("../../assets/ViewMore.png")} style = {[{width: 35, height: 35}]}/>
+                )}
+            </TouchableOpacity>
         <ScrollView>
           <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Hotels</Text></Text>
           <FlatList
@@ -151,15 +207,15 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-      height: 120,
-      backgroundColor: '#213555',
-      shadowColor: 'black',
-      elevation: 20,
-      borderRadius:40,
-      },
+        height: 140,
+        backgroundColor: '#1a1a1a',
+        shadowColor: 'black',
+        elevation: 20,
+        zIndex: -1,
+    },
     headerText: {
         textAlign: 'center',
-        top: 50,
+        top: 60,
         fontSize: 30,
         color: '#FFFFFF',
         fontFamily: 'Poppins-Bold',
@@ -264,8 +320,8 @@ const styles = StyleSheet.create({
         bottom: 20,
         width: '100%', 
         alignItems: 'center',
-      },
-      HomeButton: {
+    },
+    HomeButton: {
         position: 'absolute',
         bottom: 20,
         left: 20,
@@ -278,7 +334,38 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         elevation: 5,
         zIndex: 2,
-      },
+    },
+    HomeButton: {
+      position: 'absolute',
+      bottom: 20,
+      left: 20,
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: 'black',
+      alignItems: 'center',
+      justifyContent: 'center',
+      elevation: 5,
+      zIndex: 2,
+  },
+  expandedMenu: {
+      position: 'absolute',
+      bottom: 10,
+      left: 100,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 3,
+  },
+  expandedMenuItem: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: 'black',
+      margin: 10,
+  },
 });
 
 export default HotelsLists;
