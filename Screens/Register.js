@@ -21,7 +21,7 @@ const Register = () => {
   };
 
   const handleVendor = () => {
-    navigation.navigate('AirlineDashboard');
+    navigation.navigate('CreateAirline');
   };
 
   const handleGuide = () => {

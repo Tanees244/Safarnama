@@ -33,10 +33,9 @@ const AirlineDashboard = () => {
     };
     
     const handleCitySelection = (city) => {
-      setSelectedCity(city);
+      setFromCity(city); // Assuming "fromCity" state is used to store the selected city
       toggleCityDropdown(false);
-    };
-    
+    };    
 
     const toggleAddTicketModal = () => {
     setAddTicketModalVisible(!isAddTicketModalVisible);
@@ -189,22 +188,21 @@ const AirlineDashboard = () => {
           </Text>
           <View style={styles.input}>
           <Dropdown
-              options={cityOptions}
-              defaultValue='Select A City'
-              textStyle={styles.DropdownText}
-              dropdownStyle={[styles.DropdownContainer, isCityDropdownVisible ? {} : { display: 'none' }]} // Apply the display style to control visibility
-              initialScrollIndex={0}
-              isVisible={isCityDropdownVisible}
-              onClose={() => toggleCityDropdown(false)}
-              onSelect={(index, city) => handleCitySelection(city)}
-              dropdownTextStyle={styles.CustomDropdownText}
-              dropdownPosition={0}
-              dropdownOffset={{ top: 0, left: 0 }}
-            />
+            options={cityOptions}
+            defaultValue='Select A City'
+            textStyle={styles.DropdownText}
+            dropdownStyle={styles.DropdownContainer}
+            isVisible={isCityDropdownVisible}
+            onClose={() => toggleCityDropdown(false)}
+            onSelect={(index, city) => handleCitySelection(city)}
+            dropdownTextStyle={styles.CustomDropdownText}
+            dropdownPosition={0}
+            dropdownOffset={{ top: 0, left: 0 }}
+          />
           </View>
           <View style={styles.input}>
             <Text style={styles.DropdownText}>{toCity}</Text>
-            </View>
+          </View>
             <TextInput
             placeholder="Flight Number"
             value={editTicketIndex >= 0 ? submittedData[editTicketIndex]?.FlightNumber : FlightNumber}
@@ -247,11 +245,16 @@ const AirlineDashboard = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSubmission}
-              style={styles.AddTicketButton}
+              style={[
+                styles.AddTicketButton,
+                {
+                  backgroundColor: isSubmitButtonEnabled ? '#54aaec' : 'grey',
+                },
+              ]}
               disabled={!isSubmitButtonEnabled}
             >
               <Text style={styles.AddTicketButtonText}>Submit</Text>
-             </TouchableOpacity>
+            </TouchableOpacity>
         </View>
       </Modal>
     </View>

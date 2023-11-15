@@ -16,6 +16,8 @@ const CreateAirline = () => {
   const [description, setDescription] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState(null);
+  const [isSubmitButtonEnabled, setIsSubmitButtonEnabled] = useState(false);
+
 
   const textInputRef = useRef(null);
 
@@ -52,10 +54,12 @@ const CreateAirline = () => {
     }
   };
 
-  const isSubmitButtonEnabled = name !== '' && description !== '' && email !== '';
+  useEffect(() => {
+    setIsSubmitButtonEnabled(name !== '' && description !== '' && email !== '');
+  }, [name, description, email]);
 
   const handleDashboard = () => {
-    navigation.navigate('AirlineDashboard');
+    navigation.navigate('AirlineProfile');
   };
 
   return (
@@ -106,11 +110,13 @@ const CreateAirline = () => {
               <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
             </TouchableOpacity>
           </View>
-          {isSubmitButtonEnabled && (
-            <TouchableOpacity style={styles.SubmitButton} onPress={handleDashboard}>
-                <Text style={styles.SubmitText}>Apply</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            style={[styles.SubmitButton, { backgroundColor: isSubmitButtonEnabled ? '#0a78cd' : 'grey' }]}
+            onPress={handleDashboard}
+            disabled={!isSubmitButtonEnabled}
+          >
+            <Text style={styles.SubmitText}>Apply</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
