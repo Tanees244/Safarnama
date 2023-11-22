@@ -2,17 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Ellipse } from 'react-native-svg';
-import {  Vector } from '../assets';
+import {  Vector } from '../../assets';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FIREBASE_AUTH, auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-
-const Register = () => {
+const TouristRegister = () => {
 
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const [loading, setLoading] = useState('false');
-  const auth = FIREBASE_AUTH;
   
   const navigation = useNavigation();
 
@@ -20,40 +15,10 @@ const Register = () => {
     navigation.navigate('Login');
   };
 
-  const handleVendor = () => {
-    navigation.navigate('CreateHotel');
-  };
-
-  const handleGuide = () => {
-    navigation.navigate('GuideRegister');
+  const handleSignup =  () => {
+      navigation.navigate('TouristPersonalDetail');
   };
   
-  useEffect (() => {
-    const unsubscribe = auth.onAuthStateChanged( user => {
-      if (user) {
-        navigation.navigate("Login")
-      }
-    })
-
-    return unsubscribe
-
-  } ,[])
-
-  const handleSignup = async () =>{
-    setLoading(true);
-    try {
-      const response = await createUserWithEmailAndPassword(auth,email,Password);
-      console.log(response);
-    }
-    catch(error){
-      console.error(error);
-      alert('Sign Up failed: ' + error.message); 
-    }
-    finally{
-      setLoading(false);
-    }
-  }
-
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.container}>
@@ -93,30 +58,6 @@ const Register = () => {
             >
             <Text style={styles.RegisterText}>Register</Text>
           </TouchableOpacity>
-          
-
-          {/* <View style={styles.VendorContainer}>
-            <Text style={styles.text2}>SIGNUP AS</Text>
-          </View>
-
-          <View style={styles.VendorButtons}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={handleVendor}
-              style={styles.Button}
-            >
-              <Text style={styles.boldText}>VENDOR</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={handleGuide}
-              style={styles.Button}
-            >
-              <Text style={styles.boldText}>GUIDE</Text>
-            </TouchableOpacity>
-          </View> */}
-
 
           <View style={styles.Signup}>
             <Text style={styles.text2}>ACCOUNT ALREADY EXISTS</Text>
@@ -232,4 +173,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default TouristRegister;

@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/Homescreen';
 import Login from "./Screens/Login";
-import Register from "./Screens/Register";
 import Discover from './Screens/Tourists/Discover';
 import VendorCategory from './Screens/VendorRegisteration/VendorCategory';
 import TransportCategory from './Screens/VendorRegisteration/TransportCategory';
@@ -61,10 +60,11 @@ import Bus from './Screens/Tourists/Bus';
 import PlacesInfo from './Screens/Tourists/PlacesInfo';
 import PlaceLists from './Screens/Tourists/PlaceLists';
 import TouristProfile from './Screens/Tourists/TouristProfile';
-
-import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
 import GuideRegister from './Screens/Guide/GuideRegister';
+import TouristRegister from './Screens/Tourists/TouristRegister';
+
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
@@ -98,7 +98,6 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
-        <Stack.Screen options={{ headerShown: false }} name='Register' component={Register} />
         <Stack.Screen options={{ headerShown: false }} name='Login' component={Login} />
         <Stack.Screen options={{ headerShown: false }} name='Discover' component={Discover} />
         <Stack.Screen options={{ headerShown: false }} name='Category' component={Category} />
@@ -158,6 +157,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='PlacesInfo' component={PlacesInfo } />
         <Stack.Screen options={{ headerShown: false }} name='PlaceLists' component={PlaceLists } />
         <Stack.Screen options={{ headerShown: false }} name='TouristProfile' component={TouristProfile } />
+        <Stack.Screen options={{ headerShown: false }} name='TouristRegister' component={TouristRegister } />
 
         
         
