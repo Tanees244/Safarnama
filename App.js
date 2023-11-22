@@ -165,11 +165,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='RegisterA' component={RegisterA } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterT' component={RegisterT } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterB' component={RegisterB } />
-        
-
-        
-        
-        
         <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
         
         
