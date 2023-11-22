@@ -61,7 +61,9 @@ import Bus from './Screens/Tourists/Bus';
 import PlacesInfo from './Screens/Tourists/PlacesInfo';
 import PlaceLists from './Screens/Tourists/PlaceLists';
 import TouristProfile from './Screens/Tourists/TouristProfile';
-
+import RegisterA from './Screens/Airline/RegisterA';
+import RegisterT from './Screens/Train/RegisterT';
+import RegisterB from './Screens/Bus/RegisterB';
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
 import GuideRegister from './Screens/Guide/GuideRegister';
@@ -158,6 +160,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='PlacesInfo' component={PlacesInfo } />
         <Stack.Screen options={{ headerShown: false }} name='PlaceLists' component={PlaceLists } />
         <Stack.Screen options={{ headerShown: false }} name='TouristProfile' component={TouristProfile } />
+        <Stack.Screen options={{ headerShown: false }} name='RegisterA' component={RegisterA } />
+        <Stack.Screen options={{ headerShown: false }} name='RegisterT' component={RegisterT } />
+        <Stack.Screen options={{ headerShown: false }} name='RegisterB' component={RegisterB } />
+        
 
         
         

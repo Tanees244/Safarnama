@@ -8,16 +8,20 @@ const TransportCategory = () => {
   const navigation = useNavigation();
 
   const navigateToAirline = () => {
-    navigation.navigate('Register'); // Make sure to use the correct route name
+    navigation.navigate('RegisterA'); // Make sure to use the correct route name
   };
 
   const navigateToBus = () => {
-    navigation.navigate('Register'); // Make sure to use the correct route name
+    navigation.navigate('RegisterB'); // Make sure to use the correct route name
   };
+  const navigateToTrain = () => {
+    navigation.navigate('RegisterT'); // Make sure to use the correct route name
+  };
+  
 
   const screenWidth = Dimensions.get('window').width;
   const cardWidth = screenWidth * 0.27;
-  const cardButtonWidth = cardWidth + 20; // Adding margin for the button
+  const cardButtonWidth = cardWidth + 5; // Adding margin for the button
 
   return (
     <Animatable.View style={styles.container}>
@@ -31,6 +35,12 @@ const TransportCategory = () => {
             <Image style={styles.cardImage} source={require("../../assets/vendor1.png")} />
             <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToAirline}>
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Airline</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.card, { width: cardWidth }]}>
+            <Image style={styles.cardImage} source={require("../../assets/train.png")} />
+            <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToTrain}>
+              <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Train</Text>
             </TouchableOpacity>
           </View>
           <View style={[styles.card, { width: cardWidth }]}>
@@ -71,8 +81,8 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get('window').height * 0.35, // Approximately 30% of screen height
   },
   card: {
-    backgroundColor: '#D9D9D9',
-    borderRadius: 60,
+    backgroundColor: '#071B26',
+    borderRadius: 40,
     height: Dimensions.get('window').width * 0.27, // Approximately 27% of screen width
     alignItems: 'center',
     justifyContent: 'center',
@@ -81,7 +91,9 @@ const styles = StyleSheet.create({
   cardImage: {
     width: Dimensions.get('window').width * 0.13, // Approximately 13% of screen width
     height: Dimensions.get('window').width * 0.13,
-    top: Dimensions.get('window').width * 0.3, // Half the card's height
+    top: Dimensions.get('window').width * 0.28, // Half the card's height
+    backgroundColor:'white',
+    borderRadius:15,
   },
   cardButton: {
     backgroundColor: '#071B26',
