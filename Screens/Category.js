@@ -8,11 +8,11 @@ const Category = () => {
   const navigation = useNavigation();
 
   const navigateToTourist = () => {
-    navigation.navigate('Discover'); // Make sure to use the correct route name
+    navigation.navigate('Register'); // Make sure to use the correct route name
   };
 
   const navigateToGuide = () => {
-    navigation.navigate('GuideHome'); // Make sure to use the correct route name
+    navigation.navigate('Register'); // Make sure to use the correct route name
   };
 
   const navigateToVendor = () => {

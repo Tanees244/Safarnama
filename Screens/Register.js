@@ -95,7 +95,7 @@ const Register = () => {
           </TouchableOpacity>
           
 
-          <View style={styles.VendorContainer}>
+          {/* <View style={styles.VendorContainer}>
             <Text style={styles.text2}>SIGNUP AS</Text>
           </View>
 
@@ -115,7 +115,7 @@ const Register = () => {
             >
               <Text style={styles.boldText}>GUIDE</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
 
           <View style={styles.Signup}>

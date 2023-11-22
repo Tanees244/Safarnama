@@ -8,11 +8,11 @@ const TransportCategory = () => {
   const navigation = useNavigation();
 
   const navigateToAirline = () => {
-    navigation.navigate('CreateAirline'); // Make sure to use the correct route name
+    navigation.navigate('Register'); // Make sure to use the correct route name
   };
 
   const navigateToBus = () => {
-    navigation.navigate('BusRegister'); // Make sure to use the correct route name
+    navigation.navigate('Register'); // Make sure to use the correct route name
   };
 
   const screenWidth = Dimensions.get('window').width;

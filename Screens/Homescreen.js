@@ -14,7 +14,7 @@ const HomeScreen = () => {
 
   const handleRegisterPress = () => {
     // Navigate to the registration screen
-    navigation.navigate(Register);
+    navigation.navigate("Category");
   };
 
   const handleLoginPress = () => {
