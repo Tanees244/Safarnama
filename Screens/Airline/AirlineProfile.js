@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 30,
-        marginTop: 20,
     },
 });
 
