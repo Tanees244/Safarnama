@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import Dropdown from 'react-native-modal-dropdown';
 import { useNavigation } from '@react-navigation/native';
 
-const TrainDashboard = () => {
+const BusDashboard = () => {
 
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.9;
@@ -400,4 +400,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TrainDashboard;
+export default  BusDashboard;

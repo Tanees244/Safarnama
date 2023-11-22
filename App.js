@@ -67,6 +67,12 @@ import RegisterB from './Screens/Bus/RegisterB';
 import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
 import GuideRegister from './Screens/Guide/GuideRegister';
+import TrainDashboard from './Screens/Train/TrainDashboard';
+import BusDashboard from './Screens/Bus/BusDashboard';
+import TrainDetails from './Screens/Train/TrainDetails';
+import BusDetails from './Screens/Bus/BusDetails';
+import AirlineDetails from './Screens/Airline/AirlineDetails';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -163,6 +169,13 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='RegisterA' component={RegisterA } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterT' component={RegisterT } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterB' component={RegisterB } />
+        <Stack.Screen options={{ headerShown: false }} name='TrainDashboard' component={TrainDashboard } />
+        <Stack.Screen options={{ headerShown: false }} name='BusDashboard' component={BusDashboard } />
+        <Stack.Screen options={{ headerShown: false }} name='TrainDetails' component={TrainDetails } />
+        <Stack.Screen options={{ headerShown: false }} name='BusDetails' component={BusDetails } />
+        <Stack.Screen options={{ headerShown: false }} name='AirlineDetails' component={AirlineDetails } />
+        
+        
         
 
         

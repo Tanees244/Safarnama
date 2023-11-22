@@ -17,7 +17,7 @@ const RegisterB = () => {
   };
   
   const navigateToAirlinePersonalDetail = () => {
-    navigation.navigate('AirlineDashboard');
+    navigation.navigate('BusDetails');
   };
   
 
