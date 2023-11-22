@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Ellipse } from 'react-native-svg';
-import {  Vector } from '../../assets';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
+
 const TouristRegister = () => {
 
   const [email, setEmail] = useState('');
@@ -14,23 +14,25 @@ const TouristRegister = () => {
   const handleLogin = () => {
     navigation.navigate('Login');
   };
-
-  const handleSignup =  () => {
-      navigation.navigate('TouristPersonalDetail');
-  };
   
+  const handleSignup =  () =>{
+    navigation.navigate('TouristPersonalDetail');
+  };
+   
+   
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.container}>
 
       <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
-        <Ellipse cx="50%" cy="20%" rx="400" ry="400" fill="#071B26" />
+        <Ellipse cx="20%" cy="5%" rx="400" ry="400" fill="#071B26" />
+      </Svg>
+      <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
+        <Ellipse cx="80%" cy="120%" rx="400" ry="400" fill="#071B26" />
       </Svg>
 
       <View style={styles.Textcontainer}>
-        <Image style={styles.vector} source={Vector}/>
-        <Text style={styles.text}>Safarnama</Text>
-        <Text style={{color: '#319BD6', fontSize: 16, fontFamily: 'Poppins-SemiBold', top:-15}}>Join With Us To Travel Around Pakistan</Text>
+        <Text style={styles.text}>Tourist Registration</Text>
       
         <View style={styles.ButtonContainer}>
 
@@ -58,6 +60,8 @@ const TouristRegister = () => {
             >
             <Text style={styles.RegisterText}>Register</Text>
           </TouchableOpacity>
+          
+
 
           <View style={styles.Signup}>
             <Text style={styles.text2}>ACCOUNT ALREADY EXISTS</Text>
@@ -92,13 +96,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   vector:{
-    top: 20,
-    right: 160,
+    top: -30,
+    right: 150,
   },
   text: {
     fontSize: 45,
     fontFamily: 'Poppins-Bold',
     color: 'white',
+    
+    textAlign:'center',
   },
   ButtonContainer: {
     marginTop: 90,
@@ -165,11 +171,13 @@ const styles = StyleSheet.create({
   text2: {
     fontSize: 15,
     fontFamily: 'Poppins-Regular',
+    color:'white',
   },
   boldText: {
     fontSize: 15,
     fontFamily: 'Poppins-SemiBold',
     bottom: 0.5,
+    color:'white',
   },
 });
 

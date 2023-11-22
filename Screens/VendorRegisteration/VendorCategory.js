@@ -12,7 +12,7 @@ const Category = () => {
   };
 
   const navigateToHotel = () => {
-    navigation.navigate('Register'); // Make sure to use the correct route name
+    navigation.navigate('HotelRegister'); // Make sure to use the correct route name
   };
 
   return (
