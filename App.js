@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './Screens/Homescreen';
 import Login from "./Screens/Login";
-import Register from "./Screens/Register";
 import Discover from './Screens/Tourists/Discover';
 import VendorCategory from './Screens/VendorRegisteration/VendorCategory';
 import TransportCategory from './Screens/VendorRegisteration/TransportCategory';
@@ -64,7 +63,6 @@ import TouristProfile from './Screens/Tourists/TouristProfile';
 import RegisterA from './Screens/Airline/RegisterA';
 import RegisterT from './Screens/Train/RegisterT';
 import RegisterB from './Screens/Bus/RegisterB';
-import { useFonts } from 'expo-font';
 import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
 import GuideRegister from './Screens/Guide/GuideRegister';
 import TrainDashboard from './Screens/Train/TrainDashboard';
@@ -73,6 +71,10 @@ import TrainDetails from './Screens/Train/TrainDetails';
 import BusDetails from './Screens/Bus/BusDetails';
 import AirlineDetails from './Screens/Airline/AirlineDetails';
 
+import TouristRegister from './Screens/Tourists/TouristRegister';
+import TouristPersonalDetail from './Screens/Tourists/TouristPersonalDetail';
+
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
@@ -106,7 +108,6 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
-        <Stack.Screen options={{ headerShown: false }} name='Register' component={Register} />
         <Stack.Screen options={{ headerShown: false }} name='Login' component={Login} />
         <Stack.Screen options={{ headerShown: false }} name='Discover' component={Discover} />
         <Stack.Screen options={{ headerShown: false }} name='Category' component={Category} />
@@ -166,6 +167,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='PlacesInfo' component={PlacesInfo } />
         <Stack.Screen options={{ headerShown: false }} name='PlaceLists' component={PlaceLists } />
         <Stack.Screen options={{ headerShown: false }} name='TouristProfile' component={TouristProfile } />
+        <Stack.Screen options={{ headerShown: false }} name='TouristRegister' component={TouristRegister } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterA' component={RegisterA } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterT' component={RegisterT } />
         <Stack.Screen options={{ headerShown: false }} name='RegisterB' component={RegisterB } />
@@ -176,16 +178,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='AirlineDetails' component={AirlineDetails } />
         
         
-        
-
-        
-        
-        
         <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
-        
-        
-        
-        
+        <Stack.Screen options={{ headerShown: false }} name='TouristPersonalDetail' component={TouristPersonalDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

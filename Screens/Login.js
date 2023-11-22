@@ -8,7 +8,6 @@
   import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
   import Category from './Category';
   import AdminDashboard from '../Screens/Admin/AdminRegister'; 
-  import Register from './Register';
   import { MaterialIcons } from '@expo/vector-icons';
 
   const Login = () => {
@@ -21,7 +20,7 @@
     const navigation = useNavigation();
 
     const handleRegister = () => {
-      navigation.navigate(Register);
+      navigation.navigate("Category");
     };
 
     const togglePasswordVisibility = () => {

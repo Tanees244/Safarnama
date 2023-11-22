@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity,
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
-const GuidePersonalDetail = () => {
+
+const TouristPersonalDetail = () => {
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
@@ -234,4 +235,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuidePersonalDetail;
+export default TouristPersonalDetail;

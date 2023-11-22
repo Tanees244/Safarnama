@@ -1,46 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FIREBASE_AUTH, auth } from '../../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const GuideRegister = () => {
 
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const [loading, setLoading] = useState('false');
-  const auth = FIREBASE_AUTH;
   
   const navigation = useNavigation();
+
+  const handleLogin = () => {
+    navigation.navigate('Login');
+  };
   
-  useEffect (() => {
-    const unsubscribe = auth.onAuthStateChanged( user => {
-      if (!user) {
-        navigation.navigate("GuidePersonalDetail")
-      }
-    })
-
-    return unsubscribe
-
-  } ,[])
-
-  const handleSignup = async () =>{
-    setLoading(true);
-    try {
-      const response = await createUserWithEmailAndPassword(auth,email,Password);
-      console.log(response);
-    }
-    catch(error){
-      console.error(error);
-      alert('Sign Up failed: ' + error.message); 
-    }
-    finally{
-      setLoading(false);
-    }
-  }
-
+  const handleSignup =  () =>{
+    navigation.navigate('GuidePersonalDetail');
+  };
+   
+   
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.container}>
@@ -53,7 +32,8 @@ const GuideRegister = () => {
       </Svg>
 
       <View style={styles.Textcontainer}>
-        <Text style={styles.text}>Guide {'\n'}Register</Text>
+        <Text style={styles.text}>Guide Registration</Text>
+      
         <View style={styles.ButtonContainer}>
 
           <View style={styles.InputContainer}>
@@ -80,6 +60,19 @@ const GuideRegister = () => {
             >
             <Text style={styles.RegisterText}>Register</Text>
           </TouchableOpacity>
+          
+
+
+          <View style={styles.Signup}>
+            <Text style={styles.text2}>ACCOUNT ALREADY EXISTS</Text>
+            <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={handleLogin}
+            > 
+
+              <Text style={styles.boldText}> LOGIN !</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -103,23 +96,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   vector:{
-    top: 20,
-    right: 160,
+    top: -30,
+    right: 150,
   },
   text: {
     fontSize: 45,
     fontFamily: 'Poppins-Bold',
     color: 'white',
-    textAlign: 'center',
+    
+    textAlign:'center',
   },
   ButtonContainer: {
     marginTop: 90,
     width: 338,
     alignItems: 'center',
   },
+  VendorContainer:{
+    padding: 20,
+  },
+  VendorButtons:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  Button:{
+    backgroundColor: '#A4B0B2',
+    borderRadius: 50,
+    padding: 20,
+    width: '40%',
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
   InputContainer: {
     width: '100%',
-    marginTop: 20,
   },
   Input: {
     backgroundColor: '#A4B0B2',
@@ -129,11 +137,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'Poppins-SemiBold',
   },
+  PasswordButton: {
+    right: -110,
+    top: 5,
+    borderBottomWidth: 2,
+    borderColor: 'black',
+  },
+  PasswordText: {
+    fontStyle: 'italic',
+    fontSize: 12,
+    fontFamily: 'Poppins-SemiBold',
+  },
   RegisterButton: {
     backgroundColor: '#319BD6',
     paddingHorizontal: 15,
     paddingVertical: 15,
-    width: '70%',
+    width: '100%',
     height: 70,
     justifyContent: 'center',
     borderRadius: 10,
@@ -144,6 +163,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontFamily: 'Poppins-Bold',
+  },
+  Signup: {
+    marginTop: 30,
+    flexDirection: 'row',
+  },
+  text2: {
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular',
+    color:'white',
+  },
+  boldText: {
+    fontSize: 15,
+    fontFamily: 'Poppins-SemiBold',
+    bottom: 0.5,
+    color:'white',
   },
 });
 

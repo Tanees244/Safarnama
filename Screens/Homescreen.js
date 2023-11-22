@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
 import * as Animatable from "react-native-animatable";
 import Login from "./Login";
-import Register from "./Register";
 import Discover from './Tourists/Discover';
 
 

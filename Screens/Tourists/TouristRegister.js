@@ -1,71 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Ellipse } from 'react-native-svg';
-import {  Vector } from '../assets';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FIREBASE_AUTH, auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-const Register = () => {
+const TouristRegister = () => {
 
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const [loading, setLoading] = useState('false');
-  const auth = FIREBASE_AUTH;
   
   const navigation = useNavigation();
 
   const handleLogin = () => {
     navigation.navigate('Login');
   };
-
-  const handleVendor = () => {
-    navigation.navigate('CreateHotel');
-  };
-
-  const handleGuide = () => {
-    navigation.navigate('GuideRegister');
-  };
   
-  useEffect (() => {
-    const unsubscribe = auth.onAuthStateChanged( user => {
-      if (user) {
-        navigation.navigate("Login")
-      }
-    })
-
-    return unsubscribe
-
-  } ,[])
-
-  const handleSignup = async () =>{
-    setLoading(true);
-    try {
-      const response = await createUserWithEmailAndPassword(auth,email,Password);
-      console.log(response);
-    }
-    catch(error){
-      console.error(error);
-      alert('Sign Up failed: ' + error.message); 
-    }
-    finally{
-      setLoading(false);
-    }
-  }
-
+  const handleSignup =  () =>{
+    navigation.navigate('TouristPersonalDetail');
+  };
+   
+   
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.container}>
 
       <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
-        <Ellipse cx="50%" cy="20%" rx="400" ry="400" fill="#071B26" />
+        <Ellipse cx="20%" cy="5%" rx="400" ry="400" fill="#071B26" />
+      </Svg>
+      <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
+        <Ellipse cx="80%" cy="120%" rx="400" ry="400" fill="#071B26" />
       </Svg>
 
       <View style={styles.Textcontainer}>
-        <Image style={styles.vector} source={Vector}/>
-        <Text style={styles.text}>Safarnama</Text>
-        <Text style={{color: '#319BD6', fontSize: 16, fontFamily: 'Poppins-SemiBold', top:-15}}>Join With Us To Travel Around Pakistan</Text>
+        <Text style={styles.text}>Tourist Registration</Text>
       
         <View style={styles.ButtonContainer}>
 
@@ -94,28 +61,6 @@ const Register = () => {
             <Text style={styles.RegisterText}>Register</Text>
           </TouchableOpacity>
           
-
-          {/* <View style={styles.VendorContainer}>
-            <Text style={styles.text2}>SIGNUP AS</Text>
-          </View>
-
-          <View style={styles.VendorButtons}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={handleVendor}
-              style={styles.Button}
-            >
-              <Text style={styles.boldText}>VENDOR</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={handleGuide}
-              style={styles.Button}
-            >
-              <Text style={styles.boldText}>GUIDE</Text>
-            </TouchableOpacity>
-          </View> */}
 
 
           <View style={styles.Signup}>
@@ -151,13 +96,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   vector:{
-    top: 20,
-    right: 160,
+    top: -30,
+    right: 150,
   },
   text: {
     fontSize: 45,
     fontFamily: 'Poppins-Bold',
     color: 'white',
+    
+    textAlign:'center',
   },
   ButtonContainer: {
     marginTop: 90,
@@ -224,12 +171,14 @@ const styles = StyleSheet.create({
   text2: {
     fontSize: 15,
     fontFamily: 'Poppins-Regular',
+    color:'white',
   },
   boldText: {
     fontSize: 15,
     fontFamily: 'Poppins-SemiBold',
     bottom: 0.5,
+    color:'white',
   },
 });
 
-export default Register;
+export default TouristRegister;
