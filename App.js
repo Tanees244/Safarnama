@@ -27,11 +27,6 @@ import BusUpdatePackage from './Screens/Bus/BusUpdatePackage';
 import BusViewPackages from './Screens/Bus/BusViewPackages';
 import BusDeletePackage from './Screens/Bus/BusDeletePackage';
 import HotelRegister from './Screens/Hotel/HotelRegister';
-import HotelOperations from './Screens/Hotel/HotelOperations';
-import HotelCreatePackages from './Screens/Hotel/HotelCreatePackages';
-import HotelUpdatePackage from './Screens/Hotel/HotelUpdatePackage';
-import HotelViewPackages from './Screens/Hotel/HotelViewPackage';
-import HotelDeletePackage from './Screens/Hotel/HotelDeletePackage';
 import HotelProfile from './Screens/Hotel/HotelProfile';
 import AirlineProfile from './Screens/Airline/AirlineProfile';
 import BusProfile from './Screens/Bus/BusProfile';
@@ -47,7 +42,7 @@ import AdminViewTouristPackages from './Screens/Admin/AdminViewTouristPackages';
 import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPackages';
 import HotelsLists from './Screens/Tourists/HotelsLists';
 import HotelsInfo from './Screens/Tourists/HotelsInfo';
-import CreateHotel from './Screens/VendorRegisteration/CreateHotel';
+import CreateHotel from './Screens/Hotel/CreateHotel';
 import HotelVendorPersonalDetails from './Screens/Hotel/HotelVendorPersonalDetails'
 import HotelDashboard from './Screens/Hotel/HotelDashboard'
 import GetStarted from './Screens/CreatePackage/GetStarted';
@@ -134,11 +129,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='BusViewPackages' component={BusViewPackages} />
         <Stack.Screen options={{ headerShown: false }} name='BusDeletePackage' component={BusDeletePackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelRegister' component={HotelRegister} />
-        <Stack.Screen options={{ headerShown: false }} name='HotelOperations' component={HotelOperations} />
-        <Stack.Screen options={{ headerShown: false }} name='HotelCreatePackages' component={HotelCreatePackages} />
-        <Stack.Screen options={{ headerShown: false }} name='HotelUpdatePackage' component={HotelUpdatePackage} />
-        <Stack.Screen options={{ headerShown: false }} name='HotelViewPackages' component={HotelViewPackages} />
-        <Stack.Screen options={{ headerShown: false }} name='HotelDeletePackage' component={HotelDeletePackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelProfile' component={HotelProfile} />
         <Stack.Screen options={{ headerShown: false }} name='AirlineProfile' component={AirlineProfile} />
         <Stack.Screen options={{ headerShown: false }} name='BusProfile' component={BusProfile} />

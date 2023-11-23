@@ -9,6 +9,7 @@ const TouristPersonalDetail = () => {
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
   const inputWidth = containerWidth * 0.9;
+  const submitButton = screenWidth * 0.4;
   const uploadButtonWidth = containerWidth * 0.9;
 
   const [formData, setFormData] = useState({
@@ -50,6 +51,10 @@ const TouristPersonalDetail = () => {
     );
   };
 
+  const handleSubmit = () => {
+    navigation.navigate("Discover");
+  };
+
   return (
     <View style={styles.Container}>
       <View style={styles.header}>
@@ -66,14 +71,6 @@ const TouristPersonalDetail = () => {
         <Text style={styles.Text}>
           Personal <Text style={[styles.Text, { color: 'white' }]}>Details</Text>
         </Text>
-
-        <View style={styles.indicator}>
-          <View style={styles.pageIndicatorActive} />
-          <View style={styles.pageIndicator} />
-          <View style={styles.pageIndicator} />
-          <View style={styles.pageIndicator} />
-        </View>
-
         <View style={styles.ButtonContainer}>
           <TextInput
             placeholder='Enter Your Full Name'
@@ -119,8 +116,11 @@ const TouristPersonalDetail = () => {
             style={[styles.UploadButton, { width: uploadButtonWidth }]}
             onPress={handleUploadDocuments}
           >
-            <Text style={styles.UploadButtonText}>Upload Your Documents</Text>
+            <Text style={styles.UploadButtonText}>Upload Your Picture</Text>
             <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleSubmit}>
+            <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -165,44 +165,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     top: 30,
   },
-  pageIndicator: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'black',
-    backgroundColor: '#D9D9D9',
-    marginHorizontal: 2,
+  submitButton: {
+    borderRadius: 38,
+    backgroundColor: '#319BD6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    marginTop: 30,
   },
-  pageIndicatorActive: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'white',
-    backgroundColor: '#071B40',
-    marginHorizontal: 2,
-  },
-  PageIndicator: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80, 
-    height: 15,
-    borderColor: 'black',
-    backgroundColor: '#CCCCCC',
-    marginHorizontal: 2, 
-  },
-  PageIndicatorActive: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'white',
-    backgroundColor: '#071B26',
-    marginHorizontal: 5, 
+  submitButtonText: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
   },
   ButtonContainer: {
-    marginTop: 70,
     marginBottom: 70,
     width: '100%',
     alignItems: 'center',

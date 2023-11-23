@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 const HotelVendorPersonalDetails = () => {
+
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
   const inputWidth = containerWidth * 0.9;
+  const submitButton = screenWidth * 0.4;
   const uploadButtonWidth = containerWidth * 0.9;
+  const buttonWidth = screenWidth * 0.26;
+
+  const [imageUri1, setImageUri1] = useState(null);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -26,16 +32,21 @@ const HotelVendorPersonalDetails = () => {
     }));
   };
 
-  const handleUploadDocuments = () => {
-    // Your previous validation here if needed
+  const pickImage = async (setImageUri) => {
+    
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
 
-    /*if (!isFormDataValid()) {
-      Alert.alert('Fill All Fields', 'Please fill in all the fields correctly before proceeding.');
-      return;
-    }*/
+    setImageUri(result.uri);
+    console.log(result);
 
-    const formDataToStore = formData;
-    navigation.navigate('GuideDocument', { formData: formDataToStore });
+    if (!result.canceled) {
+      setImageUri(result.assets[1].uri);
+    }
   };
 
   const isFormDataValid = () => {
@@ -47,6 +58,10 @@ const HotelVendorPersonalDetails = () => {
       formData.phoneNumber &&
       formData.cnicNumber
     );
+  };
+
+  const handleSubmit = () => {
+    navigation.navigate("HotelDashboard");
   };
 
   return (
@@ -65,13 +80,6 @@ const HotelVendorPersonalDetails = () => {
         <Text style={styles.Text}>
           Personal <Text style={[styles.Text, { color: 'white' }]}>Details</Text>
         </Text>
-
-        <View style={styles.indicator}>
-          <View style={styles.pageIndicatorActive} />
-          <View style={styles.pageIndicator} />
-          <View style={styles.pageIndicator} />
-          <View style={styles.pageIndicator} />
-        </View>
 
         <View style={styles.ButtonContainer}>
           <TextInput
@@ -113,13 +121,23 @@ const HotelVendorPersonalDetails = () => {
             value={formData.cnicNumber}
             keyboardType='numeric'
           />
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={[styles.UploadButton, { width: uploadButtonWidth }]}
-            onPress={handleUploadDocuments}
-          >
-            <Text style={styles.UploadButtonText}>Upload Your Documents</Text>
-            <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')} />
+          <View  style={[styles.UploadButton, { width: uploadButtonWidth }]}>
+            <View style={styles.UploadButtonText}>
+              <Text style={[{ fontFamily: 'Poppins-SemiBold', color: 'grey' }]}>Picture Of Yourself</Text>
+            </View>
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
+              onPress={() => pickImage(setImageUri1)}
+            >
+              {imageUri1 ? (
+                <Image source={{ uri: imageUri1 }} style={styles.image} />
+              ) : (
+                <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')} />
+              )}
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleSubmit}>
+            <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -141,7 +159,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a1a',
     shadowColor: 'black',
     elevation: 20,
-    zIndex: -1,
   },
   headerText: {
     textAlign: 'center',
@@ -160,48 +177,20 @@ const styles = StyleSheet.create({
     marginTop: 40,
     padding: 20,
   },
-  indicator: {
-    flexDirection: 'row',
-    top: 30,
+  submitButton: {
+    borderRadius: 38,
+    backgroundColor: '#319BD6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    marginTop: 30,
   },
-  pageIndicator: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'black',
-    backgroundColor: '#D9D9D9',
-    marginHorizontal: 2,
-  },
-  pageIndicatorActive: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'white',
-    backgroundColor: '#071B40',
-    marginHorizontal: 2,
-  },
-  PageIndicator: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80, 
-    height: 15,
-    borderColor: 'black',
-    backgroundColor: '#CCCCCC',
-    marginHorizontal: 2, 
-  },
-  PageIndicatorActive: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'white',
-    backgroundColor: '#071B26',
-    marginHorizontal: 5, 
+  submitButtonText: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
   },
   ButtonContainer: {
-    marginTop: 70,
     marginBottom: 70,
     width: '100%',
     alignItems: 'center',
@@ -225,12 +214,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   UploadButtonText: {
-    color: '#6E6E6E',
     fontFamily: 'Poppins-SemiBold',
   },
   UploadButtonImage: {
     width: 50,
     height: 50,
+  },
+  button: {
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

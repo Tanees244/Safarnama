@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity,
 import Dropdown from 'react-native-modal-dropdown';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateHotel = () => {
 
@@ -10,6 +11,7 @@ const CreateHotel = () => {
   const containerWidth = screenWidth * 0.9;
   const RegisterContainer = containerWidth * 0.7;
   const inputWidth = containerWidth * 0.9;
+  const submitButton = screenWidth * 0.4;
   
   const cities = ['Balakot', 'Naran', 'Kaghan', 'Gilgit Baltistan', 'Kashmir', 'Muzaffarabad'];
   const facilities = ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental','24-Hour Security', 'Smoke Alarms','Daily Housekeeping', 'Dry Cleaning', 'Laundry', 'Meeting/Banquet \nfacilities', 'Fax/Photocopying'];
@@ -17,6 +19,7 @@ const CreateHotel = () => {
   
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
+  const navigation = useNavigation();
   const [isFacilitiesPopupVisible, setIsFacilitiesPopupVisible] = useState(false);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [isRoomTypePopupVisible, setIsRoomTypePopupVisible] = useState(false);
@@ -39,6 +42,10 @@ const CreateHotel = () => {
         height: Math.max(55, totalHeight),
       });
     }
+  };
+  const NavigatetoDashboard = () => {
+    // Navigate to the login screen
+    navigation.navigate('HotelDashboard');
   };
 
   const handleRoomTypeSelect = (index, value) => {
@@ -286,6 +293,9 @@ const CreateHotel = () => {
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={NavigatetoDashboard}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
       </ScrollView>
 
       <Modal
@@ -315,6 +325,7 @@ const CreateHotel = () => {
           <TouchableOpacity onPress={toggleFacilitiesPopup} style={styles.closeIconContainer}>
             <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
           </TouchableOpacity>
+          
         </ScrollView>
       </Modal>
 
@@ -433,6 +444,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     zIndex: 2,
     justifyContent: 'center',
+  },
+  submitButton: {
+    borderRadius: 38,
+    backgroundColor: '#319BD6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    margin: 30,
+    left:90,
+  },
+  submitButtonText: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
   },
   Text: {
     fontSize: 32,

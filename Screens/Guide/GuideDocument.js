@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
 const GuideDocument = () => {
+
   const navigation = useNavigation();
 
   const screenWidth = Dimensions.get('window').width;
@@ -18,7 +19,7 @@ const GuideDocument = () => {
   const [imageUri4, setImageUri4] = useState(null);
 
   const pickImage = async (setImageUri) => {
-    // No permissions request is necessary for launching the image library
+    
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -120,7 +121,6 @@ const GuideDocument = () => {
             </View>
           </View>
         </View>
-
         <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>

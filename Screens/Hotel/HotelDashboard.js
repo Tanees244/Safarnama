@@ -1,204 +1,132 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native';
-import { ScrollView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import Modal from 'react-native-modal';
+import Dropdown from 'react-native-modal-dropdown';
 import { useNavigation } from '@react-navigation/native';
+import CreateHotel from './CreateHotel';
 
 const HotelDashboard = () => {
+
     const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 1;
-    const buttonWidth = containerWidth * 0.5;
-    const inputBoxWidth = containerWidth - 40; // Subtract padding
-
+    const containerWidth = screenWidth * 0.9;
+    const RegisterContainer = containerWidth * 0.7;
+    
   const navigation = useNavigation();
-
-  const navigateToHotelProfile = () => {
-    navigation.navigate('HotelProfile');
-  };
-
-  const navigateToHotelOperations = () => {
-    navigation.navigate('HotelOperations');
-  };
+    
+    const NavigatetoCreatehotel = () => {
+        // Navigate to the login screen
+        navigation.navigate('CreateHotel');
+      };
 
   return (
-    <ScrollView contentContainerStyle={styles.Container} >
-    
-    <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
-                <Text style={styles.Text}>
-                    View <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
+    <View style={styles.Container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Dashboard</Text>
+      </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={[styles.RegisterContainer, { width: RegisterContainer }]}>
+            <Image source={require('../../assets/ellipse.png')}/>
+          <Text style={styles.Text}>
+            Welcome <Text style={[styles.Text, { color: 'white' }]}>Vendor</Text>
+          </Text>
+        </View>
+        <View style={[styles.hotelcontainer, { width: containerWidth }]}>
+        <Text style={styles.text} >
+                    Add Hotel 
                 </Text>
-
-            </ImageBackground>
-            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 1
-                    </Text>
-                    <Text>
-                    Learn More --
-                    </Text>
-                </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 2
-                    </Text>
-                    <Text>
-                    Learn More --
-                    </Text>
-                </View>
-                </TouchableOpacity><TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/ellipse.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>
-                        Package # 3
-                    </Text>
-                    <Text>
-                        Learn More --
-                    </Text>
-                </View>
-                </TouchableOpacity>
-                
-
-
-            </View>
-            <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelOperations}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/Home.png")} />
-                    <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToHotelProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
-                    <Text style={styles.home}>Profile</Text>
-                </TouchableOpacity>
-            </View>
-
-        </ScrollView>
-    );
-};
+            <TouchableOpacity style={[styles.hotelbutton, { width: RegisterContainer }]} onPress={NavigatetoCreatehotel} >
+                <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')} />
+            </TouchableOpacity>
+        </View>
+        <View style={[styles.hoteldetail, { width: containerWidth }]}>
+        <Text style={styles.hoteldetailtext} >  Hotel Name: </Text>
+        <Text style={styles.hoteldetailtext} >  City: </Text>
+        <Text style={styles.hoteldetailtext} >  Email Address: </Text>
+        <Text style={styles.hoteldetailtext} >  phoneNumber: </Text>
+        </View>
+        
+      </ScrollView>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-    Container: {
-        backgroundColor: 'white',
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: 'white',
-    },
-    Text: {
-        fontSize: 30,
-        color: 'black',
-        fontWeight: 'bold',
-        marginTop: 100,
-        right: 15,
-    },
-    textBox: {
-        marginTop: 10,
-        backgroundColor:  '#D9D9D9',
-        height: 140,
-        borderRadius: 20,
-        padding: 20,
-        borderWidth: 1,
-        borderColor: 'black',
-    },
-    homeicon: {
-        width: 24,
-        height: 24,
-        overflow: "hidden",
-    },
-    bio: {
-        color: 'black',
-        right: 100,
-        marginTop: 30,
-        fontSize: 27,
-    },
-
-    home: {
-        fontSize: 10,
-        lineHeight: 14,
-        fontWeight: "700",
-        marginTop: 2,
-        textAlign: "center",
-        color: 'white',
-    },
-
-    UserIcon: {
-        top: 20,
-        left: 10,
-        width: 90,
-        height: 90,
-        position: "absolute",
-    },
-
-    Rectangle: {
-        backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
-        borderRadius: 46,
-        height: 320,
-        top: -10,
-        width: '100%',
-        position: 'absolute',
-        flex: 1,
-        alignItems: 'center',
-      
-    },
-
-    ProfileContainer: {
-        backgroundColor: 'white',
-        borderRadius: 28,
-        marginTop: 200,
-        alignItems: 'center',
-        paddingTop: 20,
-        paddingBottom: 30,
-        height: 480,
-    },
-    Buttons: {
-        backgroundColor: 'white',
-        height: 90,
-        left: 90,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'black',
-    },
-    ButtonContainer1: {
-        flexDirection: 'row',
-        padding: 20,
-        backgroundColor: '#213555',
-        height: 60,
-        borderRadius: 30,
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        marginBottom: 50,
-        marginTop: 50,
-        width: 160,
-
-    },
-
+  container: {
+    flexGrow: 1,
+    alignItems: 'center',
+  },
+  Container: {
+    backgroundColor: '#e9eaec',
+    flex: 1,
+  },
+  header: {
+    height: 140,
+    backgroundColor: '#032844',
+    shadowColor: 'black',
+    elevation: 20,
+    zIndex: -1,
+  },
+  hotelcontainer:{
+    backgroundColor: '#272a3e',
+    margin:30,
+    height:80,
+    borderRadius:50,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row',
+    paddingLeft:50,
+  },
+  hotelbutton:{
+    flexDirection:'row',
+    padding:20,
+  },
+  hoteldetail:{
+    backgroundColor: '#272a3e',
+    margin:0,
+    height:140,
+    borderRadius:20,
+  },
+  hoteldetailtext:{
+    textAlign:'left',
+    color:'white',
+    fontSize:20, 
+     },
+  headerText: {
+    textAlign: 'center',
+    top: 60,
+    color: 'white',
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
+  },
+  
+  RegisterContainer: {
+    backgroundColor: '#272a3e',
+    paddingVertical: 20,
+    marginTop: 20,
+    borderTopRightRadius:100,
+    borderTopLeftRadius:100,
+    marginBottom: 10,
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  Text: {
+    fontSize: 32,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+  },
+  text: {
+    fontSize: 22,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+  },
+  UploadButtonImage: {
+    width: 50,
+    height: 50,
+    marginLeft:80,
+  },
 });
 
 export default HotelDashboard;
