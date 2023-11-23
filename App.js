@@ -70,7 +70,6 @@ import BusDashboard from './Screens/Bus/BusDashboard';
 import TrainDetails from './Screens/Train/TrainDetails';
 import BusDetails from './Screens/Bus/BusDetails';
 import AirlineDetails from './Screens/Airline/AirlineDetails';
-
 import TouristRegister from './Screens/Tourists/TouristRegister';
 import TouristPersonalDetail from './Screens/Tourists/TouristPersonalDetail';
 
@@ -100,9 +99,11 @@ export default function App() {
     "Poppins-Thin": require("./assets/fonts/Poppins-Thin.ttf"),
     "Poppins-ThinItalic": require("./assets/fonts/Poppins-ThinItalic.ttf"),
   });
+
   if (!fontsLoaded && !error) {
     return null;
   }
+
   return (
 
     <NavigationContainer>
@@ -176,11 +177,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='TrainDetails' component={TrainDetails } />
         <Stack.Screen options={{ headerShown: false }} name='BusDetails' component={BusDetails } />
         <Stack.Screen options={{ headerShown: false }} name='AirlineDetails' component={AirlineDetails } />
-        
-        
         <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
         <Stack.Screen options={{ headerShown: false }} name='TouristPersonalDetail' component={TouristPersonalDetail} />
       </Stack.Navigator>
     </NavigationContainer>
+    
   );
 }
