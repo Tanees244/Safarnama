@@ -19,8 +19,8 @@ const CreatePackage3 = () => {
     navigation.navigate('HotelsLists'); // Replace with your screen name
   };
 
-  const navigateToExperience = () => {
-    navigation.navigate('GuideExperience'); // Replace with your screen name
+  const navigateToTransportLists = () => {
+    navigation.navigate('TransportLists'); // Replace with your screen name
   };
 
   const navigateToPlacesLists = () => {
@@ -56,7 +56,7 @@ const CreatePackage3 = () => {
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToExperience}
+          onPress={navigateToTransportLists}
         >
           <Text style={styles.buttonText}>Transport</Text>
         </TouchableOpacity>
