@@ -18,7 +18,7 @@ const HomeScreen = () => {
 
   const handleLoginPress = () => {
     // Navigate to the login screen
-    navigation.navigate("CreateHotel");
+    navigation.navigate("AirlineDashboard");
   };
 
   const handleDiscoverPress = () => {

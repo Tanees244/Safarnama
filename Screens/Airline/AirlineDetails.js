@@ -4,6 +4,7 @@ import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
 const AirlineDetails = () => {
+  
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
