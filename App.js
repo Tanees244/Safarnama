@@ -68,6 +68,9 @@ import AirlineDetails from './Screens/Airline/AirlineDetails';
 import TouristRegister from './Screens/Tourists/TouristRegister';
 import TouristPersonalDetail from './Screens/Tourists/TouristPersonalDetail';
 import ActiveTicket from './Screens/Airline/ActiveTicket';
+import PaymentGateway from './Screens/Tourists/PaymentGateway';
+import TransportInfo from './Screens/Tourists/TransportInfo';
+import TransportLists from './Screens/Tourists/TransportLists';
 
 import { useFonts } from 'expo-font';
 
@@ -171,6 +174,9 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
         <Stack.Screen options={{ headerShown: false }} name='TouristPersonalDetail' component={TouristPersonalDetail} />
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicket' component={ActiveTicket} />
+        <Stack.Screen options={{ headerShown: false }} name='PaymentGateway' component={PaymentGateway} />
+        <Stack.Screen options={{ headerShown: false }} name='TransportLists' component={TransportLists} />
+        <Stack.Screen options={{ headerShown: false }} name='TransportInfo' component={TransportInfo} />
       </Stack.Navigator>
     </NavigationContainer>
     
