@@ -14,11 +14,8 @@ const AirlineDetails = () => {
 
   const [formData, setFormData] = useState({
     fullName: '',
-    age: '',
     email: '',
-    address: '',
     phoneNumber: '',
-    cnicNumber: '',
   });
 
   const handleFieldChange = (field, value) => {
@@ -47,11 +44,8 @@ const AirlineDetails = () => {
   const isFormDataValid = () => {
     return (
       formData.fullName &&
-      formData.age &&
       formData.email &&
-      formData.address &&
-      formData.phoneNumber &&
-      formData.cnicNumber
+      formData.phoneNumber 
     );
   };
 

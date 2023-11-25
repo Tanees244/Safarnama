@@ -20,6 +20,18 @@ const AirlineDashboard = () => {
     setAddTicketModalVisible(!isAddTicketModalVisible);
   };
 
+  const updateTicket = (ticketIndex, updatedTicket) => {
+    const updatedTickets = [...activeTickets];
+    updatedTickets[ticketIndex] = updatedTicket;
+    setActiveTickets(updatedTickets);
+  };
+
+  // Function to delete a ticket
+  const deleteTicket = (ticketIndex) => {
+    const updatedTickets = activeTickets.filter((ticket, index) => index !== ticketIndex);
+    setActiveTickets(updatedTickets);
+  };
+
   const [flightNumber, setFlightNumber] = useState('');
   const [price, setPrice] = useState('');
   const [flightDuration, setFlightDuration] = useState('');
@@ -120,11 +132,15 @@ const AirlineDashboard = () => {
         </View>
         <ScrollView contentContainerStyle={styles.activeTicketsContainer}>
           {activeTickets.map((ticket, index) => (
-            <ActiveTicket key={index} ticketDetails={ticket} ticketNumber={index + 1} />
+            <ActiveTicket
+              key={index}
+              ticketDetails={ticket}
+              ticketNumber={index + 1}
+              onUpdateTicket={(updatedTicket) => updateTicket(index, updatedTicket)}
+              onDeleteTicket={() => deleteTicket(index)}
+            />
           ))}
         </ScrollView>
-
-
       </ScrollView>
 
       <Modal
@@ -232,7 +248,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 220,
+    height: 200,
     // borderBottomLeftRadius: 30,
     // borderBottomRightRadius: 30,
     backgroundColor: 'black',
