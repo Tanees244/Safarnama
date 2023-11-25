@@ -22,6 +22,10 @@ const CreatePackage = () => {
     const [showPicker2, setShowPicker2] = useState(false);
     const [dateSelect1, setdateSelect1] = useState('');
     const [dateSelect2, setdateSelect2] = useState('');
+    const [destination, setDestination] = useState(null);
+    const [adultPreference, setAdultPreference] = useState(null);
+    const [numberOfIndividuals, setNumberOfIndividuals] = useState('');
+
 
     const toggleDatepicker1 = () => {
         setShowPicker1(!showPicker1)
@@ -58,9 +62,20 @@ const CreatePackage = () => {
         }
     };
 
-    const handleCreatePackage2 = () => {
+    const saveDataToState = () => {
+        setDestination(destination);
+        setdateSelect1(dateSelect1);
+        setdateSelect2(dateSelect2);
+        setAdultPreference(adultPreference);
+        setNumberOfIndividuals(numberOfIndividuals);
+        if (!destination || !dateSelect1 || !dateSelect2 || !adultPreference || !numberOfIndividuals) {
+            // If any of the fields is empty, show an alert or take appropriate action
+            alert('Please fill in all fields before proceeding.');
+            return;
+        }
+
         navigation.navigate('CreatePackage2');
-      };
+    };
 
     return (
         <View style={styles.Container}>
@@ -84,8 +99,7 @@ const CreatePackage = () => {
                                 style={styles.DropdownText}
                                 textStyle={{ fontSize: 15, color: 'white' }}
                                 dropdownStyle={styles.DropdownContainer}
-                                onSelect={(index, value) => {
-                                }}
+                                onSelect={(index, value) => setDestination(value)}
                                 dropdownTextStyle={styles.CustomDropdownText}
                                 dropdownPosition={0}
                                 dropdownOffset={{ top: 0, left: 10 }}
@@ -145,15 +159,14 @@ const CreatePackage = () => {
                         <Image style={styles.calendar} source={require('../../assets/calendar.png')} />
                     </View>
 
-                    <Text style={styles.Heading}>Adults: </Text>
+                    <Text style={styles.Heading}>Preferences: </Text>
                     <View style={styles.Input}>
                         <Dropdown
                             options={preference}
                             defaultValue="Select Preference                          >"
                             textStyle={styles.DropdownText}
                             dropdownStyle={styles.DropdownContainer}
-                            onSelect={(index, value) => {
-                            }}
+                            onSelect={(index, value) => setAdultPreference(value)}
                             dropdownTextStyle={styles.CustomDropdownText}
                             dropdownPosition={0}
                             dropdownOffset={{ top: 0, left: 10 }}
@@ -167,13 +180,14 @@ const CreatePackage = () => {
                             placeholder='Enter No. of Individual...'
                             placeholderTextColor={'white'}
                             style={{color:'white',textAlign:'center'}}
-                            keyboardType="numeric">
+                            keyboardType="numeric"
+                            onChangeText={setNumberOfIndividuals}>
                             
                         </TextInput>
                     </View>
                 </View>
                 <View>
-                    <TouchableOpacity activeOpacity={0.5} onPress={handleCreatePackage2}
+                    <TouchableOpacity activeOpacity={0.5} onPress={saveDataToState}
                         style={[styles.buttonText, { width: inputWidth }]}>
                         <Text style={styles.TextDesign}>NEXT</Text>
                     </TouchableOpacity>
