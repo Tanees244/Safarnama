@@ -9,7 +9,7 @@ const data = [
         image: require('../../assets/corolla.png'),
         title: 'Corolla',
         Make: 'Toyota',
-        description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a corolla in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+        description: 'Model:2020',
         ratings: '4.5/5.0',
       },
       {
@@ -17,7 +17,7 @@ const data = [
         image: require('../../assets/civic.png'),
         title: 'Civic',
         Make: 'Honda',
-        description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a civic in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+        description: 'Model:2020',
         ratings: '4.3/5.0',
       },
       {
@@ -25,7 +25,7 @@ const data = [
         image: require('../../assets/hiace.png'),
         title: 'Hiace',
         Make: 'Toyota',
-        description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a hiace in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+        description: 'Model:2020',
         ratings: '3.9/5.0',
       },
       {
@@ -33,7 +33,7 @@ const data = [
         image: require('../../assets/landcruiser.png'),
         title: 'Land Cruiser',
         Make: 'Toyota',
-        description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a land cruiser in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+        description: 'Model:2020',
         ratings: '4.9/5.0',
       },
       {
@@ -41,7 +41,7 @@ const data = [
         image: require('../../assets/coaster.png'),
         title: 'Coaster',
         Make: 'Toyota',
-        description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a Coaster in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+        description: 'Model:2020',
         ratings: '4.0/5.0',
       },
 ];
@@ -52,7 +52,7 @@ const data2 = [
     image: require('../../assets/corolla.png'),
     title: 'Corolla',
     Make: 'Toyota',
-    description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a corolla in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+    description: 'Model:2020',
     ratings: '4.5/5.0',
   },
   {
@@ -60,7 +60,7 @@ const data2 = [
     image: require('../../assets/civic.png'),
     title: 'Civic',
     Make: 'Honda',
-    description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a civic in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+    description: 'Model:2020',
     ratings: '4.3/5.0',
   },
   {
@@ -68,7 +68,7 @@ const data2 = [
     image: require('../../assets/hiace.png'),
     title: 'Hiace',
     Make: 'Toyota',
-    description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a hiace in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+    description: 'Model:2020',
     ratings: '3.9/5.0',
   },
   {
@@ -76,7 +76,7 @@ const data2 = [
     image: require('../../assets/landcruiser.png'),
     title: 'Land Cruiser',
     Make: 'Toyota',
-    description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a land cruiser in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+    description: 'Model:2020',
     ratings: '4.9/5.0',
   },
   {
@@ -84,7 +84,7 @@ const data2 = [
     image: require('../../assets/coaster.png'),
     title: 'Coaster',
     Make: 'Toyota',
-    description: 'Safarnama guarantees best car rental experience at lowest possible rates ever. So, rent a Coaster in Northern with driver through Safarnama. Our well-groomed and professional drivers make sure your experience remains par excellence. We also offer short rentals for as low as Rs. 1500 per hour. Our whole process is secure, easy and with no hassle. Cars are always delivered at your doorstep.',
+    description: 'Model:2020',
     ratings: '4.0/5.0',
   },
 

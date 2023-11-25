@@ -15,16 +15,19 @@ const CreatePackage2 = () => {
   const [busSelected, setBusSelected] = useState(false);
   const [trainSelected, setTrainSelected] = useState(false);
   const [skipSelected, setSkipSelected] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+   
+  const handleCheckBox = () => {
+    setIsChecked(!isChecked);
+  };
 
   const handleCreatePackage3 = () => {
-    // Check if the checkbox is selected or one of the transportation options is selected
-    if (!skipSelected && !(flightSelected || busSelected || trainSelected)) {
-      // If none selected, show an alert or take appropriate action
+    if (!isChecked && !(flightSelected || busSelected || trainSelected)) {
       alert('Please select a transportation option or skip this part.');
       return;
     }
 
-    // Proceed with navigation
     navigation.navigate('CreatePackage3');
   };
 
@@ -32,18 +35,21 @@ const CreatePackage2 = () => {
     setFlightSelected(true);
     setBusSelected(false);
     setTrainSelected(false);
+    navigation.navigate('Flight');
   };
 
   const handleBus = () => {
     setFlightSelected(false);
     setBusSelected(true);
     setTrainSelected(false);
+    navigation.navigate('Bus');
   };
 
   const handleTrain = () => {
     setFlightSelected(false);
     setBusSelected(false);
     setTrainSelected(true);
+    navigation.navigate('Train');
   };
 
   return (
@@ -59,7 +65,7 @@ const CreatePackage2 = () => {
         </View>
 
         <View style={styles.ButtonContainer}>
-          <Text style={styles.Heading}>How do want to go ?</Text>
+          <Text style={styles.Heading}>How do you want to go ?</Text>
           <View style={[{ width: RWidth }, styles.Roww]}>
             <Image style={styles.calendar} contentFit="cover" source={require('../../assets/airplane.png')} />
             <TouchableOpacity
@@ -93,12 +99,13 @@ const CreatePackage2 = () => {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.Roww}>
+          <View style={styles.checkboxContainer}>
             <CheckBox
-              value={skipSelected}
-              onValueChange={(newValue) => setSkipSelected(newValue)}
+              title='Skip this part if you want to go on your own!'
+              checked={isChecked}
+              onPress={handleCheckBox}
+              
             />
-            <Text style={styles.DropdownText}>Skip this part if you want to go on your own!</Text>
           </View>
         </View>
 
@@ -106,15 +113,15 @@ const CreatePackage2 = () => {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleCreatePackage3}
-            style={[styles.buttonText, { width: inputWidth }]}>
+            style={[styles.buttonText, { width: inputWidth }]}
+            disabled={!isChecked && !(flightSelected || busSelected || trainSelected)}>
             <Text style={styles.TextDesign}>NEXT</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -154,7 +161,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Poppins-Bold',
   },
-
 
   RegisterContainer: {
     backgroundColor: '#092547',
@@ -199,6 +205,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: '#cee7fa',
     borderRadius: 30,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    
   },
 
   calendar: {
