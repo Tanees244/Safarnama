@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontFamily: 'Poppins-Bold',
     color: 'white',
-    
     textAlign:'center',
   },
   ButtonContainer: {

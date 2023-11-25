@@ -4,6 +4,7 @@ import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
 const AirlineDetails = () => {
+  
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
@@ -13,11 +14,8 @@ const AirlineDetails = () => {
 
   const [formData, setFormData] = useState({
     fullName: '',
-    age: '',
     email: '',
-    address: '',
     phoneNumber: '',
-    cnicNumber: '',
   });
 
   const handleFieldChange = (field, value) => {
@@ -46,11 +44,8 @@ const AirlineDetails = () => {
   const isFormDataValid = () => {
     return (
       formData.fullName &&
-      formData.age &&
       formData.email &&
-      formData.address &&
-      formData.phoneNumber &&
-      formData.cnicNumber
+      formData.phoneNumber 
     );
   };
 

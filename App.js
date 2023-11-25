@@ -21,11 +21,6 @@ import GuideUserReview from './Screens/Guide/GuideUserReview';
 import GuideProfile from './Screens/Guide/GuideProfile';
 import AirlineDashboard from './Screens/Airline/AirlineDashboard';
 import BusRegister from './Screens/Bus/BusRegister';
-import BusOperations from './Screens/Bus/BusOperations';
-import BusCreatePackages from './Screens/Bus/BusCreatePackage';
-import BusUpdatePackage from './Screens/Bus/BusUpdatePackage';
-import BusViewPackages from './Screens/Bus/BusViewPackages';
-import BusDeletePackage from './Screens/Bus/BusDeletePackage';
 import HotelRegister from './Screens/Hotel/HotelRegister';
 import HotelProfile from './Screens/Hotel/HotelProfile';
 import AirlineProfile from './Screens/Airline/AirlineProfile';
@@ -58,7 +53,6 @@ import TouristProfile from './Screens/Tourists/TouristProfile';
 import RegisterA from './Screens/Airline/RegisterA';
 import RegisterT from './Screens/Train/RegisterT';
 import RegisterB from './Screens/Bus/RegisterB';
-import CreateAirline from './Screens/VendorRegisteration/CreateAirline';
 import GuideRegister from './Screens/Guide/GuideRegister';
 import TrainDashboard from './Screens/Train/TrainDashboard';
 import BusDashboard from './Screens/Bus/BusDashboard';
@@ -67,6 +61,7 @@ import BusDetails from './Screens/Bus/BusDetails';
 import AirlineDetails from './Screens/Airline/AirlineDetails';
 import TouristRegister from './Screens/Tourists/TouristRegister';
 import TouristPersonalDetail from './Screens/Tourists/TouristPersonalDetail';
+import ActiveTicket from './Screens/Airline/ActiveTicket';
 import PaymentGateway from './Screens/Tourists/PaymentGateway';
 import TransportInfo from './Screens/Tourists/TransportInfo';
 import TransportLists from './Screens/Tourists/TransportLists';
@@ -126,11 +121,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideProfile' component={GuideProfile} />
         <Stack.Screen options={{ headerShown: false }} name='AirlineDashboard' component={AirlineDashboard} />
         <Stack.Screen options={{ headerShown: false }} name='BusRegister' component={BusRegister} />
-        <Stack.Screen options={{ headerShown: false }} name='BusOperation' component={BusOperations} />
-        <Stack.Screen options={{ headerShown: false }} name='BusCreatePackages' component={BusCreatePackages} />
-        <Stack.Screen options={{ headerShown: false }} name='BusUpdatePackage' component={BusUpdatePackage} />
-        <Stack.Screen options={{ headerShown: false }} name='BusViewPackages' component={BusViewPackages} />
-        <Stack.Screen options={{ headerShown: false }} name='BusDeletePackage' component={BusDeletePackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelRegister' component={HotelRegister} />
         <Stack.Screen options={{ headerShown: false }} name='HotelProfile' component={HotelProfile} />
         <Stack.Screen options={{ headerShown: false }} name='AirlineProfile' component={AirlineProfile} />
@@ -151,7 +141,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='HotelDashboard' component={HotelDashboard} />
         <Stack.Screen options={{ headerShown: false }} name='HotelVendorPersonalDetails' component={HotelVendorPersonalDetails} />
         <Stack.Screen options={{ headerShown: false }} name='GetStarted' component={GetStarted} />
-        <Stack.Screen options={{ headerShown: false }} name='CreateAirline' component={CreateAirline } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage' component={CreatePackage } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage2' component={CreatePackage2 } />
         <Stack.Screen options={{ headerShown: false }} name='CreatePackage3' component={CreatePackage3 } />
@@ -172,11 +161,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='AirlineDetails' component={AirlineDetails } />
         <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
         <Stack.Screen options={{ headerShown: false }} name='TouristPersonalDetail' component={TouristPersonalDetail} />
+        <Stack.Screen options={{ headerShown: false }} name='ActiveTicket' component={ActiveTicket} />
         <Stack.Screen options={{ headerShown: false }} name='PaymentGateway' component={PaymentGateway} />
         <Stack.Screen options={{ headerShown: false }} name='TransportLists' component={TransportLists} />
         <Stack.Screen options={{ headerShown: false }} name='TransportInfo' component={TransportInfo} />
-        
-        
       </Stack.Navigator>
     </NavigationContainer>
     
