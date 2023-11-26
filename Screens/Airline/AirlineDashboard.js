@@ -216,8 +216,13 @@ const showTimePicker2 = () => {
         visible={isAddTicketModalVisible}
         onRequestClose={toggleAddTicketModal}
       >
+        
         <View style={styles.modalContent}>
           <Text style={styles.PopupHeading}>Add Tickets</Text>
+          <TouchableOpacity onPress={toggleAddTicketModal} style={styles.closeIconContainer}>
+            <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
+          </TouchableOpacity>
+          <ScrollView contentContainerStyle={styles.modalcontainer}>
           <View style={styles.input}>
             <Dropdown
               options={cityOptions}
@@ -279,62 +284,61 @@ const showTimePicker2 = () => {
             )}
           </View>
           <View style={styles.input}>
-  {showPicker3 && showTimePicker1()}
-  {!showPicker3 && (
-    <Pressable onPress={toggleTimepicker1}>
-      <TextInput
-        style={styles.DropdownText}
-        placeholder="Departure Time"
-        value={timeSelect1}
-        editable={false}
-      />
-    </Pressable>
-  )}
-</View>
-<View style={styles.input}>
-  {showPicker4 && showTimePicker2()}
-  {!showPicker4 && (
-    <Pressable onPress={toggleTimepicker2}>
-      <TextInput
-        style={styles.DropdownText}
-        placeholder="Arrival Time"
-        value={timeSelect2}
-        editable={false}
-      />
-    </Pressable>
-  )}
-</View>
-<View style={styles.input}>
-  {showPicker2 && (
-    <DateTimePicker
-      mode="date"
-      display="compact"
-      value={arrivalDate || new Date()} // Use arrivalDate if available, otherwise set to current date
-      onChange={(event, selectedDate) => {
-        if (selectedDate) {
-          setArrivalDate(selectedDate);
-          if (Platform.OS === 'android') {
-            setShowPicker2(false);
-            setDateSelect2(selectedDate.toDateString());
-          }
-        } else {
-          setShowPicker2(false);
-        }
-      }}
-    />
-  )}
-  {!showPicker2 && (
-    <Pressable onPress={() => setShowPicker2(true)}>
-      <TextInput
-        style={styles.DropdownText}
-        placeholder="Arrival Date"
-        value={dateSelect2}
-        editable={false}
-      />
-    </Pressable>
-  )}
-</View>
-
+            {showPicker3 && showTimePicker1()}
+            {!showPicker3 && (
+              <Pressable onPress={toggleTimepicker1}>
+                <TextInput
+                  style={styles.DropdownText}
+                  placeholder="Departure Time"
+                  value={timeSelect1}
+                  editable={false}
+                />
+              </Pressable>
+            )}
+          </View>
+          <View style={styles.input}>
+            {showPicker4 && showTimePicker2()}
+            {!showPicker4 && (
+              <Pressable onPress={toggleTimepicker2}>
+                <TextInput
+                  style={styles.DropdownText}
+                  placeholder="Arrival Time"
+                  value={timeSelect2}
+                  editable={false}
+                />
+              </Pressable>
+            )}
+          </View>
+          <View style={styles.input}>
+            {showPicker2 && (
+              <DateTimePicker
+                mode="date"
+                display="compact"
+                value={arrivalDate || new Date()} // Use arrivalDate if available, otherwise set to current date
+                onChange={(event, selectedDate) => {
+                  if (selectedDate) {
+                    setArrivalDate(selectedDate);
+                    if (Platform.OS === 'android') {
+                      setShowPicker2(false);
+                      setDateSelect2(selectedDate.toDateString());
+                    }
+                  } else {
+                    setShowPicker2(false);
+                  }
+                }}
+              />
+            )}
+            {!showPicker2 && (
+              <Pressable onPress={() => setShowPicker2(true)}>
+                <TextInput
+                  style={styles.DropdownText}
+                  placeholder="Arrival Date"
+                  value={dateSelect2}
+                  editable={false}
+                />
+              </Pressable>
+            )}
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Flight Duration (in minutes)"
@@ -342,15 +346,17 @@ const showTimePicker2 = () => {
             onChangeText={handleFlightDuration}
             keyboardType='numeric'
           />
-          <TouchableOpacity onPress={toggleAddTicketModal} style={styles.closeIconContainer}>
-            <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
-          </TouchableOpacity>
 
           <TouchableOpacity onPress={handleFormSubmit} style={styles.AddTicketButton}>
             <Text style={styles.AddTicketButtonText}>Submit</Text>
           </TouchableOpacity>
+          </ScrollView>
+          
+
         </View>
+        
       </Modal>
+      
 
       </View>
   );
@@ -362,6 +368,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
   },
+  modalcontainer: {
+    flexGrow: 1,
+    padding: 15,
+    borderRadius: 25,
+    marginBottom: 30,
+  },
+  
   Container: {
     backgroundColor: '#4F515A',
     flex: 1,
@@ -422,9 +435,9 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#404258',
-    height: Dimensions.get('window').height,
     padding: 20,
     borderRadius: 10,
+    height: Dimensions.get('window').height*0.9,
   },
   closeIconContainer: {
     position: 'absolute',

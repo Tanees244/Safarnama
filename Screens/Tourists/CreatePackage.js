@@ -68,11 +68,11 @@ const CreatePackage = () => {
         setdateSelect2(dateSelect2);
         setAdultPreference(adultPreference);
         setNumberOfIndividuals(numberOfIndividuals);
-        if (!destination || !dateSelect1 || !dateSelect2 || !adultPreference || !numberOfIndividuals) {
-            // If any of the fields is empty, show an alert or take appropriate action
-            alert('Please fill in all fields before proceeding.');
-            return;
-        }
+        // if (!destination || !dateSelect1 || !dateSelect2 || !adultPreference || !numberOfIndividuals) {
+        //     // If any of the fields is empty, show an alert or take appropriate action
+        //     alert('Please fill in all fields before proceeding.');
+        //     return;
+        // }
 
         navigation.navigate('CreatePackage2');
     };
