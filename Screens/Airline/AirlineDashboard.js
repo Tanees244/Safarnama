@@ -40,6 +40,11 @@ const AirlineDashboard = () => {
   const [departureDate, setDepartureDate] = useState('');
   const [showPicker1, setShowPicker1] = useState(false); // State to control the visibility of DateTimePicker
   const [dateSelect1, setDateSelect1] = useState('');
+  const [departureTime, setDepartureTime] = useState('');
+  const [arrivalTime, setArrivalTime] = useState('');
+  const [arrivalDate, setArrivalDate] = useState('');
+  const [showPicker2, setShowPicker2] = useState(false); // State to control the visibility of Arrival Date DatePicker
+  const [dateSelect2, setDateSelect2] = useState('');
   const [flightType, setFlightType] = useState('');
   const [activeTickets, setActiveTickets] = useState([]);
 
@@ -70,6 +75,68 @@ const AirlineDashboard = () => {
       />
     );
   };
+
+  const [showPicker3, setShowPicker3] = useState(false); // State to control the visibility of Departure Time TimePicker
+const [showPicker4, setShowPicker4] = useState(false); // State to control the visibility of Arrival Time TimePicker
+const [timeSelect1, setTimeSelect1] = useState('');
+const [timeSelect2, setTimeSelect2] = useState('');
+
+const toggleTimepicker1 = () => {
+  setShowPicker3(!showPicker3);
+};
+
+const toggleTimepicker2 = () => {
+  setShowPicker4(!showPicker4);
+};
+
+const onTimeChange1 = (event, selectedTime) => {
+  if (selectedTime) {
+    const currentTime = selectedTime;
+    setDepartureTime(currentTime);
+    if (Platform.OS === 'android') {
+      toggleTimepicker1();
+      setTimeSelect1(currentTime.toLocaleTimeString());
+    }
+  } else {
+    toggleTimepicker1();
+  }
+};
+
+const onTimeChange2 = (event, selectedTime) => {
+  if (selectedTime) {
+    const currentTime = selectedTime;
+    setArrivalTime(currentTime);
+    if (Platform.OS === 'android') {
+      toggleTimepicker2();
+      setTimeSelect2(currentTime.toLocaleTimeString());
+    }
+  } else {
+    toggleTimepicker2();
+  }
+};
+
+const showTimePicker1 = () => {
+  return (
+    <DateTimePicker
+      mode="time"
+      display="clock"
+      value={departureTime || new Date()} // Use departureTime if available, otherwise set to current time
+      onChange={onTimeChange1}
+    />
+  );
+};
+
+const showTimePicker2 = () => {
+  return (
+    <DateTimePicker
+      mode="time"
+      display="clock"
+      value={arrivalTime || new Date()} // Use arrivalTime if available, otherwise set to current time
+      onChange={onTimeChange2}
+    />
+  );
+};
+
 
   const formatDuration = (durationInMinutes) => {
     const hours = Math.floor(durationInMinutes / 60);
@@ -144,12 +211,13 @@ const AirlineDashboard = () => {
       </ScrollView>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={isAddTicketModalVisible}
         onRequestClose={toggleAddTicketModal}
       >
         <View style={styles.modalContent}>
+          <Text style={styles.PopupHeading}>Add Tickets</Text>
           <View style={styles.input}>
             <Dropdown
               options={cityOptions}
@@ -210,6 +278,63 @@ const AirlineDashboard = () => {
               </Pressable>
             )}
           </View>
+          <View style={styles.input}>
+  {showPicker3 && showTimePicker1()}
+  {!showPicker3 && (
+    <Pressable onPress={toggleTimepicker1}>
+      <TextInput
+        style={styles.DropdownText}
+        placeholder="Departure Time"
+        value={timeSelect1}
+        editable={false}
+      />
+    </Pressable>
+  )}
+</View>
+<View style={styles.input}>
+  {showPicker4 && showTimePicker2()}
+  {!showPicker4 && (
+    <Pressable onPress={toggleTimepicker2}>
+      <TextInput
+        style={styles.DropdownText}
+        placeholder="Arrival Time"
+        value={timeSelect2}
+        editable={false}
+      />
+    </Pressable>
+  )}
+</View>
+<View style={styles.input}>
+  {showPicker2 && (
+    <DateTimePicker
+      mode="date"
+      display="compact"
+      value={arrivalDate || new Date()} // Use arrivalDate if available, otherwise set to current date
+      onChange={(event, selectedDate) => {
+        if (selectedDate) {
+          setArrivalDate(selectedDate);
+          if (Platform.OS === 'android') {
+            setShowPicker2(false);
+            setDateSelect2(selectedDate.toDateString());
+          }
+        } else {
+          setShowPicker2(false);
+        }
+      }}
+    />
+  )}
+  {!showPicker2 && (
+    <Pressable onPress={() => setShowPicker2(true)}>
+      <TextInput
+        style={styles.DropdownText}
+        placeholder="Arrival Date"
+        value={dateSelect2}
+        editable={false}
+      />
+    </Pressable>
+  )}
+</View>
+
           <TextInput
             style={styles.input}
             placeholder="Flight Duration (in minutes)"
@@ -313,11 +438,11 @@ const styles = StyleSheet.create({
   },
   PopupHeading: {
     textAlign: 'center',
-    color: 'black',
+    color: 'white',
     fontSize: 26,
     fontFamily: 'Poppins-Bold',
     padding: 20,
-    paddingBottom: 40,
+    paddingBottom: 30,
   },
   input: {
     backgroundColor: '#E9E8E8',
