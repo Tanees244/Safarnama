@@ -422,6 +422,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#404258',
+    height: Dimensions.get('window').height,
     padding: 20,
     borderRadius: 10,
   },
