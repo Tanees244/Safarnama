@@ -9,7 +9,11 @@ const data = [
         image: require('../../assets/corolla.png'),
         title: 'Corolla',
         Make: 'Toyota',
-        description: 'Model:2020',
+        description: 'Model:2019',
+        description2: 'Driver Name : Ashraf Ali',
+        description3: 'Contct Number : 0333 - 1111222',
+        description5: 'Number of seats : 4',
+        description4: 'Price / Day (With Petrol): 6,000 pkr',
         ratings: '4.5/5.0',
       },
       {
@@ -17,7 +21,11 @@ const data = [
         image: require('../../assets/civic.png'),
         title: 'Civic',
         Make: 'Honda',
-        description: 'Model:2020',
+        description: 'Model:2018',
+        description2: 'Driver Name : Naseer Uddin',
+        description3: 'Contct Number : 0318 - 3332222',
+        description5: 'Number of seats : 4',
+        description4: 'Price / Day (With Petrol): 6,000 pkr',
         ratings: '4.3/5.0',
       },
       {
@@ -26,6 +34,10 @@ const data = [
         title: 'Hiace',
         Make: 'Toyota',
         description: 'Model:2020',
+        description2: 'Driver Name : Ali Haider',
+        description3: 'Contct Number : 0318 - 2223333',
+        description5: 'Number of seats : 18',
+        description4: 'Price / Day (With Petrol): 10,000 pkr',
         ratings: '3.9/5.0',
       },
       {
@@ -33,7 +45,11 @@ const data = [
         image: require('../../assets/landcruiser.png'),
         title: 'Land Cruiser',
         Make: 'Toyota',
-        description: 'Model:2020',
+        description: 'Model:2015',
+        description2: 'Driver Name : Yousuf Khan',
+        description3: 'Contct Number : 0343 - 0827122',
+        description5: 'Number of seats : 5',
+        description4: 'Price / Day (With Petrol): 9,000 pkr',
         ratings: '4.9/5.0',
       },
       {
@@ -41,53 +57,13 @@ const data = [
         image: require('../../assets/coaster.png'),
         title: 'Coaster',
         Make: 'Toyota',
-        description: 'Model:2020',
+        description: 'Model:2021',
+        description2: 'Driver Name : Abid Hassan',
+        description3: 'Contct Number : 0332 - 2121212',
+        description5: 'Number of seats : 30',
+        description4: 'Price / Day (With Petrol): 20,000 pkr',
         ratings: '4.0/5.0',
       },
-];
-
-const data2 = [
-  {
-    id: '1',
-    image: require('../../assets/corolla.png'),
-    title: 'Corolla',
-    Make: 'Toyota',
-    description: 'Model:2020',
-    ratings: '4.5/5.0',
-  },
-  {
-    id: '2',
-    image: require('../../assets/civic.png'),
-    title: 'Civic',
-    Make: 'Honda',
-    description: 'Model:2020',
-    ratings: '4.3/5.0',
-  },
-  {
-    id: '3',
-    image: require('../../assets/hiace.png'),
-    title: 'Hiace',
-    Make: 'Toyota',
-    description: 'Model:2020',
-    ratings: '3.9/5.0',
-  },
-  {
-    id: '4',
-    image: require('../../assets/landcruiser.png'),
-    title: 'Land Cruiser',
-    Make: 'Toyota',
-    description: 'Model:2020',
-    ratings: '4.9/5.0',
-  },
-  {
-    id: '5',
-    image: require('../../assets/coaster.png'),
-    title: 'Coaster',
-    Make: 'Toyota',
-    description: 'Model:2020',
-    ratings: '4.0/5.0',
-  },
-
 ];
 
 const HorizontalCard = ({ item, onPress }) => {
@@ -114,6 +90,10 @@ const HorizontalCard = ({ item, onPress }) => {
             <Text style={styles.subdescription}>{item.make}</Text>
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>{item.description}</Text>
+              <Text style={styles.description}>{item.description2}</Text>
+              <Text style={styles.description}>{item.description3}</Text>
+              <Text style={styles.description}>{item.description4}</Text>
+              <Text style={styles.description}>{item.description5}</Text>
             </View>
           </View>
         </View>
@@ -164,11 +144,6 @@ const TransportLists = () => {
         // Collapse the menu after selection
         toggleMenu();
     }
-
-    const scale = scaleValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, 4],
-    });
   
     return (
       <View style={styles.Container}>
@@ -211,20 +186,12 @@ const TransportLists = () => {
                 )}
             </TouchableOpacity>
         <ScrollView>
-          <Text style={styles.text}>Vehicle <Text style={[styles.text, { color: '#2D78A2' }]}>Rental Service</Text></Text>
+          <Text style={styles.text}>Most <Text style={[styles.text, { color: '#2D78A2' }]}>Rented Vehicles</Text></Text>
           <FlatList
             data={data}
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToTransportInfo} />}
-            keyExtractor={(item) => item.id}
-          />
-          <Text style={styles.text}>Most Rented Vehicles</Text>
-          <FlatList
-            data={data2}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <HorizontalCard item={item} onPress={navigateToTransportInfo}/>}
             keyExtractor={(item) => item.id}
           />
         </ScrollView>
