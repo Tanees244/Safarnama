@@ -13,7 +13,7 @@ const CreatePackage3 = () => {
   const inputWidth = containerWidth * 0.6;
 
   const handleCreatePackage3 = () => {
-      navigation.navigate('PaymentGateway');
+      navigation.navigate('Option');
     };
   const navigateToHotelsLists = () => {
     navigation.navigate('HotelsLists'); // Replace with your screen name
@@ -52,13 +52,6 @@ const CreatePackage3 = () => {
           onPress={navigateToHotelsLists}
         >
           <Text style={styles.buttonText}>Hotel </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.buttons, { width: buttonWidth }]}
-          onPress={navigateToTransportLists}
-        >
-          <Text style={styles.buttonText}>Transport</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
