@@ -22,7 +22,7 @@ const AirlineProfile = () => {
             onPress={ProfileNavigate}
             style={styles.ProfileButton}
              >
-            <Image source={require('../../assets/Home.png')} style = {[{width: 40, height: 40}]}/>
+                <Image source={require('../../assets/Home.png')} style = {[{width: 40, height: 40}]}/>
             </TouchableOpacity>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.rectangle}>
