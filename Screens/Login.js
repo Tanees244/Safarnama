@@ -1,5 +1,5 @@
   import React, { useState, useEffect } from 'react';
-  import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+  import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, Dimensions } from 'react-native';
   import { useNavigation } from '@react-navigation/native';
   import {Svg, Ellipse } from 'react-native-svg';
   import { Vector } from '../assets';
@@ -69,19 +69,17 @@
         alert('Enter a valid email');
       }
     };
+    
 
     return (
       <GestureHandlerRootView style={styles.container}>
         <View style={styles.container}>
-
-        <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
-          <Ellipse cx="20%" cy="20%" rx="300" ry="300" fill="#071B26" />
-        </Svg>
+        <ImageBackground  source={require('../assets/p5.jpg')}
+          styles={styles.backgroundImage}>
 
         <View style={styles.Textcontainer}>
           <Image style={styles.vector} source={Vector}/>
           <Text style={styles.text}>Safarnama</Text>
-          <Text style={{color: '#319BD6', fontSize: 16, fontFamily: 'Poppins-SemiBold', top:-15}}>Login To Explore Pakistan</Text>
         
           <View style={styles.ButtonContainer}>
 
@@ -109,7 +107,7 @@
                   <MaterialIcons
                     name={passwordVisible ? 'visibility' : 'visibility-off'}
                     size={24}
-                    color='#A4B0B2'
+                    color='black'
                   />
                 </TouchableOpacity>
               </View>
@@ -131,22 +129,6 @@
               <Text style={styles.LoginText}>Login</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              activeOpacity={0.5} 
-              style={styles.GoogleButton}
-              >
-                <Image style={styles.GoogleImage} source={require('../assets/google.png')}/>
-              <Text style={styles.GoogleText}>Continue with Google</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.5} 
-              style={styles.FacebookButton}
-              >
-                <Image style={styles.FacebookImage} source={require('../assets/facebook.png')}/>
-              <Text style={styles.FacebookText}>Continue with Facebook</Text>
-            </TouchableOpacity>
-
             <View style={styles.Signup}>
             <Text style={styles.text2}>DONT HAVE AN ACCOUNT</Text>
               <TouchableOpacity
@@ -159,6 +141,7 @@
 
           </View>
         </View>
+        </ImageBackground>
       </View>
       </GestureHandlerRootView>
     );
@@ -167,13 +150,15 @@
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'white',
     },
     backgroundEllipse: {
       position: 'absolute',
     },
+    backgroundImage: {
+    width: Dimensions.get('window').width * 2.5,
+    position: 'relative',
+  },
     Textcontainer: {
       flex: 1,
       top: 140,
@@ -189,7 +174,7 @@
       color: 'white',
     },
     ButtonContainer: {
-      marginTop: 90,
+      marginTop: 110,
       width: 338,
       alignItems: 'center',
     },
@@ -197,12 +182,14 @@
       width: '100%',
     },
     Input: {
-      backgroundColor: '#A4B0B2',
       paddingHorizontal: 15,
       paddingVertical: 16,
       borderRadius: 10,
       marginTop: 10,
       fontFamily: 'Poppins-SemiBold',
+      backgroundColor: 'transparent',
+      borderColor:'black',
+      borderWidth:1,
     },
     PasswordButton: {
       right: -110,
@@ -216,7 +203,7 @@
       fontFamily: 'Poppins-SemiBold',
     },
     LoginButton: {
-      backgroundColor: '#319BD6',
+      backgroundColor: '#092547',
       paddingHorizontal: 15,
       paddingVertical: 15,
       width: '100%',
@@ -229,49 +216,6 @@
       color: 'white',
       fontSize: 14,
       fontFamily: 'Poppins-Bold',
-    },
-    GoogleButton: {
-      borderRadius: 50,
-      borderWidth: 1,
-      borderColor: '#A4B0B2',
-      padding: 16,
-      marginTop: 30,
-      width: '90%',
-      height: 60,
-      flexDirection: 'row',
-    },
-    GoogleText: {
-      textAlign: 'center',
-      fontFamily: 'Poppins-SemiBold',
-      color: "#7F8A8C",
-    },
-    GoogleImage:{
-      height: 25,
-      width: 25,
-      marginRight: 20,
-      marginLeft: 10,
-    },
-    FacebookButton: {
-      borderRadius: 50,
-      borderWidth: 1,
-      borderColor: '#A4B0B2',
-      backgroundColor: '#1877F2',
-      padding: 16,
-      marginTop: 10,
-      width: '90%',
-      height: 60,
-      flexDirection: 'row',
-    },
-    FacebookText: {
-      textAlign: 'center',
-      fontFamily: 'Poppins-SemiBold',
-      color: "white",
-    },
-    FacebookImage:{
-      height: 25,
-      width: 25,
-      marginRight: 20,
-      marginLeft: 10,
     },
     Signup: {
       marginTop: 30,
@@ -291,13 +235,15 @@
       alignItems: 'center',
     },
     PasswordInput: {
-      backgroundColor: '#A4B0B2',
       paddingHorizontal: 15,
       paddingVertical: 16,
       borderRadius: 10,
       marginTop: 10,
       fontFamily: 'Poppins-SemiBold',
       flex: 1, // Fill available space in the row
+      backgroundColor: 'transparent',
+      borderColor:'black',
+      borderWidth:1,
     },
     PasswordVisibilityButton: {
       padding: 10,

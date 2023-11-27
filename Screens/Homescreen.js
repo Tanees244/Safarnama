@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
-import Video from 'react-native-video';
 import Login from "./Login";
 import Discover from './Tourists/Discover';
+import { Video, ResizeMode } from 'expo-av';
 
 
 const HomeScreen = () => {
 
   const navigation = useNavigation();
+  const video = React.useRef(null);
 
   const handleRegisterPress = () => {
     // Navigate to the registration screen
@@ -18,7 +19,7 @@ const HomeScreen = () => {
 
   const handleLoginPress = () => {
     // Navigate to the login screen
-    navigation.navigate("AirlineDashboard");
+    navigation.navigate("Login");
   };
 
   const handleDiscoverPress = () => {
@@ -26,9 +27,27 @@ const HomeScreen = () => {
     navigation.navigate(Discover);
   };
 
+  useEffect(() => {
+    // Start playing the video when the component mounts
+    (async () => {
+      if (video.current) {
+        await video.current.playAsync();
+      }
+    })();
+  }, []);
+
   return(
-    <View style={styles.container}>
-      <ImageBackground style={styles.backgroundImage} source={require('../assets/5.jpg')} >
+      <View style={styles.container}>
+        <Video
+          ref={video}
+          style={styles.backgroundVideo}
+          source={require('../assets/V3.mp4')}
+          resizeMode={ResizeMode.STRETCH}
+          isLooping
+          isMuted
+        
+          
+        />
         <View style={styles.Textcontainer}>
 
             <Image style={styles.vector} source={Vector}/>
@@ -66,7 +85,6 @@ const HomeScreen = () => {
 
             <View style={styles.horizontalLine2}></View>
         </View>
-      </ImageBackground>
     </View>
   );
 };
@@ -80,9 +98,16 @@ const styles = StyleSheet.create({
     top: 180,
     alignItems: 'center',
   },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
   vector:{
-    top: 20,
-    right: 160,
+    top: 25,
+    right: 140,
   },
   backgroundImage: {
     flex: 1,
@@ -93,12 +118,13 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {
-    backgroundColor: '#319BD6',
+    backgroundColor: '#092547',
     paddingHorizontal: 15,
     paddingVertical: 16,
     width: '60%',
     top: 250,
-    borderRadius: 10,
+    borderRadius: 20,
+    height:65,
   },
   buttonText: {
     color: 'white',
@@ -108,11 +134,11 @@ const styles = StyleSheet.create({
   },
   buttonOutline: {
     backgroundColor: 'white',
-    borderColor: '#319BD6',
+    borderColor: '#092547',
     borderWidth: 3,
   },
   buttonOutlineText: {
-    color: '#319BD6',
+    color: '#092547',
     fontSize: 16,
     fontFamily: 'Poppins-Black',
     textAlign: 'center',
@@ -122,27 +148,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   Text2: {
-    color: '#339fe0',
+    color: '#092547',
     fontFamily: 'Poppins-Black',
-    fontSize: 14,
+    fontSize: 16,
   },
   boldText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Poppins-Black',
-    color: '#000000',
+    color: 'white',
+    marginLeft:5,
   },
   gap:{
     height: 10,
   },
   horizontalLine1: {
-    borderBottomColor: '#59788E',
+    borderBottomColor: '#092547',
     borderWidth: 1,
     width: 70,
     top: 293,
     right: 118,
   },
   horizontalLine2: {
-    borderBottomColor: '#59788E',
+    borderBottomColor: '#092547',
     borderWidth: 1,
     width: 70,
     bottom: 18,

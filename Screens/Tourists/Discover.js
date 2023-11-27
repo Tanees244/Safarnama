@@ -127,6 +127,7 @@ const navigateToGuideHome = () => {
 
   return (
     <View style={styles.container}>
+     
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
@@ -156,6 +157,8 @@ const navigateToGuideHome = () => {
                          <Text style={styles.home}>Profile</Text>
                 </TouchableOpacity>
             </View>
+            <ImageBackground  source={require('../../assets/p5.jpg')}
+          styles={styles.backgroundImage}>
     <ScrollView >
         <View style={styles.quote}>
         <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
@@ -220,7 +223,7 @@ const navigateToGuideHome = () => {
           keyExtractor={(item) => item.id}
         />
     </ScrollView>
- 
+    </ImageBackground>
     </View>
   );
 };
@@ -228,7 +231,7 @@ const navigateToGuideHome = () => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: '#cee7fa',
+  
   },
   home: {
     fontSize: 10,
@@ -237,6 +240,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textAlign: "center",
     color: 'white',
+  },
+  backgroundImage: {
+  
+    position: 'relative',
   },
   homeicon: {
     width: 24,
@@ -247,7 +254,7 @@ const styles = StyleSheet.create({
   ButtonContainer1: {
     flexDirection: 'row',
     padding: 20,
-    backgroundColor: '#213555',
+    backgroundColor: '#092547',
     height: 60,
     borderRadius: 30,
     alignItems: 'center',
@@ -262,7 +269,7 @@ const styles = StyleSheet.create({
 },
   header: {
     height: 120,
-    backgroundColor: '#213555',
+    backgroundColor: '#092547',
     shadowColor: 'black',
     elevation: 20,
     borderRadius:40,
@@ -277,7 +284,7 @@ const styles = StyleSheet.create({
 
   quote:{
     margin:20,
-    backgroundColor:'#213555',
+    backgroundColor:'#092547',
     borderTopRightRadius:40,
     borderBottomLeftRadius:40,
     justifyContent:'center',
@@ -294,7 +301,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingTop: 25,
     textAlign:'center',
-    color: 'black',
+    color: 'white',
     fontFamily: 'Poppins-Bold',
   },
   buttonContainer:{
@@ -303,7 +310,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#213555',
+    backgroundColor: '#092547',
     borderRadius: 30,
     height: 80,
     justifyContent: 'center',
@@ -331,7 +338,7 @@ const styles = StyleSheet.create({
   },
 
   Package:{
-    backgroundColor: '#213555',
+    backgroundColor: '#092547',
     borderRadius: 30,
     padding: 20,
     marginTop: 20,
