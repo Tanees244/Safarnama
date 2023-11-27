@@ -40,10 +40,9 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
         }
       };
   
-    useEffect(() => {
-      setTicketDetails({ ...initialTicketDetails });
-      setEditedTicket({ ...initialTicketDetails });
-    }, [initialTicketDetails]);
+      useEffect(() => {
+        setTicketDetails({ ...initialTicketDetails });
+      }, [initialTicketDetails]);
   
     const toggleDatepicker = () => {
       setShowPicker(!showPicker);
@@ -84,9 +83,9 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
     };
   
     const handleSave = () => {
-        onUpdateTicket(ticketNumber, editedTicket); // Update the ticket details via the parent component function
-        setTicketDetails({ ...editedTicket }); // Update the local state to reflect the edited ticket details
-        setEditModalVisible(false); // Close the edit modal after saving
+      onUpdateTicket(editedTicket); // Pass the edited ticket to the parent component
+      setTicketDetails({ ...editedTicket }); // Update local state with the edited ticket details
+      setEditModalVisible(false); // Close the edit modal after saving
     };
       
     const handleInputChange = (field, value) => {
@@ -143,14 +142,28 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
         
         <View style={styles.ticketInfoContainer}>
             <View style={styles.ticketText}>
-                <Text style={styles.title}>Price : </Text>
-                <Text style={styles.ticketText}>{ticketDetails.price} PKR</Text>
                 <Text style={styles.title}>Departure Date : </Text>
                 <Text style={styles.ticketText}>
                 {(editedTicket.departureDate && new Date(editedTicket.departureDate)?.toDateString()) || " "}
                 </Text>
-                <Text style={styles.title}>Flight Duration : </Text>
-                <Text style={styles.ticketText}>{ticketDetails.flightDuration}</Text>
+                <Text style={styles.title}>Departure Time : </Text>
+                <Text style={styles.ticketText}>
+                {(editedTicket.departureTime && new Date(editedTicket.departureTime)?.toLocaleTimeString()) || " "}
+                </Text>
+                <Text style={styles.title}>Arrival Date : </Text>
+                <Text style={styles.ticketText}>
+                {(editedTicket.arrivalDate && new Date(editedTicket.arrivalDate)?.toDateString()) || " "}
+                </Text>
+                <Text style={styles.title}>Arrival Time : </Text>
+                <Text style={styles.ticketText}>
+                {(editedTicket.arrivalTime && new Date(editedTicket.arrivalTime)?.toLocaleTimeString()) || " "}
+                </Text>
+                <Text style={styles.title}>Price : </Text>
+                <Text style={styles.ticketText}>{ticketDetails.price} PKR</Text>
+                <Text style={styles.title}>Flight Duration:</Text>
+                <Text style={styles.ticketText}>
+                    {editedTicket.calculatedDuration || ''}
+                </Text>
             </View>
         </View>
 
@@ -191,8 +204,8 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
             dropdownStyle={styles.DropdownContainer}
             dropdownTextStyle={styles.CustomDropdownText}
             onSelect={(index, value) => {
-              setEditedTicket({ ...editedTicket, flightType: value });
-              setSeatType(value);
+            setEditedTicket({ ...editedTicket, flightType: value });
+            setSeatType(value);
             }}
           />
           </View>
