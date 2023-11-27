@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
-import * as Animatable from "react-native-animatable";
+import Video from 'react-native-video';
 import Login from "./Login";
 import Discover from './Tourists/Discover';
 
@@ -27,49 +27,47 @@ const HomeScreen = () => {
   };
 
   return(
-    <Animatable.View style={styles.container}>
-    <ImageBackground style={styles.backgroundImage} source={require('../assets/5.jpg')} >
-    <View style={styles.Textcontainer}>
+    <View style={styles.container}>
+      <ImageBackground style={styles.backgroundImage} source={require('../assets/5.jpg')} >
+        <View style={styles.Textcontainer}>
 
-        <Image style={styles.vector} source={Vector}/>
-        <Text style={styles.text}>Safarnama</Text>
+            <Image style={styles.vector} source={Vector}/>
+            <Text style={styles.text}>Safarnama</Text>
 
-        <TouchableOpacity
-        onPress={handleLoginPress}
-        activeOpacity={0.5}
-        style={styles.button}
-        >
-        <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-
-        <View style={styles.gap} />
-
-        <TouchableOpacity
-        onPress={handleRegisterPress}
-        activeOpacity={0.5} 
-        style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity>
-
-        <View style={styles.horizontalLine1}></View>
-
-        <View style={styles.guest}>
-          
-          <Text style={styles.Text2}>Continue as</Text>
             <TouchableOpacity
-            onPress={handleDiscoverPress}
+            onPress={handleLoginPress}
             activeOpacity={0.5}
+            style={styles.button}
             >
-              <Text style={styles.boldText}> GUEST</Text>
+            <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
+
+            <View style={styles.gap} />
+
+            <TouchableOpacity
+            onPress={handleRegisterPress}
+            activeOpacity={0.5} 
+            style={[styles.button, styles.buttonOutline]}
+            >
+              <Text style={styles.buttonOutlineText}>Register</Text>
+            </TouchableOpacity>
+
+            <View style={styles.horizontalLine1}></View>
+
+            <View style={styles.guest}>
+              <Text style={styles.Text2}>Continue as</Text>
+                <TouchableOpacity
+                onPress={handleDiscoverPress}
+                activeOpacity={0.5}
+                >
+                  <Text style={styles.boldText}> GUEST</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.horizontalLine2}></View>
         </View>
-
-        <View style={styles.horizontalLine2}></View>
-
+      </ImageBackground>
     </View>
-    </ImageBackground>
-    </Animatable.View>
   );
 };
 
