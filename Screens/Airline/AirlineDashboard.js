@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image,  Pressable, Platform, TouchableOpacity, Dimensions } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import Dropdown from 'react-native-modal-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker;
@@ -12,6 +13,8 @@ const AirlineDashboard = () => {
   const screenHeight = Dimensions.get('window').height;
   const modalHeight = screenHeight * 0.9;
   const containerWidth = screenWidth * 0.9;
+
+  const navigation = useNavigation();
 
   const [flightNumber, setFlightNumber] = useState('');
   const [price, setPrice] = useState('');
@@ -39,6 +42,10 @@ const AirlineDashboard = () => {
   const toCity = ['Islamabad'];
 
   const [isAddTicketModalVisible, setAddTicketModalVisible] = useState(false);
+
+  const ProfileNavigate = () => {
+    navigation.navigate('AirlineProfile');
+  }
 
   const toggleAddTicketModal = () => {
     setAddTicketModalVisible(!isAddTicketModalVisible);
@@ -203,6 +210,12 @@ const AirlineDashboard = () => {
         </View>
         <Image source={require('../../assets/serene.png')} style={styles.headerImage} />
       </View>
+      <TouchableOpacity
+        onPress={ProfileNavigate}
+        style={styles.ProfileButton}
+      >
+        <Image source={require('../../assets/account-circle-black.png')} style = {[{width: 40, height: 40}]}/>
+      </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.PackageContainer}>
           <View style={styles.ButtonContainer}>
@@ -311,19 +324,6 @@ const AirlineDashboard = () => {
             )}
           </View>
           <View style={styles.input}>
-            {showPicker4 && showTimePicker2()}
-            {!showPicker4 && (
-              <Pressable onPress={toggleTimepicker2}>
-                <TextInput
-                  style={styles.DropdownText}
-                  placeholder="Arrival Time"
-                  value={timeSelect2}
-                  editable={false}
-                />
-              </Pressable>
-            )}
-          </View>
-          <View style={styles.input}>
             {showPicker2 && (
               <DateTimePicker
                 mode="date"
@@ -353,14 +353,25 @@ const AirlineDashboard = () => {
               </Pressable>
             )}
           </View>
+          <View style={styles.input}>
+            {showPicker4 && showTimePicker2()}
+            {!showPicker4 && (
+              <Pressable onPress={toggleTimepicker2}>
+                <TextInput
+                  style={styles.DropdownText}
+                  placeholder="Arrival Time"
+                  value={timeSelect2}
+                  editable={false}
+                />
+              </Pressable>
+            )}
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Flight Duration (in minutes)"
-            value={flightDuration}
-            onChangeText={handleFlightDuration}
+            value={calculatedDuration}
             keyboardType='numeric'
           />
-
           <TouchableOpacity onPress={handleFormSubmit} style={styles.AddTicketButton}>
             <Text style={styles.AddTicketButtonText}>Submit</Text>
           </TouchableOpacity>
@@ -427,6 +438,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 20,
     borderRadius: 20,
+  },
+  ProfileButton:{
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    width: 90,  // Adjust the width as needed
+    height: 90,
+    padding: 15,
+    borderRadius: 35,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    zIndex: 2,
   },
   PackageContainer:{
     backgroundColor: '#D8D9DA',

@@ -17,32 +17,54 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
     const cityOptions = ['Karachi', 'Lahore', 'Quetta']; // Options for the city dropdown
     const seatTypes = ['Economy', 'Business', 'First-Class']; 
 
+    const [departureTime, setDepartureTime] = useState(null);
+  const [showDeparturePicker, setShowDeparturePicker] = useState(false);
+  const [arrivalTime, setArrivalTime] = useState(null);
+  const [showArrivalPicker, setShowArrivalPicker] = useState(false);
+
+  // Toggle functions for showing/hiding time pickers
+  const toggleDepartureTimepicker = () => {
+    setShowDeparturePicker(!showDeparturePicker);
+  };
+
+  const toggleArrivalTimepicker = () => {
+    setShowArrivalPicker(!showArrivalPicker);
+  };
+
+  // Event handlers for time changes
+  const onDepartureTimeChange = (event, selectedTime) => {
+    if (selectedTime) {
+      setDepartureTime(selectedTime);
+      if (Platform.OS === 'android') {
+        toggleDepartureTimepicker();
+        // Handle time selection (formatting, etc.)
+      }
+    } else {
+      toggleDepartureTimepicker();
+    }
+  };
+
+  const onArrivalTimeChange = (event, selectedTime) => {
+    if (selectedTime) {
+      setArrivalTime(selectedTime);
+      if (Platform.OS === 'android') {
+        toggleArrivalTimepicker();
+        // Handle time selection (formatting, etc.)
+      }
+    } else {
+      toggleArrivalTimepicker();
+    }
+  };
+
     const formatDuration = (durationInMinutes) => {
-        const hours = Math.floor(durationInMinutes / 60);
-        const minutes = durationInMinutes % 60;
-        return `${hours}h ${minutes}min`;
-      };
-      
-      // Function to handle setting the flight duration in the edit modal
-      const handleFlightDuration = (text) => {
-        // Clear the flight duration if the input is empty
-        if (text === '') {
-          setEditedTicket({ ...editedTicket, flightDuration: '' });
-          return;
-        }
-      
-        // Ensure the input is numeric
-        const duration = parseInt(text);
-      
-        if (!isNaN(duration)) {
-          const formattedDuration = formatDuration(duration);
-          setEditedTicket({ ...editedTicket, flightDuration: formattedDuration });
-        }
-      };
+      const hours = Math.floor(durationInMinutes / 60);
+      const minutes = durationInMinutes % 60;
+      return `${hours}h ${minutes}min`;
+    };
   
-      useEffect(() => {
-        setTicketDetails({ ...initialTicketDetails });
-      }, [initialTicketDetails]);
+    useEffect(() => {
+      setTicketDetails({ ...initialTicketDetails });
+    }, [initialTicketDetails]);
   
     const toggleDatepicker = () => {
       setShowPicker(!showPicker);
@@ -142,28 +164,40 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
         
         <View style={styles.ticketInfoContainer}>
             <View style={styles.ticketText}>
-                <Text style={styles.title}>Departure Date : </Text>
-                <Text style={styles.ticketText}>
-                {(editedTicket.departureDate && new Date(editedTicket.departureDate)?.toDateString()) || " "}
-                </Text>
-                <Text style={styles.title}>Departure Time : </Text>
-                <Text style={styles.ticketText}>
-                {(editedTicket.departureTime && new Date(editedTicket.departureTime)?.toLocaleTimeString()) || " "}
-                </Text>
-                <Text style={styles.title}>Arrival Date : </Text>
-                <Text style={styles.ticketText}>
-                {(editedTicket.arrivalDate && new Date(editedTicket.arrivalDate)?.toDateString()) || " "}
-                </Text>
-                <Text style={styles.title}>Arrival Time : </Text>
-                <Text style={styles.ticketText}>
-                {(editedTicket.arrivalTime && new Date(editedTicket.arrivalTime)?.toLocaleTimeString()) || " "}
-                </Text>
-                <Text style={styles.title}>Price : </Text>
-                <Text style={styles.ticketText}>{ticketDetails.price} PKR</Text>
-                <Text style={styles.title}>Flight Duration:</Text>
-                <Text style={styles.ticketText}>
-                    {editedTicket.calculatedDuration || ''}
-                </Text>
+              <View style={styles.Time}>
+                <View style={styles.DTime}>  
+                  <Text style={styles.title2}>Departure Date</Text>
+                  <Text style={styles.ticketText2}>
+                  {(editedTicket.departureDate && new Date(editedTicket.departureDate)?.toDateString()) || " "}
+                  </Text> 
+                  <Text style={styles.title2}>Departure Time : </Text>
+                  <Text style={styles.ticketText2}>
+                  {(editedTicket.departureTime && new Date(editedTicket.departureTime)?.toLocaleTimeString()) || " "}
+                  </Text>             
+                </View>
+                <View style={styles.ATime}>
+                  <Text style={styles.title2}>Arrival Date : </Text>
+                  <Text style={styles.ticketText2}>
+                  {(editedTicket.arrivalDate && new Date(editedTicket.arrivalDate)?.toDateString()) || " "}
+                  </Text>
+                  <Text style={styles.title2}>Arrival Time : </Text>
+                  <Text style={styles.ticketText2}>
+                  {(editedTicket.arrivalTime && new Date(editedTicket.arrivalTime)?.toLocaleTimeString()) || " "}
+                  </Text>
+                </View>
+                </View>
+                <View style={styles.Duration}>
+                  <View>
+                  <Text style={styles.title}>Price : </Text>
+                  <Text style={styles.ticketText}>{ticketDetails.price} PKR</Text>
+                  </View>
+                  <View>
+                  <Text style={styles.title}>Flight Duration:</Text>
+                  <Text style={styles.ticketText}>
+                      {editedTicket.calculatedDuration || ''}
+                  </Text>
+                  </View>
+                </View>
             </View>
         </View>
 
@@ -176,72 +210,91 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
             </TouchableOpacity>
         </View>
 
-        <Modal visible={isEditModalVisible} animationType="slide">
-        <View style={styles.modalContent}>
-          <TouchableOpacity onPress={() => setEditModalVisible(false)} style={styles.closeIconContainer}>
-            <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
-          </TouchableOpacity>
+      <Modal visible={isEditModalVisible} animationType="slide">
+      <View style={styles.modalContent}>
+        <TouchableOpacity onPress={() => setEditModalVisible(false)} style={styles.closeIconContainer}>
+          <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
+        </TouchableOpacity>
 
-          <Text style={styles.PopupHeading}>Edit Ticket</Text>
+        <Text style={styles.PopupHeading}>Edit Ticket</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Flight Number"
-            value={editedTicket.flightNumber}
-            onChangeText={(text) => handleInputChange('flightNumber', text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Departure City"
-            value={editedTicket.departureCity}
-            onChangeText={(text) => handleInputChange('departureCity', text)}
-          />
-          <View style={styles.input}>
+        <TextInput
+          style={styles.input}
+          placeholder="Flight Number"
+          value={editedTicket.flightNumber}
+          onChangeText={(text) => handleInputChange('flightNumber', text)}
+        />
+        <View style={styles.input}>
           <Dropdown
-            defaultValue={editedTicket.flightType} // Set default value from state
+            defaultValue={editedTicket.departureCity || 'Departure City'} 
+            options={cityOptions}
+            textStyle={styles.DropdownText}
+            dropdownStyle={styles.DropdownContainer}
+            dropdownTextStyle={styles.CustomDropdownText}
+            onSelect={(index, value) => {
+              setEditedTicket({ ...editedTicket, departureCity: value });
+              setSeatType(value);
+            }}
+          />
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Arrival City"
+          value={editedTicket.arrivalCity}
+          onChangeText={(text) => handleInputChange('arrivalCity', text)}
+        />
+        <View style={styles.input}>
+          <Dropdown
+            defaultValue={editedTicket.flightType || 'Flight Type'} 
             options={seatTypes}
             textStyle={styles.DropdownText}
             dropdownStyle={styles.DropdownContainer}
             dropdownTextStyle={styles.CustomDropdownText}
             onSelect={(index, value) => {
-            setEditedTicket({ ...editedTicket, flightType: value });
-            setSeatType(value);
+              setEditedTicket({ ...editedTicket, flightType: value });
+              setSeatType(value);
             }}
           />
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Price"
-            value={(editedTicket.price !== undefined ? editedTicket.price.toString() : '')}
-            onChangeText={(text) => handleInputChange('price', text)}
-            keyboardType="numeric"
-            />
-
-          <View style={styles.input}>
-            {showPicker && showDatePicker()}
-            {!showPicker && (
-              <Pressable onPress={toggleDatepicker}>
-                <TextInput
-                  style={styles.DropdownText}
-                  placeholder="Departure Date"
-                  value={dateSelect || editedTicket.departureDate?.toDateString() || ''}
-                  editable={false}
-                />
-              </Pressable>
-            )}
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Flight Duration (in minutes)"
-            value={(editedTicket.flightDuration && editedTicket.flightDuration.replace(/\D/g, '')) || ''}
-            onChangeText={handleFlightDuration}
-            keyboardType="numeric"
-            />
-          <TouchableOpacity onPress={handleSave} style={styles.AddTicketButton}>
-            <Text style={styles.AddTicketButtonText}>Save</Text>
-          </TouchableOpacity>
         </View>
-      </Modal>
+        <View style={styles.input}>
+          {showPicker && showDatePicker()}
+          {!showPicker && (
+            <Pressable onPress={toggleDatepicker}>
+              <TextInput
+                style={styles.DropdownText}
+                placeholder="Departure Date"
+                value={dateSelect || editedTicket.departureDate?.toDateString() || ''}
+                editable={false}
+              />
+            </Pressable>
+          )}
+        </View>
+        <View style={styles.input}>
+          {showPicker && showDatePicker()}
+          {!showPicker && (
+            <Pressable onPress={toggleDatepicker}>
+              <TextInput
+                style={styles.DropdownText}
+                placeholder="Arrival Date"
+                value={dateSelect || editedTicket.arrivalDate?.toDateString() || ''}
+                editable={false}
+              />
+            </Pressable>
+          )}
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Price"
+          value={(editedTicket.price !== undefined ? editedTicket.price.toString() : '')}
+          onChangeText={(text) => handleInputChange('price', text)}
+          keyboardType="numeric"
+        />
+        <TouchableOpacity onPress={handleSave} style={styles.AddTicketButton}>
+          <Text style={styles.AddTicketButtonText}>Save</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+
 
 
 
@@ -339,6 +392,24 @@ const styles = StyleSheet.create({
   selectedSeat: {
     backgroundColor: '#73777B', 
   },
+  Time:{
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 10,
+  },
+  DTime:{
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    marginRight: 25,
+    padding: 10,
+  },
+  ATime:{
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    padding: 10,
+  },
   title:{
     fontFamily: 'Poppins-Bold',
     color: '#73777B',
@@ -349,14 +420,25 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Bold',
   },
+  title2:{
+    fontFamily: 'Poppins-Bold',
+    color: '#73777B',
+    fontSize: 10,
+  },
   Duration: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   ticketText: {
     fontSize: 18,
     color: '#fff',
     fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+  },
+  ticketText2: {
+    fontSize: 14,
+    color: '#fff',
+    fontFamily: 'Poppins-SemiBold',
     marginBottom: 10,
   },
   ticketInfoContainer: {

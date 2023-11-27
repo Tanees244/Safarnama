@@ -63,7 +63,6 @@ const HomeScreen = () => {
                   <Text style={styles.boldText}> GUEST</Text>
                 </TouchableOpacity>
             </View>
-
             <View style={styles.horizontalLine2}></View>
         </View>
       </ImageBackground>
