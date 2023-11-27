@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 50,
-    fontWeight: '900',
+    fontFamily: 'Poppins-Bold',
     color: 'white',
   },
   CategoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: Dimensions.get('window').height * 0.45, // Approximately 35% of screen height
+    marginTop: Dimensions.get('window').height * 0.45,
   },
   card: {
     backgroundColor: '#D9D9D9',

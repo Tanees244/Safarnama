@@ -1,198 +1,152 @@
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image,TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native';
 import React from 'react';
-
-
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import HomeScreen from '../Homescreen';
 
 const AirlineProfile = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.8;
-    const buttonWidth = containerWidth * 0.5;
-    const inputBoxWidth = containerWidth - 40; // Subtract padding
     const navigation = useNavigation();
-   
 
-    const navigateToGuideProfile = () => {
-        navigation.navigate('GuideProfile');
-      };
-    
-      const navigateToGuideHomeScreen = () => {
-        navigation.navigate('GuideHomeScreen');
-      };
+    const ProfileNavigate = () => {
+        navigation.navigate('AirlineDashboard');
+    }
+
+    const handleHome = () => {
+        navigation.navigate("HomeScreen");
+    }
 
     return (
-        <ScrollView contentContainerStyle={styles.Container} >
-            <View style={styles.Rectangle}>
-                <Text style={styles.Text}>
-                    My <Text style={[styles.Text, { color: 'white' }]}>Account</Text>
-                </Text>
-
-            </View>
-            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/USER.png")} />
-
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text>
-                        User Name
-                    </Text>
-                </View>
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text>
-                        User ID
-                    </Text>
-                </View>
-                <Text style={styles.bio}>BIO</Text>
-                <View style={[styles.textBox, {width: inputBoxWidth}]}>
-                    <Text>
-                    my name is tanees shakeel. i live in karachi, pakistan. lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum 
+        <View style={styles.Container}>
+            <TouchableOpacity
+            onPress={ProfileNavigate}
+            style={styles.ProfileButton}
+             >
+            <Image source={require('../../assets/Home.png')} style = {[{width: 40, height: 40}]}/>
+            </TouchableOpacity>
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.rectangle}>
+                    <Text style={styles.text}>
+                        Profile
                     </Text>
                 </View>
 
-                <View style={styles.ButtonContainer1}>
-                    <TouchableOpacity activeOpacity={0.5}>
-                        <Text style={{color:'white', fontWeight:'bold'}}>
-                            LOGOUT
-                        </Text>
-                    </TouchableOpacity>
+                <View style={[styles.profileContainer, { width: containerWidth }]}>
+                    <Image
+                        style={styles.userIcon}
+                        resizeMode='cover'
+                        source={require("../../assets/serene.png")} 
+                    />
+                    <View style={styles.buttonsContainer}>
+                            <Text style={styles.Name}>Serene Airlines</Text>
+                            <Text style={styles.Id}>ID : #071B26</Text>
+                    </View>      
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={handleHome} activeOpacity={0.5}>
+                            <Text style={{ color: 'white', fontFamily: 'Poppins-Bold' }}>
+                                LOGOUT
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
+                <Text style={styles.bio}>About</Text>
 
-            </View>
-            <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHomeScreen}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/Home.png")} />
-                    <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
-                    <Text style={styles.home}>Profile</Text>
-                </TouchableOpacity>
-            </View>
-
-        </ScrollView>
+                <View style={[styles.textBox, { width: containerWidth }]}>
+                    <Text style={{ color: 'white', fontFamily: 'Poppins-Regular' }}>
+                        My name is Tanees Shakeel. I live in Karachi, Pakistan. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </Text>
+                </View>
+            </ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    Container: {
-        backgroundColor: 'white',
+    container: {
         flexGrow: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: 'white',
-    },
-    Text: {
-        fontSize: 40,
-        color: 'black',
-        fontWeight: 'bold',
-        marginTop: 100,
-        right: 30,
-    },
-    textBox: {
-        marginTop: 10,
-        backgroundColor:  '#D9D9D9',
-        height: 140,
-        borderRadius: 20,
-        padding: 20,
-        borderWidth: 0,
-        borderColor: 'black',
-    },
-    homeicon: {
-        width: 24,
-        height: 24,
-        overflow: "hidden",
-    },
-    bio: {
-        color: 'black',
-        right: 100,
-        marginTop: 30,
-        fontSize: 27,
-    },
-
-    home: {
-        fontSize: 10,
-        lineHeight: 14,
-        fontWeight: "700",
-        marginTop: 2,
-        textAlign: "center",
-        color: 'white',
-    },
-
-    UserIcon: {
-        top: 20,
-        left: 10,
+      },
+    Container: {
+        backgroundColor: '#20262E',
+        flex: 1,
+    }, 
+    ProfileButton:{
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
         width: 90,
         height: 90,
-        position: "absolute",
-    },
-
-    Rectangle: {
-        backgroundColor: '#A5A2D8',
-        borderRadius: 46,
-        height: 320,
-        top: -10,
-        width: '100%',
-        position: 'absolute',
-        flex: 1,
+        padding: 15,
+        borderRadius: 35,
+        backgroundColor: '#000000',
         alignItems: 'center',
-      
+        justifyContent: 'center',
+        shadowColor: 'white',
+        elevation: 1,
+        zIndex: 2,
     },
-
-    ProfileContainer: {
+    text: {
+        fontSize: 40,
+        color: 'white',
+        fontFamily: 'Poppins-Bold',
+        marginTop: 100,
+    },
+    profileContainer: {
         backgroundColor: '#BCCADF',
         borderRadius: 28,
-        marginTop: 200,
         alignItems: 'center',
-        paddingTop: 20,
-        paddingBottom: 30,
-        height: 460,
+        padding: 25,
+        marginTop: 180,
+        flexDirection: 'column',
     },
-    Buttons: {
-        backgroundColor: '#D9D9D9',
-        height: 35,
-        left: 40,
-        borderRadius: 30,
+    userIcon: {
+        width: 90,
+        height: 90,
+    },
+    buttonsContainer: {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'black',
-    },
-    ButtonContainer1: {
-        flexDirection: 'row',
         padding: 20,
+    },
+    Name:{
+        fontFamily: 'Poppins-Bold',
+        fontSize: 20,
+    },
+    Id: {
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: 18,
+    },
+    textBox: {
+        borderRadius: 25,
+        padding: 20,
+        textAlign: 'center',
+    },
+    bio: {
+        fontFamily: 'Poppins-SemiBold',
+        color: 'white',
+        marginTop: 30,
+        fontSize: 25,
+    },
+    rectangle: {
+        backgroundColor: '#4F515A',
+        borderRadius: 40,
+        height: 320,
+        top: -20,
+        width: '100%',
+        position: 'absolute',
+        alignItems: 'center',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
         backgroundColor: '#213555',
         height: 60,
-        borderRadius: 30,
+        borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        marginBottom: 50,
-        marginTop: 50,
         width: 160,
-
-    },
-
-    ButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: 'white',
     },
 });
 
-
-
 export default AirlineProfile;
-
-
