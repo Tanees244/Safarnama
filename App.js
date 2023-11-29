@@ -57,11 +57,14 @@ import GuideRegister from './Screens/Guide/GuideRegister';
 import TrainDashboard from './Screens/Train/TrainDashboard';
 import BusDashboard from './Screens/Bus/BusDashboard';
 import TrainDetails from './Screens/Train/TrainDetails';
+import TrainProfile from './Screens/Train/TrainProfile';
 import BusDetails from './Screens/Bus/BusDetails';
 import AirlineDetails from './Screens/Airline/AirlineDetails';
 import TouristRegister from './Screens/Tourists/TouristRegister';
 import TouristPersonalDetail from './Screens/Tourists/TouristPersonalDetail';
 import ActiveTicket from './Screens/Airline/ActiveTicket';
+import ActiveTicketB from './Screens/Bus/ActiveTicketB';
+import ActiveTicketT from './Screens/Train/ActiveTicketT';
 import PaymentGateway from './Screens/Tourists/PaymentGateway';
 import TransportLists from './Screens/Tourists/TransportLists';
 import Option from './Screens/Tourists/option';
@@ -162,9 +165,13 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='GuideRegister' component={GuideRegister} />
         <Stack.Screen options={{ headerShown: false }} name='TouristPersonalDetail' component={TouristPersonalDetail} />
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicket' component={ActiveTicket} />
+        <Stack.Screen options={{ headerShown: false }} name='ActiveTicketB' component={ActiveTicketB} />
+        <Stack.Screen options={{ headerShown: false }} name='ActiveTicketT' component={ActiveTicketT} />
         <Stack.Screen options={{ headerShown: false }} name='PaymentGateway' component={PaymentGateway} />
         <Stack.Screen options={{ headerShown: false }} name='TransportLists' component={TransportLists} />
         <Stack.Screen options={{ headerShown: false }} name='Option' component={Option} />
+        <Stack.Screen options={{ headerShown: false }} name='TrainProfile' component={TrainProfile} />
+        
         
       </Stack.Navigator>
     </NavigationContainer>

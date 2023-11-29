@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions,TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const data = [
@@ -31,7 +31,7 @@ const data = [
 
 const data2 = [
   {
-    id: '1',
+    id: '4',
     image: require('../../assets/Hotel1.jpg'),
     title: 'Marriot Hotel',
     city: 'Islamabad',
@@ -39,7 +39,7 @@ const data2 = [
     ratings: '4.5/5.0',
   },
   {
-    id: '2',
+    id: '5',
     image: require('../../assets/Hotel2.jpg'),
     title: 'Pearl Continental',
     city: 'Islamabad',
@@ -47,7 +47,7 @@ const data2 = [
     ratings: '3.3/5.0',
   },
   {
-    id: '3',
+    id: '6',
     image: require('../../assets/Hotel3.jpg'),
     title: 'Ramada',
     city: 'Islamabad',
@@ -125,8 +125,29 @@ const navigateToGuideHome = () => {
     navigation.navigate('Discover'); // Replace with your screen name
 };
 
+const [searchQuery, setSearchQuery] = useState('');
+
+const combinedData = [...data, ...data2];
+
+  // Filtered data based on search query
+  const filteredData = combinedData.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleItemPress = (item) => {
+    // Add logic to navigate based on the item type (place or hotel)
+    if (item.id<=3) {
+      navigation.navigate('PlacesInfo', { placeId: item.id });
+    } else {
+      navigation.navigate('HotelsInfo', { hotelId: item.id });
+    }
+    setSearchQuery(''); // Clear search query after navigation
+  };
+
+
   return (
-    <View style={styles.container}>
+  
+  <View style={styles.container}>
      
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
@@ -159,10 +180,35 @@ const navigateToGuideHome = () => {
             </View>
             <ImageBackground  source={require('../../assets/p5.jpg')}
           styles={styles.backgroundImage}>
+          
     <ScrollView >
         <View style={styles.quote}>
         <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
         </View>
+
+   {/* searchbar */}
+   <TextInput
+        style={styles.searchInput}
+        placeholder="Search places and hotels"
+        onChangeText={text => setSearchQuery(text)}
+        value={searchQuery}
+      />
+
+      {/* Display filtered results */}
+      {searchQuery.length > 0 && (
+        <FlatList
+          data={filteredData}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleItemPress(item)}>
+              <View style={styles.resultItem}>
+                <Image source={item.image} style={styles.itemImage} />
+                <Text style={styles.itemTitle}>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
         <View style={[styles.buttonContainer, { width: containerWidth }]}>
           <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
           <View style={styles.buttonContent}>
@@ -207,21 +253,22 @@ const navigateToGuideHome = () => {
           </TouchableOpacity>
         </View>
         <Text style={styles.text}>Places</Text>
-        <FlatList
-          data={data}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <HorizontalCard item={item} />}
-          keyExtractor={(item) => item.id}
-        />
-        <Text style={styles.text}>Hotels</Text>
-        <FlatList
-          data={data2}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <HorizontalCard item={item} />}
-          keyExtractor={(item) => item.id}
-        />
+      <FlatList
+        data={data}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => <HorizontalCard item={item} onPress={() => navigateToPlaceLists()} />}
+        keyExtractor={item => item.id}
+      />
+
+      <Text style={styles.text}>Hotels</Text>
+      <FlatList
+        data={data2}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => <HorizontalCard item={item} onPress={() => navigateToHotelsInfo()} />}
+        keyExtractor={item => item.id}
+      />
     </ScrollView>
     </ImageBackground>
     </View>
@@ -240,6 +287,36 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textAlign: "center",
     color: 'white',
+  },
+  itemImage: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    borderRadius: 20,
+  },
+  itemTitle: {
+    fontSize: 16,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+  },
+  resultHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 5,
+    marginLeft: 15,
+  },
+  resultItem: {
+    fontSize: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   backgroundImage: {
   
