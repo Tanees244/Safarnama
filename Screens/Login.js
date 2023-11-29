@@ -9,6 +9,7 @@
   import Category from './Category';
   import AdminDashboard from '../Screens/Admin/AdminRegister'; 
   import { MaterialIcons } from '@expo/vector-icons';
+  import * as Animatable from 'react-native-animatable';
 
   const Login = () => {
     const [email, setEmail] = useState('');
@@ -121,13 +122,20 @@
               <Text style={styles.PasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
 
+            <Animatable.View
+              animation={"pulse"}
+              easing="ease-in-out"
+              iterationCount={"infinite"}
+              style={styles.LoginButton}
+            >
             <TouchableOpacity
               activeOpacity={0.5} 
-              style={styles.LoginButton}
               onPress={handleSignIn}
               >
               <Text style={styles.LoginText}>Login</Text>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </Animatable.View>
+           
 
             <View style={styles.Signup}>
             <Text style={styles.text2}>DONT HAVE AN ACCOUNT</Text>
@@ -135,7 +143,13 @@
               activeOpacity={0.5}
               onPress={handleRegister}
               >
+              <Animatable.Text
+              animation={'pulse'}
+              easing={'ease-in-out-back'}
+              iterationCount={'infinite'}
+              >
                 <Text style={styles.boldText}> SIGN UP !</Text>
+                </Animatable.Text>
               </TouchableOpacity>
           </View>
 
@@ -165,8 +179,8 @@
       alignItems: 'center',
     },
     vector:{
-      top: 20,
-      right: 150,
+      top: 30,
+      right: 140,
     },
     text: {
       fontSize: 45,
@@ -206,7 +220,7 @@
       backgroundColor: '#092547',
       paddingHorizontal: 15,
       paddingVertical: 15,
-      width: '100%',
+      width: '80%',
       height: 56,
       borderRadius: 10,
       marginTop: 15,

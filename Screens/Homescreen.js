@@ -5,6 +5,7 @@ import { Vector } from '../assets';
 import Login from "./Login";
 import Discover from './Tourists/Discover';
 import { Video, ResizeMode } from 'expo-av';
+import * as Animatable from 'react-native-animatable';
 
 
 const HomeScreen = () => {
@@ -53,23 +54,37 @@ const HomeScreen = () => {
             <Image style={styles.vector} source={Vector}/>
             <Text style={styles.text}>Safarnama</Text>
 
+            <Animatable.View
+              animation={"pulse"}
+              easing='ease-in'
+              iterationCount={"infinite"}
+              style={styles.button}
+            >
             <TouchableOpacity
             onPress={handleLoginPress}
             activeOpacity={0.5}
-            style={styles.button}
+            
             >
             <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
+            </Animatable.View>
+          
 
             <View style={styles.gap} />
-
+            <Animatable.View
+              animation={"pulse"}
+              easing='ease-in'
+              iterationCount={"infinite"}
+              style={[styles.button, styles.buttonOutline]}
+            >
             <TouchableOpacity
             onPress={handleRegisterPress}
             activeOpacity={0.5} 
-            style={[styles.button, styles.buttonOutline]}
+           
             >
               <Text style={styles.buttonOutlineText}>Register</Text>
             </TouchableOpacity>
+            </Animatable.View>
 
             <View style={styles.horizontalLine1}></View>
 
@@ -79,7 +94,13 @@ const HomeScreen = () => {
                 onPress={handleDiscoverPress}
                 activeOpacity={0.5}
                 >
+                <Animatable.Text
+              animation={'pulse'}
+              easing={'ease-in-out-back'}
+              iterationCount={'infinite'}
+              >
                   <Text style={styles.boldText}> GUEST</Text>
+                  </Animatable.Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.horizontalLine2}></View>

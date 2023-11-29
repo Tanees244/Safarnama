@@ -4,77 +4,62 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, ImageBackground, Im
 const data = [
     {
         id: '3',
-        image: require('../../assets/corolla.png'),
-        title: 'Corolla',
-        Make: 'Toyota',
-        description: 'Model:2019',
-        description2: 'Driver Name : Ashraf Ali',
+        image: require('../../assets/USER.png'),
+        title: 'Guide Name : Muhammad Shoib',
+        Make: 'Age: 26 yrs',
         description3: 'Contct Number : 0333 - 1111222',
-        description5: 'Number of seats : 4',
-        description4: 'Price / Day (With Petrol): 6,000 pkr',
+        description4: 'Price / Day : 3,000 pkr',
         ratings: '4.5/5.0',
       },
       {
         id: '2',
-        image: require('../../assets/civic.png'),
-        title: 'Civic',
-        Make: 'Honda',
-        description: 'Model:2018',
-        description2: 'Driver Name : Naseer Uddin',
+        image: require('../../assets/USER.png'),
+        title: 'Guide Name : Naseer Uddin',
+        Make: 'Age: 29 yrs',
         description3: 'Contct Number : 0318 - 3332222',
-        description5: 'Number of seats : 4',
-        description4: 'Price / Day (With Petrol): 6,000 pkr',
+        description4: 'Price / Day : 4,000 pkr',
         ratings: '4.3/5.0',
       },
       {
         id: '5',
-        image: require('../../assets/hiace.png'),
-        title: 'Hiace',
-        Make: 'Toyota',
-        description: 'Model:2020',
-        description2: 'Driver Name : Ali Haider',
+        image: require('../../assets/USER.png'),
+        title: 'Guide Name :  Ali Haider',
+        Make: 'Age: 24 yrs',
         description3: 'Contct Number : 0318 - 2223333',
-        description5: 'Number of seats : 18',
-        description4: 'Price / Day (With Petrol): 10,000 pkr',
+        description4: 'Price / Day ): 4,500 pkr',
         ratings: '3.9/5.0',
       },
       {
         id: '1',
-        image: require('../../assets/landcruiser.png'),
-        title: 'Land Cruiser',
-        Make: 'Toyota',
-        description: 'Model:2015',
-        description2: 'Driver Name : Yousuf Khan',
+        image: require('../../assets/USER.png'),
+        title: 'Guide Name :  Yousuf Khan',
+        Make: 'Age: 34 yrs',
         description3: 'Contct Number : 0343 - 0827122',
-        description5: 'Number of seats : 5',
-        description4: 'Price / Day (With Petrol): 9,000 pkr',
+        description4: 'Price / Day (With Petrol): 2,500 pkr',
         ratings: '4.9/5.0',
       },
       {
         id: '4',
-        image: require('../../assets/coaster.png'),
-        title: 'Coaster',
-        Make: 'Toyota',
-        description: 'Model:2021',
-        description2: 'Driver Name : Abid Hassan',
+        image: require('../../assets/USER.png'),
+        title: 'Guide Name :  Abid Hassan',
+        Make: 'Age: 32 yrs',
         description3: 'Contct Number : 0332 - 2121212',
-        description5: 'Number of seats : 30',
-        description4: 'Price / Day (With Petrol): 20,000 pkr',
+        description4: 'Price / Day : 2,000 pkr',
         ratings: '4.0/5.0',
       },
 ];
 
 
-const TransportLists = ({ onTransportSelect }) => {
-    const [selectedTransport, setSelectedTransport] = useState(null);
+const GuideLists = ({ onGuideSelect }) => {
+    const [selectedGuide, setSelectedGuide] = useState(null);
   
     const handleTransportSelect = (item) => {
-      setSelectedTransport(item);
-      onTransportSelect(item);
+        setSelectedGuide(item);
+      onGuideSelect(item);
     };
   
     const renderItem = ({ item }) => {
-      const isSelected = selectedTransport && selectedTransport.id === item.id;
+      const isSelected = selectedGuide && selectedGuide.id === item.id;
       const screenWidth = Dimensions.get('window').width;
       const screenHeight = Dimensions.get('window').height;
       const containerHeight = screenHeight * 0.8;
@@ -97,13 +82,10 @@ const TransportLists = ({ onTransportSelect }) => {
         <View style={[styles.content, { width: containerWidth, height: containerHeight }]}>
           <View style={styles.contentContainer}>
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.subdescription}>{item.make}</Text>
+            <Text style={styles.subdescription}>{item.Make}</Text>
             <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>{item.description}</Text>
-              <Text style={styles.description}>{item.description2}</Text>
               <Text style={styles.description}>{item.description3}</Text>
               <Text style={styles.description}>{item.description4}</Text>
-              <Text style={styles.description}>{item.description5}</Text>
             </View>
           </View>
         </View>
@@ -117,12 +99,12 @@ const TransportLists = ({ onTransportSelect }) => {
      <View style={styles.header}>
                 <Text style={styles.headerText}>Safarnama</Text>
             </View>
-      <Text style={styles.header1}>Choose Rental Transport</Text>
+      <Text style={styles.header1}>Choose Guide</Text>
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        extraData={selectedTransport}
+        extraData={selectedGuide}
         vertical
         showsVerticalScrollIndicator={false}
       />
@@ -242,4 +224,4 @@ iconStar: {
 },
 });
 
-export default TransportLists;
+export default GuideLists;
