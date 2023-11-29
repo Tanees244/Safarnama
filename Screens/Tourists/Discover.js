@@ -214,12 +214,9 @@ const combinedData = [...data, ...data2];
     setSearchQuery(''); // Clear search query after navigation
   };
 
-
   return (
-    <View style={styles.container}>
-  
+
   <View style={styles.container}>
-     
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
@@ -230,64 +227,31 @@ const combinedData = [...data, ...data2];
       
       <Text style={styles.text}>Popular Categories</Text>
       <View style={[styles.buttonContainer, { width: containerWidth }]}>
-        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
-      <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/Home.png")}/>
-                         <Text style={styles.home} >Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToCreatePackage} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/searchlogo.png")}/>
-                         <Text style={styles.home}>Booking</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/itenerary.png")}/>
-                         <Text style={styles.home} >Itinerary</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")}/>
-                         <Text style={styles.home}>Profile</Text>
-                </TouchableOpacity>
-            </View>
-            <ImageBackground  source={require('../../assets/p5.jpg')}
-          styles={styles.backgroundImage}>
-          
-    <ScrollView >
-        <View style={styles.quote}>
-        <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
-        </View>
 
-   {/* searchbar */}
-   <TextInput
-        style={styles.searchInput}
-        placeholder="Search places and hotels"
-        onChangeText={text => setSearchQuery(text)}
-        value={searchQuery}
-      />
+        {/* searchbar */}
+        <TextInput
+              style={styles.searchInput}
+              placeholder="Search places and hotels"
+              onChangeText={text => setSearchQuery(text)}
+              value={searchQuery}
+            />
 
-      {/* Display filtered results */}
-      {searchQuery.length > 0 && (
-        <FlatList
-          data={filteredData}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleItemPress(item)}>
-              <View style={styles.resultItem}>
-                <Image source={item.image} style={styles.itemImage} />
-                <Text style={styles.itemTitle}>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      )}
+        {/* Display filtered results */}
+        {searchQuery.length > 0 && (
+          <FlatList
+            data={filteredData}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleItemPress(item)}>
+                <View style={styles.resultItem}>
+                  <Image source={item.image} style={styles.itemImage} />
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+
         <View style={[styles.buttonContainer, { width: containerWidth }]}>
           <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
           <View style={styles.buttonContent}>
@@ -359,7 +323,8 @@ const combinedData = [...data, ...data2];
           renderItem={({ item }) => <HorizontalCard item={item} />}
           keyExtractor={(item) => item.id}
         />
-      </ScrollView>
+    </View>
+  </ScrollView>
   </View>
   );
 };
