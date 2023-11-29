@@ -68,6 +68,8 @@ import ActiveTicketT from './Screens/Train/ActiveTicketT';
 import PaymentGateway from './Screens/Tourists/PaymentGateway';
 import TransportLists from './Screens/Tourists/TransportLists';
 import Option from './Screens/Tourists/option';
+import Itinerary from './Screens/Tourists/Itinerary';
+import ItineraryDay from './Screens/Tourists/ItineraryDay';
 
 import { useFonts } from 'expo-font';
 
@@ -171,6 +173,10 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='TransportLists' component={TransportLists} />
         <Stack.Screen options={{ headerShown: false }} name='Option' component={Option} />
         <Stack.Screen options={{ headerShown: false }} name='TrainProfile' component={TrainProfile} />
+        <Stack.Screen options={{ headerShown: false }} name='Itinerary' component={Itinerary} />
+        <Stack.Screen options={{ headerShown: false }} name='ItineraryDay' component={ItineraryDay} />
+        
+        
         
         
       </Stack.Navigator>

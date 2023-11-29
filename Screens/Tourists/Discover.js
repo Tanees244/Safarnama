@@ -113,6 +113,11 @@ const Discover = () => {
   const navigateToFlight = () =>{
     navigation.navigate('Flight')
   };
+
+  const navigateToItinerary = () =>{
+    navigation.navigate('Itinerary')
+  };
+
   const navigateToCreatePackage = () =>{
     navigation.navigate('CreatePackage')
   };
@@ -165,7 +170,7 @@ const combinedData = [...data, ...data2];
                         source={require("../../assets/searchlogo.png")}/>
                          <Text style={styles.home}>Booking</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToItinerary}>
                     <Image style={styles.homeicon}
                         contentFit="cover"
                         source={require("../../assets/itenerary.png")}/>
