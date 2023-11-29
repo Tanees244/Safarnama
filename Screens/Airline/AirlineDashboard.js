@@ -473,6 +473,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#404258',
     padding: 20,
     borderRadius: 10,
+    height: Dimensions.get('window'). height *0.8,
   },
   closeIconContainer: {
     position: 'absolute',

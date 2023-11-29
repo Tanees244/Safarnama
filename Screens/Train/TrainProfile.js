@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from '../Homescreen';
 
-const BusProfile = () => {
+const TrainProfile = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.8;
     const navigation = useNavigation();
 
     const ProfileNavigate = () => {
-        navigation.navigate('AirlineDashboard');
+        navigation.navigate('TrainDashboard');
     }
 
     const handleHome = () => {
@@ -35,10 +35,10 @@ const BusProfile = () => {
                     <Image
                         style={styles.userIcon}
                         resizeMode='cover'
-                        source={require("../../assets/faisalmover.png")} 
+                        source={require("../../assets/greenline.png")} 
                     />
                     <View style={styles.buttonsContainer}>
-                            <Text style={styles.Name}>Faisal Movers</Text>
+                            <Text style={styles.Name}>Green Line</Text>
                             <Text style={styles.Id}>ID : #071B28</Text>
                     </View>      
                     <View style={styles.buttonContainer}>
@@ -54,7 +54,7 @@ const BusProfile = () => {
 
                 <View style={[styles.textBox, { width: containerWidth }]}>
                     <Text style={{ color: 'white', fontFamily: 'Poppins-Regular' }}>
-                        My name is Tanees Shakeel. I live in Karachi, Pakistan. we privide different type of Bus services includes business class , and economy too. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        My name is Tanees Shakeel. I live in Karachi, Pakistan. we privide different type of Train services includes business class , and economy too. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     </Text>
                 </View>
             </ScrollView>
@@ -149,4 +149,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BusProfile;
+export default TrainProfile;

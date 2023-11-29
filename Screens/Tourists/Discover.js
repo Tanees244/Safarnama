@@ -91,7 +91,7 @@ const packageData = [
   {
     id: '4',
     image: require('../../assets/Naran4.png'),
-    destination: 'Kaghan',
+    destination: 'Kashmir',
     numberOfPeople: '2 Adults, 1 Child',
     preference: 'Luxury',
     startDate: '2023-12-01',
@@ -195,8 +195,31 @@ const navigateToGuideHome = () => {
     navigation.navigate('Discover'); // Replace with your screen name
 };
 
+const [searchQuery, setSearchQuery] = useState('');
+
+const combinedData = [...data, ...data2];
+
+  // Filtered data based on search query
+  const filteredData = combinedData.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleItemPress = (item) => {
+    // Add logic to navigate based on the item type (place or hotel)
+    if (item.id<=3) {
+      navigation.navigate('PlacesInfo', { placeId: item.id });
+    } else {
+      navigation.navigate('HotelsInfo', { hotelId: item.id });
+    }
+    setSearchQuery(''); // Clear search query after navigation
+  };
+
+
   return (
     <View style={styles.container}>
+  
+  <View style={styles.container}>
+     
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
@@ -208,6 +231,65 @@ const navigateToGuideHome = () => {
       <Text style={styles.text}>Popular Categories</Text>
       <View style={[styles.buttonContainer, { width: containerWidth }]}>
         <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
+      <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/Home.png")}/>
+                         <Text style={styles.home} >Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToCreatePackage} >
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/searchlogo.png")}/>
+                         <Text style={styles.home}>Booking</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/itenerary.png")}/>
+                         <Text style={styles.home} >Itinerary</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/account-circle-black.png")}/>
+                         <Text style={styles.home}>Profile</Text>
+                </TouchableOpacity>
+            </View>
+            <ImageBackground  source={require('../../assets/p5.jpg')}
+          styles={styles.backgroundImage}>
+          
+    <ScrollView >
+        <View style={styles.quote}>
+        <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
+        </View>
+
+   {/* searchbar */}
+   <TextInput
+        style={styles.searchInput}
+        placeholder="Search places and hotels"
+        onChangeText={text => setSearchQuery(text)}
+        value={searchQuery}
+      />
+
+      {/* Display filtered results */}
+      {searchQuery.length > 0 && (
+        <FlatList
+          data={filteredData}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleItemPress(item)}>
+              <View style={styles.resultItem}>
+                <Image source={item.image} style={styles.itemImage} />
+                <Text style={styles.itemTitle}>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+        <View style={[styles.buttonContainer, { width: containerWidth }]}>
+          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/plane.png')} 
@@ -294,6 +376,36 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textAlign: "center",
     color: 'white',
+  },
+  itemImage: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    borderRadius: 20,
+  },
+  itemTitle: {
+    fontSize: 16,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+  },
+  resultHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 5,
+    marginLeft: 15,
+  },
+  resultItem: {
+    fontSize: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   backgroundImage: {
     position: 'relative',

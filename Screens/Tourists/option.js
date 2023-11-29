@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal,Image, Dimensions} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal,Image, Dimensions, ScrollView} from 'react-native';
 import TransportList from './TransportLists';
+import GuideList from './GuideLists';
+
 
 const Option = ({ navigation }) => {
   const [selectedTransport, setSelectedTransport] = useState(null);
+  const [selectedGuide, setSelectedGuide] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible1, setModalVisible1] = useState(false);
+  
 
   const handleTransportRental = () => {
     setModalVisible(true);
@@ -13,6 +18,14 @@ const Option = ({ navigation }) => {
   const handleTransportSelect = (transport) => {
     setSelectedTransport(transport);
     setModalVisible(false);
+  };
+  const handleGuidelist = () => {
+    setModalVisible1(true);
+  };
+
+  const handleGuidetSelect = (guide) => {
+    setSelectedGuide(guide);
+    setModalVisible1(false);
   };
 
   const handleGuide = () => {
@@ -28,7 +41,7 @@ const Option = ({ navigation }) => {
   const inputWidth = containerWidth * 0.6;
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} >
     <View style={styles.header}>
                 <Text style={styles.headerText}>Safarnama</Text>
             </View>
@@ -52,10 +65,24 @@ const Option = ({ navigation }) => {
         </View>
       )}
      
-      <TouchableOpacity style={styles.button} onPress={handleGuide}>
+      <TouchableOpacity style={styles.button} onPress={handleGuidelist}>
         <Text style={styles.buttonText}>Do You Want Guide?                 </Text>
         <Image style={styles.closeIcon} source={require('../../assets/plus.png')} />
       </TouchableOpacity>
+      <Text style={styles.header1}>Selected Transport : </Text>
+      {selectedGuide && (
+        <View style={styles.transportContainer}>
+          {/* Display the details of the selected transport */}
+          <Image source={selectedGuide.image} style={{width:50,height:50}} />
+          <Text style={styles.transportTitle}>{selectedGuide.title}</Text>
+          <Text style={styles.transportDescription}>{selectedGuide.Make}</Text>
+          <Text style={styles.transportDescription}>{selectedGuide.description3}</Text>
+          <Text style={styles.transportDescription}>{selectedGuide.description4}</Text>
+          
+          
+          {/* Add more details as needed */}
+        </View>
+      )}
 
       {/* Modal for TransportList */}
       <Modal visible={isModalVisible} animationType="slide" transparent={true}>
@@ -66,18 +93,27 @@ const Option = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <Modal visible={isModalVisible1} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
+          <GuideList onGuideSelect={handleGuidetSelect} />
+          <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible1(false)}>
+          <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <TouchableOpacity activeOpacity={0.5} onPress={navigateToPaymentgateway}
                         style={[styles.buttonText2, { width: inputWidth }]}
                         >
                         <Text style={styles.TextDesign}>NEXT</Text>
                     </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   
+    flexGrow:1,
     backgroundColor: '#cee7fa',
     alignItems: 'center',
    
@@ -158,8 +194,8 @@ headerText: {
   },
   closeButton: {
     position: 'absolute',
-    top: 200,
-    right: 10,
+    top: 700,
+    right: 160,
     backgroundColor: '#C4C8CB',
     borderRadius: 60,
   },
