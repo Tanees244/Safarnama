@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   CategoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: Dimensions.get('window').height * 0.45,
+    marginTop: Dimensions.get('window').height * 0.45, 
   },
   card: {
     backgroundColor: '#D9D9D9',
