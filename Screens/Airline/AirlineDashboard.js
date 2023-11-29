@@ -399,7 +399,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginBottom: 30,
   },
-  
   Container: {
     backgroundColor: '#4F515A',
     flex: 1,
@@ -412,8 +411,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 200,
-    // borderBottomLeftRadius: 30,
-    // borderBottomRightRadius: 30,
     backgroundColor: 'black',
     shadowColor: 'white',
     elevation: 40,
@@ -443,7 +440,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     left: 20,
-    width: 90,  // Adjust the width as needed
+    width: 90,
     height: 90,
     padding: 15,
     borderRadius: 35,

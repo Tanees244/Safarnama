@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   vector:{
     top: 25,
-    right: 140,
+    right: 160,
   },
   backgroundImage: {
     flex: 1,
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     width: '60%',
     top: 250,
-    borderRadius: 20,
-    height:65,
+    borderRadius: 15,
+    height: 65,
   },
   buttonText: {
     color: 'white',
@@ -170,10 +170,10 @@ const styles = StyleSheet.create({
   Text2: {
     color: '#092547',
     fontFamily: 'Poppins-Black',
-    fontSize: 16,
+    fontSize: 12,
   },
   boldText: {
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: 'Poppins-Black',
     color: 'white',
     marginLeft:5,

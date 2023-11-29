@@ -294,10 +294,6 @@ const ActiveTicket = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
         </TouchableOpacity>
       </View>
     </Modal>
-
-
-
-
     </View>
   );
 };
