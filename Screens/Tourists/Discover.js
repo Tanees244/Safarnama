@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions,TextInput } from 'react-native';
+import React , {useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions, TextInput, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { BlurView } from 'expo-blur';
 
 const data = [
   {
@@ -31,7 +32,7 @@ const data = [
 
 const data2 = [
   {
-    id: '4',
+    id: '1',
     image: require('../../assets/Hotel1.jpg'),
     title: 'Marriot Hotel',
     city: 'Islamabad',
@@ -39,7 +40,7 @@ const data2 = [
     ratings: '4.5/5.0',
   },
   {
-    id: '5',
+    id: '2',
     image: require('../../assets/Hotel2.jpg'),
     title: 'Pearl Continental',
     city: 'Islamabad',
@@ -47,12 +48,55 @@ const data2 = [
     ratings: '3.3/5.0',
   },
   {
-    id: '6',
+    id: '3',
     image: require('../../assets/Hotel3.jpg'),
     title: 'Ramada',
     city: 'Islamabad',
     description: 'Ramada is a large American multinational hotel chain owned by Wyndham Hotels & Resorts. As of December 31, 2022, it operates 851 hotels with 120,3444 rooms across 63 countries under the Ramada brand',
     ratings: '3.9/5.0',
+  },
+];
+
+const packageData = [
+  {
+    id: '1',
+    image: require('../../assets/Naran1.png'),
+    destination: 'Naran',
+    numberOfPeople: '5 Adults, 2 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+  {
+    id: '2',
+    image: require('../../assets/Naran2.png'),
+    destination: 'Kashmir',
+    numberOfPeople: '2 Adults, 1 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+  {
+    id: '3',
+    image: require('../../assets/Naran3.png'),
+    destination: 'Shogran',
+    numberOfPeople: '2 Adults, 1 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+  {
+    id: '4',
+    image: require('../../assets/Naran4.png'),
+    destination: 'Kashmir',
+    numberOfPeople: '2 Adults, 1 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
   },
 ];
 
@@ -95,6 +139,32 @@ const HorizontalCard = ({ item, onPress }) => {
   );
 };
 
+const VerticalCard = ({ item }) => {
+
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const containerHeight = screenHeight * 0.5;
+  const containerWidth = screenWidth * 0.8;
+
+  return (
+    <View style={[styles.verticalCard, { width: containerWidth, height: containerHeight }]}>
+      <ImageBackground source={item.image} style={styles.verticalImage}>
+        <View style={styles.blurContainer}>
+          {/* BlurView applied only to the cardContent */}
+          <BlurView intensity={80} style={styles.cardContent}>
+            <Text style={styles.packageDetail}>{item.destination}</Text>
+            <Text style={styles.packageDetail}>{item.numberOfPeople}</Text>
+            <Text style={styles.packageDetail}>{item.preference}</Text>
+            <Text style={styles.packageDetail}>{`${item.startDate} - ${item.endDate}`}</Text>
+            <Text style={styles.packageDetail}>{item.price}</Text>
+            {/* Other text components */}
+          </BlurView>
+        </View>
+      </ImageBackground>
+    </View>
+  );
+};
+
 const Discover = () => {
 
   const screenWidth = Dimensions.get('window').width;
@@ -103,6 +173,42 @@ const Discover = () => {
   const buttonWidth = containerWidth * 0.22;
 
   const navigation = useNavigation();
+
+  const [isExpanded, setIsExpanded] = useState(false);
+    const scaleValue = new Animated.Value(0);
+
+    const navigateToHotesInfo = () => {
+        navigation.navigate('HotelsInfo')
+    }
+
+    const toggleMenu = () => {
+      const toValue = isExpanded ? 0 : 1;
+      Animated.timing(scaleValue, {
+          toValue,
+          duration: 0,
+          useNativeDriver: true,
+      }).start();
+      setIsExpanded(!isExpanded);
+    }
+
+    const handleMenuItemPress = (menuItem) => {
+        // Handle navigation based on the selected menu item
+        // For example:
+        if (menuItem === 'Home') {
+          navigation.navigate('Discover')
+        } else if (menuItem === 'Profile') {
+          navigation.navigate('TouristProfile')
+        } else if (menuItem === 'Booking') {
+          navigation.navigate('CreatePackage')
+        }
+        // Collapse the menu after selection
+        toggleMenu();
+    }
+
+    const scale = scaleValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 4],
+    });
 
   const navigateToHotelsInfo = () =>{
     navigation.navigate('HotelsLists')
@@ -149,71 +255,78 @@ const combinedData = [...data, ...data2];
     setSearchQuery(''); // Clear search query after navigation
   };
 
-
   return (
-  
+
   <View style={styles.container}>
-     
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
-      <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/Home.png")}/>
-                         <Text style={styles.home} >Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToCreatePackage} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/searchlogo.png")}/>
-                         <Text style={styles.home}>Booking</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToItinerary}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/itenerary.png")}/>
-                         <Text style={styles.home} >Itinerary</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")}/>
-                         <Text style={styles.home}>Profile</Text>
-                </TouchableOpacity>
-            </View>
-            <ImageBackground  source={require('../../assets/p5.jpg')}
-          styles={styles.backgroundImage}>
-          
-    <ScrollView >
-        <View style={styles.quote}>
-        <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
-        </View>
-
-   {/* searchbar */}
-   <TextInput
-        style={styles.searchInput}
-        placeholder="Search places and hotels"
-        onChangeText={text => setSearchQuery(text)}
-        value={searchQuery}
-      />
-
-      {/* Display filtered results */}
-      {searchQuery.length > 0 && (
-        <FlatList
-          data={filteredData}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleItemPress(item)}>
-              <View style={styles.resultItem}>
-                <Image source={item.image} style={styles.itemImage} />
-                <Text style={styles.itemTitle}>{item.title}</Text>
-              </View>
+        {isExpanded && (
+                <View style={styles.expandedMenu}>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Home')}
+                    >
+                        <Image source={require("../../assets/Home.png")} style = {[{width: 40, height: 40}]} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Profile')}
+                    >
+                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 40, height: 40}]}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Booking')}
+                    >
+                        <Image source={require("../../assets/booking.png")} style = {[{width: 40, height: 40}]}/>
+                    </TouchableOpacity>
+                </View>
+            )}
+            <TouchableOpacity
+                style={styles.HomeButton}
+                onPress={toggleMenu}
+                activeOpacity={0.5}
+            >
+                {isExpanded ? (
+                    // Render close icon or any icon you prefer
+                    <Image source={require("../../assets/WhiteClose.png")} style = {[{width: 30, height: 30}]}/>
+                ) : (
+                    // Your existing Home button content
+                    <Image source={require("../../assets/ViewMore.png")} style = {[{width: 35, height: 35}]}/>
+                )}
             </TouchableOpacity>
-          )}
-        />
-      )}
+      
+    <ScrollView>
+      <View style={styles.quote}>
+        <Text style={styles.quotetext}>Let's find your best{'\n'}<Text style={{color: '#c7f3ff'}}>Travel plans ?</Text></Text>
+      </View>
+
+        {/* searchbar */}
+        <TextInput
+              style={styles.searchInput}
+              placeholder="Search places and hotels"
+              onChangeText={text => setSearchQuery(text)}
+              value={searchQuery}
+            />
+
+        {/* Display filtered results */}
+        {searchQuery.length > 0 && (
+          <FlatList
+            data={filteredData}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleItemPress(item)}>
+                <View style={styles.resultItem}>
+                  <Image source={item.image} style={styles.itemImage} />
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+      
+      <Text style={styles.text}>Popular Categories</Text>
         <View style={[styles.buttonContainer, { width: containerWidth }]}>
           <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
           <View style={styles.buttonContent}>
@@ -222,68 +335,78 @@ const combinedData = [...data, ...data2];
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Flights</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/hotell.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Hotels</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToPlaceLists}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToPlaceLists}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/placess.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Places</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/deal.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Deals</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.PackageContainer}>
-          <TouchableOpacity onPress={navigateToCreatePackage} style={[styles.Package , {width: PackageWidth}]}>
-            <Text style={styles.PackageText}>Create Your Package !</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.text}>Places</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.text}>Packages</Text>
       <FlatList
-        data={data}
+        data={packageData}
         horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => <HorizontalCard item={item} onPress={() => navigateToPlaceLists()} />}
-        keyExtractor={item => item.id}
+        renderItem={({ item }) => <VerticalCard item={item} />}
+        keyExtractor={(item) => item.id}
       />
 
+      <View style={styles.PackageContainer}>
+        <TouchableOpacity onPress={navigateToCreatePackage} style={[styles.Package , {width: PackageWidth}]}>
+          <Text style={styles.PackageText}>Create Your Package !</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.text}>Places</Text>
+        <FlatList
+          data={data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <HorizontalCard item={item} />}
+          keyExtractor={(item) => item.id}
+        />
+
       <Text style={styles.text}>Hotels</Text>
-      <FlatList
-        data={data2}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => <HorizontalCard item={item} onPress={() => navigateToHotelsInfo()} />}
-        keyExtractor={item => item.id}
-      />
-    </ScrollView>
-    </ImageBackground>
-    </View>
+        <FlatList
+          data={data2}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <HorizontalCard item={item} />}
+          keyExtractor={(item) => item.id}
+        />
+  </ScrollView>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container:{
+    backgroundColor: '#041c23',
     flex: 1,
-  
   },
   home: {
     fontSize: 10,
@@ -303,12 +426,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
+    height: 60,
+    borderColor: 'black',
+    backgroundColor: 'white',
+    borderWidth: 2,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    fontFamily: 'Poppins-Regular',
   },
   resultHeader: {
     fontSize: 18,
@@ -324,15 +449,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   backgroundImage: {
-  
     position: 'relative',
   },
-  homeicon: {
-    width: 24,
-    height: 24,
-    overflow: "hidden",
+  quote:{
+    padding: 20,
   },
-  
+  quotetext: {
+    fontSize: 25,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+  },
   ButtonContainer1: {
     flexDirection: 'row',
     padding: 20,
@@ -347,62 +473,77 @@ const styles = StyleSheet.create({
     bottom: 20,
     alignSelf:'center',
     width: 230,
-    
-},
+  },
   header: {
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 120,
-    backgroundColor: '#092547',
-    shadowColor: 'black',
-    elevation: 20,
-    borderRadius:40,
-    },
+    backgroundColor: '#22333b',
+  },
   headerText: {
-      textAlign: 'center',
-      top: 50,
       fontSize: 30,
-      color: '#FFFFFF',
+      color: 'black',
       fontFamily: 'Poppins-Bold',
+      marginTop: 40,
   },
-
-  quote:{
-    margin:20,
-    backgroundColor:'#092547',
-    borderTopRightRadius:40,
-    borderBottomLeftRadius:40,
-    justifyContent:'center',
-  },
-  quotetext: {
-    fontSize: 25,
-    paddingTop: 25,
-    textAlign:'center',
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-  },
-
   text: {
-    fontSize: 25,
-    paddingTop: 25,
-    textAlign:'center',
+    fontSize: 20,
+    paddingLeft: 20,
+    paddingVertical: 20,
     color: 'white',
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-SemiBold',
   },
   buttonContainer:{
-    paddingTop: 20,
+    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#092547',
+    backgroundColor: '#669bbc',
     borderRadius: 30,
-    height: 80,
+    height: 90,
     justifyContent: 'center',
+  },  
+  buttonContent: {
+    alignItems: 'center', 
+    padding: 15,
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
     fontSize: 12,
     fontFamily: 'Poppins-SemiBold',
-    top: 5,
+    top: 5, 
+  },
+  verticalCard: {
+    marginLeft: 20,
+    marginRight: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: 20,
+  },
+  verticalImage: {
+    flex: 1,
+    width: '100%',
+  },
+  blurContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  cardContent: {
+    padding: 10,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: 'white',
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  packageDetail: {
+    fontFamily: 'Poppins-SemiBold',
+    color: 'white',
+    fontSize: 14,
   },
   icon: {
     width: 30,
@@ -411,14 +552,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignItems: 'center',
   },
-  buttonContent: {
-    alignItems: 'center', 
-    padding: 15,
-  },
   PackageContainer:{
     alignItems: 'center',
   },
-
   Package:{
     backgroundColor: '#092547',
     borderRadius: 30,
@@ -426,7 +562,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 20,
     shadowColor: 'white',
   },
   PackageText:{
@@ -533,6 +668,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 5,
     zIndex: 2,
+  },
+  HomeButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    zIndex: 2,
+  },
+  expandedMenu: {
+      position: 'absolute',
+      bottom: 10,
+      left: 100,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 3,
+  },
+  expandedMenuItem: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: 'black',
+      margin: 10,
   },  
 });
 

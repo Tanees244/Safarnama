@@ -3,29 +3,34 @@ import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Dimen
 import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
 import * as Animatable from "react-native-animatable";
+import { LinearGradient } from 'expo-linear-gradient'; 
 
 const Category = () => {  
   const navigation = useNavigation();
 
   const navigateToTourist = () => {
-    navigation.navigate('TouristRegister'); // Make sure to use the correct route name
+    navigation.navigate('TouristRegister');   
   };
 
   const navigateToGuide = () => {
-    navigation.navigate('GuideRegister'); // Make sure to use the correct route name
+    navigation.navigate('GuideRegister');   
   };
 
   const navigateToVendor = () => {
-    navigation.navigate('VendorCategory'); // Make sure to use the correct route name
+    navigation.navigate('VendorCategory'); 
   };
 
   const screenWidth = Dimensions.get('window').width;
-  const cardWidth = screenWidth * 0.25; // Approximately 27% of screen width
-  const cardButtonWidth = cardWidth + 5; // Adding some margin
+  const cardWidth = screenWidth * 0.25; 
+  const cardButtonWidth = cardWidth + 5; 
 
   return (
     <Animatable.View style={styles.container}>
-      <ImageBackground style={styles.backgroundImage} source={require("../assets/background.jpg")} >
+      <ImageBackground style={styles.backgroundImage} source={require("../assets/p2.jpg")} >
+      <LinearGradient
+          colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.5)']}  
+          style={styles.linearGradient}
+        >
         <View style={styles.Textcontainer}>
           <Image style={styles.vector} source={Vector} />
           <Text style={styles.text}>Safarnama</Text>
@@ -50,6 +55,7 @@ const Category = () => {
             </TouchableOpacity>
           </View>
         </View>
+        </LinearGradient>
       </ImageBackground>
     </Animatable.View>
   );
@@ -70,6 +76,9 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
   },
+  linearGradient:{
+    flex: 1,
+  },
   text: {
     fontSize: 50,
     fontFamily: 'Poppins-Bold',
@@ -82,14 +91,13 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#D9D9D9',
-    borderRadius: 60,
-    height: Dimensions.get('window').width * 0.27, // Approximately 27% of screen width
+    borderRadius: 90,
     alignItems: 'center',
     justifyContent: 'center'
   },
   cardImage: {
-    width: Dimensions.get('window').width * 0.13, // Approximately 13% of screen width
-    height: Dimensions.get('window').width * 0.13,
+    width: Dimensions.get('window').width * 0.1, // Approximately 13% of screen width
+    height: Dimensions.get('window').width * 0.1,
     top: Dimensions.get('window').width * 0.065, // Half the card's height
   },
   cardButton: {

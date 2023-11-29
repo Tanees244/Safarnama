@@ -8,6 +8,7 @@ import { Video, ResizeMode } from 'expo-av';
 import * as Animatable from 'react-native-animatable';
 
 
+
 const HomeScreen = () => {
 
   const navigation = useNavigation();
