@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { BlurView } from 'expo-blur';
 
 const data = [
   {
@@ -56,6 +57,49 @@ const data2 = [
   },
 ];
 
+const packageData = [
+  {
+    id: '1',
+    image: require('../../assets/Naran1.png'),
+    destination: 'Naran',
+    numberOfPeople: '5 Adults, 2 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+  {
+    id: '2',
+    image: require('../../assets/Naran2.png'),
+    destination: 'Kashmir',
+    numberOfPeople: '2 Adults, 1 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+  {
+    id: '3',
+    image: require('../../assets/Naran3.png'),
+    destination: 'Shogran',
+    numberOfPeople: '2 Adults, 1 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+  {
+    id: '4',
+    image: require('../../assets/Naran4.png'),
+    destination: 'Kaghan',
+    numberOfPeople: '2 Adults, 1 Child',
+    preference: 'Luxury',
+    startDate: '2023-12-01',
+    endDate: '2023-12-07',
+    price: '$2500',
+  },
+];
+
 const HorizontalCard = ({ item, onPress }) => {
 
   const screenWidth = Dimensions.get('window').width;
@@ -95,6 +139,32 @@ const HorizontalCard = ({ item, onPress }) => {
   );
 };
 
+const VerticalCard = ({ item }) => {
+
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const containerHeight = screenHeight * 0.5;
+  const containerWidth = screenWidth * 0.8;
+
+  return (
+    <View style={[styles.verticalCard, { width: containerWidth, height: containerHeight }]}>
+      <ImageBackground source={item.image} style={styles.verticalImage}>
+        <View style={styles.blurContainer}>
+          {/* BlurView applied only to the cardContent */}
+          <BlurView intensity={80} style={styles.cardContent}>
+            <Text style={styles.packageDetail}>{item.destination}</Text>
+            <Text style={styles.packageDetail}>{item.numberOfPeople}</Text>
+            <Text style={styles.packageDetail}>{item.preference}</Text>
+            <Text style={styles.packageDetail}>{`${item.startDate} - ${item.endDate}`}</Text>
+            <Text style={styles.packageDetail}>{item.price}</Text>
+            {/* Other text components */}
+          </BlurView>
+        </View>
+      </ImageBackground>
+    </View>
+  );
+};
+
 const Discover = () => {
 
   const screenWidth = Dimensions.get('window').width;
@@ -127,86 +197,70 @@ const navigateToGuideHome = () => {
 
   return (
     <View style={styles.container}>
-     
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
-      <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/Home.png")}/>
-                         <Text style={styles.home} >Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToCreatePackage} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/searchlogo.png")}/>
-                         <Text style={styles.home}>Booking</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/itenerary.png")}/>
-                         <Text style={styles.home} >Itinerary</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile} >
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")}/>
-                         <Text style={styles.home}>Profile</Text>
-                </TouchableOpacity>
-            </View>
-            <ImageBackground  source={require('../../assets/p5.jpg')}
-          styles={styles.backgroundImage}>
-    <ScrollView >
-        <View style={styles.quote}>
-        <Text style={styles.quotetext}>Creating Memories, {'\n'}One Trip at a Time</Text>
-        </View>
-        <View style={[styles.buttonContainer, { width: containerWidth }]}>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
+    <ScrollView>
+      <View style={styles.quote}>
+        <Text style={styles.quotetext}>Let's find your best{'\n'}<Text style={{color: '#c7f3ff'}}>Travel plans ?</Text></Text>
+      </View>
+      
+      <Text style={styles.text}>Popular Categories</Text>
+      <View style={[styles.buttonContainer, { width: containerWidth }]}>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToFlight}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/plane.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Flights</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/hotell.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Hotels</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToPlaceLists}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToPlaceLists}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/placess.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Places</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttons, {width: buttonWidth}]} onPress={navigateToHotelsInfo}>
           <View style={styles.buttonContent}>
             <Image
               source={require('../../assets/deal.png')} 
               style={styles.icon}
             />
             <Text style={styles.buttonText}>Deals</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.PackageContainer}>
-          <TouchableOpacity onPress={navigateToCreatePackage} style={[styles.Package , {width: PackageWidth}]}>
-            <Text style={styles.PackageText}>Create Your Package !</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.text}>Places</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.text}>Packages</Text>
+      <FlatList
+        data={packageData}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => <VerticalCard item={item} />}
+        keyExtractor={(item) => item.id}
+      />
+
+      <View style={styles.PackageContainer}>
+        <TouchableOpacity onPress={navigateToCreatePackage} style={[styles.Package , {width: PackageWidth}]}>
+          <Text style={styles.PackageText}>Create Your Package !</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.text}>Places</Text>
         <FlatList
           data={data}
           horizontal
@@ -214,7 +268,8 @@ const navigateToGuideHome = () => {
           renderItem={({ item }) => <HorizontalCard item={item} />}
           keyExtractor={(item) => item.id}
         />
-        <Text style={styles.text}>Hotels</Text>
+
+      <Text style={styles.text}>Hotels</Text>
         <FlatList
           data={data2}
           horizontal
@@ -222,16 +277,15 @@ const navigateToGuideHome = () => {
           renderItem={({ item }) => <HorizontalCard item={item} />}
           keyExtractor={(item) => item.id}
         />
-    </ScrollView>
-    </ImageBackground>
-    </View>
+      </ScrollView>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container:{
+    backgroundColor: '#041c23',
     flex: 1,
-  
   },
   home: {
     fontSize: 10,
@@ -242,15 +296,16 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   backgroundImage: {
-  
     position: 'relative',
   },
-  homeicon: {
-    width: 24,
-    height: 24,
-    overflow: "hidden",
+  quote:{
+    padding: 20,
   },
-  
+  quotetext: {
+    fontSize: 25,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+  },
   ButtonContainer1: {
     flexDirection: 'row',
     padding: 20,
@@ -265,62 +320,77 @@ const styles = StyleSheet.create({
     bottom: 20,
     alignSelf:'center',
     width: 230,
-    
-},
+  },
   header: {
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 120,
-    backgroundColor: '#092547',
-    shadowColor: 'black',
-    elevation: 20,
-    borderRadius:40,
-    },
+    backgroundColor: '#22333b',
+  },
   headerText: {
-      textAlign: 'center',
-      top: 50,
       fontSize: 30,
-      color: '#FFFFFF',
+      color: 'black',
       fontFamily: 'Poppins-Bold',
+      marginTop: 40,
   },
-
-  quote:{
-    margin:20,
-    backgroundColor:'#092547',
-    borderTopRightRadius:40,
-    borderBottomLeftRadius:40,
-    justifyContent:'center',
-  },
-  quotetext: {
-    fontSize: 25,
-    paddingTop: 25,
-    textAlign:'center',
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-  },
-
   text: {
-    fontSize: 25,
-    paddingTop: 25,
-    textAlign:'center',
+    fontSize: 20,
+    paddingLeft: 20,
+    paddingVertical: 20,
     color: 'white',
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-SemiBold',
   },
   buttonContainer:{
-    paddingTop: 20,
+    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
   buttons:{
-    backgroundColor: '#092547',
+    backgroundColor: '#669bbc',
     borderRadius: 30,
-    height: 80,
+    height: 90,
     justifyContent: 'center',
+  },  
+  buttonContent: {
+    alignItems: 'center', 
+    padding: 15,
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
     fontSize: 12,
     fontFamily: 'Poppins-SemiBold',
-    top: 5,
+    top: 5, 
+  },
+  verticalCard: {
+    marginLeft: 20,
+    marginRight: 20,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: 20,
+  },
+  verticalImage: {
+    flex: 1,
+    width: '100%',
+  },
+  blurContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  cardContent: {
+    padding: 10,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: 'white',
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  packageDetail: {
+    fontFamily: 'Poppins-SemiBold',
+    color: 'white',
+    fontSize: 14,
   },
   icon: {
     width: 30,
@@ -329,14 +399,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignItems: 'center',
   },
-  buttonContent: {
-    alignItems: 'center', 
-    padding: 15,
-  },
   PackageContainer:{
     alignItems: 'center',
   },
-
   Package:{
     backgroundColor: '#092547',
     borderRadius: 30,
@@ -344,7 +409,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 20,
     shadowColor: 'white',
   },
   PackageText:{

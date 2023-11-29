@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, Dimensions, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, Dimensions, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
 import { FIREBASE_AUTH, auth } from '../firebase';
@@ -17,7 +17,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const screenWidth = Dimensions.get('window').width;
-  const containerWidth = screenWidth * 0.85;
+  const containerWidth = screenWidth * 0.82;
 
   const auth = FIREBASE_AUTH;
 
@@ -76,81 +76,96 @@ const Login = () => {
   
 
   return (
-    <View style={styles.container}>
-      <ImageBackground style={styles.backgroundImage} source={require("../assets/p8.jpg")} >
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Use 'height' for Android
+    >
+      <ImageBackground style={styles.backgroundImage} source={require("../assets/p11.jpg")} >
+        <View style={styles.contentContainer}>
           <View style={styles.Textcontainer}>
 
             <Image style={styles.vector} source={Vector}/>
             <Text style={styles.text}>Safarnama</Text>
-            <View style={styles.blur}>
-            <BlurView  intensity={90} >
-            <View style={[styles.ButtonContainer, {width: containerWidth}]}>
-              <View style={styles.InputContainer}>
-                <TextInput
-                  placeholder='Email'
-                  value={email}
-                  onChangeText={text => setEmail(text)}
-                  style={styles.Input}
-                  />
-                  <View style={styles.PasswordInputContainer}>
-                    <TextInput
-                      placeholder='Password'
-                      value={password}
-                      onChangeText={text => setPassword(text)}
-                      secureTextEntry={!passwordVisible} // Conditionally set secureTextEntry
-                      style={styles.PasswordInput}
-                    />
+              <View style={{ 
+                borderTopRightRadius: 25, 
+                borderTopLeftRadius:25, 
+                borderBottomRightRadius: 25,
+                borderBottomLeftRadius: 25,
+                marginTop: 50,
+                overflow: "hidden", }}>
+                <BlurView  intensity={80}>
+                  <View style={[styles.ButtonContainer, {width: containerWidth}]}>
+                    <View style={styles.InputContainer}>
+                      <TextInput
+                        placeholder='Email'
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                        style={styles.Input}
+                        />
+                        <View style={styles.PasswordInputContainer}>
+                          <TextInput
+                            placeholder='Password'
+                            value={password}
+                            onChangeText={text => setPassword(text)}
+                            secureTextEntry={!passwordVisible} // Conditionally set secureTextEntry
+                            style={styles.PasswordInput}
+                          />
+                          <TouchableOpacity
+                            activeOpacity={0.5}
+                            style={styles.PasswordVisibilityButton}
+                            onPress={togglePasswordVisibility}
+                          >
+                            <MaterialIcons
+                              name={passwordVisible ? 'visibility' : 'visibility-off'}
+                              size={24}
+                              color='black'
+                            />
+                          </TouchableOpacity>
+                        </View>
+                    </View>
+
                     <TouchableOpacity
-                      activeOpacity={0.5}
-                      style={styles.PasswordVisibilityButton}
-                      onPress={togglePasswordVisibility}
-                    >
-                      <MaterialIcons
-                        name={passwordVisible ? 'visibility' : 'visibility-off'}
-                        size={24}
-                        color='black'
-                      />
+                      activeOpacity={0.5} 
+                      style={styles.PasswordButton}
+                      onPress={ResetPassword}
+                      >
+                      <Text style={styles.PasswordText}>Forgot Password?</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={0.5} 
+                      style={styles.LoginButton}
+                      onPress={handleSignIn}
+                      >
+                      <Text style={styles.LoginText}>Login</Text>
+                    </TouchableOpacity>
+
+                    <View style={styles.Signup}>
+                    <Text style={styles.text2}>DONT HAVE AN ACCOUNT</Text>
+                      <TouchableOpacity
+                      activeOpacity={0.5}
+                      onPress={handleRegister}
+                      >
+                        <Text style={styles.boldText}> SIGN UP !</Text>
+                      </TouchableOpacity>
                   </View>
-              </View>
-
-              <TouchableOpacity
-                activeOpacity={0.5} 
-                style={styles.PasswordButton}
-                onPress={ResetPassword}
-                >
-                <Text style={styles.PasswordText}>Forgot Password?</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.5} 
-                style={styles.LoginButton}
-                onPress={handleSignIn}
-                >
-                <Text style={styles.LoginText}>Login</Text>
-              </TouchableOpacity>
-
-              <View style={styles.Signup}>
-              <Text style={styles.text2}>DONT HAVE AN ACCOUNT</Text>
-                <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={handleRegister}
-                >
-                  <Text style={styles.boldText}> SIGN UP !</Text>
-                </TouchableOpacity>
+                </View>
+              </BlurView>
             </View>
-          </View>
-          </BlurView>
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingBottom: 50,
   },
   backgroundImage: {
     flex: 1,
@@ -170,22 +185,19 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontFamily: 'Poppins-Bold',
     color: 'white',
+    elevation: 50,
+    shadowColor: 'black',
   },
   ButtonContainer: {
     padding: 20,
     borderColor: 'white',
     borderWidth: 2,
     borderRadius: 25,
-    paddingVertical: 60,
+    paddingVertical: 30,
     alignItems: 'center',
   },
   InputContainer: {
     width: '100%',
-  },
-  blur:{
-    borderRadius: 50,
-    paddingVertical: 60,
-    alignItems: 'center',
   },
   Input: {
     paddingHorizontal: 15,
@@ -210,13 +222,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
   LoginButton: {
+    justifyContent: 'center',
     backgroundColor: '#092547',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
     width: '80%',
     height: 56,
-    borderRadius: 15,
-    marginTop: 20,
+    borderRadius: 20,
+    marginTop: 25,
     elevation: 5,
   },
   LoginText: {
@@ -227,6 +238,7 @@ const styles = StyleSheet.create({
   },
   Signup: {
     marginTop: 30,
+    paddingHorizontal: 20,
     flexDirection: 'row',
   },
   text2: {

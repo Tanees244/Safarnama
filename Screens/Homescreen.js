@@ -7,6 +7,7 @@ import Discover from './Tourists/Discover';
 import { Video, ResizeMode } from 'expo-av';
 
 
+
 const HomeScreen = () => {
 
   const navigation = useNavigation();
