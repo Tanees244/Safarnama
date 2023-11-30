@@ -95,13 +95,7 @@ const HomeScreen = () => {
                 onPress={handleDiscoverPress}
                 activeOpacity={0.5}
                 >
-                <Animatable.Text
-              animation={'pulse'}
-              easing={'ease-in-out-back'}
-              iterationCount={'infinite'}
-              >
                   <Text style={styles.boldText}> GUEST</Text>
-                  </Animatable.Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.horizontalLine2}></View>

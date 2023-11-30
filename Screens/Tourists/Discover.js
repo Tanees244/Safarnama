@@ -32,7 +32,7 @@ const data = [
 
 const data2 = [
   {
-    id: '1',
+    id: '4',
     image: require('../../assets/Hotel1.jpg'),
     title: 'Marriot Hotel',
     city: 'Islamabad',
@@ -40,7 +40,7 @@ const data2 = [
     ratings: '4.5/5.0',
   },
   {
-    id: '2',
+    id: '5',
     image: require('../../assets/Hotel2.jpg'),
     title: 'Pearl Continental',
     city: 'Islamabad',
@@ -48,7 +48,7 @@ const data2 = [
     ratings: '3.3/5.0',
   },
   {
-    id: '3',
+    id: '6',
     image: require('../../assets/Hotel3.jpg'),
     title: 'Ramada',
     city: 'Islamabad',
@@ -59,44 +59,48 @@ const data2 = [
 
 const packageData = [
   {
-    id: '1',
+    id: '7',
     image: require('../../assets/Naran1.png'),
-    destination: 'Naran',
+    title: 'Naran',
     numberOfPeople: '5 Adults, 2 Child',
     preference: 'Luxury',
     startDate: '2023-12-01',
     endDate: '2023-12-07',
     price: '$2500',
+    ratings: '4.2/5.0',
   },
   {
-    id: '2',
+    id: '8',
     image: require('../../assets/Naran2.png'),
-    destination: 'Kashmir',
+    title: 'Kashmir',
     numberOfPeople: '2 Adults, 1 Child',
     preference: 'Luxury',
     startDate: '2023-12-01',
     endDate: '2023-12-07',
     price: '$2500',
+    ratings: '4.5/5.0', 
   },
   {
-    id: '3',
+    id: '9',
     image: require('../../assets/Naran3.png'),
-    destination: 'Shogran',
+    title: 'Naran',
     numberOfPeople: '2 Adults, 1 Child',
     preference: 'Luxury',
     startDate: '2023-12-01',
     endDate: '2023-12-07',
     price: '$2500',
+    ratings: '3.5/5.0',
   },
   {
-    id: '4',
+    id: '10',
     image: require('../../assets/Naran4.png'),
-    destination: 'Kashmir',
+    title: 'Kaghan',
     numberOfPeople: '2 Adults, 1 Child',
     preference: 'Luxury',
     startDate: '2023-12-01',
     endDate: '2023-12-07',
     price: '$2500',
+    ratings: '4.2/5.0',
   },
 ];
 
@@ -157,6 +161,7 @@ const VerticalCard = ({ item }) => {
             <Text style={styles.packageDetail}>{item.preference}</Text>
             <Text style={styles.packageDetail}>{`${item.startDate} - ${item.endDate}`}</Text>
             <Text style={styles.packageDetail}>{item.price}</Text>
+            <Text style={styles.packageDetail}>{item.ratings}</Text>
             {/* Other text components */}
           </BlurView>
         </View>
@@ -167,48 +172,24 @@ const VerticalCard = ({ item }) => {
 
 const Discover = () => {
 
+  const navigation = useNavigation();
+
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth;
   const PackageWidth = screenWidth * 0.8;
   const buttonWidth = containerWidth * 0.22;
-
-  const navigation = useNavigation();
-
   const [isExpanded, setIsExpanded] = useState(false);
-    const scaleValue = new Animated.Value(0);
 
-    const navigateToHotesInfo = () => {
-        navigation.navigate('HotelsInfo')
-    }
+  const scaleValue = new Animated.Value(0);
 
-    const toggleMenu = () => {
-      const toValue = isExpanded ? 0 : 1;
-      Animated.timing(scaleValue, {
-          toValue,
-          duration: 0,
-          useNativeDriver: true,
-      }).start();
-      setIsExpanded(!isExpanded);
-    }
+  const navigateToHotesInfo = () => {
+      navigation.navigate('HotelsInfo')
+  }
 
-    const handleMenuItemPress = (menuItem) => {
-        // Handle navigation based on the selected menu item
-        // For example:
-        if (menuItem === 'Home') {
-          navigation.navigate('Discover')
-        } else if (menuItem === 'Profile') {
-          navigation.navigate('TouristProfile')
-        } else if (menuItem === 'Booking') {
-          navigation.navigate('CreatePackage')
-        }
-        // Collapse the menu after selection
-        toggleMenu();
-    }
-
-    const scale = scaleValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, 4],
-    });
+  const scale = scaleValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 4],
+  });
 
   const navigateToHotelsInfo = () =>{
     navigation.navigate('HotelsLists')
@@ -230,30 +211,90 @@ const Discover = () => {
 
   const navigateToGuideProfile = () => {
     navigation.navigate('TouristProfile'); // Replace with your screen name
-};
+  };
 
-const navigateToGuideHome = () => {
+  const navigateToGuideHome = () => {
     navigation.navigate('Discover'); // Replace with your screen name
-};
+  };
 
-const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-const combinedData = [...data, ...data2];
+  const [filteredData, setFilteredData] = useState([]);
+  const [resultSources, setResultSources] = useState({});
 
-  // Filtered data based on search query
-  const filteredData = combinedData.filter(item =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [categoryMap, setCategoryMap] = useState({
+    Places: [],
+    Hotels: [],
+    Packages: [],
+  });
+
+  // Function to filter data based on search query
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+
+    const filtered = [...data, ...data2, ...packageData].filter((item) =>
+      item.title.toLowerCase().includes(text.toLowerCase())
+    );
+
+    setFilteredData(filtered);
+    groupByCategory(filtered); // Call the function to group filtered data
+  };
+
+  // Function to group filtered data by category
+  const groupByCategory = (filtered) => {
+    const map = {
+      Places: [],
+      Hotels: [],
+      Packages: [],
+    };
+
+    filtered.forEach((item) => {
+      if (parseInt(item.id) <= 3) {
+        map.Places.push(item);
+      } else if (parseInt(item.id) >= 4 && parseInt(item.id) <= 6) {
+        map.Hotels.push(item);
+      } else {
+        map.Packages.push(item);
+      }
+    });
+
+    setCategoryMap(map);
+  };
 
   const handleItemPress = (item) => {
-    // Add logic to navigate based on the item type (place or hotel)
-    if (item.id<=3) {
+    if (item.id<4) {                                                  
       navigation.navigate('PlacesInfo', { placeId: item.id });
-    } else {
+    } else if (item.id>3 || item.id<7){
       navigation.navigate('HotelsInfo', { hotelId: item.id });
+    } else {
+      navigation.navigate('PlacesInfo', { hotelId: item.id });
     }
     setSearchQuery(''); // Clear search query after navigation
   };
+
+  const toggleMenu = () => {
+    const toValue = isExpanded ? 0 : 1;
+    Animated.timing(scaleValue, {
+        toValue,
+        duration: 0,
+        useNativeDriver: true,
+    }).start();
+    setIsExpanded(!isExpanded);
+  }
+
+  const handleMenuItemPress = (menuItem) => {
+      // Handle navigation based on the selected menu item
+      // For example:
+      if (menuItem === 'Home') {
+        navigation.navigate('Discover')
+      } else if (menuItem === 'Profile') {
+        navigation.navigate('TouristProfile')
+      } else if (menuItem === 'Booking') {
+        navigation.navigate('CreatePackage')
+      }
+      // Collapse the menu after selection
+      toggleMenu();
+  }
 
   return (
 
@@ -302,29 +343,76 @@ const combinedData = [...data, ...data2];
         <Text style={styles.quotetext}>Let's find your best{'\n'}<Text style={{color: '#c7f3ff'}}>Travel plans ?</Text></Text>
       </View>
 
-        {/* searchbar */}
-        <TextInput
-              style={styles.searchInput}
-              placeholder="Search places and hotels"
-              onChangeText={text => setSearchQuery(text)}
-              value={searchQuery}
-            />
-
-        {/* Display filtered results */}
-        {searchQuery.length > 0 && (
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search Packages, Places and Hotel"
+        onChangeText={handleSearch}
+        value={searchQuery}
+      />
+      <View style={styles.searchResults}>
+      {categoryMap.Places.length > 0 && (
+        <View>
+          <Text style={styles.resultHeader}>Places</Text>
           <FlatList
-            data={filteredData}
-            keyExtractor={item => item.id}
+            horizontal
+            data={categoryMap.Places}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.searchContainer}>
+              <TouchableOpacity onPress={() => handleItemPress(item)}>
+                <View style={styles.resultItem}>
+                  <Image source={item.image} style={styles.itemImage} />
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.rating}>{item.ratings}</Text>
+                </View>
+              </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      )}
+
+      {categoryMap.Hotels.length > 0 && (
+        <View>
+          <Text style={styles.resultHeader}>Hotels</Text>
+          <FlatList
+            data={categoryMap.Hotels}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => handleItemPress(item)}>
                 <View style={styles.resultItem}>
                   <Image source={item.image} style={styles.itemImage} />
                   <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.rating}>{item.ratings}</Text>
                 </View>
               </TouchableOpacity>
             )}
           />
-        )}
+        </View>
+      )}
+
+      {categoryMap.Packages.length > 0 && (
+        <View>
+          <Text style={styles.resultHeader}>Packages</Text>
+          <FlatList
+            horizontal
+            data={categoryMap.Packages}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.searchContainer}>
+                <TouchableOpacity onPress={() => handleItemPress(item)}>
+                  <View style={styles.resultItem}>
+                    <Image source={item.image} style={styles.itemImage} />
+                    <Text style={styles.itemTitle}>{item.title}</Text>                    
+                    <Text style={styles.rating}>{item.ratings}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      )}
+    </View>
       
       <Text style={styles.text}>Popular Categories</Text>
         <View style={[styles.buttonContainer, { width: containerWidth }]}>
@@ -424,6 +512,8 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 16,
+    color: 'white',
+    fontFamily: 'Poppins-Regular',
   },
   searchInput: {
     height: 60,
@@ -435,18 +525,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: 'Poppins-Regular',
   },
+  searchContainer:{
+    backgroundColor: '#2a9d8f',
+    marginLeft: 20,
+    marginRight: 0,
+    padding: 20,
+    borderRadius: 25,
+  },
   resultHeader: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: 'white',
     marginVertical: 5,
     marginLeft: 15,
   },
+  rating:{
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
+  },
   resultItem: {
-    fontSize: 16,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
   backgroundImage: {
     position: 'relative',
