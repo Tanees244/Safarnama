@@ -52,8 +52,8 @@ const HomeScreen = () => {
         />
         <View style={styles.Textcontainer}>
 
-            <Image style={styles.vector} source={Vector}/>
-            <Text style={styles.text}>Safarnama</Text>
+            <Image style={styles.vector} source={require('../assets/safarnama.png')}/>
+            
 
             <Animatable.View
               animation={"pulse"}
@@ -122,7 +122,9 @@ const styles = StyleSheet.create({
   },
   vector:{
     top: 25,
-    right: 160,
+    right: 0,
+    height:200,
+    width:200,
   },
   backgroundImage: {
     flex: 1,
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 16,
     width: '60%',
-    top: 250,
+    top: 150,
     borderRadius: 15,
     height: 65,
   },
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   guest: {
-    marginTop: 280,
+    marginTop: 180,
     flexDirection: 'row',
   },
   Text2: {
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#092547',
     borderWidth: 1,
     width: 70,
-    top: 293,
+    top: 190,
     right: 118,
   },
   horizontalLine2: {

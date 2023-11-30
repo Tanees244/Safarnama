@@ -26,8 +26,7 @@ const AdminRegister = () => {
     <View style={styles.container}>
       <View style={styles.rectangle} />
       <View style={[styles.infoContainer, { width: containerWidth }]}>
-        <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={[styles.guideName, {fontFamily: 'Poppins-SemiBold'}]}>Safarnama</Text>
+        <Text style={[styles.guideName, {fontFamily: 'Poppins-SemiBold'}]}>Safarnama Dashboard</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity

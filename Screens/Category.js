@@ -19,6 +19,9 @@ const Category = () => {
   const navigateToVendor = () => {
     navigation.navigate('VendorCategory'); 
   };
+  const navigateToAdmin = () => {
+    navigation.navigate('AdminRegister'); 
+  };
 
   const screenWidth = Dimensions.get('window').width;
   const cardWidth = screenWidth * 0.25; 
@@ -52,6 +55,12 @@ const Category = () => {
             <Image style={styles.cardImage} source={require("../assets/Card3.png")} />
             <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToVendor}>
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Vendor</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.card, { width: cardWidth }]}>
+            <Image style={styles.cardImage} source={require("../assets/Card3.png")} />
+            <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToAdmin}>
+              <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Admin</Text>
             </TouchableOpacity>
           </View>
         </View>
