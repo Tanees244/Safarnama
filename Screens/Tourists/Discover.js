@@ -177,6 +177,7 @@ const Discover = () => {
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth;
   const PackageWidth = screenWidth * 0.8;
+  const PackageWidth1 = screenWidth * 0.72;
   const buttonWidth = containerWidth * 0.22;
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -269,6 +270,7 @@ const Discover = () => {
     } else {
       navigation.navigate('PlacesInfo', { hotelId: item.id });
     }
+    
     setSearchQuery(''); // Clear search query after navigation
   };
 
@@ -292,6 +294,9 @@ const Discover = () => {
       } else if (menuItem === 'Booking') {
         navigation.navigate('CreatePackage')
       }
+      else if (menuItem === 'Itinerary') {
+        navigation.navigate('Itinerary')
+      }
       // Collapse the menu after selection
       toggleMenu();
   }
@@ -303,25 +308,36 @@ const Discover = () => {
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
         {isExpanded && (
-                <View style={styles.expandedMenu}>
+                <View style={[styles.expandedMenu, { width: PackageWidth1 }]}>
                     <TouchableOpacity
                         style={styles.expandedMenuItem}
                         onPress={() => handleMenuItemPress('Home')}
                     >
-                        <Image source={require("../../assets/Home.png")} style = {[{width: 40, height: 40}]} />
+                        <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]} />
+                        <Text style={{color:'white'}}>Home</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.expandedMenuItem}
                         onPress={() => handleMenuItemPress('Profile')}
                     >
-                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 40, height: 40}]}/>
+                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={{color:'white'}}>Profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.expandedMenuItem}
                         onPress={() => handleMenuItemPress('Booking')}
                     >
-                        <Image source={require("../../assets/booking.png")} style = {[{width: 40, height: 40}]}/>
+                        <Image source={require("../../assets/booking.png")} style = {[{width: 25, height: 25}]}/>
+                        <Text style={{color:'white'}}>Booking</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.expandedMenuItem}
+                        onPress={() => handleMenuItemPress('Itinerary')}
+                    >
+                        <Image source={require("../../assets/itenerary.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={{color:'white'}}>Itinerary</Text>
+                    </TouchableOpacity>
+                    
                 </View>
             )}
             <TouchableOpacity
@@ -589,6 +605,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     color: 'white',
     fontFamily: 'Poppins-SemiBold',
+    textAlign:'center',
   },
   buttonContainer:{
     paddingTop: 10,
@@ -766,36 +783,24 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 2,
   },
-  HomeButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    zIndex: 2,
-  },
+
   expandedMenu: {
       position: 'absolute',
-      bottom: 10,
-      left: 100,
+      bottom: 20,
+      left: 90,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
       zIndex: 3,
   },
   expandedMenuItem: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: 70,
-      height: 70,
-      borderRadius: 35,
+      width: 60,
+      height: 65,
+      borderRadius: 20,
       backgroundColor: 'black',
-      margin: 10,
+      margin: 5,
   },  
 });
 
