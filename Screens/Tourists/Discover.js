@@ -153,18 +153,12 @@ const VerticalCard = ({ item }) => {
   return (
     <View style={[styles.verticalCard, { width: containerWidth, height: containerHeight }]}>
       <ImageBackground source={item.image} style={styles.verticalImage}>
-        <View style={styles.blurContainer}>
-          {/* BlurView applied only to the cardContent */}
-          <BlurView intensity={80} style={styles.cardContent}>
             <Text style={styles.packageDetail}>{item.destination}</Text>
             <Text style={styles.packageDetail}>{item.numberOfPeople}</Text>
             <Text style={styles.packageDetail}>{item.preference}</Text>
             <Text style={styles.packageDetail}>{`${item.startDate} - ${item.endDate}`}</Text>
             <Text style={styles.packageDetail}>{item.price}</Text>
             <Text style={styles.packageDetail}>{item.ratings}</Text>
-            {/* Other text components */}
-          </BlurView>
-        </View>
       </ImageBackground>
     </View>
   );

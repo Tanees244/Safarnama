@@ -25,16 +25,7 @@ import HotelRegister from './Screens/Hotel/HotelRegister';
 import HotelProfile from './Screens/Hotel/HotelProfile';
 import AirlineProfile from './Screens/Airline/AirlineProfile';
 import BusProfile from './Screens/Bus/BusProfile';
-import AdminGuide from './Screens/Admin/AdminGuide';
-import AdminGuideApplication from './Screens/Admin/AdminGuideApplication';
-import AdminRegister from './Screens/Admin/AdminRegister';
-import AdminTourist from './Screens/Admin/AdminTourist';
-import AdminVendors from './Screens/Admin/AdminVendors';
-import GuideList from './Screens/Admin/GuideList';
-import GuideProcess from './Screens/Admin/GuideProcess';
-import TouristInfo from './Screens/Admin/TouristInfo';
-import AdminViewTouristPackages from './Screens/Admin/AdminViewTouristPackages';
-import AdminDeleteTouristsPackages from './Screens/Admin/AdminDeleteTouristsPackages';
+import AdminDashboard from './Screens/Admin/AdminDashboard';
 import HotelsLists from './Screens/Tourists/HotelsLists';
 import HotelsInfo from './Screens/Tourists/HotelsInfo';
 import CreateHotel from './Screens/Hotel/CreateHotel';
@@ -130,16 +121,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='HotelProfile' component={HotelProfile} />
         <Stack.Screen options={{ headerShown: false }} name='AirlineProfile' component={AirlineProfile} />
         <Stack.Screen options={{ headerShown: false }} name='BusProfile' component={BusProfile} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminGuide' component={AdminGuide} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminGuideApplication' component={AdminGuideApplication} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminRegister' component={AdminRegister} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminTourist' component={AdminTourist} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminVendors' component={AdminVendors} />
-        <Stack.Screen options={{ headerShown: false }} name='GuideList' component={GuideList} />
-        <Stack.Screen options={{ headerShown: false }} name='GuideProcess' component={GuideProcess} />
-        <Stack.Screen options={{ headerShown: false }} name='TouristInfo' component={TouristInfo} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminViewTouristPackages' component={AdminViewTouristPackages} />
-        <Stack.Screen options={{ headerShown: false }} name='AdminDeleteTouristsPackages' component={AdminDeleteTouristsPackages} />
+        <Stack.Screen options={{ headerShown: false }} name='AdminDashboard' component={AdminDashboard} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsLists' component={HotelsLists} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsInfo' component={HotelsInfo} />
         <Stack.Screen options={{ headerShown: false }} name='CreateHotel' component={CreateHotel} />
@@ -175,10 +157,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='TrainProfile' component={TrainProfile} />
         <Stack.Screen options={{ headerShown: false }} name='Itinerary' component={Itinerary} />
         <Stack.Screen options={{ headerShown: false }} name='ItineraryDay' component={ItineraryDay} />
-        
-        
-        
-        
       </Stack.Navigator>
     </NavigationContainer>
     

@@ -4,8 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
 import { FIREBASE_AUTH, auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
-import Category from './Category';
-import AdminDashboard from '../Screens/Admin/AdminRegister'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 
@@ -36,9 +34,9 @@ const Login = () => {
       if (user) {
         // Check if the user's ID is your special admin ID
         if (user.uid === 'I7Qez7HAXhYIADFusuhrMEdJUq63') {
-          navigation.navigate(AdminDashboard); // Redirect to the Admin Dashboard
+          navigation.navigate("AdminDashboard"); // Redirect to the Admin Dashboard
         } else {
-          navigation.navigate(Category); // Redirect to the regular Category screen
+          navigation.navigate("Category"); // Redirect to the regular Category screen
         }
       }
     });
@@ -86,14 +84,6 @@ const Login = () => {
 
             <Image style={styles.vector} source={Vector}/>
             <Text style={styles.text}>Safarnama</Text>
-              <View style={{ 
-                borderTopRightRadius: 25, 
-                borderTopLeftRadius:25, 
-                borderBottomRightRadius: 25,
-                borderBottomLeftRadius: 25,
-                marginTop: 50,
-                overflow: "hidden", }}>
-                <BlurView  intensity={80}>
                   <View style={[styles.ButtonContainer, {width: containerWidth}]}>
                     <View style={styles.InputContainer}>
                       <TextInput
@@ -150,8 +140,6 @@ const Login = () => {
                       </TouchableOpacity>
                   </View>
                 </View>
-              </BlurView>
-            </View>
           </View>
         </View>
       </ImageBackground>
