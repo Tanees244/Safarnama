@@ -572,7 +572,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    
   },
   cardContent: {
     padding: 10,
@@ -584,7 +583,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
-  
   packageDetail: {
     fontFamily: 'Poppins-SemiBold',
     color: 'black',
