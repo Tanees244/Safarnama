@@ -85,6 +85,7 @@ const Login = () => {
             <Image style={styles.vector} source={Vector}/>
             <Text style={styles.text}>Safarnama</Text>
                   <View style={[styles.ButtonContainer, {width: containerWidth}]}>
+             
                     <View style={styles.InputContainer}>
                       <TextInput
                         placeholder='Email'
@@ -140,6 +141,8 @@ const Login = () => {
                       </TouchableOpacity>
                   </View>
                 </View>
+             
+
           </View>
         </View>
       </ImageBackground>
@@ -160,6 +163,7 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
   },
+ 
   Textcontainer: {
     flex: 1,
     top: 140,
@@ -183,6 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 30,
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
   InputContainer: {
     width: '100%',
