@@ -153,12 +153,18 @@ const VerticalCard = ({ item }) => {
   return (
     <View style={[styles.verticalCard, { width: containerWidth, height: containerHeight }]}>
       <ImageBackground source={item.image} style={styles.verticalImage}>
+        <View style={styles.blurContainer}>
+          {/* BlurView applied only to the cardContent */}
+          <View  style={styles.cardContent}>
             <Text style={styles.packageDetail}>{item.destination}</Text>
             <Text style={styles.packageDetail}>{item.numberOfPeople}</Text>
             <Text style={styles.packageDetail}>{item.preference}</Text>
             <Text style={styles.packageDetail}>{`${item.startDate} - ${item.endDate}`}</Text>
             <Text style={styles.packageDetail}>{item.price}</Text>
             <Text style={styles.packageDetail}>{item.ratings}</Text>
+            {/* Other text components */}
+          </View>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -214,59 +220,25 @@ const Discover = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [filteredData, setFilteredData] = useState([]);
-  const [resultSources, setResultSources] = useState({});
-
-  const [categoryMap, setCategoryMap] = useState({
-    Places: [],
-    Hotels: [],
-    Packages: [],
-  });
-
-  // Function to filter data based on search query
-  const handleSearch = (text) => {
-    setSearchQuery(text);
-
-    const filtered = [...data, ...data2, ...packageData].filter((item) =>
-      item.title.toLowerCase().includes(text.toLowerCase())
+  const combinedData = [...data, ...data2];
+  
+    // Filtered data based on search query
+    const filteredData = combinedData.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    setFilteredData(filtered);
-    groupByCategory(filtered); // Call the function to group filtered data
-  };
-
-  // Function to group filtered data by category
-  const groupByCategory = (filtered) => {
-    const map = {
-      Places: [],
-      Hotels: [],
-      Packages: [],
-    };
-
-    filtered.forEach((item) => {
-      if (parseInt(item.id) <= 3) {
-        map.Places.push(item);
-      } else if (parseInt(item.id) >= 4 && parseInt(item.id) <= 6) {
-        map.Hotels.push(item);
+  
+    const handleItemPress = (item) => {
+      // Add logic to navigate based on the item type (place or hotel)
+      if (item.id<=3) {
+        navigation.navigate('PlacesInfo', { placeId: item.id });
       } else {
-        map.Packages.push(item);
+        navigation.navigate('HotelsInfo', { hotelId: item.id });
       }
-    });
-
-    setCategoryMap(map);
-  };
-
-  const handleItemPress = (item) => {
-    if (item.id<4) {                                                  
-      navigation.navigate('PlacesInfo', { placeId: item.id });
-    } else if (item.id>3 || item.id<7){
-      navigation.navigate('HotelsInfo', { hotelId: item.id });
-    } else {
-      navigation.navigate('PlacesInfo', { hotelId: item.id });
-    }
-    
-    setSearchQuery(''); // Clear search query after navigation
-  };
+      setSearchQuery(''); // Clear search query after navigation
+    };
+  
+  
+  
 
   const toggleMenu = () => {
     const toValue = isExpanded ? 0 : 1;
@@ -355,71 +327,31 @@ const Discover = () => {
 
       <TextInput
         style={styles.searchInput}
-        placeholder="Search Packages, Places and Hotel"
-        onChangeText={handleSearch}
+        placeholder="Search places and hotels"
+        onChangeText={text => setSearchQuery(text)}
         value={searchQuery}
       />
       <View style={styles.searchResults}>
-      {categoryMap.Places.length > 0 && (
+      
+      {/* Display filtered results */}
+      {searchQuery.length > 0 && (
         <View>
-          <Text style={styles.resultHeader}>Places</Text>
-          <FlatList
-            horizontal
-            data={categoryMap.Places}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.searchContainer}>
-              <TouchableOpacity onPress={() => handleItemPress(item)}>
-                <View style={styles.resultItem}>
-                  <Image source={item.image} style={styles.itemImage} />
-                  <Text style={styles.itemTitle}>{item.title}</Text>
-                  <Text style={styles.rating}>{item.ratings}</Text>
-                </View>
-              </TouchableOpacity>
+        <FlatList
+        horizontal
+          data={filteredData}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.searchContainer}>
+            <TouchableOpacity onPress={() => handleItemPress(item)}>
+              <View style={styles.resultItem}>
+                <Image source={item.image} style={styles.itemImage} />
+                <Text style={styles.itemTitle}>{item.title}</Text>
+                <Text style={styles.rating}>{item.ratings}</Text>
               </View>
-            )}
-          />
-        </View>
-      )}
-
-      {categoryMap.Hotels.length > 0 && (
-        <View>
-          <Text style={styles.resultHeader}>Hotels</Text>
-          <FlatList
-            data={categoryMap.Hotels}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleItemPress(item)}>
-                <View style={styles.resultItem}>
-                  <Image source={item.image} style={styles.itemImage} />
-                  <Text style={styles.itemTitle}>{item.title}</Text>
-                  <Text style={styles.rating}>{item.ratings}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      )}
-
-      {categoryMap.Packages.length > 0 && (
-        <View>
-          <Text style={styles.resultHeader}>Packages</Text>
-          <FlatList
-            horizontal
-            data={categoryMap.Packages}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.searchContainer}>
-                <TouchableOpacity onPress={() => handleItemPress(item)}>
-                  <View style={styles.resultItem}>
-                    <Image source={item.image} style={styles.itemImage} />
-                    <Text style={styles.itemTitle}>{item.title}</Text>                    
-                    <Text style={styles.rating}>{item.ratings}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
+            </TouchableOpacity>
+            </View>
+          )}
+        />
         </View>
       )}
     </View>
@@ -484,7 +416,8 @@ const Discover = () => {
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <HorizontalCard item={item} />}
+          renderItem={({ item }) => <HorizontalCard item={item}
+          onPress={() => navigateToPlaceLists()} />}
           keyExtractor={(item) => item.id}
         />
 
@@ -493,7 +426,8 @@ const Discover = () => {
           data={data2}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <HorizontalCard item={item} />}
+          renderItem={({ item }) => <HorizontalCard item={item}
+          onPress={() => navigateToHotelsInfo()} />}
           keyExtractor={(item) => item.id}
         />
   </ScrollView>
@@ -638,6 +572,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    
   },
   cardContent: {
     padding: 10,
@@ -647,10 +582,12 @@ const styles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
+  
   packageDetail: {
     fontFamily: 'Poppins-SemiBold',
-    color: 'white',
+    color: 'black',
     fontSize: 14,
   },
   icon: {
