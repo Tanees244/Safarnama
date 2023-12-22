@@ -57,12 +57,6 @@ const Category = () => {
               <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Vendor</Text>
             </TouchableOpacity>
           </View>
-          <View style={[styles.card, { width: cardWidth }]}>
-            <Image style={styles.cardImage} source={require("../assets/Card3.png")} />
-            <TouchableOpacity style={[styles.cardButton, { width: cardButtonWidth }]} onPress={navigateToAdmin}>
-              <Text style={[styles.buttonText, { fontFamily: 'Poppins-SemiBold' }]}>Admin</Text>
-            </TouchableOpacity>
-          </View>
         </View>
         </LinearGradient>
       </ImageBackground>

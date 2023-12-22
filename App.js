@@ -61,6 +61,11 @@ import TransportLists from './Screens/Tourists/TransportLists';
 import Option from './Screens/Tourists/option';
 import Itinerary from './Screens/Tourists/Itinerary';
 import ItineraryDay from './Screens/Tourists/ItineraryDay';
+import GuideApplication from './Screens/Admin/GuideApplication';
+import VendorApplication from './Screens/Admin/VendorApplication';
+import TouristDetail from './Screens/Admin/TouristDetail.js';
+import GuideDetail from './Screens/Admin/TouristDetail.js';
+import VendorDetail from './Screens/Admin/VendorDetail';
 
 import { useFonts } from 'expo-font';
 
@@ -122,6 +127,11 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='AirlineProfile' component={AirlineProfile} />
         <Stack.Screen options={{ headerShown: false }} name='BusProfile' component={BusProfile} />
         <Stack.Screen options={{ headerShown: false }} name='AdminDashboard' component={AdminDashboard} />
+        <Stack.Screen options={{ headerShown: false }} name='GuideApplication' component={GuideApplication} />
+        <Stack.Screen options={{ headerShown: false }} name='VendorApplication' component={VendorApplication} />
+        <Stack.Screen options={{ headerShown: false }} name='TouristDetail' component={TouristDetail} />
+        <Stack.Screen options={{ headerShown: false }} name='VendorDetail' component={VendorDetail} />
+        <Stack.Screen options={{ headerShown: false }} name='GuideDetail' component={GuideDetail} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsLists' component={HotelsLists} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsInfo' component={HotelsInfo} />
         <Stack.Screen options={{ headerShown: false }} name='CreateHotel' component={CreateHotel} />

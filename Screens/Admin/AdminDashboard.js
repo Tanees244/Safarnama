@@ -2,21 +2,38 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-import { color } from 'react-native-elements/dist/helpers';
 
 const AdminDashboard = () => {
 
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
-  const inputWidth = containerWidth * 0.9;
-  const uploadButtonWidth = containerWidth * 0.9;
+
+  const GuideApplication = () => {
+    navigation.navigate('GuideApplication');
+  };
+
+  const VendorApplication = () => {
+    navigation.navigate('VendorApplication');
+  };
+
+  const TouristDetail = () => {
+    navigation.navigate('TouristDetail');
+  };
+
+  const VendorDetail = () => {
+    navigation.navigate('VendorDetail');
+  };
+
+  const GuideDetail = () => {
+    navigation.navigate('GuideDetail');
+  };
 
   return (
       <ScrollView contentContainerStyle={styles.container}>
 
         <Svg height="100%" width="100%" style={styles.backgroundEllipse}>
-          <Ellipse cx="60%" cy="20%" rx="300" ry="300" fill="#071B2E" />
+          <Ellipse cx="60%" cy="10%" rx="300" ry="300" fill="#071B2E" />
         </Svg>
 
         <Text style={styles.Text}>Admin {'\n'}Dashboard</Text>
@@ -26,12 +43,14 @@ const AdminDashboard = () => {
         <View style={styles.ButtonContainer}>
             <TouchableOpacity
                 style={styles.Button}
+                onPress={GuideApplication}
                 >
                     <Image source={require('../../assets/Application.png')}/>
                     <Text style={styles.ButtonText}>Guide</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.Button}
+                onPress={VendorApplication}
                 >
                     <Image source={require('../../assets/Application.png')}/>
                     <Text style={styles.ButtonText}>Vendor</Text>
@@ -44,6 +63,7 @@ const AdminDashboard = () => {
 
             <TouchableOpacity 
                 style={[styles.User, {width: containerWidth}]}
+                onPress={TouristDetail}
                 >
                     <Image source={require('../../assets/Tourist.png')}/>
                     <Text style={styles.UserText}>Tourist</Text>
@@ -51,6 +71,7 @@ const AdminDashboard = () => {
 
             <TouchableOpacity 
                 style={[styles.User, {width: containerWidth}]}
+                onPress={GuideDetail}
                 >
                     <Image source={require('../../assets/Guide.png')}/>
                     <Text style={styles.UserText}>Guide</Text>
@@ -58,13 +79,13 @@ const AdminDashboard = () => {
 
             <TouchableOpacity 
                 style={[styles.User, {width: containerWidth}]}
+                onPress={VendorDetail}
                 >
                     <Image source={require('../../assets/Vendor.png')}/>
                     <Text style={styles.UserText}>Vendor</Text>
             </TouchableOpacity>
 
         </View>
-
       </ScrollView>
   );
 };
@@ -82,7 +103,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Poppins-Bold',
     textAlign: 'left',
-    marginTop: 100,
+    marginTop: 80,
     padding: 20,
   },
   ButtonText:{
@@ -105,10 +126,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   Button: {
-    backgroundColor: '#84B0B8',
+    backgroundColor: '#4E7596',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    width: 100,
+    width: 120,
     height: 140,
     borderRadius: 20,
   },

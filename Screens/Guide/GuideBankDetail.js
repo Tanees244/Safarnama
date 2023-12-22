@@ -20,7 +20,7 @@ const GuideBankDetail = () => {
 
     const handleGuideQuestionnaire = () => {
         navigation.navigate('GuideQuestionnaire');
-      };
+    };
 
     const screenWidth = Dimensions.get('window').width;
     const inputContainerWidth = screenWidth * 0.9;
