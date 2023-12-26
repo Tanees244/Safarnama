@@ -1,7 +1,6 @@
 import React , {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions, TextInput, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
 
 const data = [
   {
@@ -109,7 +108,7 @@ const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
   const containerHeight = screenHeight * 0.8;
-  const containerWidth = screenWidth * 0.9;
+  const containerWidth = screenWidth * 0.8;
   const buttonWidth = containerWidth * 0.22;
 
   return (
@@ -154,7 +153,6 @@ const VerticalCard = ({ item }) => {
     <View style={[styles.verticalCard, { width: containerWidth, height: containerHeight }]}>
       <ImageBackground source={item.image} style={styles.verticalImage}>
         <View style={styles.blurContainer}>
-          {/* BlurView applied only to the cardContent */}
           <View  style={styles.cardContent}>
             <Text style={styles.packageDetail}>{item.destination}</Text>
             <Text style={styles.packageDetail}>{item.numberOfPeople}</Text>
@@ -162,7 +160,6 @@ const VerticalCard = ({ item }) => {
             <Text style={styles.packageDetail}>{`${item.startDate} - ${item.endDate}`}</Text>
             <Text style={styles.packageDetail}>{item.price}</Text>
             <Text style={styles.packageDetail}>{item.ratings}</Text>
-            {/* Other text components */}
           </View>
         </View>
       </ImageBackground>
@@ -183,10 +180,6 @@ const Discover = () => {
 
   const scaleValue = new Animated.Value(0);
 
-  const navigateToHotesInfo = () => {
-      navigation.navigate('HotelsInfo')
-  }
-
   const scale = scaleValue.interpolate({
     inputRange: [0, 1],
     outputRange: [1, 4],
@@ -202,20 +195,8 @@ const Discover = () => {
     navigation.navigate('Flight')
   };
 
-  const navigateToItinerary = () =>{
-    navigation.navigate('Itinerary')
-  };
-
   const navigateToCreatePackage = () =>{
     navigation.navigate('CreatePackage')
-  };
-
-  const navigateToGuideProfile = () => {
-    navigation.navigate('TouristProfile'); // Replace with your screen name
-  };
-
-  const navigateToGuideHome = () => {
-    navigation.navigate('Discover'); // Replace with your screen name
   };
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -237,9 +218,6 @@ const Discover = () => {
       setSearchQuery(''); // Clear search query after navigation
     };
   
-  
-  
-
   const toggleMenu = () => {
     const toValue = isExpanded ? 0 : 1;
     Animated.timing(scaleValue, {
@@ -276,7 +254,7 @@ const Discover = () => {
         {isExpanded && (
                 <View style={[styles.expandedMenu, { width: PackageWidth1 }]}>
                     <TouchableOpacity
-                        style={[styles.expandedMenuItem, {bottom : 140, left : -70}]}
+                        style={[styles.expandedMenuItem, {bottom : 140, left : -80}]}
                         onPress={() => handleMenuItemPress('Home')}
                     >
                         <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]} />
@@ -290,14 +268,14 @@ const Discover = () => {
                         <Text style={styles.expandedMenuItemText}>Profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={[styles.expandedMenuItem, {bottom : 70, left : -80}]}
+                        style={[styles.expandedMenuItem, {bottom : 65, left : -75}]}
                         onPress={() => handleMenuItemPress('Booking')}
                     >
                         <Image source={require("../../assets/booking.png")} style = {[{width: 30, height: 30}]}/>
                         <Text style={styles.expandedMenuItemText}>Booking</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={[styles.expandedMenuItem, {bottom : 0, left : -120}]}
+                        style={[styles.expandedMenuItem, {bottom : -15, left : -120}]}
                         onPress={() => handleMenuItemPress('Itinerary')}
                     >
                         <Image source={require("../../assets/itenerary.png")} style = {[{width: 30, height: 30}]}/>
@@ -333,7 +311,6 @@ const Discover = () => {
       />
       <View style={styles.searchResults}>
       
-      {/* Display filtered results */}
       {searchQuery.length > 0 && (
         <View>
         <FlatList
@@ -522,14 +499,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#22333b',
   },
   headerText: {
-      fontSize: 30,
-      color: 'black',
-      fontFamily: 'Poppins-Bold',
-      marginTop: 40,
+    fontSize: 30,
+    color: 'black',
+    fontFamily: 'Poppins-Bold',
+    marginTop: 40,
   },
   text: {
-    fontSize: 20,
-    paddingLeft: 20,
+    fontSize: 22,
     paddingVertical: 20,
     color: 'white',
     fontFamily: 'Poppins-SemiBold',
@@ -702,8 +678,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     left: 20,
-    width: 70,  // Adjust the width as needed
-    height: 70,
+    width: 80,  // Adjust the width as needed
+    height: 80,
     padding: 15,
     borderRadius: 50,
     backgroundColor: 'black',
@@ -724,8 +700,8 @@ const styles = StyleSheet.create({
   expandedMenuItem: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: 70,
-      height: 70,
+      width: 80,
+      height: 80,
       borderRadius: 50,
       backgroundColor: 'black',
   },  

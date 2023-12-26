@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     facilityItem: {
-        marginRight: 20,
+        marginRight: 10,
         alignItems: 'center',
         justifyContent: 'space-around',
         backgroundColor: '#D9D9D9',

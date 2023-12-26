@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList, ImageBackground, ScrollView, Dimensions, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const data = [
@@ -62,7 +62,7 @@ const HorizontalCard = ({ item, onPress }) => {
     const screenHeight = Dimensions.get('window').height;
     const containerHeight = screenHeight * 0.8;
     const containerWidth = screenWidth * 0.9;
-    const buttonWidth = containerWidth * 0.22;
+    
 
     return (
       <View style={[styles.card, { width: containerWidth, height: containerHeight }]}>
@@ -101,8 +101,45 @@ const PlaceLists = () => {
 
     const navigation = useNavigation();
 
-    const handleDiscoverPress = () => {
+    const screenWidth = Dimensions.get('window').width;
+    const containerWidth = screenWidth * 0.9;
+
+    const PackageWidth1 = screenWidth * 0.72;
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const scaleValue = new Animated.Value(0);
+
+    const scale = scaleValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 4],
+    });
+
+    
+    const toggleMenu = () => {
+      const toValue = isExpanded ? 0 : 1;
+      Animated.timing(scaleValue, {
+          toValue,
+          duration: 0,
+          useNativeDriver: true,
+      }).start();
+      setIsExpanded(!isExpanded);
+    }
+
+    const handleMenuItemPress = (menuItem) => {
+      // Handle navigation based on the selected menu item
+      // For example:
+      if (menuItem === 'Home') {
         navigation.navigate('Discover')
+      } else if (menuItem === 'Profile') {
+        navigation.navigate('TouristProfile')
+      } else if (menuItem === 'Booking') {
+        navigation.navigate('CreatePackage')
+      }
+      else if (menuItem === 'Itinerary') {
+        navigation.navigate('Itinerary')
+      }
+      // Collapse the menu after selection
+      toggleMenu();
     }
 
     const navigateToPlacesInfo = () => {
@@ -114,13 +151,52 @@ const PlaceLists = () => {
         <View style={styles.header}>
           <Text style={styles.headerText}>Safarnama</Text>
         </View>
-        <TouchableOpacity 
-            style={styles.HomeButton}
-            onPress={handleDiscoverPress}
-            activeOpacity={0.5}
+        {isExpanded && (
+                <View style={[styles.expandedMenu, { width: PackageWidth1 }]}>
+                    <TouchableOpacity
+                        style={[styles.expandedMenuItem, {bottom : 140, left : -80}]}
+                        onPress={() => handleMenuItemPress('Home')}
+                    >
+                        <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]} />
+                        <Text style={styles.expandedMenuItemText}>Home</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.expandedMenuItem, {bottom : 120, left : -70}]}
+                        onPress={() => handleMenuItemPress('Profile')}
+                    >
+                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Profile</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.expandedMenuItem, {bottom : 65, left : -75}]}
+                        onPress={() => handleMenuItemPress('Booking')}
+                    >
+                        <Image source={require("../../assets/booking.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Booking</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.expandedMenuItem, {bottom : -15, left : -120}]}
+                        onPress={() => handleMenuItemPress('Itinerary')}
+                    >
+                        <Image source={require("../../assets/itenerary.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Itinerary</Text>
+                    </TouchableOpacity>
+                    
+                </View>
+            )}
+            <TouchableOpacity
+                style={styles.HomeButton}
+                onPress={toggleMenu}
+                activeOpacity={0.5}
             >
-            <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]}/>
-        </TouchableOpacity>
+                {isExpanded ? (
+                    // Render close icon or any icon you prefer
+                    <Image source={require("../../assets/WhiteClose.png")} style = {[{width: 30, height: 30}]}/>
+                ) : (
+                    // Your existing Home button content
+                    <Image source={require("../../assets/ViewMore.png")} style = {[{width: 35, height: 35}]}/>
+                )}
+            </TouchableOpacity>
         <ScrollView>
           <Text style={styles.text}>Top <Text style={[styles.text, { color: '#2D78A2' }]}>Rated Places</Text></Text>
           <FlatList
@@ -146,72 +222,72 @@ const PlaceLists = () => {
 
 
 const styles = StyleSheet.create({
-    Container: {
-        backgroundColor: '#cee7fa',
-        flex: 1,
-    },
-    header: {
-      height: 120,
-      backgroundColor: '#213555',
-      shadowColor: 'black',
-      elevation: 20,
-      borderRadius:40,
-      },
-    headerText: {
-        textAlign: 'center',
-        top: 50,
-        fontSize: 30,
-        color: '#FFFFFF',
-        fontFamily: 'Poppins-Bold',
-    },
-    text: {
-        width: '75%',
-        fontSize: 30,
-        padding: 30,
-        color: '#1f4084',
-        fontFamily: 'Poppins-Bold',
-    },
-    buttonContainer:{
-        paddingHorizontal: 5,
-        paddingVertical: 20,
-        flexDirection: 'row',
-    },
-    card: {
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 30,
-        flexDirection: 'column',
-        width: 340,
-        height: 600,
-        alignItems: 'center',
-        overflow: 'hidden',
-        borderRadius: 20,
-    },
-    image: {
-        height: 200,
-        width: 280,
-        shadowColor: 'black',
-        elevation: 20,
-    },
-    contentContainer:{
-        top: 130,
-    },
-    content: {
-        padding: 10,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        width: 340,
-        height: 600,
-        top: -100,
-        zIndex: -1,
-    },
-    title: {
-        paddingLeft: 18,
-        fontSize: 20,
-        color: 'black',
-        fontFamily: 'Poppins-SemiBold',
-    },
-    subdescription:{
+  Container: {
+    backgroundColor: '#cee7fa',
+    flex: 1,
+  },
+  header: {
+    height: 140,
+    backgroundColor: '#1a1a1a',
+    shadowColor: 'black',
+    elevation: 20,
+    zIndex: -1,
+  },
+  headerText: {
+      textAlign: 'center',
+      top: 60,
+      fontSize: 30,
+      color: '#FFFFFF',
+      fontFamily: 'Poppins-Bold',
+  },
+  text: {
+    width: '75%',
+    fontSize: 30,
+    padding: 30,
+    color: '#1f4084',
+    fontFamily: 'Poppins-Bold',
+  },
+  buttonContainer:{
+    paddingHorizontal: 5,
+    paddingVertical: 20,
+    flexDirection: 'row',
+  },
+  card: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 30,
+    flexDirection: 'column',
+    width: 340,
+    height: 600,
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderRadius: 20,
+  },
+  image: {
+    height: 200,
+    width: 280,
+    shadowColor: 'black',
+    elevation: 20,
+  },
+  contentContainer:{
+    top: 130,
+  },
+  content: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    width: 340,
+    height: 600,
+    top: -100,
+    zIndex: -1,
+  },
+  title: {
+    paddingLeft: 18,
+    fontSize: 20,
+    color: 'black',
+    fontFamily: 'Poppins-SemiBold',
+  },
+  subdescription:{
         fontSize: 14,
         paddingLeft: 18,
         color: '#777',
@@ -223,8 +299,8 @@ const styles = StyleSheet.create({
         paddingLeft: 18,
         paddingTop: 20,
         fontFamily: 'Poppins-Medium',
-    },
-    ratingContainer: {
+      },
+      ratingContainer: {
         position: 'absolute',
         top: 10, // Adjust top position as needed
         left: 10, // Adjust left position as needed
@@ -269,8 +345,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         left: 20,
-        width: 70,  // Adjust the width as needed
-        height: 70,
+        width: 80,  // Adjust the width as needed
+        height: 80,
         padding: 15,
         borderRadius: 50,
         backgroundColor: 'black',
@@ -278,6 +354,28 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         elevation: 5,
         zIndex: 2,
+      },
+      expandedMenu: {
+          position: 'absolute',
+          bottom: 20,
+          left: 90,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          zIndex: 3,
+      },
+      expandedMenuItem: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 80,
+          height: 80,
+          borderRadius: 50,
+          backgroundColor: 'black',
+      },  
+      expandedMenuItemText: {
+        color: 'white',
+        fontFamily: 'Poppins-Bold',
+        fontSize: 10,
       },
 });
 

@@ -101,6 +101,9 @@ const HorizontalCard = ({ item, onPress }) => {
 const HotelsLists = () => {
 
     const navigation = useNavigation();
+
+    const screenWidth = Dimensions.get('window').width;
+    const PackageWidth1 = screenWidth * 0.72;
     const [isExpanded, setIsExpanded] = useState(false);
     const scaleValue = new Animated.Value(0);
 
@@ -119,18 +122,21 @@ const HotelsLists = () => {
     }
 
     const handleMenuItemPress = (menuItem) => {
-        // Handle navigation based on the selected menu item
-        // For example:
-        if (menuItem === 'Home') {
-          navigation.navigate('Discover')
-        } else if (menuItem === 'Profile') {
-          navigation.navigate('TouristProfile')
-        } else if (menuItem === 'Booking') {
-          navigation.navigate('CreatePackage')
-        }
-        // Collapse the menu after selection
-        toggleMenu();
-    }
+      // Handle navigation based on the selected menu item
+      // For example:
+      if (menuItem === 'Home') {
+        navigation.navigate('Discover')
+      } else if (menuItem === 'Profile') {
+        navigation.navigate('TouristProfile')
+      } else if (menuItem === 'Booking') {
+        navigation.navigate('CreatePackage')
+      }
+      else if (menuItem === 'Itinerary') {
+        navigation.navigate('Itinerary')
+      }
+      // Collapse the menu after selection
+      toggleMenu();
+  }
 
     const scale = scaleValue.interpolate({
         inputRange: [0, 1],
@@ -143,25 +149,36 @@ const HotelsLists = () => {
           <Text style={styles.headerText}>Safarnama</Text>
         </View>
         {isExpanded && (
-                <View style={styles.expandedMenu}>
+                <View style={[styles.expandedMenu, { width: PackageWidth1 }]}>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 140, left : -80}]}
                         onPress={() => handleMenuItemPress('Home')}
                     >
-                        <Image source={require("../../assets/Home.png")} style = {[{width: 40, height: 40}]} />
+                        <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]} />
+                        <Text style={styles.expandedMenuItemText}>Home</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 120, left : -70}]}
                         onPress={() => handleMenuItemPress('Profile')}
                     >
-                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 40, height: 40}]}/>
+                        <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 65, left : -75}]}
                         onPress={() => handleMenuItemPress('Booking')}
                     >
-                        <Image source={require("../../assets/booking.png")} style = {[{width: 40, height: 40}]}/>
+                        <Image source={require("../../assets/booking.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Booking</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.expandedMenuItem, {bottom : -15, left : -120}]}
+                        onPress={() => handleMenuItemPress('Itinerary')}
+                    >
+                        <Image source={require("../../assets/itenerary.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Itinerary</Text>
+                    </TouchableOpacity>
+                    
                 </View>
             )}
             <TouchableOpacity
@@ -321,51 +338,42 @@ const styles = StyleSheet.create({
         width: '100%', 
         alignItems: 'center',
     },
-    // HomeButton: {
-    //     position: 'absolute',
-    //     bottom: 20,
-    //     left: 20,
-    //     width: 70,  // Adjust the width as needed
-    //     height: 70,
-    //     padding: 15,
-    //     borderRadius: 50,
-    //     backgroundColor: 'black',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     elevation: 5,
-    //     zIndex: 2,
-    // },
     HomeButton: {
       position: 'absolute',
       bottom: 20,
       left: 20,
-      width: 70,
-      height: 70,
-      borderRadius: 35,
+      width: 80,  // Adjust the width as needed
+      height: 80,
+      padding: 15,
+      borderRadius: 50,
       backgroundColor: 'black',
       alignItems: 'center',
       justifyContent: 'center',
       elevation: 5,
       zIndex: 2,
-  },
-  expandedMenu: {
+    },
+    expandedMenu: {
       position: 'absolute',
-      bottom: 10,
-      left: 100,
+      bottom: 20,
+      left: 90,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
       zIndex: 3,
-  },
-  expandedMenuItem: {
+    },
+    expandedMenuItem: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: 70,
-      height: 70,
-      borderRadius: 35,
+      width: 80,
+      height: 80,
+      borderRadius: 50,
       backgroundColor: 'black',
-      margin: 10,
-  },
+    },  
+    expandedMenuItemText: {
+      color: 'white',
+      fontFamily: 'Poppins-Bold',
+      fontSize: 10,
+    },
 });
 
 export default HotelsLists;
