@@ -5,7 +5,6 @@ import { Vector } from '../assets';
 import { FIREBASE_AUTH, auth } from '../firebase';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { MaterialIcons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 
 const Login = () => {
   

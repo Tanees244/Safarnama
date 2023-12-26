@@ -5,6 +5,7 @@ import GuideList from './GuideLists';
 
 
 const Option = ({ navigation }) => {
+  
   const [selectedTransport, setSelectedTransport] = useState(null);
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -28,14 +29,10 @@ const Option = ({ navigation }) => {
     setModalVisible1(false);
   };
 
-  const handleGuide = () => {
-    // Implement your logic for handling the guide
-    // You can use the selectedTransport data here
-    console.log('Do You Want Guide? Button Pressed');
-  };
   const navigateToPaymentgateway = () => {
     navigation.navigate('PaymentGateway');
   };
+  
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 1;
   const inputWidth = containerWidth * 0.6;

@@ -276,32 +276,32 @@ const Discover = () => {
         {isExpanded && (
                 <View style={[styles.expandedMenu, { width: PackageWidth1 }]}>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 140, left : -70}]}
                         onPress={() => handleMenuItemPress('Home')}
                     >
                         <Image source={require("../../assets/Home.png")} style = {[{width: 30, height: 30}]} />
-                        <Text style={{color:'white'}}>Home</Text>
+                        <Text style={styles.expandedMenuItemText}>Home</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 120, left : -70}]}
                         onPress={() => handleMenuItemPress('Profile')}
                     >
                         <Image source={require("../../assets/account-circle-black.png")} style = {[{width: 30, height: 30}]}/>
-                        <Text style={{color:'white'}}>Profile</Text>
+                        <Text style={styles.expandedMenuItemText}>Profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 70, left : -80}]}
                         onPress={() => handleMenuItemPress('Booking')}
                     >
-                        <Image source={require("../../assets/booking.png")} style = {[{width: 25, height: 25}]}/>
-                        <Text style={{color:'white'}}>Booking</Text>
+                        <Image source={require("../../assets/booking.png")} style = {[{width: 30, height: 30}]}/>
+                        <Text style={styles.expandedMenuItemText}>Booking</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.expandedMenuItem}
+                        style={[styles.expandedMenuItem, {bottom : 0, left : -120}]}
                         onPress={() => handleMenuItemPress('Itinerary')}
                     >
                         <Image source={require("../../assets/itenerary.png")} style = {[{width: 30, height: 30}]}/>
-                        <Text style={{color:'white'}}>Itinerary</Text>
+                        <Text style={styles.expandedMenuItemText}>Itinerary</Text>
                     </TouchableOpacity>
                     
                 </View>
@@ -712,25 +712,28 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 2,
   },
-
   expandedMenu: {
       position: 'absolute',
       bottom: 20,
       left: 90,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-evenly',
+      justifyContent: 'space-around',
       zIndex: 3,
   },
   expandedMenuItem: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: 60,
-      height: 65,
-      borderRadius: 20,
+      width: 70,
+      height: 70,
+      borderRadius: 50,
       backgroundColor: 'black',
-      margin: 5,
   },  
+  expandedMenuItemText: {
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 10,
+  },
 });
 
 export default Discover;

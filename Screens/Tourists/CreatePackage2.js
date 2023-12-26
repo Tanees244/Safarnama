@@ -59,15 +59,15 @@ const CreatePackage2 = () => {
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={[styles.RegisterContainer, { width: RegisterContainer }]}>
-          <Text style={{ fontSize: 20, fontFamily: 'Poppins-Bold', textAlign: 'center', color: 'white' }}>
-            Our Terminal To Start Trip Is<Text style={styles.Text}> Islamabad</Text>
+          <Text style={{ fontSize: 22, fontFamily: 'Poppins-Bold', textAlign: 'center', color: 'white' }}>
+            Transport To <Text style={styles.Text}>Islamabad</Text>
           </Text>
         </View>
 
         <View style={styles.ButtonContainer}>
-          <Text style={styles.Heading}>How do you want to go ?</Text>
+          <Text style={styles.Heading}>Select Mode Of Transport</Text>
           <View style={[{ width: RWidth }, styles.Roww]}>
-            <Image style={styles.calendar} contentFit="cover" source={require('../../assets/airplane.png')} />
+            <Image style={styles.train} contentFit="cover" source={require('../../assets/airplane.png')} />
             <TouchableOpacity
               style={[{ width: inputWidth }, styles.Input, flightSelected && styles.selectedOption]}
               onPress={handleFlight}>
@@ -78,7 +78,7 @@ const CreatePackage2 = () => {
           </View>
 
           <View style={[{ width: RWidth }, styles.Roww]}>
-            <Image style={styles.calendar} contentFit="cover" source={require('../../assets/bus.png')} />
+            <Image style={styles.train} contentFit="cover" source={require('../../assets/bus.png')} />
             <TouchableOpacity
               style={[{ width: inputWidth }, styles.Input, busSelected && styles.selectedOption]}
               onPress={handleBus}>
@@ -99,23 +99,24 @@ const CreatePackage2 = () => {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.checkboxContainer}>
+          {/* <View style={styles.checkboxContainer}> */}
             <CheckBox
               title='Skip this part if you want to go on your own!'
               checked={isChecked}
               onPress={handleCheckBox}
-              
+              textStyle={styles.checkboxText}
+              containerStyle={styles.checkboxContainer}
             />
-          </View>
+          {/* </View> */}
         </View>
 
-        <View>
+        <View style={styles.Button}>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleCreatePackage3}
             style={[styles.buttonText, { width: inputWidth }]}
             disabled={!isChecked && !(flightSelected || busSelected || trainSelected)}>
-            <Text style={styles.TextDesign}>NEXT</Text>
+            <Text style={styles.TextDesign}>Next</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -131,41 +132,37 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 140,
-    backgroundColor: '#032844',
-    shadowColor: 'black',
-    elevation: 20,
-    zIndex: -1,
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-  },
-  buttonText: {
-    margin: 10,
-    flexDirection: 'row',
-    borderRadius: 38,
-    backgroundColor: '#54aaec',
-    justifyContent: 'center',
-    alignContent: 'center',
-    left: 75,
-  },
-  TextDesign: {
-    fontSize: 24,
-    padding: 10,
-    color: '#092547',
-    fontFamily: 'Poppins-ExtraBold',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 120,
+      backgroundColor: '#032844',
   },
   headerText: {
-    textAlign: 'center',
-    top: 60,
-    color: 'white',
-    fontSize: 30,
-    fontFamily: 'Poppins-Bold',
+      fontSize: 30,
+      color: 'white',
+      fontFamily: 'Poppins-Bold',
+      marginTop: 40,
   },
-
+  Button:{
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+      borderRadius: 38,
+      backgroundColor: '#54aaec',
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  TextDesign: {
+      fontSize: 20,
+      padding: 10,
+      color: '#082847',
+      fontFamily: 'Poppins-Bold',
+  },
   RegisterContainer: {
     backgroundColor: '#092547',
     marginHorizontal: 10,
-    borderRadius: 50,
+    borderRadius: 20,
     paddingVertical: 20,
     marginTop: 30,
     marginBottom: 10,
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
   },
   ButtonContainer: {
     marginTop: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#264769',
     marginHorizontal: 20,
     marginVertical: 20,
     borderRadius: 20,
@@ -194,29 +191,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     marginTop: 10,
     marginBottom: 10,
-    fontSize: 26,
+    fontSize: 20,
+    color: 'white',
     textAlign: 'center',
   },
-
   Roww: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     marginTop: 10,
+    height: 100,
     backgroundColor: '#cee7fa',
-    borderRadius: 30,
+    borderRadius: 25,
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    
-  },
-
-  calendar: {
-    margin: 8,
-    marginTop: 15,
-  },
-
   train: {
     margin: 8,
     marginTop: 15,
@@ -226,17 +213,13 @@ const styles = StyleSheet.create({
   Input: {
     backgroundColor: '#092547',
     paddingHorizontal: 15,
-    borderRadius: 30,
+    borderRadius: 20,
     fontFamily: 'Poppins-Regular',
-    height: 50,
-    flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 5,
-    padding: 7,
-
+    height: 60,
   },
   DropdownText: {
-    fontSize: 22,
+    fontSize: 18,
     color: 'white',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
@@ -244,7 +227,17 @@ const styles = StyleSheet.create({
   selectedOption: {
     backgroundColor: '#54aaec', // Change to your desired highlight color
   },
-
+  checkboxText: {
+    fontSize: 16,
+    color: 'black', // Adjust the color to your preference
+    fontFamily: 'Poppins-Bold',
+  },
+  checkboxContainer: {
+    backgroundColor: 'white', // Change the background color of the checkbox container
+    borderRadius: 25,
+    borderWidth: 2, // Optionally, remove border if not needed
+    marginTop: 20,
+  },
 });
 
 export default CreatePackage2;

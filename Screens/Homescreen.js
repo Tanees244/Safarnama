@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Vector } from '../assets';
-import Login from "./Login";
 import Discover from './Tourists/Discover';
 import { Video, ResizeMode } from 'expo-av';
 import * as Animatable from 'react-native-animatable';
