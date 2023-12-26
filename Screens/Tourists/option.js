@@ -45,13 +45,15 @@ const Option = ({ navigation }) => {
 
       <ScrollView contentContainerStyle={styles.container} >
 
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress={handleTransportRental}
-          >
-          <Text style={styles.buttonText}>Transport Rental Service</Text>
-          <Image style={styles.closeIcon} source={require('../../assets/plus.png')} />
-        </TouchableOpacity>
+        <View style={styles.ButtonContainer}>
+        <Text style={styles.buttonText}>Transport Rental Service</Text>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleTransportRental}
+            >
+            <Image style={styles.closeIcon} source={require('../../assets/plus.png')} />
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.header1}>Selected Transport : </Text>
         {selectedTransport && (
@@ -64,14 +66,17 @@ const Option = ({ navigation }) => {
             <Text style={styles.transportDescription}>{selectedTransport.description3}</Text>
           </View>
         )}
-     
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress={handleGuidelist}
-        >
-          <Text style={styles.buttonText}>Do You Want Guide?</Text>
-          <Image style={styles.closeIcon} source={require('../../assets/plus.png')} />
-        </TouchableOpacity>
+
+        <View style={styles.ButtonContainer}>
+        <Text style={styles.buttonText}>Do You Want Guide?</Text>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleGuidelist}
+          >
+            <Image style={styles.closeIcon} source={require('../../assets/plus.png')} />
+          </TouchableOpacity>
+          
+        </View>
 
         <Text style={styles.header1}>Selected Transport : </Text>
         {selectedGuide && (
@@ -172,14 +177,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#777',
   },
-  button: {
+  ButtonContainer:{
+    justifyContent:'space-evenly',
+    flexDirection: 'row',
     backgroundColor: '#071B26',
-    height: 50,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '90%',
+    height: 60,
     marginTop: 30,
-    flexDirection:'row',
+    borderRadius: 25,
+  },
+  button: {
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
@@ -199,6 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
   },
   closeIcon: {
+    marginTop: 3,
     width: 40,
     height: 40,
   },
