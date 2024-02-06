@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 30,
-    color: 'black',
+    color: 'white',
     fontFamily: 'Poppins-Bold',
     marginTop: 40,
   },
