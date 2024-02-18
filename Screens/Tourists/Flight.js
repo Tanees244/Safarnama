@@ -36,15 +36,6 @@ const Flight = () => {
         const response = await axios.get('http://192.168.100.12:8000/api/railway-packages/');
         const response2 = await axios.get('http://192.168.100.12:8000/api/airline-packages/');
         const response3 = await axios.get('http://192.168.100.12:8000/api/bus-packages/');
-        
-
-        console.log('API :', response2.data);
-        console.log('A:', response3.data);
-        console.log('train:', response.data);
-        
-        
-        
-
         setAirline(response2.data);
         setRailway(response.data);
         setBus(response3.data);
