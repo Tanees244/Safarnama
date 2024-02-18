@@ -1,401 +1,284 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList ,TextInput, Button, ScrollView, ImageBackground, Dimensions} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  TextInput,
+  Button,
+  ScrollView,
+  ImageBackground,
+  Dimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const Flight = () => {
-    const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 1;
-    const [tickets, setTickets] = useState([
-        {
-          id: '1',
-          arrivalPlace: 'Lahore',
-          destinationPlace: 'Islamabad',
-          departureTime: '12:00 PM',
-          arrivalTime: '02:00 PM',
-          ticketNumber: 'PK-123',
-          Duration: '8h 30m',
-          classType: 'Economy',
-          totalSeats: 0,
-          Departuredate: '8-12-2023',
-          Arrivaledate: '9-12-2023',
-          image: require('../../assets/serene.png'),
-          logo: require('../../assets/flight.png'),
-          type: 'Flight',
-        },
-        {
-          id: '2',
-          arrivalPlace: 'Karachi',
-          destinationPlace: 'Islamabad',
-          departureTime: '10:00 AM',
-          arrivalTime: '02:00 PM',
-          ticketNumber: 'PK-045',
-          Duration: '8h 30m',
-          flightType: 'Business',
-          totalSeats: 0,
-          Departuredate: '8-12-2023',
-          Arrivaledate: '9-12-2023',
-          image: require('../../assets/serene.png'),
-          logo: require('../../assets/flight.png'),
-          type: 'Flight',
-        },
-        // Add more flight ticket data as needed
-      ]);
-    
-      const [railwayTickets, setRailwayTickets] = useState([
-        {
-          id: '3',
-          arrivalPlace: 'Karachi',
-          destinationPlace: 'Islamabad',
-          departureTime: '08:00 AM',
-          arrivalTime: '10:00 AM',
-          ticketNumber: 'TN-123',
-          Duration: '2h 20m',
-          classType: 'Sleeper',
-          totalSeats: 0,
-          Departuredate: '8-12-2023',
-          Arrivaledate: '9-12-2023',
-          image: require('../../assets/greenline.png'),
-          logo: require('../../assets/whitetrain.png'),
-          type: 'Train',
-        },
-        {
-            id: '4',
-            arrivalPlace: 'Quetta',
-            destinationPlace: 'Islamabad',
-            departureTime: '08:00 AM',
-            arrivalTime: '10:00 AM',
-            ticketNumber: 'TN-123',
-            Duration: '2h 20m',
-            classType: 'Sleeper',
-            totalSeats: 0,
-            Departuredate: '8-12-2023',
-            Arrivaledate: '9-12-2023',
-            image: require('../../assets/greenline.png'),
-            logo: require('../../assets/whitetrain.png'),
-            type: 'Train',
-          },
-          {
-            id: '5',
-            arrivalPlace: 'lahore',
-            destinationPlace: 'Islamabad',
-            departureTime: '08:00 AM',
-            arrivalTime: '10:00 AM',
-            ticketNumber: 'TN-123',
-            Duration: '2h 20m',
-            classType: 'Sleeper',
-            totalSeats: 0,
-            Departuredate: '8-12-2023',
-            Arrivaledate: '9-12-2023',
-            image: require('../../assets/greenline.png'),
-            logo: require('../../assets/whitetrain.png'),
-            type: 'Train',
-          },
-        // Add more train ticket data as needed
-      ]);
-    
-      const [busTickets, setBusTickets] = useState([
-        {
-          id: '6',
-          arrivalPlace: 'Karachi',
-          destinationPlace: 'Islamabad',
-          departureTime: '09:00 AM',
-          arrivalTime: '01:00 PM',
-          ticketNumber: 'BX-567',
-          Duration: '4h 45m',
-          classType: 'AC',
-          totalSeats: 0,
-          Departuredate: '8-12-2023',
-          Arrivaledate: '9-12-2023',
-          image: require('../../assets/faisalmover.png'),
-          logo: require('../../assets/whitebus.png'),
-          type: 'Bus',
-        },
-        {
-            id: '7',
-            arrivalPlace: 'Hyderabad',
-            destinationPlace: 'Islamabad',
-            departureTime: '09:00 AM',
-            arrivalTime: '01:00 PM',
-            ticketNumber: 'BX-567',
-            Duration: '4h 45m',
-            classType: 'AC',
-            totalSeats: 0,
-            Departuredate: '6-12-2023',
-            Arrivaledate: '12-12-2023',
-            image: require('../../assets/faisalmover.png'),
-            logo: require('../../assets/whitebus.png'),
-            type: 'Bus',
-          },
-          {
-            id: '8',
-            arrivalPlace: 'Lahore',
-            destinationPlace: 'Islamabad',
-            departureTime: '09:00 AM',
-            arrivalTime: '01:00 PM',
-            ticketNumber: 'BX-567',
-            Duration: '4h 45m',
-            classType: 'AC',
-            totalSeats: 0,
-            Departuredate: '15-12-2023',
-            Arrivaledate: '20-12-2023',
-            image: require('../../assets/faisalmover.png'),
-            logo: require('../../assets/whitebus.png'),
-            type: 'Bus',
-          },
-        // Add more bus ticket data as needed
-      ]);
-    
-      const [filteredTickets, setFilteredTickets] = useState([]);
+  const screenWidth = Dimensions.get('window').width;
+  const containerWidth = screenWidth * 1;
+  const [airline, setAirline] = useState([]);
+  const [railway, setRailway] = useState([]);
+  const [bus, setBus] = useState([]);
+  const [filteredTickets, setFilteredTickets] = useState([]);
 
-      const [searchInput, setSearchInput] = useState({
-        destinationPlace: '',
-        arrivalPlace: '',
-        departureDate: '',
-        returnDate: '',
-      });
-    
-      const handleSearch = () => {
-        const lowerCaseDestinationPlace = searchInput.destinationPlace.toLowerCase();
-    const lowerCaseArrivalPlace = searchInput.arrivalPlace.toLowerCase();
-    const lowerCaseDepartureDate = searchInput.departureDate.toLowerCase();
+  const [searchInput, setSearchInput] = useState({
+    departure_city: '',
+    arrival_city: '',
+    departure_date: '',
+    returnDate: '',
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://192.168.100.12:8000/api/railway-packages/');
+        const response2 = await axios.get('http://192.168.100.12:8000/api/airline-packages/');
+        const response3 = await axios.get('http://192.168.100.12:8000/api/bus-packages/');
+        
+
+        console.log('API :', response2.data);
+        console.log('A:', response3.data);
+        console.log('train:', response.data);
+        
+        
+        
+
+        setAirline(response2.data);
+        setRailway(response.data);
+        setBus(response3.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleSearch = () => {
+    const lowerCaseDepartureCity = searchInput.departure_city.toLowerCase();
+    const lowerCaseArrivalCity = searchInput.arrival_city.toLowerCase();
+    const lowerCaseDepartureDate = searchInput.departure_date.toLowerCase();
     const lowerCaseReturnDate = searchInput.returnDate.toLowerCase();
 
-    // Filter tickets based on the non-empty search criteria
-    const filteredFlightTickets = tickets.filter(
+    const filteredRailwayTickets = railway.filter(
+      (ticket) =>
+        (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
+        (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
+        (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
+        (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
+    );
+    const filteredFlightTickets = airline.filter(
         (ticket) =>
-            (!lowerCaseDestinationPlace || ticket.destinationPlace.toLowerCase().includes(lowerCaseDestinationPlace)) &&
-            (!lowerCaseArrivalPlace || ticket.arrivalPlace.toLowerCase().includes(lowerCaseArrivalPlace)) &&
-            (!lowerCaseDepartureDate || ticket.Departuredate.toLowerCase().includes(lowerCaseDepartureDate)) &&
-            (!lowerCaseReturnDate || ticket.Arrivaledate.toLowerCase().includes(lowerCaseReturnDate))
-    );
-
-    const filteredRailwayTickets = railwayTickets.filter(
+          (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
+          (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
+          (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
+          (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
+      );
+      const filteredBusTickets = bus.filter(
         (ticket) =>
-            (!lowerCaseDestinationPlace || ticket.destinationPlace.toLowerCase().includes(lowerCaseDestinationPlace)) &&
-            (!lowerCaseArrivalPlace || ticket.arrivalPlace.toLowerCase().includes(lowerCaseArrivalPlace)) &&
-            (!lowerCaseDepartureDate || ticket.Departuredate.toLowerCase().includes(lowerCaseDepartureDate)) &&
-            (!lowerCaseReturnDate || ticket.Arrivaledate.toLowerCase().includes(lowerCaseReturnDate))
-    );
+          (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
+          (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
+          (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
+          (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
+      );
 
-    const filteredBusTickets = busTickets.filter(
-        (ticket) =>
-            (!lowerCaseDestinationPlace || ticket.destinationPlace.toLowerCase().includes(lowerCaseDestinationPlace)) &&
-            (!lowerCaseArrivalPlace || ticket.arrivalPlace.toLowerCase().includes(lowerCaseArrivalPlace)) &&
-            (!lowerCaseDepartureDate || ticket.Departuredate.toLowerCase().includes(lowerCaseDepartureDate)) &&
-            (!lowerCaseReturnDate || ticket.Arrivaledate.toLowerCase().includes(lowerCaseReturnDate))
-    );
-
-    // Update state with filtered results
-    setFilteredTickets([...filteredFlightTickets, ...filteredRailwayTickets, ...filteredBusTickets]);
-      };
-      
-      const handleClear = () => {
-        // Clear search input and filtered results
-        setSearchInput({
-          destinationPlace: '',
-          arrivalPlace: '',
-          departureDate: '',
-          returnDate: '',
-        });
-        setFilteredTickets([]);
-      };
-
-    const handleIncrement = (ticketId) => {
-        setTickets((prevTickets) =>
-            prevTickets.map((ticket) =>
-                ticket.id === ticketId ? { ...ticket, totalSeats: ticket.totalSeats + 1 } : ticket
-            )
-        );
-    };
-
-    const handleDecrement = (ticketId) => {
-        setTickets((prevTickets) =>
-            prevTickets.map((ticket) =>
-                ticket.id === ticketId && ticket.totalSeats > 0
-                    ? { ...ticket, totalSeats: ticket.totalSeats - 1 }
-                    : ticket
-            )
-        );
-    };
-
-    const renderTicketCard = ({ item }) => (
-        <View style={styles.Viewticket}>
-            <View style={styles.ticketCard}>
-                <Image source={item.image} style={styles.ticketImage} />
-                <View style={styles.dottedLine}>
-                    <View style={styles.circle1} />
-                    <Text>.................................................................................</Text>
-                    <View style={styles.circle2} />
-                </View>
-
-                <View style={styles.ticketDetails}>
-                    <View style={styles.CityContainer}>
-                        <Text style={styles.placeText}>{item.arrivalPlace}</Text>
-                        <Image style={styles.flightImage} source={item.logo} />
-                        <Text style={styles.placeText}>{item.destinationPlace}</Text>
-                    </View>
-
-
-                    <View style={styles.Time}>
-                        <View style={styles.DTime}>
-                            <Text style={styles.title2}>Departure Date : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.Departuredate}
-                            </Text>
-                            <Text style={styles.title2}>Departure Time : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.departureTime}
-                            </Text>
-                        </View>
-                        <View style={styles.ATime}>
-                            <Text style={styles.title2}>Arrival Date : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.Arrivaledate}
-                            </Text>
-                            <Text style={styles.title2}>Arrival Time : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.arrivalTime}
-                            </Text>
-                        </View>
-                    </View>
-              
-                    <View style={styles.Time1}>
-                        <View style={styles.DTime1}>
-                            <Text style={styles.title2}>Flight # : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.ticketNumber}
-                            </Text>
-                        </View>
-                        <View style={styles.DTime1}>
-                            <Text style={styles.title2}>Type  : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.classType}
-                            </Text>
-                        </View>
-                        <View style={styles.DTime1}>
-                            <Text style={styles.title2}>Duration  : </Text>
-                            <Text style={styles.ticketText2}>
-                                {item.Duration}
-                            </Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.seatsContainer}>
-                        <TouchableOpacity onPress={() => handleDecrement(item.id)}>
-                            <Ionicons name="remove-circle" size={24} color="black" style={styles.icon} />
-                        </TouchableOpacity>
-                        <Text style={styles.seatsText}>{item.totalSeats}</Text>
-                        <TouchableOpacity onPress={() => handleIncrement(item.id)}>
-                            <Ionicons name="add-circle" size={24} color="black" style={styles.icon} />
-                        </TouchableOpacity>
-                        <Text style={styles.labelText}>Seats</Text>
-                    </View>
-                </View>
-            </View>
-        </View>
-    );
-
-    return (
-        <ScrollView contentContainerStyle={styles.container} >
-          <View style={styles.header}>
-          <ImageBackground style={styles.Rectangle} source={require("../../assets/blackp.png")}>
-                <Text style={styles.headerText}> safarnama</Text>
-
-            </ImageBackground>
-            </View>
+      const combinedFilteredTickets = [
+        ...filteredFlightTickets.map((item) => ({ ...item, id: `flight_${item.airline_operations_id}` })),
+        ...filteredRailwayTickets.map((item) => ({ ...item, id: `train_${item.railway_package_id}` })),
+        ...filteredBusTickets.map((item) => ({ ...item, id: `bus_${item.bus_ticket_id}` })),
+      ];
     
-            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-          <View style={styles.searchInputs}>
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.input}
-            placeholder="Destination City"
-            value={searchInput.destinationPlace}
-            onChangeText={(text) => setSearchInput({ ...searchInput, destinationPlace: text })}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Arrival City"
-            value={searchInput.arrivalPlace}
-            onChangeText={(text) => setSearchInput({ ...searchInput, arrivalPlace: text })}
-          />
+      // Set the state with the combined filtered results
+      setFilteredTickets(combinedFilteredTickets);
+  };
+
+  const handleClear = () => {
+    setSearchInput({
+      departure_city: '',
+      arrival_city: '',
+      departure_date: '',
+      returnDate: '',
+    });
+    setFilteredTickets([]);
+  };
+
+  const handleIncrement = (ticketId) => {
+    setAirline((prevTickets) =>
+      prevTickets.map((ticket) =>
+        ticket.id === ticketId ? { ...ticket, totalSeats: ticket.totalSeats + 1 } : ticket
+      )
+    );
+  };
+
+  const handleDecrement = (ticketId) => {
+    setAirline((prevTickets) =>
+      prevTickets.map((ticket) =>
+        ticket.id === ticketId && ticket.totalSeats > 0
+          ? { ...ticket, totalSeats: ticket.totalSeats - 1 }
+          : ticket
+      )
+    );
+  };
+
+  const renderTicketCard = ({ item }) => (
+    <View style={styles.Viewticket}>
+      <View style={styles.ticketCard}>
+        <Image source={item.image} style={styles.ticketImage} />
+        <View style={styles.dottedLine}>
+          <View style={styles.circle1} />
+          <Text>.................................................................................</Text>
+          <View style={styles.circle2} />
         </View>
 
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.input}
-            placeholder="Departure Date"
-            value={searchInput.departureDate}
-            onChangeText={(text) => setSearchInput({ ...searchInput, departureDate: text })}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Return Date"
-            value={searchInput.returnDate}
-            onChangeText={(text) => setSearchInput({ ...searchInput, returnDate: text })}
-          />
+        <View style={styles.ticketDetails}>
+          <View style={styles.CityContainer}>
+            <Text style={styles.placeText}>{item.arrival_city}</Text>
+            <Image style={styles.flightImage} source={require('../../assets/whitetrain.png')} />
+            <Text style={styles.placeText}>{item.departure_city}</Text>
+          </View>
+
+          <View style={styles.Time}>
+            <View style={styles.DTime}>
+              <Text style={styles.title2}>Departure Date : </Text>
+              <Text style={styles.ticketText2}>{item.departure_date}</Text>
+              <Text style={styles.title2}>Departure Time : </Text>
+              <Text style={styles.ticketText2}>{item.departure_time}</Text>
+            </View>
+            <View style={styles.ATime}>
+              <Text style={styles.title2}>Arrival Date : </Text>
+              <Text style={styles.ticketText2}>{item.arrival_date}</Text>
+              <Text style={styles.title2}>Arrival Time : </Text>
+              <Text style={styles.ticketText2}>{item.arrival_time}</Text>
+            </View>
+          </View>
+
+          <View style={styles.Time1}>
+            <View style={styles.DTime1}>
+              <Text style={styles.title2}>Flight # : </Text>
+              <Text style={styles.ticketText2}>{item.train_number}</Text>
+            </View>
+            <View style={styles.DTime1}>
+              <Text style={styles.title2}>Type : </Text>
+              <Text style={styles.ticketText2}>{item.seat_type}</Text>
+            </View>
+            <View style={styles.DTime1}>
+              <Text style={styles.title2}>Duration : </Text>
+              <Text style={styles.ticketText2}>{item.journey_duration}</Text>
+            </View>
+          </View>
+
+          <View style={styles.seatsContainer}>
+            <TouchableOpacity onPress={() => handleDecrement(item.id)}>
+              <Ionicons name="remove-circle" size={24} color="black" style={styles.icon} />
+            </TouchableOpacity>
+            <Text style={styles.seatsText}>{item.totalSeats}</Text>
+            <TouchableOpacity onPress={() => handleIncrement(item.id)}>
+              <Ionicons name="add-circle" size={24} color="black" style={styles.icon} />
+            </TouchableOpacity>
+            <Text style={styles.labelText}>Seats</Text>
+          </View>
         </View>
-        <View style={styles.searchButtons}>
-        <TouchableOpacity onPress={handleSearch} style={styles.searchbutton}><Text style={styles.placeText}>Search</Text></TouchableOpacity>
-        <TouchableOpacity onPress={handleClear} style={styles.searchbutton}><Text style={styles.placeText}>Clear</Text></TouchableOpacity>
-
       </View>
-      </View>
+    </View>
+  );
 
-      {/* Search Buttons */}
-     
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.header}>
+        <ImageBackground style={styles.Rectangle} source={require("../../assets/blackp.png")}>
+          <Text style={styles.headerText}> safarnama</Text>
+        </ImageBackground>
+      </View>
+      <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+        <View style={styles.searchInputs}>
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.input}
+              placeholder="Departure City"
+              value={searchInput.departure_city}
+              onChangeText={(text) => setSearchInput({ ...searchInput, departure_city: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Arrival City"
+              value={searchInput.arrival_city}
+              onChangeText={(text) => setSearchInput({ ...searchInput, arrival_city: text })}
+            />
+          </View>
+
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.input}
+              placeholder="Departure Date"
+              value={searchInput.departure_date}
+              onChangeText={(text) => setSearchInput({ ...searchInput, departure_date: text })}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Return Date"
+              value={searchInput.returnDate}
+              onChangeText={(text) => setSearchInput({ ...searchInput, returnDate: text })}
+            />
+          </View>
+          <View style={styles.searchButtons}>
+            <TouchableOpacity onPress={handleSearch} style={styles.searchbutton}>
+              <Text style={styles.placeText}>Search</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleClear} style={styles.searchbutton}>
+              <Text style={styles.placeText}>Clear</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
 
       {/* Display Filtered Results */}
       {filteredTickets.length > 0 && (
         <View style={styles.filteredResults}>
-          <FlatList
-            data={filteredTickets}
-            keyExtractor={(item) => item.id}
-            renderItem={renderTicketCard}
-            contentContainerStyle={styles.ticketList}
-          />
+        <FlatList
+      horizontal
+      data={filteredTickets}
+      keyExtractor={(item) => item.id}
+      renderItem={renderTicketCard}
+      contentContainerStyle={styles.ticketList}
+    />
         </View>
       )}
 
-          {/* Flight Tickets */}
-          <View style={styles.ticketCategory}>
-            <Text style={styles.categoryHeading}>Flight Tickets</Text>
-            <FlatList
-              horizontal
-              data={tickets}
-              keyExtractor={(item) => item.id}
-              renderItem={renderTicketCard}
-              contentContainerStyle={styles.ticketList}
-            />
-          </View>
-    
-          {/* Railway Tickets */}
-          <View style={styles.ticketCategory}>
-            <Text style={styles.categoryHeading}>Railway Tickets</Text>
-            <FlatList
-              horizontal
-              data={railwayTickets}
-              keyExtractor={(item) => item.id}
-              renderItem={renderTicketCard}
-              contentContainerStyle={styles.ticketList}
-            />
-          </View>
-    
-          {/* Bus Tickets */}
-          <View style={styles.ticketCategory}>
-            <Text style={styles.categoryHeading}>Bus Tickets</Text>
-            <FlatList
-              horizontal
-              data={busTickets}
-              keyExtractor={(item) => item.id}
-              renderItem={renderTicketCard}
-              contentContainerStyle={styles.ticketList}
-            />
-          </View>
-        </ScrollView>
-      );
-    };
+      {/* Flight Tickets */}
+      <View style={styles.ticketCategory}>
+        <Text style={styles.categoryHeading}>Flight Tickets</Text>
+        <FlatList
+          horizontal
+          data={airline}
+          keyExtractor={(item) => item.airline_operations_id}
+          renderItem={renderTicketCard}
+          contentContainerStyle={styles.ticketList}
+        />
+      </View>
+      <View style={styles.ticketCategory}>
+        <Text style={styles.categoryHeading}>Railway Tickets</Text>
+        <FlatList
+          horizontal
+          data={railway}
+          keyExtractor={(item) => item.railway_package_id}
+          renderItem={renderTicketCard}
+          contentContainerStyle={styles.ticketList}
+        />
+      </View>
+      <View style={styles.ticketCategory}>
+        <Text style={styles.categoryHeading}>Bus Tickets</Text>
+        <FlatList
+          horizontal
+          data={bus}
+          keyExtractor={(item) => item.bus_ticket_id}
+          renderItem={renderTicketCard}
+          contentContainerStyle={styles.ticketList}
+        />
+      </View>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -469,7 +352,7 @@ const styles = StyleSheet.create({
     },
     ticketText2: {
         fontSize: 14,
-        color: '#fff',
+        color: 'white',
         fontFamily: 'Poppins-SemiBold',
         marginBottom: 10,
     },
