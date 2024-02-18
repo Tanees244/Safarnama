@@ -167,6 +167,35 @@ const Flight = () => {
               <Text style={styles.ticketText2}>{item.journey_duration}</Text>
             </View>
           </View>
+          <View style={styles.Time}>
+            <View style={styles.DTime}>
+              <Text style={styles.title2}>Departure Date : </Text>
+              <Text style={styles.ticketText2}>{item.departure_date}</Text>
+              <Text style={styles.title2}>Departure Time : </Text>
+              <Text style={styles.ticketText2}>{item.departure_time}</Text>
+            </View>
+            <View style={styles.ATime}>
+              <Text style={styles.title2}>Arrival Date : </Text>
+              <Text style={styles.ticketText2}>{item.arrival_date}</Text>
+              <Text style={styles.title2}>Arrival Time : </Text>
+              <Text style={styles.ticketText2}>{item.arrival_time}</Text>
+            </View>
+          </View>
+
+          <View style={styles.Time1}>
+            <View style={styles.DTime1}>
+              <Text style={styles.title2}>Flight # : </Text>
+              <Text style={styles.ticketText2}>{item.train_number}</Text>
+            </View>
+            <View style={styles.DTime1}>
+              <Text style={styles.title2}>Type : </Text>
+              <Text style={styles.ticketText2}>{item.seat_type}</Text>
+            </View>
+            <View style={styles.DTime1}>
+              <Text style={styles.title2}>Duration : </Text>
+              <Text style={styles.ticketText2}>{item.journey_duration}</Text>
+            </View>
+          </View>
 
           <View style={styles.seatsContainer}>
             <TouchableOpacity onPress={() => handleDecrement(item.id)}>
@@ -281,68 +310,67 @@ const Flight = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexGrow:1,
-        backgroundColor: 'white',
-    },
-    Rectangle: {
-        backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
-        borderRadius: 80,
-        height: 320,
-        top: -10,
-        width: '100%',
-        position: 'absolute',
-        flex: 1,
-        alignItems: 'center',
-      
-    },
-    ProfileContainer: {
-        backgroundColor: 'white',
-        borderRadius: 28,
-        marginTop: 100,
-        height: 100,
-    },
-    header: {
-        height: 140,
-        backgroundColor: '#032844',
-        shadowColor: 'black',
-        elevation: 20,
-        zIndex: -1,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
-    },
-    headerText: {
-        textAlign: 'center',
-        top: 60,
-        color: 'white',
-        fontSize: 30,
-        fontFamily: 'Poppins-Bold',
-    },
-    Time: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        padding: 10,
-    },
-    Time1: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
-    },
-    title: {
-        fontFamily: 'Poppins-Bold',
-        color: '#73777B',
-        fontSize: 16,
-    },
-    ticketTitle: {
-        fontSize: 16,
-        color: 'white',
-        fontFamily: 'Poppins-Bold',
-    },
-    title2: {
-        fontFamily: 'Poppins-Bold',
-        color: 'white',
-        fontSize: 10,
-    },
+  container: {
+    flexGrow: 1,
+    backgroundColor: "white",
+  },
+  Rectangle: {
+    backgroundColor: "linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))",
+    borderRadius: 80,
+    height: 320,
+    top: -10,
+    width: "100%",
+    position: "absolute",
+    flex: 1,
+    alignItems: "center",
+  },
+  ProfileContainer: {
+    backgroundColor: "white",
+    borderRadius: 28,
+    marginTop: 100,
+    height: 100,
+  },
+  header: {
+    height: 140,
+    backgroundColor: "#032844",
+    shadowColor: "black",
+    elevation: 20,
+    zIndex: -1,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  },
+  headerText: {
+    textAlign: "center",
+    top: 60,
+    color: "white",
+    fontSize: 30,
+    fontFamily: "Poppins-Bold",
+  },
+  Time: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    padding: 10,
+  },
+  Time1: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  title: {
+    fontFamily: "Poppins-Bold",
+    color: "#73777B",
+    fontSize: 16,
+  },
+  ticketTitle: {
+    fontSize: 16,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+  },
+  title2: {
+    fontFamily: "Poppins-Bold",
+    color: "white",
+    fontSize: 10,
+  },
 
     ticketText: {
         fontSize: 18,
@@ -352,7 +380,7 @@ const styles = StyleSheet.create({
     },
     ticketText2: {
         fontSize: 14,
-        color: 'white',
+        color: '#fff',
         fontFamily: 'Poppins-SemiBold',
         marginBottom: 10,
     },
