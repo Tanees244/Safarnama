@@ -158,35 +158,6 @@ const Flight = () => {
               <Text style={styles.ticketText2}>{item.journey_duration}</Text>
             </View>
           </View>
-          <View style={styles.Time}>
-            <View style={styles.DTime}>
-              <Text style={styles.title2}>Departure Date : </Text>
-              <Text style={styles.ticketText2}>{item.departure_date}</Text>
-              <Text style={styles.title2}>Departure Time : </Text>
-              <Text style={styles.ticketText2}>{item.departure_time}</Text>
-            </View>
-            <View style={styles.ATime}>
-              <Text style={styles.title2}>Arrival Date : </Text>
-              <Text style={styles.ticketText2}>{item.arrival_date}</Text>
-              <Text style={styles.title2}>Arrival Time : </Text>
-              <Text style={styles.ticketText2}>{item.arrival_time}</Text>
-            </View>
-          </View>
-
-          <View style={styles.Time1}>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Flight # : </Text>
-              <Text style={styles.ticketText2}>{item.train_number}</Text>
-            </View>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Type : </Text>
-              <Text style={styles.ticketText2}>{item.seat_type}</Text>
-            </View>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Duration : </Text>
-              <Text style={styles.ticketText2}>{item.journey_duration}</Text>
-            </View>
-          </View>
 
           <View style={styles.seatsContainer}>
             <TouchableOpacity onPress={() => handleDecrement(item.id)}>
