@@ -60,28 +60,28 @@ const Flight = () => {
         (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
     );
     const filteredFlightTickets = airline.filter(
-        (ticket) =>
-          (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
-          (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
-          (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
-          (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
-      );
-      const filteredBusTickets = bus.filter(
-        (ticket) =>
-          (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
-          (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
-          (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
-          (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
-      );
+      (ticket) =>
+        (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
+        (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
+        (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
+        (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
+    );
+    const filteredBusTickets = bus.filter(
+      (ticket) =>
+        (!lowerCaseDepartureCity || ticket.departure_city.toLowerCase().includes(lowerCaseDepartureCity)) &&
+        (!lowerCaseArrivalCity || ticket.arrival_city.toLowerCase().includes(lowerCaseArrivalCity)) &&
+        (!lowerCaseDepartureDate || ticket.departure_date.toLowerCase().includes(lowerCaseDepartureDate)) &&
+        (!lowerCaseReturnDate || ticket.arrival_date.toLowerCase().includes(lowerCaseReturnDate))
+    );
 
-      const combinedFilteredTickets = [
-        ...filteredFlightTickets.map((item) => ({ ...item, id: `flight_${item.airline_operations_id}` })),
-        ...filteredRailwayTickets.map((item) => ({ ...item, id: `train_${item.railway_package_id}` })),
-        ...filteredBusTickets.map((item) => ({ ...item, id: `bus_${item.bus_ticket_id}` })),
-      ];
-    
-      // Set the state with the combined filtered results
-      setFilteredTickets(combinedFilteredTickets);
+    const combinedFilteredTickets = [
+      ...filteredFlightTickets.map((item) => ({ ...item, id: `flight_${item.airline_operations_id}` })),
+      ...filteredRailwayTickets.map((item) => ({ ...item, id: `train_${item.railway_package_id}` })),
+      ...filteredBusTickets.map((item) => ({ ...item, id: `bus_${item.bus_ticket_id}` })),
+    ];
+
+    // Set the state with the combined filtered results
+    setFilteredTickets(combinedFilteredTickets);
   };
 
   const handleClear = () => {
@@ -255,13 +255,13 @@ const Flight = () => {
       {/* Display Filtered Results */}
       {filteredTickets.length > 0 && (
         <View style={styles.filteredResults}>
-        <FlatList
-      horizontal
-      data={filteredTickets}
-      keyExtractor={(item) => item.id}
-      renderItem={renderTicketCard}
-      contentContainerStyle={styles.ticketList}
-    />
+          <FlatList
+            horizontal
+            data={filteredTickets}
+            keyExtractor={(item) => item.id}
+            renderItem={renderTicketCard}
+            contentContainerStyle={styles.ticketList}
+          />
         </View>
       )}
 
@@ -363,233 +363,233 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 
-    ticketText: {
-        fontSize: 18,
-        color: '#fff',
-        fontFamily: 'Poppins-Bold',
-        marginBottom: 10,
-    },
-    ticketText2: {
-        fontSize: 14,
-        color: '#fff',
-        fontFamily: 'Poppins-SemiBold',
-        marginBottom: 10,
-    },
-    dottedLine: {
-        borderBottomWidth: 3,
-        borderBottomColor: 'white',
-        borderStyle: 'dashed',
-        marginBottom: 50,
-    },
-    circle1: {
-        width: 25,
-        height: 25,
-        borderRadius: 50,
-        backgroundColor: 'white',
-        position: 'absolute',
-        top: 10,
-        bottom: 10,
-        left: -30,
-    },
-    circle2: {
-        width: 25,
-        height: 25,
-        borderRadius: 50,
-        backgroundColor: 'white',
-        position: 'absolute',
-        top: 10,
-        bottom: 10,
-        right: -30,
-    },
-    ticketList: {
-        padding: 10,
-    },
-    Viewticket: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    ticketCard: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-        marginBottom: 10,
-        backgroundColor: 'black',
-        overflow: 'hidden',
-        width: '90%',
-        height:550,
-    },
-    ATime: {
-        borderColor: 'white',
-        borderWidth: 3,
-        borderRadius: 25,
-        padding: 10,
-        width: 115,
-    },
-    DTime: {
-        borderColor: 'white',
-        borderWidth: 3,
-        borderRadius: 25,
-        marginRight: 0,
-        padding: 10,
-        width: 115,
-    },
-    DTime1: {
-        borderColor: 'white',
-        borderWidth: 3,
-        borderRadius: 25,
-        marginRight: 0,
-        padding: 10,
-        width: 95,
-        marginRight: 10,
-    },
-    ticketImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 10,
-    },
-    ticketDetails: {
-        flex: 1,
-        marginLeft: 10,
-    },
-    placeText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: 'white',
-        textAlign:'center',
-        top:10,
-    },
-    CityContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
-    flightImage: {
-        width: 50,
-        height: 50,
-    },
-    timeText: {
-        fontSize: 14,
-        color: 'white',
-    },
-    routeIcon: {
-        alignSelf: 'center',
-        marginVertical: 5,
-    },
-    flightDetails: {
-        fontSize: 14,
-        color: 'white',
-    },
-    flightTypeContainer: {
-        backgroundColor: '#3498db',
-        padding: 5,
-        borderRadius: 5,
-        marginTop: 5,
-        alignSelf: 'flex-start',
-    },
-    flightTypeText: {
-        fontSize: 12,
-        color: 'white',
-    },
-    flightInfoContainer: {
-        flexDirection: 'row',
-        marginTop: 5,
-    },
-    infoBox: {
-        flex: 1,
-        backgroundColor: '#3498db',
-        padding: 10,
-        borderRadius: 5,
-        marginHorizontal: 5,
-    },
-    infoBoxLabel: {
-        fontSize: 12,
-        color: 'white',
-    },
-    infoBoxValue: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: 'white',
-        marginTop: 5,
-    },
-    dateText: {
-        fontSize: 14,
-        color: 'white',
-        marginTop: 5,
-    },
-    seatsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent:'center',
-        margin: 10,
-        borderWidth:3,
-        borderColor:'white',
-        borderRadius:50,
-        width:150,
-        height:50,
-        alignSelf:'center',
-    },
-    icon: {
-        marginHorizontal: 5,
-        color: 'white',
-    },
-    seatsText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'white',
-    },
-    labelText: {
-        marginLeft: 5,
-        color: 'white',
-    },
-    searchBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 10,
-        backgroundColor: '#f2f2f2',
-      },
-      searchInputs: {
-        paddingHorizontal: 10,
-        margin:20,
-        backgroundColor:'white',
-        top:-120,
-        borderRadius:40,
-        padding:20,
-      },
-      inputRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-      },
-      input: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 8,
-        marginRight: 10,
-      },
-      searchButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingHorizontal: 10,
-      },
-      searchbutton:{
-        backgroundColor:'black',
-        width:130,
-        height:50,
-      },
-      filteredResults: {
-        marginTop: 10,
-      },
-    
-      ticketCategory: {
-        marginVertical: 10,
-      },
-      categoryHeading: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        marginLeft: 10,
-      },
+  ticketText: {
+    fontSize: 18,
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+  },
+  ticketText2: {
+    fontSize: 14,
+    color: '#fff',
+    fontFamily: 'Poppins-SemiBold',
+    marginBottom: 10,
+  },
+  dottedLine: {
+    borderBottomWidth: 3,
+    borderBottomColor: 'white',
+    borderStyle: 'dashed',
+    marginBottom: 50,
+  },
+  circle1: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: 10,
+    bottom: 10,
+    left: -30,
+  },
+  circle2: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: 10,
+    bottom: 10,
+    right: -30,
+  },
+  ticketList: {
+    padding: 10,
+  },
+  Viewticket: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ticketCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: 'black',
+    overflow: 'hidden',
+    width: '90%',
+    height: 550,
+  },
+  ATime: {
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    padding: 10,
+    width: 115,
+  },
+  DTime: {
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    marginRight: 0,
+    padding: 10,
+    width: 115,
+  },
+  DTime1: {
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    marginRight: 0,
+    padding: 10,
+    width: 95,
+    marginRight: 10,
+  },
+  ticketImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+  },
+  ticketDetails: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  placeText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    top: 10,
+  },
+  CityContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  flightImage: {
+    width: 50,
+    height: 50,
+  },
+  timeText: {
+    fontSize: 14,
+    color: 'white',
+  },
+  routeIcon: {
+    alignSelf: 'center',
+    marginVertical: 5,
+  },
+  flightDetails: {
+    fontSize: 14,
+    color: 'white',
+  },
+  flightTypeContainer: {
+    backgroundColor: '#3498db',
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 5,
+    alignSelf: 'flex-start',
+  },
+  flightTypeText: {
+    fontSize: 12,
+    color: 'white',
+  },
+  flightInfoContainer: {
+    flexDirection: 'row',
+    marginTop: 5,
+  },
+  infoBox: {
+    flex: 1,
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  infoBoxLabel: {
+    fontSize: 12,
+    color: 'white',
+  },
+  infoBoxValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'white',
+    marginTop: 5,
+  },
+  dateText: {
+    fontSize: 14,
+    color: 'white',
+    marginTop: 5,
+  },
+  seatsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10,
+    borderWidth: 3,
+    borderColor: 'white',
+    borderRadius: 50,
+    width: 150,
+    height: 50,
+    alignSelf: 'center',
+  },
+  icon: {
+    marginHorizontal: 5,
+    color: 'white',
+  },
+  seatsText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  labelText: {
+    marginLeft: 5,
+    color: 'white',
+  },
+  searchBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+  },
+  searchInputs: {
+    paddingHorizontal: 10,
+    margin: 20,
+    backgroundColor: 'white',
+    top: -120,
+    borderRadius: 40,
+    padding: 20,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 8,
+    marginRight: 10,
+  },
+  searchButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 10,
+  },
+  searchbutton: {
+    backgroundColor: 'black',
+    width: 130,
+    height: 50,
+  },
+  filteredResults: {
+    marginTop: 10,
+  },
+
+  ticketCategory: {
+    marginVertical: 10,
+  },
+  categoryHeading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginLeft: 10,
+  },
 });
 
 export default Flight;
