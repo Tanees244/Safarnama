@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, Dimensions, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Vector } from '../assets';
-import { FIREBASE_AUTH, auth } from '../firebase';
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Login = () => {
@@ -16,8 +14,6 @@ const Login = () => {
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.82;
 
-  const auth = FIREBASE_AUTH;
-
   const navigation = useNavigation();
 
   const handleRegister = () => {
@@ -28,46 +24,41 @@ const Login = () => {
     setPasswordVisible(!passwordVisible); // Toggle password visibility state
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        // Check if the user's ID is your special admin ID
-        if (user.uid === 'I7Qez7HAXhYIADFusuhrMEdJUq63') {
-          navigation.navigate("AdminDashboard"); // Redirect to the Admin Dashboard
-        } else {
-          navigation.navigate("Category"); // Redirect to the regular Category screen
-        }
-      }
-    });
-
-    return unsubscribe;
-  }, []);
-
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
+      const response = await fetch('http://192.168.100.18:8000/api/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }), // Send user's email and password
+      });
+  
+      // Check if the request was successful
+      if (response.ok) {
+        // If successful, parse the response JSON
+        const data = await response.json();
+        
+        // Check the response from the backend
+        if (data.success) {
+          // User authentication successful, navigate to the next screen
+          navigation.navigate("Category");
+        } else {
+          // Authentication failed, display error message
+          alert('Sign in failed: ' + data.message);
+        }
+      } else {
+        console.log(response.data);
+        // Request failed, display error message
+        alert('Sign in failed: An party occurred.');
+      }
     } catch (error) {
+      // Handle any errors that occur during the request
       console.error(error);
       alert('Sign in failed: ' + error.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const ResetPassword = () => {
-    if (email != null) {
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert('Password reset mail has been sent successfully!');
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          alert(errorMessage);
-        });
-    } else {
-      alert('Enter a valid email');
     }
   };
   
@@ -114,13 +105,13 @@ const Login = () => {
                         </View>
                     </View>
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       activeOpacity={0.5} 
                       style={styles.PasswordButton}
                       onPress={ResetPassword}
                       >
                       <Text style={styles.PasswordText}>Forgot Password?</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity
                       activeOpacity={0.5} 
