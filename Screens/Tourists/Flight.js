@@ -147,7 +147,7 @@ const Flight = () => {
           <View style={styles.Time1}>
             <View style={styles.DTime1}>
               <Text style={styles.title2}>Flight # : </Text>
-              <Text style={styles.ticketText2}>{item.train_number}</Text>
+              <Text style={styles.ticketText2}>{item.train_number || item.bus_number || item.flight_number}</Text>
             </View>
             <View style={styles.DTime1}>
               <Text style={styles.title2}>Type : </Text>
@@ -155,7 +155,7 @@ const Flight = () => {
             </View>
             <View style={styles.DTime1}>
               <Text style={styles.title2}>Duration : </Text>
-              <Text style={styles.ticketText2}>{item.journey_duration}</Text>
+              <Text style={styles.ticketText2}>{item.journey_duration || item.flight_duration}</Text>
             </View>
           </View>
 
