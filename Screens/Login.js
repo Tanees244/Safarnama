@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, Dimensions, TextInput, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, Dimensions, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Vector } from '../assets';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Login = () => {
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false); 
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const screenWidth = Dimensions.get('window').width;
@@ -21,118 +19,93 @@ const Login = () => {
   };
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible); // Toggle password visibility state
+    setPasswordVisible(!passwordVisible);
   };
 
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://192.168.100.18:8000/api/users/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }), // Send user's email and password
+      const response = await fetch('http://192.168.100.12:8000/api/users/', {
+        method: 'GET',
       });
-  
-      // Check if the request was successful
+
       if (response.ok) {
-        // If successful, parse the response JSON
         const data = await response.json();
-        
-        // Check the response from the backend
-        if (data.success) {
-          // User authentication successful, navigate to the next screen
+        const user = data.find(user => user.email === email && user.password === password);
+        if (user) {
           navigation.navigate("Category");
         } else {
-          // Authentication failed, display error message
-          alert('Sign in failed: ' + data.message);
+          alert('Sign in failed: Invalid email or password');
         }
       } else {
-        console.log(response.data);
-        // Request failed, display error message
-        alert('Sign in failed: An party occurred.');
+        alert('Sign in failed: An error occurred.');
       }
     } catch (error) {
-      // Handle any errors that occur during the request
       console.error(error);
       alert('Sign in failed: ' + error.message);
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Use 'height' for Android
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ImageBackground style={styles.backgroundImage} source={require("../assets/p11.jpg")} >
         <View style={styles.contentContainer}>
           <View style={styles.Textcontainer}>
-
-            <Image style={styles.vector} source={Vector}/>
             <Text style={styles.text}>Safarnama</Text>
-                  <View style={[styles.ButtonContainer, {width: containerWidth}]}>
-             
-                    <View style={styles.InputContainer}>
-                      <TextInput
-                        placeholder='Email'
-                        value={email}
-                        onChangeText={text => setEmail(text)}
-                        style={styles.Input}
-                        />
-                        <View style={styles.PasswordInputContainer}>
-                          <TextInput
-                            placeholder='Password'
-                            value={password}
-                            onChangeText={text => setPassword(text)}
-                            secureTextEntry={!passwordVisible} // Conditionally set secureTextEntry
-                            style={styles.PasswordInput}
-                          />
-                          <TouchableOpacity
-                            activeOpacity={0.5}
-                            style={styles.PasswordVisibilityButton}
-                            onPress={togglePasswordVisibility}
-                          >
-                            <MaterialIcons
-                              name={passwordVisible ? 'visibility' : 'visibility-off'}
-                              size={24}
-                              color='black'
-                            />
-                          </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {/* <TouchableOpacity
-                      activeOpacity={0.5} 
-                      style={styles.PasswordButton}
-                      onPress={ResetPassword}
-                      >
-                      <Text style={styles.PasswordText}>Forgot Password?</Text>
-                    </TouchableOpacity> */}
-
-                    <TouchableOpacity
-                      activeOpacity={0.5} 
-                      style={styles.LoginButton}
-                      onPress={handleSignIn}
-                      >
-                      <Text style={styles.LoginText}>Login</Text>
-                    </TouchableOpacity>
-
-                    <View style={styles.Signup}>
-                    <Text style={styles.text2}>DONT HAVE AN ACCOUNT</Text>
-                      <TouchableOpacity
-                      activeOpacity={0.5}
-                      onPress={handleRegister}
-                      >
-                        <Text style={styles.boldText}> SIGN UP !</Text>
-                      </TouchableOpacity>
-                  </View>
+            <View style={[styles.ButtonContainer, { width: containerWidth }]}>
+              <View style={styles.InputContainer}>
+                <TextInput
+                  placeholder='Email'
+                  value={email}
+                  onChangeText={text => setEmail(text)}
+                  style={styles.Input}
+                />
+                <View style={styles.PasswordInputContainer}>
+                  <TextInput
+                    placeholder='Password'
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry={!passwordVisible}
+                    style={styles.PasswordInput}
+                  />
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={styles.PasswordVisibilityButton}
+                    onPress={togglePasswordVisibility}
+                  >
+                    <MaterialIcons
+                      name={passwordVisible ? 'visibility' : 'visibility-off'}
+                      size={24}
+                      color='black'
+                    />
+                  </TouchableOpacity>
                 </View>
-             
+              </View>
 
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={styles.LoginButton}
+                onPress={handleSignIn}
+                disabled={loading}
+              >
+                <Text style={styles.LoginText}>{loading ? 'Loading...' : 'Login'}</Text>
+              </TouchableOpacity>
+
+              <View style={styles.Signup}>
+                <Text style={styles.text2}>Don't have an account</Text>
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={handleRegister}
+                >
+                  <Text style={styles.boldText}> Sign Up!</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
       </ImageBackground>
@@ -153,15 +126,10 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
   },
- 
   Textcontainer: {
     flex: 1,
     top: 140,
     alignItems: 'center',
-  },
-  vector:{
-    top: 20,
-    right: 150,
   },
   text: {
     fontSize: 45,
@@ -189,20 +157,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'Poppins-SemiBold',
     backgroundColor: 'transparent',
-    borderColor:'white',
-    borderWidth:1,
+    borderColor: 'white',
+    borderWidth: 1,
   },
-  PasswordButton: {
-    alignItems: 'stretch',
-    marginLeft: 160,
+  PasswordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  PasswordInput: {
+    paddingHorizontal: 15,
+    paddingVertical: 16,
+    borderRadius: 10,
     marginTop: 10,
-    borderBottomWidth: 2,
-    borderColor: 'black',
-  },
-  PasswordText: {
-    fontStyle: 'italic',
-    fontSize: 12,
     fontFamily: 'Poppins-SemiBold',
+    flex: 1,
+    backgroundColor: 'transparent',
+    borderColor: 'white',
+    borderWidth: 1,
+  },
+  PasswordVisibilityButton: {
+    padding: 10,
   },
   LoginButton: {
     justifyContent: 'center',
@@ -233,24 +207,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: 'white',
     bottom: 2,
-  },
-  PasswordInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  PasswordInput: {
-    paddingHorizontal: 15,
-    paddingVertical: 16,
-    borderRadius: 10,
-    marginTop: 10,
-    fontFamily: 'Poppins-SemiBold',
-    flex: 1, // Fill available space in the row
-    backgroundColor: 'transparent',
-    borderColor:'white',
-    borderWidth:1,
-  },
-  PasswordVisibilityButton: {
-    padding: 10,
   },
 });
 
