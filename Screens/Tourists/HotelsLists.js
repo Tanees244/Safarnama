@@ -117,6 +117,7 @@ const HotelsLists = () => {
 
   const fetchData = async () => {
     try {
+      const response = await axios.get("http://192.168.100.12:8000/api/hotel-details/");
       const response = await axios.get("http://192.168.10.18:8000/api/hotel-details/");
       setHotels(response.data);
     } catch (error) {
