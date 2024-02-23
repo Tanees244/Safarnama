@@ -210,6 +210,29 @@ const Discover = () => {
   const PackageWidth1 = screenWidth * 0.72;
   const buttonWidth = containerWidth * 0.22;
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Function to handle the profile button press
+  const handleProfilePress = () => {
+    if (isAuthenticated) {
+      // If user is logged in, navigate to their profile
+      navigation.navigate("TouristProfile");
+    } else {
+      // If user is not logged in, show an alert to sign in
+      Alert.alert(
+        "Sign In Required",
+        "Please sign in to view your profile.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          { text: "Sign In", onPress: () => navigation.navigate("Login") },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
 
   const scaleValue = new Animated.Value(0);
 
@@ -267,7 +290,7 @@ const Discover = () => {
     if (menuItem === "Home") {
       navigation.navigate("Discover");
     } else if (menuItem === "Profile") {
-      navigation.navigate("TouristProfile");
+      navigation.navigate(handleProfilePress);
     } else if (menuItem === "Booking") {
       navigation.navigate("CreatePackage");
     } else if (menuItem === "Itinerary") {

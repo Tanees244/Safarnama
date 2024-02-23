@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,7 +20,15 @@ const TouristProfile = () => {
                 } else {
                     // Handle token absence
                     console.log('Token not found. Redirecting to login...');
-                    navigation.navigate('Login');
+                    Alert.alert(
+                        'Sign In Required',
+                        'Please sign in to view your profile.',
+                        [
+                            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                            { text: 'Sign In', onPress: () => navigation.navigate('Login') }, // Navigate to sign in screen
+                        ],
+                        { cancelable: false }
+                    );
                 }
             })
             .catch(error => {
@@ -31,7 +39,7 @@ const TouristProfile = () => {
     const fetchUserProfile = async (token) => {
         // Fetch user profile using the token
         try {
-            const response = await fetch('http://192.168.0.103:8000/api/tourist-details', {
+            const response = await fetch('http://192.168.100.18:8000/api/tourist-details/', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -79,8 +87,8 @@ const TouristProfile = () => {
                         source={require("../../assets/ellipse.png")}
                     />
                     <View style={styles.buttonsContainer}>
-                        <Text style={styles.Name}>{user.name}</Text>
-                        <Text style={styles.Id}>ID : {user.id}</Text>
+                        <Text style={styles.Name}>{user?.name}</Text>
+                        <Text style={styles.Id}>ID : {user?.tourist_details_id}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleHome} activeOpacity={0.5}>
@@ -95,7 +103,7 @@ const TouristProfile = () => {
 
                 <View style={[styles.textBox, { width: containerWidth }]}>
                     <Text style={{ color: 'white', fontFamily: 'Poppins-Regular' }}>
-                        {tourist.bio}
+                        {/* {user?.bio} */}
                     </Text>
                 </View>
             </ScrollView>

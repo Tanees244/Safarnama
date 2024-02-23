@@ -75,7 +75,7 @@ const Stack = createNativeStackNavigator();
 const checkAuthToken = async () => {
   try {
     const token = await AsyncStorage.getItem('authToken');
-    return token ? 'Discover' : 'Home';
+    return token ? 'GuideHome' : 'Home';
   } catch (error) {
     console.error('Error retrieving auth token:', error);
     return 'HomeScreen'; // Default to Home screen in case of error
