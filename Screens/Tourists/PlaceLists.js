@@ -89,8 +89,6 @@ const PlaceLists = () => {
   };
 
   const handleMenuItemPress = (menuItem) => {
-    // Handle navigation based on the selected menu item
-    // For example:
     if (menuItem === "Home") {
       navigation.navigate("Discover");
     } else if (menuItem === "Profile") {
@@ -100,7 +98,6 @@ const PlaceLists = () => {
     } else if (menuItem === "Itinerary") {
       navigation.navigate("Itinerary");
     }
-    // Collapse the menu after selection
     toggleMenu();
   };  
 
@@ -111,13 +108,12 @@ const PlaceLists = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    // Fetch data from backend when component mounts
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.100.18:8000/api/places/"); 
+      const response = await axios.get("http://192.168.0.103:8000/api/places/"); 
       setPlaces(response.data); 
     } catch (error) {
       console.error("Error fetching data:", error);

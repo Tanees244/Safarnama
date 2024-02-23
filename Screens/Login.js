@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,25 +34,35 @@ const Login = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const storeToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('authToken', token);
+      console.log('Token stored successfully:', token);
+    } catch (error) {
+      console.error('Error storing token:', error);
+    }
+  };
+
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.100.18:8000/api/users/", {
+      const response = await fetch("http://192.168.0.103:8000/api/users/", {
         method: "GET",
       });
-
+  
       if (response.ok) {
         const data = await response.json();
+  
         const user = data.find(
           (user) => user.email === email && user.password === password
         );
+      
         if (user) {
-          if (user.token) {
-            // Save authentication token to AsyncStorage
-            await AsyncStorage.setItem("authToken", user.token);
+          if (user && user.token) {
+            // Store JWT token
+            await storeToken(user.token);
           } else {
-            // If token is not provided by the server, remove the existing one
-            await AsyncStorage.removeItem("authToken");
+            console.error("Token is missing in user object:", user);
           }
           // Navigate user to appropriate screen based on user type
           switch (user.user_type) {
@@ -78,7 +88,8 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
+  
 
   return (
     <KeyboardAvoidingView
