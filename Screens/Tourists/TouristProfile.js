@@ -1,12 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import homescreen from '../../Screens/Homescreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TouristProfile = () => {
     const screenWidth = Dimensions.get('window').width;
     const containerWidth = screenWidth * 0.8;
     const navigation = useNavigation();
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        // Retrieve user token from AsyncStorage
+        AsyncStorage.getItem('authToken')
+            .then(token => {
+                // If token exists, fetch user details
+                if (token) {
+                    fetchUserProfile(token);
+                } else {
+                    // Handle token absence
+                    console.log('Token not found. Redirecting to login...');
+                    navigation.navigate('Login');
+                }
+            })
+            .catch(error => {
+                console.error('Error retrieving token:', error);
+            });
+    }, []);
+
+    const fetchUserProfile = async (token) => {
+        // Fetch user profile using the token
+        try {
+            const response = await fetch('http://192.168.0.103:8000/api/tourist-details', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                setUser(userData);
+            } else {
+                // Handle unsuccessful response
+                console.error('Failed to fetch user profile');
+            }
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+        }
+    };
 
     const ProfileNavigate = () => {
         navigation.navigate('Discover');
@@ -19,10 +60,10 @@ const TouristProfile = () => {
     return (
         <View style={styles.Container}>
             <TouchableOpacity
-            onPress={ProfileNavigate}
-            style={styles.ProfileButton}
-             >
-                <Image source={require('../../assets/Home.png')} style = {[{width: 40, height: 40}]}/>
+                onPress={ProfileNavigate}
+                style={styles.ProfileButton}
+            >
+                <Image source={require('../../assets/Home.png')} style={[{ width: 40, height: 40 }]} />
             </TouchableOpacity>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.rectangle}>
@@ -35,12 +76,12 @@ const TouristProfile = () => {
                     <Image
                         style={styles.userIcon}
                         resizeMode='cover'
-                        source={require("../../assets/ellipse.png")} 
+                        source={require("../../assets/ellipse.png")}
                     />
                     <View style={styles.buttonsContainer}>
-                            <Text style={styles.Name}>Tourist Name</Text>
-                            <Text style={styles.Id}>ID : #071B26</Text>
-                    </View>      
+                        <Text style={styles.Name}>{user.name}</Text>
+                        <Text style={styles.Id}>ID : {user.id}</Text>
+                    </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleHome} activeOpacity={0.5}>
                             <Text style={{ color: 'white', fontFamily: 'Poppins-Bold' }}>
@@ -54,7 +95,7 @@ const TouristProfile = () => {
 
                 <View style={[styles.textBox, { width: containerWidth }]}>
                     <Text style={{ color: 'white', fontFamily: 'Poppins-Regular' }}>
-                        My name is Tanees Shakeel. I live in Karachi, Pakistan. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        {tourist.bio}
                     </Text>
                 </View>
             </ScrollView>
@@ -66,12 +107,12 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         alignItems: 'center',
-      },
+    },
     Container: {
         backgroundColor: '#20262E',
         flex: 1,
-    }, 
-    ProfileButton:{
+    },
+    ProfileButton: {
         position: 'absolute',
         bottom: 20,
         left: 20,
@@ -110,7 +151,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         padding: 20,
     },
-    Name:{
+    Name: {
         fontFamily: 'Poppins-Bold',
         fontSize: 20,
     },

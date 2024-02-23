@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, Dimensions, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+  Dimensions,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.82;
 
   const navigation = useNavigation();
@@ -25,24 +37,44 @@ const Login = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://192.168.100.12:8000/api/users/', {
-        method: 'GET',
+      const response = await fetch("http://192.168.100.18:8000/api/users/", {
+        method: "GET",
       });
 
       if (response.ok) {
         const data = await response.json();
-        const user = data.find(user => user.email === email && user.password === password);
+        const user = data.find(
+          (user) => user.email === email && user.password === password
+        );
         if (user) {
-          navigation.navigate("Category");
+          if (user.token) {
+            // Save authentication token to AsyncStorage
+            await AsyncStorage.setItem("authToken", user.token);
+          } else {
+            // If token is not provided by the server, remove the existing one
+            await AsyncStorage.removeItem("authToken");
+          }
+          // Navigate user to appropriate screen based on user type
+          switch (user.user_type) {
+            case "Tourist":
+              navigation.navigate("Discover");
+              break;
+            case "Guide":
+              navigation.navigate("GuideHome");
+              break;
+            case "Vendor":
+              navigation.navigate("Train");
+              break;
+          }
         } else {
-          alert('Sign in failed: Invalid email or password');
+          alert("Sign in failed: Invalid email or password");
         }
       } else {
-        alert('Sign in failed: An error occurred.');
+        alert("Sign in failed: An error occurred.");
       }
     } catch (error) {
       console.error(error);
-      alert('Sign in failed: ' + error.message);
+      alert("Sign in failed: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -51,25 +83,28 @@ const Login = () => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ImageBackground style={styles.backgroundImage} source={require("../assets/p11.jpg")} >
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require("../assets/p11.jpg")}
+      >
         <View style={styles.contentContainer}>
           <View style={styles.Textcontainer}>
             <Text style={styles.text}>Safarnama</Text>
             <View style={[styles.ButtonContainer, { width: containerWidth }]}>
               <View style={styles.InputContainer}>
                 <TextInput
-                  placeholder='Email'
+                  placeholder="Email"
                   value={email}
-                  onChangeText={text => setEmail(text)}
+                  onChangeText={(text) => setEmail(text)}
                   style={styles.Input}
                 />
                 <View style={styles.PasswordInputContainer}>
                   <TextInput
-                    placeholder='Password'
+                    placeholder="Password"
                     value={password}
-                    onChangeText={text => setPassword(text)}
+                    onChangeText={(text) => setPassword(text)}
                     secureTextEntry={!passwordVisible}
                     style={styles.PasswordInput}
                   />
@@ -79,9 +114,9 @@ const Login = () => {
                     onPress={togglePasswordVisibility}
                   >
                     <MaterialIcons
-                      name={passwordVisible ? 'visibility' : 'visibility-off'}
+                      name={passwordVisible ? "visibility" : "visibility-off"}
                       size={24}
-                      color='black'
+                      color="black"
                     />
                   </TouchableOpacity>
                 </View>
@@ -93,15 +128,14 @@ const Login = () => {
                 onPress={handleSignIn}
                 disabled={loading}
               >
-                <Text style={styles.LoginText}>{loading ? 'Loading...' : 'Login'}</Text>
+                <Text style={styles.LoginText}>
+                  {loading ? "Loading..." : "Login"}
+                </Text>
               </TouchableOpacity>
 
               <View style={styles.Signup}>
                 <Text style={styles.text2}>Don't have an account</Text>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={handleRegister}
-                >
+                <TouchableOpacity activeOpacity={0.5} onPress={handleRegister}>
                   <Text style={styles.boldText}> Sign Up!</Text>
                 </TouchableOpacity>
               </View>
@@ -123,89 +157,89 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    width: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    resizeMode: "cover",
   },
   Textcontainer: {
     flex: 1,
     top: 140,
-    alignItems: 'center',
+    alignItems: "center",
   },
   text: {
     fontSize: 45,
-    fontFamily: 'Poppins-Bold',
-    color: 'white',
+    fontFamily: "Poppins-Bold",
+    color: "white",
     elevation: 50,
-    shadowColor: 'black',
+    shadowColor: "black",
   },
   ButtonContainer: {
     padding: 20,
-    borderColor: 'white',
+    borderColor: "white",
     borderWidth: 2,
     borderRadius: 25,
     paddingVertical: 30,
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
   },
   InputContainer: {
-    width: '100%',
+    width: "100%",
   },
   Input: {
     paddingHorizontal: 15,
     paddingVertical: 16,
     borderRadius: 10,
     marginTop: 10,
-    fontFamily: 'Poppins-SemiBold',
-    backgroundColor: 'transparent',
-    borderColor: 'white',
+    fontFamily: "Poppins-SemiBold",
+    backgroundColor: "transparent",
+    borderColor: "white",
     borderWidth: 1,
   },
   PasswordInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   PasswordInput: {
     paddingHorizontal: 15,
     paddingVertical: 16,
     borderRadius: 10,
     marginTop: 10,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     flex: 1,
-    backgroundColor: 'transparent',
-    borderColor: 'white',
+    backgroundColor: "transparent",
+    borderColor: "white",
     borderWidth: 1,
   },
   PasswordVisibilityButton: {
     padding: 10,
   },
   LoginButton: {
-    justifyContent: 'center',
-    backgroundColor: '#092547',
-    width: '80%',
+    justifyContent: "center",
+    backgroundColor: "#092547",
+    width: "80%",
     height: 56,
     borderRadius: 20,
     marginTop: 25,
     elevation: 5,
   },
   LoginText: {
-    textAlign: 'center',
-    color: 'white',
+    textAlign: "center",
+    color: "white",
     fontSize: 14,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
   },
   Signup: {
     marginTop: 30,
     paddingHorizontal: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   text2: {
     fontSize: 15,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
   },
   boldText: {
     fontSize: 16,
-    fontFamily: 'Poppins-Bold',
-    color: 'white',
+    fontFamily: "Poppins-Bold",
+    color: "white",
     bottom: 2,
   },
 });

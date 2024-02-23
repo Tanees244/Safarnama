@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeScreen from './Screens/Homescreen';
 import Login from "./Screens/Login";
 import Discover from './Screens/Tourists/Discover';
@@ -71,7 +72,23 @@ import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
+const checkAuthToken = async () => {
+  try {
+    const token = await AsyncStorage.getItem('authToken');
+    return token ? 'Discover' : 'Home';
+  } catch (error) {
+    console.error('Error retrieving auth token:', error);
+    return 'HomeScreen'; // Default to Home screen in case of error
+  }
+};
+
 export default function App() {
+
+  const [initialRoute, setInitialRoute] = useState('Loading');
+
+  useEffect(() => {
+    checkAuthToken().then(route => setInitialRoute(route));
+  }, []);
 
   const [fontsLoaded, error] = useFonts({
     "Poppins-SemiBold": require("./assets/fonts/Poppins-SemiBold.ttf"),
@@ -101,7 +118,7 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen options={{ headerShown: false }} name='Home' component={HomeScreen} />
         <Stack.Screen options={{ headerShown: false }} name='Login' component={Login} />
         <Stack.Screen options={{ headerShown: false }} name='Discover' component={Discover} />
