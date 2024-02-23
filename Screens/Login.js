@@ -12,6 +12,7 @@ import {
   Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Vector } from "../assets";
 import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -33,15 +34,6 @@ const Login = () => {
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible); // Toggle password visibility state
-  };
-
-  const storeToken = async (token) => {
-    try {
-      await AsyncStorage.setItem('authToken', token);
-      console.log('Token stored successfully:', token);
-    } catch (error) {
-      console.error('Error storing token:', error);
-    }
   };
 
   const storeToken = async (token) => {
