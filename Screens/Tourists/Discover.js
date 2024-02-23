@@ -289,8 +289,6 @@ const Discover = () => {
     // For example:
     if (menuItem === "Home") {
       navigation.navigate("Discover");
-    } else if (menuItem === "Profile") {
-      navigation.navigate(handleProfilePress);
     } else if (menuItem === "Booking") {
       navigation.navigate("CreatePackage");
     } else if (menuItem === "Itinerary") {
@@ -319,7 +317,7 @@ const Discover = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.expandedMenuItem, { bottom: 120, left: -70 }]}
-            onPress={() => handleMenuItemPress("Profile")}
+            onPress={handleProfilePress}
           >
             <Image
               source={require("../../assets/account-circle-black.png")}
