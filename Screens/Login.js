@@ -1,8 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, Dimensions, TextInput, KeyboardAvoidingView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Vector } from '../assets';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+  Dimensions,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Vector } from "../assets";
+import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   
@@ -24,26 +36,49 @@ const Login = () => {
     setPasswordVisible(!passwordVisible); // Toggle password visibility state
   };
 
+  const storeToken = async (token) => {
+    try {
+      await AsyncStorage.setItem('authToken', token);
+      console.log('Token stored successfully:', token);
+    } catch (error) {
+      console.error('Error storing token:', error);
+    }
+  };
+
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://192.168.100.18:8000/api/users/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }), // Send user's email and password
+      const response = await fetch("http://192.168.0.103:8000/api/users/", {
+        method: "GET",
       });
   
-      // Check if the request was successful
       if (response.ok) {
         // If successful, parse the response JSON
         const data = await response.json();
-        
-        // Check the response from the backend
-        if (data.success) {
-          // User authentication successful, navigate to the next screen
-          navigation.navigate("Category");
+  
+        const user = data.find(
+          (user) => user.email === email && user.password === password
+        );
+      
+        if (user) {
+          if (user && user.token) {
+            // Store JWT token
+            await storeToken(user.token);
+          } else {
+            console.error("Token is missing in user object:", user);
+          }
+          // Navigate user to appropriate screen based on user type
+          switch (user.user_type) {
+            case "Tourist":
+              navigation.navigate("Discover");
+              break;
+            case "Guide":
+              navigation.navigate("GuideHome");
+              break;
+            case "Vendor":
+              navigation.navigate("Train");
+              break;
+          }
         } else {
           // Authentication failed, display error message
           alert('Sign in failed: ' + data.message);
@@ -61,7 +96,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <KeyboardAvoidingView

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import {
   Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const data = [
   {
@@ -214,6 +215,16 @@ const VerticalCard = ({ item }) => {
   );
 };
 
+const checkAuthentication = async () => {
+  try {
+    const authToken = await AsyncStorage.getItem("authToken");
+    return authToken !== null;
+  } catch (error) {
+    console.error("Error checking authentication:", error);
+    return false;
+  }
+};
+
 const Discover = () => {
   const navigation = useNavigation();
 
@@ -225,13 +236,29 @@ const Discover = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const checkAuthentication = async () => {
+    try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      return authToken !== null;
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      return false;
+    }
+  };
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const authenticated = await checkAuthentication();
+      setIsAuthenticated(authenticated);
+    };
+
+    checkAuthStatus();
+  }, []);
+
   // Function to handle the profile button press
   const handleProfilePress = () => {
     if (isAuthenticated) {
-      // If user is logged in, navigate to their profile
       navigation.navigate("TouristProfile");
     } else {
-      // If user is not logged in, show an alert to sign in
       Alert.alert(
         "Sign In Required",
         "Please sign in to view your profile.",
@@ -248,11 +275,6 @@ const Discover = () => {
   };
 
   const scaleValue = new Animated.Value(0);
-
-  const scale = scaleValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 4],
-  });
 
   const navigateToHotelsInfo = () => {
     navigation.navigate("HotelsLists");
@@ -272,7 +294,6 @@ const Discover = () => {
 
   const combinedData = [...data, ...data2];
 
-  // Filtered data based on search query
   const filteredData = combinedData.filter((item) =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -298,8 +319,6 @@ const Discover = () => {
   };
 
   const handleMenuItemPress = (menuItem) => {
-    // Handle navigation based on the selected menu item
-    // For example:
     if (menuItem === "Home") {
       navigation.navigate("Discover");
     } else if (menuItem === "Booking") {
@@ -307,7 +326,6 @@ const Discover = () => {
     } else if (menuItem === "Itinerary") {
       navigation.navigate("Itinerary");
     }
-    // Collapse the menu after selection
     toggleMenu();
   };
 
