@@ -172,6 +172,7 @@ const HorizontalCard = ({ item, onPress }) => {
 };
 
 const VerticalCard = ({ item }) => {
+  
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const containerHeight = screenHeight * 0.5;

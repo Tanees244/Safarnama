@@ -7,11 +7,31 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+const packageData = [
+  {
+    id: "7",
+    image: require("../../assets/Naran1.png"),
+  },
+  {
+    id: "8",
+    image: require("../../assets/Naran2.png"),
+  },
+  {
+    id: "9",
+    image: require("../../assets/Naran3.png"),
+  },
+  {
+    id: "10",
+    image: require("../../assets/Naran4.png"),
+  },
+];
+
 const Packages = () => {
-  const [packageData, setPackageData] = useState([]);
+  const [apiPackageData, setApiPackageData] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -19,7 +39,7 @@ const Packages = () => {
       try {
         const response = await fetch("http://192.168.100.12:8000/api/packages/");
         const data = await response.json();
-        setPackageData(data);
+        setApiPackageData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -37,41 +57,75 @@ const Packages = () => {
   };
 
   return (
-    <View>
-      <TouchableOpacity
-        style={styles.homeButton}
-        onPress={handleDiscoverPress}
-        activeOpacity={0.5}
-      >
-        <Image source={require("../../assets/Home.png")} style={styles.icon} />
-      </TouchableOpacity>
-      <ScrollView contentContainerStyle={styles.container}>
-        {packageData.map((packageItem) => (
-          <View key={packageItem.package_id} style={styles.packageItem}>
-            <View style={styles.textContainer}>
-              <View style={styles.rightText}>
-                <Image source={require("../../assets/star.png")} style={styles.icon} />
-                <Text>{packageItem.rating}</Text>
-              </View>
-            </View>
-            <Text style={styles.packageDestination}>
-              Destination: {packageItem.destination}
-            </Text>
-            <Text style={styles.packageDates}>
-              Dates: {packageItem.start_date} to {packageItem.end_date}
-            </Text>
-            <Text style={styles.packagePrice}>
-              Price: ${parseFloat(packageItem.price).toFixed(2)}
-            </Text>
-            <TouchableOpacity
-              style={styles.bookNowButton}
-              onPress={() => handleBookNowPress(packageItem)}
+    <View style={styles.Container}>
+
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Safarnama</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.homeButton}
+          onPress={handleDiscoverPress}
+          activeOpacity={0.5}
+        >
+          <Image source={require("../../assets/Home.png")} style={styles.icon} />
+        </TouchableOpacity>
+
+        <ScrollView contentContainerStyle={styles.container}>
+          {packageData.map((packageItem, index) => (
+            <ImageBackground
+              key={packageItem.id}
+              source={packageItem.image}
+              style={styles.packageItemBackground}
+              imageStyle={styles.imageStyle}
             >
-              <Text style={styles.bookNowButtonText}>Book Now</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
+              <View style={styles.packageItem}>
+                <View style={styles.textContainer}>
+                  <View style={styles.rightText}>
+                    <Image
+                      source={require("../../assets/star.png")}
+                      style={styles.icon}
+                    />
+                    <Text style={{ color: "white" }}>
+                      {apiPackageData[index]?.rating}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.packageDestination}>
+                  Destination: {apiPackageData[index]?.destination}
+                </Text>
+                <View style={styles.Time}>
+                  <View style={styles.dates}>
+                    <Text style={styles.packageDates}>
+                      Start: {apiPackageData[index]?.start_date}
+                    </Text>
+                  </View>
+                  <View style={styles.dates}>
+                    <Text style={styles.packageDates}>
+                      End: {apiPackageData[index]?.end_date}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{    alignItems: "center",
+    borderColor: "white",
+    borderWidth: 3,
+    borderRadius: 25,
+    padding: 10,
+    width: 220,}}>
+                <Text style={styles.packagePrice}>
+                  Price: {parseFloat(apiPackageData[index]?.price)} pkr
+                </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.bookNowButton}
+                  onPress={() => handleBookNowPress(apiPackageData[index])}
+                >
+                  <Text style={styles.bookNowButtonText}>Book Now</Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
+          ))}
+        </ScrollView>
+
     </View>
   );
 };
@@ -79,7 +133,26 @@ const Packages = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "white",
+  },
+  Container: {
+    flex: 1,
+    backgroundColor:'black',
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+  },
+  header: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 120,
+    backgroundColor: "#032844",
+  },
+  headerText: {
+    fontSize: 30,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+    marginTop: 40,
   },
   homeButton: {
     position: "absolute",
@@ -100,35 +173,61 @@ const styles = StyleSheet.create({
   },
   rightText: {
     width: "65%",
-    paddingLeft: 20,
+    justifyContent: "center",
     paddingTop: 20,
     flexDirection: "row",
     alignItems: "center",
+  },
+  dates: {
+    alignItems: "center",
+    borderColor: "white",
+    borderWidth: 3,
+    borderRadius: 25,
+    marginRight: 0,
+    padding: 10,
+    width: 115,
+  },
+  Time: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 20,
   },
   icon: {
     width: 25,
     height: 25,
     marginRight: 5,
   },
-  packageItem: {
-    marginBottom: 20,
+  packageItemBackground: {
+    margin: 20,
     padding: 10,
-    backgroundColor: "#FFFFFF",
     borderRadius: 20,
+    alignItems: "center",
+  },
+  imageStyle: {
+    borderRadius: 20,
+  },
+  packageItem: {
+    backgroundColor: "rgba(38, 71, 105, 0.5)", // Adjust the background color and opacity as needed
+    borderRadius: 20,
+    padding: 10,
+    alignItems: "center",
   },
   packageDestination: {
     fontFamily: "Poppins-Bold",
     fontSize: 18,
+    color: "white",
   },
   packageDates: {
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 16,
     marginTop: 5,
+    color: "white",
   },
   packagePrice: {
     fontFamily: "Poppins-Bold",
     fontSize: 20,
-    color: "#319bd6",
+    color: "white",
     marginTop: 5,
   },
   bookNowButton: {
