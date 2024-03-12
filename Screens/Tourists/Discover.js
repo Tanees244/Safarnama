@@ -175,6 +175,11 @@ const VerticalCard = ({ item }) => {
   const screenHeight = Dimensions.get("window").height;
   const containerHeight = screenHeight * 0.5;
   const containerWidth = screenWidth * 0.8;
+  const navigation = useNavigation();
+  
+  const navigatetopackages = () => {
+    navigation.navigate("Packages");
+  };
 
   return (
     <View
@@ -194,6 +199,14 @@ const VerticalCard = ({ item }) => {
             >{`${item.startDate} - ${item.endDate}`}</Text>
             <Text style={styles.packageDetail}>{item.price}</Text>
             <Text style={styles.packageDetail}>{item.ratings}</Text>
+          <TouchableOpacity style={styles.arrowbutton}
+          onPress={navigatetopackages}
+          >
+          <Image
+          style={styles.arrow}
+          source={require("../../assets/arrow-4.png")}
+        />
+          </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
@@ -510,6 +523,20 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#041c23",
     flex: 1,
+  },
+  arrow: {
+    height: 30,
+    width: "30%",
+    position: 'absolute',
+  },
+  arrowbutton: {
+    backgroundColor:" rgba(0, 0, 0, 0.6)",
+    height:40,
+    width:150,
+    borderRadius: 40,
+    justifyContent:'center',
+    alignItems:'center',
+
   },
   home: {
     fontSize: 10,
