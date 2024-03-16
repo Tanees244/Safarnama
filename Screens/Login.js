@@ -48,7 +48,7 @@ const Login = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://192.168.0.103:8000/api/users/", {
+      const response = await fetch("http://192.168.201.71:8000/api/users/", {
         method: "GET",
       });
   

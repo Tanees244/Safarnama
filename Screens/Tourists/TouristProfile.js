@@ -39,7 +39,7 @@ const TouristProfile = () => {
     const fetchUserProfile = async (token) => {
         // Fetch user profile using the token
         try {
-            const response = await fetch('http://192.168.100.18:8000/api/tourist-details/', {
+            const response = await fetch('http://http://192.168.201.71:8000/api/tourist-details/', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
