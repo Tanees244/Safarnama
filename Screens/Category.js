@@ -19,9 +19,6 @@ const Category = () => {
   const navigateToVendor = () => {
     navigation.navigate('VendorCategory'); 
   };
-  const navigateToAdmin = () => {
-    navigation.navigate('AdminRegister'); 
-  };
 
   const screenWidth = Dimensions.get('window').width;
   const cardWidth = screenWidth * 0.25; 

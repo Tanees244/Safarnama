@@ -111,14 +111,45 @@ const PlaceLists = () => {
     fetchData();
   }, []);
 
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get("http://192.168.0.106:8000/api/places"); 
+  //     setPlaces(response.data); 
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get("http://192.168.0.106:8000/api/places/");
+  //     setPlaces(response.data);
+  //     console.log(response.data); // Log the response data
+  //     // Handle the response data as needed
+  //   } catch (error) {
+  //     if (error.response) {
+  //       // The request was made and the server responded with a status code
+  //       console.error('Server Error:', error.response.status);
+  //       console.error('Response Data:', error.response.data);
+  //     } else if (error.request) {
+  //       // The request was made but no response was received
+  //       console.error('No Response:', error.request);
+  //     } else {
+  //       // Something else happened in making the request that triggered an error
+  //       console.error('Error Message:', error.message);
+  //     }
+  //     // Handle specific error cases or display an error message to the user
+  //   }
+  // };
+
   const fetchData = async () => {
-    try {
-      const response = await axios.get("http://192.168.201.71:8000/api/places/"); 
-      setPlaces(response.data); 
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    axios
+      .get('http://192.168.0.106:8000/api/places/')
+      .then((res) =>{
+        setPlaces(res);
+      })
   };
+  
 
   return (
     <View style={styles.Container}>
