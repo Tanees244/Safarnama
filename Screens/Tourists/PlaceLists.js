@@ -113,7 +113,7 @@ const PlaceLists = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.0.103:8000/api/places/"); 
+      const response = await axios.get("http://192.168.100.12:8000/api/places/"); 
       setPlaces(response.data); 
     } catch (error) {
       console.error("Error fetching data:", error);

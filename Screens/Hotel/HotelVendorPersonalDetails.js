@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  Modal,
+  Pressable,
+} from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
 const HotelVendorPersonalDetails = () => {
-
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
@@ -15,14 +25,18 @@ const HotelVendorPersonalDetails = () => {
   const buttonWidth = screenWidth * 0.26;
 
   const [imageUri1, setImageUri1] = useState(null);
+  const [hotelIdModalVisible, setHotelIdModalVisible] = useState(false);
+  const [hotelId, setHotelId] = useState('');
 
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     age: '',
     email: '',
     address: '',
-    phoneNumber: '',
-    cnicNumber: '',
+    contact_number: '',
+    cnic_number: '',
+    picture: null,
+    hotel: null,
   });
 
   const handleFieldChange = (field, value) => {
@@ -32,36 +46,91 @@ const HotelVendorPersonalDetails = () => {
     }));
   };
 
-  const pickImage = async (setImageUri) => {
-    
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
+  const pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      });
 
-    setImageUri(result.uri);
-    console.log(result);
-
-    if (!result.canceled) {
-      setImageUri(result.assets[1].uri);
+      if (!result.canceled) {
+        setImageUri1(result.uri);
+        setFormData((prevData) => ({
+          ...prevData,
+          picture: result.uri,
+        }));
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
     }
   };
 
   const isFormDataValid = () => {
+    const {
+      name,
+      age,
+      email,
+      address,
+      contact_number,
+      cnic_number,
+      picture,
+      hotel,
+    } = formData;
+
     return (
-      formData.fullName &&
-      formData.age &&
-      formData.email &&
-      formData.address &&
-      formData.phoneNumber &&
-      formData.cnicNumber
+      name &&
+      age &&
+      email &&
+      address &&
+      contact_number &&
+      cnic_number &&
+      picture !== null &&
+      hotel !== null
     );
   };
 
-  const handleSubmit = () => {
-    navigation.navigate("HotelDashboard");
+  const handleSubmit = async () => {
+    try {
+      if (!isFormDataValid()) {
+        console.log('Please fill in all fields');
+        return;
+      }
+  
+      console.log('Form Data:', JSON.stringify(formData)); // Log form data
+  
+      const response = await fetch(
+        'http://192.168.100.12:8000/api/hotel-vendor-personal-details/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+  
+      const responseData = await response.json(); // Log the response data
+      console.log('Response Data:', JSON.stringify(responseData));
+  
+      if (response.ok) {
+        console.log('Form data submitted successfully');
+        navigation.navigate('HotelDashboard');
+      } else {
+        console.error('Failed to submit form data');
+      }
+    } catch (error) {
+      console.error('Error submitting form data:', error);
+    }
+  };
+
+  const handleHotelIdSubmit = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      hotel: hotelId,
+    }));
+    setHotelIdModalVisible(false);
   };
 
   return (
@@ -85,8 +154,8 @@ const HotelVendorPersonalDetails = () => {
           <TextInput
             placeholder='Enter Your Full Name'
             style={[styles.Input, { width: inputWidth }]}
-            onChangeText={(text) => handleFieldChange('fullName', text)}
-            value={formData.fullName}
+            onChangeText={(text) => handleFieldChange('name', text)}
+            value={formData.name}
           />
           <TextInput
             placeholder='Enter Your Age'
@@ -110,37 +179,99 @@ const HotelVendorPersonalDetails = () => {
           <TextInput
             placeholder='Enter Your Phone Number'
             style={[styles.Input, { width: inputWidth }]}
-            onChangeText={(text) => handleFieldChange('phoneNumber', text)}
-            value={formData.phoneNumber}
+            onChangeText={(text) => handleFieldChange('contact_number', text)}
+            value={formData.contact_number}
             keyboardType='numeric'
           />
           <TextInput
             placeholder='Enter Your CNIC'
             style={[styles.Input, { width: inputWidth }]}
-            onChangeText={(text) => handleFieldChange('cnicNumber', text)}
-            value={formData.cnicNumber}
+            onChangeText={(text) => handleFieldChange('cnic_number', text)}
+            value={formData.cnic_number}
             keyboardType='numeric'
           />
-          <View  style={[styles.UploadButton, { width: uploadButtonWidth }]}>
+   <View style={[styles.UploadButton, { width: uploadButtonWidth }]}>
             <View style={styles.UploadButtonText}>
-              <Text style={[{ fontFamily: 'Poppins-SemiBold', color: 'grey' }]}>Picture Of Yourself</Text>
+              <Text style={[{ fontFamily: 'Poppins-SemiBold', color: 'grey' }]}>
+                Picture Of Yourself
+              </Text>
             </View>
             <TouchableOpacity
               style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={() => pickImage(setImageUri1)}
+              onPress={pickImage}
             >
               {imageUri1 ? (
                 <Image source={{ uri: imageUri1 }} style={styles.image} />
               ) : (
-                <Image style={styles.UploadButtonImage} source={require('../../assets/plus.png')} />
+                <Image
+                  style={styles.UploadButtonImage}
+                  source={require('../../assets/plus.png')}
+                />
               )}
             </TouchableOpacity>
           </View>
-          <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleSubmit}>
+          <View
+            style={[styles.UploadButton, { width: uploadButtonWidth }]}
+          >
+            <View style={styles.UploadButtonText}>
+              <Text
+                style={[{
+                  fontFamily: 'Poppins-SemiBold',
+                  color: 'grey',
+                }]}
+              >
+                Hotel ID
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
+              onPress={() => setHotelIdModalVisible(true)}
+            >
+              <Text>{hotelId || 'Select Hotel ID'}</Text>
+            </TouchableOpacity>
+          </View>
+          {/* Other TextInputs... */}
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={[styles.submitButton, { width: submitButton }]}
+            onPress={handleSubmit}
+          >
             <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={hotelIdModalVisible}
+        onRequestClose={() => {
+          setHotelIdModalVisible(!hotelIdModalVisible);
+        }}
+      >
+        <View style={styles.modalView}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Enter Hotel ID:</Text>
+            <TextInput
+              style={styles.modalInput}
+              keyboardType="numeric"
+              onChangeText={(text) => setHotelId(text)}
+            />
+            <Pressable
+              style={[styles.modalButton, styles.modalButtonClose]}
+              onPress={() => setHotelIdModalVisible(!hotelIdModalVisible)}
+            >
+              <Text style={styles.textStyle}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.modalButton, styles.modalButtonSubmit]}
+              onPress={handleHotelIdSubmit}
+            >
+              <Text style={styles.textStyle}>Submit</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -215,6 +346,7 @@ const styles = StyleSheet.create({
   },
   UploadButtonText: {
     fontFamily: 'Poppins-SemiBold',
+    justifyContent:''
   },
   UploadButtonImage: {
     width: 50,
@@ -224,6 +356,47 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  modalInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+    borderRadius: 5,
+    paddingLeft: 10,
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 10,
+    elevation: 2,
+    marginBottom: 10,
+  },
+  modalButtonClose: {
+    backgroundColor: '#2196F3',
+  },
+  modalButtonSubmit: {
+    backgroundColor: '#4CAF50',
+  },
+  textStyle: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
