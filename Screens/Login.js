@@ -21,9 +21,9 @@ import axios from "axios";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userType, setUserType] = useState("");
 
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.82;
@@ -41,41 +41,34 @@ const Login = () => {
 
   const handleSignIn = async () => {
     try {
-      setLoading(true);
-      const response = await axios.post('http://192.168.0.106:8000/api/login/', {
-        email,
-        password,
+      const response = await fetch('http://192.168.0.106:8000/api/authRoutes/login/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
       });
-  
-      const { message, redirect } = response.data;
-      Alert.alert('Login', message);
-      setLoading(false);
-  
-      if (redirect === 'GuideDashboard') {
-        navigation.navigate('GuideDashboard');
-      } else if (redirect === 'DiscoverPage') {
-        navigation.navigate('DiscoverPage');
-      } else {
-        // Handle other redirections or display an error message
+
+      const data = await response.json();
+
+      if (!response.ok) {
+          throw new Error(data.error || 'Login failed');
       }
-    } catch (error) {
-      setLoading(false);
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        console.error('Server Error:', error.response.data);
-        Alert.alert('Login Failed', 'Server error. Please try again later.');
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('Network Error:', error.request);
-        Alert.alert('Login Failed', 'Network error. Please check your internet connection.');
-      } else {
-        // Something else happened in making the request
-        console.error('Error:', error.message);
-        Alert.alert('Login Failed', 'An unexpected error occurred. Please try again later.');
+
+      // Save token to localStorage
+      localStorage.setItem('token', data.token);
+
+      // Navigate based on user type
+      if (data.user.user_type === 'Tourist') {
+          navigate('/tourist-dashboard');
+      } else if (data.user.user_type === 'Admin') {
+          navigate('/admin-dashboard');
       }
-    }
-  };
-  
+  } catch (error) {
+      console.error('Login error:', error);
+      setError(error.message || 'Login failed');
+  }
+};
 
   return (
     <KeyboardAvoidingView

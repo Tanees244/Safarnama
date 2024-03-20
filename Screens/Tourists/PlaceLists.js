@@ -12,7 +12,7 @@ import {
   Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
+import axios from "axios";
 
 const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get("window").width;
@@ -54,7 +54,10 @@ const HorizontalCard = ({ item, onPress }) => {
         </View>
       </View>
       <View style={styles.CardbuttonContainer}>
-        <TouchableOpacity style={styles.Cardbutton} onPress={() => onPress(item)}>
+        <TouchableOpacity
+          style={styles.Cardbutton}
+          onPress={() => onPress(item)}
+        >
           <Text style={styles.CardbuttonText}>Book Now</Text>
         </TouchableOpacity>
       </View>
@@ -98,12 +101,12 @@ const PlaceLists = () => {
     } else if (menuItem === "Itinerary") {
       navigation.navigate("Itinerary");
     }
-    toggleMenu(); 
-  };  
+    toggleMenu();
+  };
 
   const navigateToPlacesInfo = (selectedPlace) => {
-    navigation.navigate('PlacesInfo', { place: selectedPlace });
-};
+    navigation.navigate("PlacesInfo", { place: selectedPlace });
+  };
 
   const [places, setPlaces] = useState([]);
 
@@ -113,8 +116,8 @@ const PlaceLists = () => {
 
   // const fetchData = async () => {
   //   try {
-  //     const response = await axios.get("http://192.168.0.106:8000/api/places"); 
-  //     setPlaces(response.data); 
+  //     const response = await axios.get("http://192.168.0.106:8000/api/places");
+  //     setPlaces(response.data);
   //   } catch (error) {
   //     console.error("Error fetching data:", error);
   //   }
@@ -143,13 +146,18 @@ const PlaceLists = () => {
   // };
 
   const fetchData = async () => {
-    axios
-      .get('http://192.168.0.106:8000/api/places/')
-      .then((res) =>{
-        setPlaces(res);
-      })
-  };
-  
+    try {
+        const response = await axios.get('http://192.168.100.12:8000/api/places/', {
+            timeout: 5000, // Set timeout to 5 seconds
+            retry: 3, // Retry up to 3 times on failure
+            retryDelay: 1000 // Delay between retries in milliseconds
+        });
+        setPlaces(response.data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        // Handle error or set an appropriate state
+    }
+};
 
   return (
     <View style={styles.Container}>

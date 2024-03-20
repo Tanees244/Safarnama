@@ -18,7 +18,7 @@ const GuideRegister = () => {
   
   const handleSignup = async () => {
     try {
-      const response = await axios.post('http://192.168.0.106:8000/api/register/', {
+      const response = await axios.post('http://192.168.100.18:8000/api/authRoutes/register/', {
         email: email,
         password: Password,
         user_type: 'Guide',
