@@ -15,15 +15,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Vector } from "../assets";
 import { MaterialIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.82;
@@ -41,7 +38,7 @@ const Login = () => {
 
   const handleSignIn = async () => {
     try {
-      const response = await fetch('http://192.168.0.106:8000/api/authRoutes/login/', {
+      const response = await fetch('http://192.168.100.18:8000/api/authRoutes/login/', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -56,13 +53,15 @@ const Login = () => {
       }
 
       // Save token to localStorage
-      localStorage.setItem('token', data.token);
+      // localStorage.setItem('token', data.token);
 
       // Navigate based on user type
       if (data.user.user_type === 'Tourist') {
-          navigate('/tourist-dashboard');
-      } else if (data.user.user_type === 'Admin') {
-          navigate('/admin-dashboard');
+          navigation.navigate('Discover');
+      } else if (data.user.user_type === 'Guide') {
+          navigation.navigate('GuideHome');
+      } else {
+        navigation.navigate('GuideProfile');
       }
   } catch (error) {
       console.error('Login error:', error);
