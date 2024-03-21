@@ -15,6 +15,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Vector } from "../assets";
 import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -35,39 +36,41 @@ const Login = () => {
     setPasswordVisible(!passwordVisible); // Toggle password visibility state
   };
 
-
   const handleSignIn = async () => {
     try {
-      const response = await fetch('http://192.168.100.18:8000/api/authRoutes/login/', {
-          method: 'POST',
+      const response = await fetch(
+        "http://192.168.100.18:8000/api/authRoutes/login",
+        {
+          method: "POST",
           headers: {
-              'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ email, password }),
-      });
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-          throw new Error(data.error || 'Login failed');
+        throw new Error(data.error || "Login failed");
       }
 
-      // Save token to localStorage
-      // localStorage.setItem('token', data.token);
+      const token = data.token;
+      await AsyncStorage.setItem("authToken", token);
+      console.log("Auth Token : ", token);
 
-      // Navigate based on user type
-      if (data.user.user_type === 'Tourist') {
-          navigation.navigate('Discover');
-      } else if (data.user.user_type === 'Guide') {
-          navigation.navigate('GuideHome');
+      if (data.user.user_type === "Tourist") {
+        navigation.navigate("Discover");
+      } else if (data.user.user_type === "Guide") {
+        navigation.navigate("GuideHome");
       } else {
-        navigation.navigate('GuideProfile');
+        navigation.navigate("GuideProfile");
       }
-  } catch (error) {
-      console.error('Login error:', error);
-      setError(error.message || 'Login failed');
-  }
-};
+    } catch (error) {
+      console.error("Login error:", error);
+      setError(error.message || "Login failed");
+    }
+  };
 
   return (
     <KeyboardAvoidingView
