@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Svg, { Ellipse } from "react-native-svg";
-import { Vector } from "../../assets";
 import axios from "axios";
 import {
   TextInput,

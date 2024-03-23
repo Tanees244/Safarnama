@@ -73,23 +73,7 @@ import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
-// const checkAuthToken = async () => {
-//   try {
-//     const token = await AsyncStorage.getItem('authToken');
-//     return token ? 'GuideHome' : 'Home';
-//   } catch (error) {
-//     console.error('Error retrieving auth token:', error);
-//     return 'HomeScreen'; // Default to Home screen in case of error
-//   }
-// };
-
 export default function App() {
-
-  // const [initialRoute, setInitialRoute] = useState('Loading');
-
-  // useEffect(() => {
-  //   checkAuthToken().then(route => setInitialRoute(route));
-  // }, []);
 
   const [fontsLoaded, error] = useFonts({
     "Poppins-SemiBold": require("./assets/fonts/Poppins-SemiBold.ttf"),

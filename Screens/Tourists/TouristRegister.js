@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Ellipse } from 'react-native-svg';
 import { TextInput, GestureHandlerRootView } from 'react-native-gesture-handler';
+import axios from "axios";
 
 const TouristRegister = () => {
 
@@ -15,8 +16,25 @@ const TouristRegister = () => {
     navigation.navigate('Login');
   };
   
-  const handleSignup =  () =>{
-    navigation.navigate('TouristPersonalDetail');
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post(
+        "http://192.168.100.18:8000/api/authRoutes/register/",
+        {
+          email: email,
+          password: Password,
+          user_type: "Tourist",
+          vendor_type: "",
+          transport_type: "",
+        }
+      );
+
+      console.log(response.data);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("Network Error: Unable to connect to the server.");
+    }
   };
    
    

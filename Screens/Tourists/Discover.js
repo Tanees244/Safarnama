@@ -16,6 +16,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 const data = [
   {
     id: "1",
@@ -216,15 +217,7 @@ const VerticalCard = ({ item }) => {
   );
 };
 
-const checkAuthentication = async () => {
-  try {
-    const authToken = await AsyncStorage.getItem("authToken");
-    return authToken !== null;
-  } catch (error) {
-    console.error("Error checking authentication:", error);
-    return false;
-  }
-};
+
 
 const Discover = () => {
   const navigation = useNavigation();
@@ -237,19 +230,10 @@ const Discover = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const checkAuthentication = async () => {
-    try {
-      const authToken = await AsyncStorage.getItem("authToken");
-      return authToken !== null;
-    } catch (error) {
-      console.error("Error checking authentication:", error);
-      return false;
-    }
-  };
   useEffect(() => {
     const checkAuthStatus = async () => {
-      const authenticated = await checkAuthentication();
-      setIsAuthenticated(authenticated);
+      const authToken = await AsyncStorage.getItem("authToken");
+      setIsAuthenticated(authToken !== null);
     };
 
     checkAuthStatus();
