@@ -26,7 +26,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={{ uri: `data:image/jpeg;base64,${item.image}` }} // Assuming images are stored as base64 encoded strings
+           source={{ uri: `data:image/jpeg;base64,${item.image}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -114,40 +114,10 @@ const PlaceLists = () => {
     fetchData();
   }, []);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get("http://192.168.0.106:8000/api/places");
-  //     setPlaces(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get("http://192.168.0.106:8000/api/places/");
-  //     setPlaces(response.data);
-  //     console.log(response.data); // Log the response data
-  //     // Handle the response data as needed
-  //   } catch (error) {
-  //     if (error.response) {
-  //       // The request was made and the server responded with a status code
-  //       console.error('Server Error:', error.response.status);
-  //       console.error('Response Data:', error.response.data);
-  //     } else if (error.request) {
-  //       // The request was made but no response was received
-  //       console.error('No Response:', error.request);
-  //     } else {
-  //       // Something else happened in making the request that triggered an error
-  //       console.error('Error Message:', error.message);
-  //     }
-  //     // Handle specific error cases or display an error message to the user
-  //   }
-  // };
 
   const fetchData = async () => {
     try {
-        const response = await axios.get('http://192.168.100.12:8000/api/places/', {
+        const response = await axios.get('http://192.168.100.12:8000/api/routes/places', {
             timeout: 5000, // Set timeout to 5 seconds
             retry: 3, // Retry up to 3 times on failure
             retryDelay: 1000 // Delay between retries in milliseconds
@@ -301,8 +271,7 @@ const styles = StyleSheet.create({
   image: {
     height: 200,
     width: 280,
-    shadowColor: "black",
-    elevation: 20,
+    resizeMode: 'cover',
   },
   contentContainer: {
     top: 130,
