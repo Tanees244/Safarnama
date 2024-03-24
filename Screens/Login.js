@@ -15,7 +15,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Vector } from "../assets";
 import { MaterialIcons } from "@expo/vector-icons";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -39,7 +39,7 @@ const Login = () => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://192.168.100.18:8000/api/authRoutes/login",
+        "http://192.168.0.105:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
@@ -59,7 +59,9 @@ const Login = () => {
       await AsyncStorage.setItem("authToken", token);
       console.log("Auth Token : ", token);
 
-      if (data.user.user_type === "Tourist") {
+      if (data.isAdmin) {
+        navigation.navigate("AdminDashboard");
+      } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
         navigation.navigate("GuideHome");

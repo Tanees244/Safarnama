@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 const GuideDocument = () => {
 
@@ -17,6 +18,9 @@ const GuideDocument = () => {
   const [imageUri2, setImageUri2] = useState(null);
   const [imageUri3, setImageUri3] = useState(null);
   const [imageUri4, setImageUri4] = useState(null);
+
+  const route = useRoute();
+  const { guideId } = route.params;
 
   const pickImage = async (setImageUri) => {
     
@@ -35,11 +39,25 @@ const GuideDocument = () => {
     }
   };
 
-  const handleSubmit = () => {
-    if (!(imageUri1 && imageUri2 && imageUri3 && imageUri4)) {
-      navigation.navigate('GuideExperience');
-    } else {
-      Alert.alert('Upload Images', 'Please upload all required images before submitting.');
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        "http://192.168.0.105:8000/api/authRoutes/guide_submit_documents",
+        {
+          image1 : imageUri1,
+          image2 : imageUri2,
+          image3 : imageUri3,
+          image4 : imageUri4,
+          guideId,
+        }
+      );
+
+      if (response.status === 200) {
+        console.log(response.data);
+        navigation.navigate("GuideExperience", { guideId });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
   };
   

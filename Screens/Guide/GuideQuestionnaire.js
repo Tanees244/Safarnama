@@ -1,118 +1,92 @@
-//done
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { CheckBox } from 'react-native-elements';
-
+import axios from 'axios';
 
 const GuideQuestionnaire = () => {
-  const [text, setText] = useState('');
+  const [answers, setAnswers] = useState(['', '', '']); // Initialize with empty strings for 3 questions
   const [isChecked, setIsChecked] = useState(false);
-  const textInputRef = useRef(null);
   const navigation = useNavigation();
   
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
   };
 
-  const handleTextChange = (newText) => {
-    setText(newText);
-    const totalHeight = (newText.split('\n').length * 25) + 50;
+  const handleTextChange = (index, newText) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[index] = newText;
+    setAnswers(updatedAnswers);
+  };
 
-    if (textInputRef.current) {
-      textInputRef.current.setNativeProps({
-        height: Math.max(55, totalHeight),
-      });
+  const route = useRoute();
+  const { guideId } = route.params;
+
+  const handleApply = async () => {
+    if (isChecked) {
+      try {
+        const response = await axios.post(
+          "http://192.168.0.105:8000/api/authRoutes/guide_questionnaire",
+          {
+            guideId,
+            answers,
+          }
+        );
+
+        if (response.status === 200) {
+          console.log(response.data);
+          navigation.navigate("GuideHomeScreen");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
+    } else {
+      alert('Please accept the terms and conditions before applying.');
     }
   };
- 
-
 
   const screenWidth = Dimensions.get('window').width;
-  const inputContainerWidth = screenWidth * 0.9;
   const buttonWidth = screenWidth * 0.4;
-  const inputBoxWidth = inputContainerWidth - 40; // Subtract padding
-
-  const navigateToGuideHomeScreen = () => {
-    if (isChecked) {
-        navigation.navigate('GuideHomeScreen'); // Replace with your screen name
-      } else {
-        // Show an error message or alert if the checkboxes are not checked
-        alert('Please accept the terms and conditions before applying.');
-      }
-    };
 
   return (
-    <View style={styles.Container}>
-    <View style={styles.header}>
-      <Text style={styles.headerText}>Safarnama</Text>
-    </View>
-      <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <Text style={styles.heading}>Questionnaire</Text>
 
-        <Text style={styles.text}>Questionnaire</Text>
-
-        <View style={styles.indicator}>
-          <View style={styles.pageIndicatorActive} />
-          <View style={styles.pageIndicatorActive} />
-          <View style={styles.pageIndicatorActive} />
-          <View style={styles.pageIndicatorActive} />
+        <View style={styles.questionsContainer}>
+          {answers.map((answer, index) => (
+            <View key={index} style={styles.questionContainer}>
+              <Text style={styles.questionText}>{`Question #${index + 1}:`}</Text>
+              <TextInput
+                style={styles.answerInput}
+                multiline
+                value={answer}
+                onChangeText={(text) => handleTextChange(index, text)}
+              />
+            </View>
+          ))}
         </View>
 
-        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-          <Text style={styles.inputHeading}>Question#1</Text>
-          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-            <TextInput
-              ref={textInputRef}
-              multiline={true}
-              style={styles.input}
-              onChangeText={handleTextChange}
-            />
-          </View>
-        </View>
-
-        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-          <Text style={styles.inputHeading}>Question#2</Text>
-          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-            <TextInput
-              ref={textInputRef}
-              multiline={true}
-              style={styles.input}
-              onChangeText={handleTextChange}
-            />
-          </View>
-        </View>
-        <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-          <Text style={styles.inputHeading}>Question#3</Text>
-          <View style={[styles.inputBox, { width: inputBoxWidth }]}>
-            <TextInput
-              ref={textInputRef}
-              multiline={true}
-              style={styles.input}
-              onChangeText={handleTextChange}
-            />
-          </View>
-        </View>
         <View style={styles.checkboxContainer}>
           <CheckBox
-          title='Privacy Policy'
-          checked={isChecked}
-          onPress={handleCheckBox}
+            title='Privacy Policy'
+            checked={isChecked}
+            onPress={handleCheckBox}
           />
         </View>
         <View style={styles.checkboxContainer}>
           <CheckBox
-          title='Terms & Condition'
-          checked={isChecked}
-          onPress={handleCheckBox}
+            title='Terms & Condition'
+            checked={isChecked}
+            onPress={handleCheckBox}
           />
         </View>
-        <View>
-          <TouchableOpacity activeOpacity={0.5}
-          onPress={navigateToGuideHomeScreen} 
-              style={[styles.buttonText, { width: buttonWidth }]}>
-              <Text style={styles.TextDesign}>Apply</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles.button, { width: buttonWidth }]}
+          onPress={handleApply}
+        >
+          <Text style={styles.buttonText}>Apply</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -120,93 +94,56 @@ const GuideQuestionnaire = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    alignItems: 'center',
+    flex: 1,
     backgroundColor: 'white',
   },
-  Container: {
-    flex: 1,
+  contentContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingBottom: 50,
   },
-  header: {
-    height: 140,
-    backgroundColor: '#1a1a1a',
-    shadowColor: 'black',
-    elevation: 20,
-    zIndex: -1,
-  },
-  headerText: {
-    textAlign: 'center',
-    top: 60,
-    color: 'white',
-    fontSize: 30,
-    fontFamily: 'Poppins-Bold',
-  },
-  text: {
-    fontSize: 32,
-    color: '#319BD6',
-    fontFamily: 'Poppins-Bold',
-    marginTop: 30,
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
+  },
+  questionsContainer: {
+    marginBottom: 20,
+  },
+  questionContainer: {
+    marginBottom: 20,
+  },
+  questionText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  answerInput: {
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    borderRadius: 8,
+    padding: 10,
+    minHeight: 100,
   },
   checkboxContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    
+    alignItems: 'center',
+    marginBottom: 10,
   },
-  checkboxText: {
-    fontSize: 16,
-    marginLeft: 10,
-  },
-  indicator: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  pageIndicatorActive: {
-    borderWidth: 1,
-    borderRadius: 30,
-    width: 80,
-    height: 15,
-    borderColor: 'white',
-    backgroundColor: '#071B40',
-    marginHorizontal: 5,
-  },
-  inputContainer: {
-    marginTop: 30,
-    alignItems: 'flex-start',
-  },
-  inputHeading: {
-    fontSize: 20,
-  },
-  inputBox: {
-    marginTop: 10,
-    backgroundColor:  '#D9D9D9',
-    height: 140,
-    borderRadius: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'black',
-
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
+  button: {
+    backgroundColor: '#319BD6',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    marginBottom: 20,
   },
   buttonText: {
-    marginTop: 30,
-    flexDirection: 'row',
-    borderRadius: 38,
-    backgroundColor: '#319BD6',
-    justifyContent: 'center',
-   
-
-  },
-  TextDesign: {
-    fontSize: 20,
-    fontWeight: '900',
-    padding: 10,
     color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-
 });
 
 export default GuideQuestionnaire;
