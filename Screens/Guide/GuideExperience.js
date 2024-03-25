@@ -1,18 +1,30 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Dimensions,
+  Alert,
+} from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const GuideExperience = () => {
-
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const textInputRef = useRef(null);
   const navigation = useNavigation();
-  const [experience, setExperience] = useState('');
-  const [motivation, setMotivation] = useState('');
+  const [experience, setExperience] = useState("");
+  const [motivation, setMotivation] = useState("");
+
+  const route = useRoute();
+  const { guideId } = route.params;
 
   const handleTextChange = (newText) => {
     setText(newText);
-    const totalHeight = (newText.split('\n').length * 25) + 50;
+    const totalHeight = newText.split("\n").length * 25 + 50;
 
     if (textInputRef.current) {
       textInputRef.current.setNativeProps({
@@ -29,16 +41,39 @@ const GuideExperience = () => {
     setMotivation(newMotivation);
   };
 
-  const handleGuideBankDetail = () => {
+  const handleGuideBankDetail = async () => {
     if (experience && motivation) {
-      // Both fields are filled, you can navigate or perform further actions here
-      navigation.navigate('GuideBankDetail'); 
+      try {
+        const response = await axios.post(
+          "http://192.168.0.105:8000/api/authRoutes/guide_experience",
+          {
+            experience,
+            motivation,
+            guideId,
+          }
+        );
+
+        console.log("Guide ID in GuideExperience:", guideId);
+
+        if (response.status === 200) {
+          console.log("Guide experience submitted successfully");
+          navigation.navigate("GuideBankDetail", { guideId });
+        } else {
+          console.error("Failed to submit guide experience");
+          Alert.alert("Failed to submit guide experience. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error submitting guide experience:", error);
+        Alert.alert(
+          "An error occurred while submitting guide experience. Please try again later."
+        );
+      }
     } else {
-      Alert.alert('Please fill in all fields before submitting.');
+      Alert.alert("Please fill in all fields before submitting.");
     }
   };
 
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const inputContainerWidth = screenWidth * 0.9;
   const buttonWidth = screenWidth * 0.4;
   const submitButton = screenWidth * 0.4;
@@ -46,9 +81,9 @@ const GuideExperience = () => {
 
   return (
     <View style={styles.Container}>
-    <View style={styles.header}>
-      <Text style={styles.headerText}>Safarnama</Text>
-    </View>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Safarnama</Text>
+      </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.text}>Experience</Text>
 
@@ -71,7 +106,6 @@ const GuideExperience = () => {
           </View>
         </View>
 
-
         <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
           <Text style={styles.inputHeading}>Motivation to become a guide</Text>
           <View style={[styles.inputBox, { width: inputBoxWidth }]}>
@@ -83,7 +117,11 @@ const GuideExperience = () => {
             />
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleGuideBankDetail}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={[styles.submitButton, { width: submitButton }]}
+          onPress={handleGuideBankDetail}
+        >
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -94,35 +132,35 @@ const GuideExperience = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    alignItems: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    backgroundColor: "white",
   },
   Container: {
     flex: 1,
   },
   header: {
     height: 140,
-    backgroundColor: '#1a1a1a',
-    shadowColor: 'black',
+    backgroundColor: "#1a1a1a",
+    shadowColor: "black",
     elevation: 20,
     zIndex: -1,
   },
   headerText: {
-    textAlign: 'center',
+    textAlign: "center",
     top: 60,
-    color: 'white',
+    color: "white",
     fontSize: 30,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
   },
   text: {
     fontSize: 32,
-    color: 'black',
-    fontFamily: 'Poppins-Bold',
+    color: "black",
+    fontFamily: "Poppins-Bold",
     marginTop: 30,
     marginBottom: 20,
   },
   indicator: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 20,
   },
   pageIndicator: {
@@ -130,8 +168,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 80,
     height: 15,
-    borderColor: 'black',
-    backgroundColor: '#D9D9D9',
+    borderColor: "black",
+    backgroundColor: "#D9D9D9",
     marginHorizontal: 2,
   },
   pageIndicatorActive: {
@@ -139,26 +177,26 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 80,
     height: 15,
-    borderColor: 'white',
-    backgroundColor: '#071B40',
+    borderColor: "white",
+    backgroundColor: "#071B40",
     marginHorizontal: 5,
   },
   inputContainer: {
     marginTop: 30,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   inputHeading: {
     fontSize: 20,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
   },
   inputBox: {
     marginTop: 10,
-    backgroundColor:  '#D9D9D9',
+    backgroundColor: "#D9D9D9",
     height: 140,
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
   },
   input: {
     flex: 1,
@@ -166,17 +204,17 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     borderRadius: 38,
-    backgroundColor: '#319BD6',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#319BD6",
+    justifyContent: "center",
+    alignItems: "center",
     height: 60,
     marginTop: 30,
     marginBottom: 30,
   },
   submitButtonText: {
     fontSize: 20,
-    fontFamily: 'Poppins-Bold',
-    color: 'white',
+    fontFamily: "Poppins-Bold",
+    color: "white",
   },
 });
 

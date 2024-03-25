@@ -26,7 +26,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-           source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -114,20 +114,22 @@ const PlaceLists = () => {
     fetchData();
   }, []);
 
-
   const fetchData = async () => {
     try {
-        const response = await axios.get('http://192.168.100.12:8000/api/routes/places', {
-            timeout: 5000, // Set timeout to 5 seconds
-            retry: 3, // Retry up to 3 times on failure
-            retryDelay: 1000 // Delay between retries in milliseconds
-        });
-        setPlaces(response.data);
+      const response = await axios.get(
+        "http://192.168.100.12:8000/api/routes/places",
+        {
+          timeout: 5000, // Set timeout to 5 seconds
+          retry: 3, // Retry up to 3 times on failure
+          retryDelay: 1000, // Delay between retries in milliseconds
+        }
+      );
+      setPlaces(response.data);
     } catch (error) {
-        console.error('Error fetching data:', error);
-        // Handle error or set an appropriate state
+      console.error("Error fetching data:", error);
+      // Handle error or set an appropriate state
     }
-};
+  };
 
   return (
     <View style={styles.Container}>
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
   image: {
     height: 200,
     width: 280,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   contentContainer: {
     top: 130,

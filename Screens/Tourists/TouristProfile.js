@@ -77,7 +77,7 @@ const TouristProfile = () => {
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('authToken');
+    await AsyncStorage.removeItem("authToken");
     navigation.navigate(Login);
   };
 
@@ -85,6 +85,7 @@ const TouristProfile = () => {
     <View style={styles.Container}>
       <TouchableOpacity onPress={ProfileNavigate} style={styles.ProfileButton}>
         <Image
+          
           source={require("../../assets/Home.png")}
           style={[{ width: 40, height: 40 }]}
         />
@@ -97,8 +98,8 @@ const TouristProfile = () => {
         <View style={[styles.profileContainer, { width: containerWidth }]}>
           <Image
             style={styles.userIcon}
-            resizeMode="cover"
-            source={require("../../assets/ellipse.png")}
+            // resizeMode="contain"
+            source={{ uri: `data:image/jpeg;base64,${user?.picture}` }}
           />
           <View style={styles.buttonsContainer}>
             <Text style={styles.Name}>{user?.name}</Text>
@@ -164,8 +165,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   userIcon: {
-    width: 90,
-    height: 90,
+    width: 130,
+    height: 130,
+    borderRadius: 50,
   },
   buttonsContainer: {
     alignItems: "center",

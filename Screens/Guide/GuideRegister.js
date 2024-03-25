@@ -19,7 +19,7 @@ const GuideRegister = () => {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/authRoutes/register/",
+        "http://192.168.0.105:8000/api/authRoutes/register/",
         {
           email: email,
           password: Password,
@@ -30,12 +30,16 @@ const GuideRegister = () => {
       );
 
       console.log(response.data);
-      navigation.navigate("Login");
+      navigation.navigate("GuidePersonalDetail" , { userId: response.data.userId });
     } catch (error) {
       console.error("Error during signup:", error);
       alert("Network Error: Unable to connect to the server.");
     }
   };
+
+  // const handleSignup = async () => {
+  //   navigation.navigate('GuidePersonalDetail');
+  // }
    
    
   return (
