@@ -45,7 +45,7 @@ const GuideExperience = () => {
     if (experience && motivation) {
       try {
         const response = await axios.post(
-          "http://192.168.0.105:8000/api/authRoutes/guide_experience",
+          "http://192.168.0.105:8000/api/guideRoutes/guide_experience",
           {
             experience,
             motivation,
