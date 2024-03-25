@@ -275,6 +275,8 @@ const Discover = () => {
     navigation.navigate("CreatePackage");
   };
 
+
+  
   const [searchQuery, setSearchQuery] = useState("");
 
   const combinedData = [...data, ...data2];
