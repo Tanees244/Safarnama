@@ -142,7 +142,7 @@ const PlacesInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={require("../../assets/Place1.jpg")}
+          source={{uri: `data:image/jpeg;base64,${place.image}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
@@ -316,10 +316,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   Image: {
-    height: 450,
-    width: "100%",
-    position: "absolute",
+    flex: 1,
+    aspectRatio: 1, // Maintain aspect ratio
+    resizeMode: 'cover',
+    width:'100%',
+    height:'100%',
   },
+  
   HomeButton: {
     position: "absolute",
     bottom: 20,
@@ -340,7 +343,7 @@ const styles = StyleSheet.create({
     borderRadius: 34,
     paddingTop: 10,
     paddingBottom: 100, // Adjust this value as needed
-    marginTop: 360, // Adjust this value as needed
+    marginTop: -40, // Adjust this value as needed
   },
   TextContainer: {
     flexDirection: "row",
