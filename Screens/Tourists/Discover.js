@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import axios from "axios";
 
 const data = [
   {
@@ -217,7 +217,15 @@ const VerticalCard = ({ item }) => {
   );
 };
 
-
+const checkAuthentication = async () => {
+  try {
+    const authToken = await AsyncStorage.getItem("authToken");
+    return authToken !== null;
+  } catch (error) {
+    console.error("Error checking authentication:", error);
+    return false;
+  }
+};
 
 const Discover = () => {
   const navigation = useNavigation();
@@ -230,10 +238,19 @@ const Discover = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const checkAuthentication = async () => {
+    try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      return authToken !== null;
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      return false;
+    }
+  };
   useEffect(() => {
     const checkAuthStatus = async () => {
-      const authToken = await AsyncStorage.getItem("authToken");
-      setIsAuthenticated(authToken !== null);
+      const authenticated = await checkAuthentication();
+      setIsAuthenticated(authenticated);
     };
 
     checkAuthStatus();
@@ -275,22 +292,60 @@ const Discover = () => {
     navigation.navigate("CreatePackage");
   };
 
-
-  
   const [searchQuery, setSearchQuery] = useState("");
+  const [placeData, setPlaceData] = useState([]);
+  const [hotelData, setHotelData] = useState([]);
 
-  const combinedData = [...data, ...data2];
+  useEffect(() => {
+    // Fetch place data
+    fetchPlaceData();
 
-  const filteredData = combinedData.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    // Fetch hotel data
+    fetchHotelData();
+  }, []);
+
+  const combinedData = [...placeData, ...hotelData];
+
+  const filteredData = combinedData.map(item => {
+    if (item.hasOwnProperty("gallery")) {
+      return { ...item, type: "place" };
+    } else {
+      return { ...item, type: "hotel" };
+    }
+  }).filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  
+
+  const fetchPlaceData = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.100.12:8000/api/routes/places"
+      );
+      setPlaceData(response.data);
+    } catch (error) {
+      console.error("Error fetching place data:", error);
+    }
+  };
+
+  // Fetch hotel data function
+  const fetchHotelData = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.100.12:8000/api/routes/hotel-details"
+      );
+      setHotelData(response.data);
+    } catch (error) {
+      console.error("Error fetching hotel data:", error);
+    }
+  };
 
   const handleItemPress = (item) => {
-    // Add logic to navigate based on the item type (place or hotel)
-    if (item.id <= 3) {
-      navigation.navigate("PlacesInfo", { placeId: item.id });
-    } else {
-      navigation.navigate("HotelsInfo", { hotelId: item.id });
+    // Handle item press based on type (place or hotel)
+    if (item.type === "place") {
+      // Navigate to place info screen
+      navigation.navigate("PlacesInfo", { place: item });
+    } else if (item.type === "hotel") {
+      // Navigate to hotel info screen
+      navigation.navigate("HotelsInfo", { Hotel: item });
     }
     setSearchQuery(""); // Clear search query after navigation
   };
@@ -410,9 +465,9 @@ const Discover = () => {
                   <View style={styles.searchContainer}>
                     <TouchableOpacity onPress={() => handleItemPress(item)}>
                       <View style={styles.resultItem}>
-                        <Image source={item.image} style={styles.itemImage} />
-                        <Text style={styles.itemTitle}>{item.title}</Text>
-                        <Text style={styles.rating}>{item.ratings}</Text>
+                        <Image source={{ uri: `data:image/jpeg;base64,${item.image}` }} style={styles.itemImage} />
+                        <Text style={styles.itemTitle}>{item.name}</Text>
+                        <Text style={styles.rating}>{item.rating}</Text>
                       </View>
                     </TouchableOpacity>
                   </View>

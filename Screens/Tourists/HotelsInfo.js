@@ -51,24 +51,6 @@ const data = [
   },
 ];
 
-const imageGallery = [
-  {
-    id: "1",
-    image: require("../../assets/Hotel1.jpg"),
-  },
-  {
-    id: "2",
-    image: require("../../assets/Hotel2.jpg"),
-  },
-  {
-    id: "3",
-    image: require("../../assets/Hotel3.jpg"),
-  },
-  {
-    id: "4",
-    image: require("../../assets/Hotel1.jpg"),
-  },
-];
 
 const FacilityListDetails = ({ details }) => {
   return (
@@ -273,7 +255,7 @@ const HotelsInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={{uri: `data:image/jpeg;base64,${Hotel.images}`}}
+          source={{uri: `data:image/jpeg;base64,${Hotel.image}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
@@ -289,7 +271,7 @@ const HotelsInfo = () => {
               </View>
             </View>
             <View style={styles.LeftText}>
-              <Text style={styles.Price}>25$/Night</Text>
+              <Text style={styles.Price}>{Hotel.price_standard} pkr</Text>
             </View>
           </View>
           <View style={styles.FacilityContainer}>
