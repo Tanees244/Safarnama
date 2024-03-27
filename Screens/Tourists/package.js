@@ -37,7 +37,7 @@ const Packages = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://192.168.100.12:8000/api/packages/");
+                const response = await fetch("http://192.168.100.12:8000/api/routes/packages/");
                 const data = await response.json();
                 setApiPackageData(data);
             } catch (error) {

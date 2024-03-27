@@ -13,6 +13,8 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Modal from "react-native-modal";
 import MapView, { Marker } from "react-native-maps";
+import Swiper from 'react-native-swiper';
+import ImageViewer from 'react-native-image-zoom-viewer';
 const MAX_TEXT_LENGTH = 200;
 
 const imageGallery = [
@@ -34,7 +36,7 @@ const imageGallery = [
   },
 ];
 
-const GalleryList = () => {
+const GalleryList = ({ gallery }) => {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -48,46 +50,44 @@ const GalleryList = () => {
   };
 
   return (
-    <View>
+    <View style={styles.Container}>
       <FlatList
-        data={imageGallery}
+        data={gallery}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={styles.GalleryItem}>
+          <View style={styles.galleryItem}>
             <TouchableOpacity
               style={styles.facilityButton}
               onPress={() => handleGalleryButtonClick(index)}
             >
-              <Image source={item.image} style={styles.GalleryImage} />
+              <Image source={{ uri: item }} style={styles.galleryImage} />
             </TouchableOpacity>
           </View>
         )}
       />
 
-      <Modal
-        isVisible={isGalleryVisible}
-        onBackdropPress={closeGallery}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-      >
-        <ImageBackground
-          source={imageGallery[selectedImageIndex].image}
-          style={styles.PopupGalleryImage}
-          contentFit="cover"
-        >
-          <TouchableOpacity
-            onPress={closeGallery}
-            style={styles.closeIconContainer}
-          >
-            <Image
-              style={styles.closeIcon}
-              source={require("../../assets/cross.png")}
-            />
-          </TouchableOpacity>
-        </ImageBackground>
-      </Modal>
+<Modal visible={isGalleryVisible} transparent={true}>
+  <View style={styles.imageViewerContainer}>
+    <ImageViewer
+      imageUrls={gallery.map((imageUri) => ({ url: imageUri }))}
+      index={selectedImageIndex}
+      onCancel={closeGallery}
+      enableSwipeDown={true}
+      onSwipeDown={closeGallery}
+      renderIndicator={() => null} // Hide indicator
+      swipeDownThreshold={50} // Adjust swipe down threshold
+      renderImage={(props) => (
+        <Image
+          {...props}
+          resizeMode="contain"
+          style={styles.imageViewerImage} // Style the individual images
+        />
+      )}
+    />
+  </View>
+</Modal>
     </View>
   );
 };
@@ -142,7 +142,7 @@ const PlacesInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={require("../../assets/Place1.jpg")}
+          source={{uri: `data:image/jpeg;base64,${place.image}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
@@ -160,7 +160,7 @@ const PlacesInfo = () => {
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Gallery</Text>
-            <GalleryList />
+            {place && <GalleryList gallery={place.gallery} />}
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Description</Text>
@@ -316,10 +316,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   Image: {
-    height: 450,
-    width: "100%",
-    position: "absolute",
+    flex: 1,
+    aspectRatio: 1, // Maintain aspect ratio
+    resizeMode: 'cover',
+    width:'100%',
+    height:'100%',
   },
+  
   HomeButton: {
     position: "absolute",
     bottom: 20,
@@ -340,8 +343,19 @@ const styles = StyleSheet.create({
     borderRadius: 34,
     paddingTop: 10,
     paddingBottom: 100, // Adjust this value as needed
-    marginTop: 360, // Adjust this value as needed
+    marginTop: -40, // Adjust this value as needed
   },
+
+  imageViewerContainer: {
+    flex: 1,
+    backgroundColor: 'black', 
+    
+  },
+  imageViewerImage: {
+    width: '100%', // Width of the image
+    height: '100%', // Height of the image
+  },
+
   TextContainer: {
     flexDirection: "row",
   },
@@ -414,9 +428,7 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
   },
-  facilityButton: {
-    alignItems: "center",
-  },
+
   facilityBox: {
     alignItems: "center",
   },
@@ -427,22 +439,32 @@ const styles = StyleSheet.create({
   facilityButtonText: {
     fontSize: 14,
   },
-  GalleryImage: {
-    width: 110,
-    height: 110,
+  galleryImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
     borderRadius: 20,
   },
-  GalleryItem: {
+  galleryItem: {
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: 'space-evenly',
     width: 120,
     height: 120,
   },
-  PopupGalleryImage: {
+
+  facilityButton: {
+    width: 100,
+    height: 100,
+    alignItems: "center",
+  },
+
+  popupGalleryImage: {
+    flex: 1,
     position: "absolute",
     width: Dimensions.get("window").width * 0.9,
     height: Dimensions.get("window").width * 1,
   },
+ 
   blurBackground: {
     backgroundColor: "rgba(0, 0, 0.9, 0.95)",
     // Adjust the alpha value for the blur effect

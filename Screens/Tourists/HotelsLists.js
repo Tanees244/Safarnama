@@ -28,7 +28,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={item.image}
+          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -117,7 +117,7 @@ const HotelsLists = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/hotel-details/");
+      const response = await axios.get("http://192.168.100.12:8000/api/routes/hotel-details/");
       setHotels(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -51,24 +51,6 @@ const data = [
   },
 ];
 
-const imageGallery = [
-  {
-    id: "1",
-    image: require("../../assets/Hotel1.jpg"),
-  },
-  {
-    id: "2",
-    image: require("../../assets/Hotel2.jpg"),
-  },
-  {
-    id: "3",
-    image: require("../../assets/Hotel3.jpg"),
-  },
-  {
-    id: "4",
-    image: require("../../assets/Hotel1.jpg"),
-  },
-];
 
 const FacilityListDetails = ({ details }) => {
   return (
@@ -175,13 +157,17 @@ const FacilitiesList = ({ data }) => {
   );
 };
 
-const GalleryList = ({ data }) => {
+const GalleryList = ({ gallery }) => {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+
+  console.log(gallery[0]);
 
   const handleGalleryButtonClick = (index) => {
     setSelectedImageIndex(index);
     setIsGalleryVisible(true);
+
   };
 
   const closeGallery = () => {
@@ -190,18 +176,20 @@ const GalleryList = ({ data }) => {
 
   return (
     <View>
-      <FlatList
-        data={imageGallery}
+    <FlatList
+        data={gallery}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={styles.GalleryItem}>
             <TouchableOpacity
               style={styles.facilityButton}
               onPress={() => handleGalleryButtonClick(index)}
             >
-              <Image source={item.image} style={styles.GalleryImage} />
+
+              <Image source={{ uri : item }} style={styles.GalleryImage} />
+              
             </TouchableOpacity>
           </View>
         )}
@@ -214,7 +202,7 @@ const GalleryList = ({ data }) => {
         animationOut="slideOutDown"
       >
         <ImageBackground
-          source={imageGallery[selectedImageIndex].image}
+          source={{uri: gallery[selectedImageIndex]}}
           style={styles.PopupGalleryImage}
           contentFit="cover"
         >
@@ -267,7 +255,7 @@ const HotelsInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={require("../../assets/HotelBackground.png")}
+          source={{uri: `data:image/jpeg;base64,${Hotel.image}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
@@ -283,7 +271,7 @@ const HotelsInfo = () => {
               </View>
             </View>
             <View style={styles.LeftText}>
-              <Text style={styles.Price}>25$/Night</Text>
+              <Text style={styles.Price}>{Hotel.price_standard} pkr</Text>
             </View>
           </View>
           <View style={styles.FacilityContainer}>
@@ -292,7 +280,7 @@ const HotelsInfo = () => {
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Gallery</Text>
-            <GalleryList data={data} />
+            {Hotel && <GalleryList gallery={Hotel.gallery} />}
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Description</Text>
@@ -340,9 +328,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   Image: {
-    height: 450,
-    width: "100%",
-    position: "absolute",
+    flex: 1,
+    aspectRatio: 1, // Maintain aspect ratio
+    resizeMode: 'cover',
+    width:'100%',
+    height:'100%',
   },
   HomeButton: {
     position: "absolute",
@@ -364,7 +354,7 @@ const styles = StyleSheet.create({
     borderRadius: 34,
     paddingTop: 10,
     paddingBottom: 100, // Adjust this value as needed
-    marginTop: 360, // Adjust this value as needed
+    marginTop: -40, // Adjust this value as needed
   },
   TextContainer: {
     flexDirection: "row",
