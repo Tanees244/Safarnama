@@ -3,23 +3,22 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   ScrollView,
-  Image,
   TouchableOpacity,
+  Image,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import Modal from "react-native-modal";
 
 const GuideApplication = () => {
-  const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeSection, setActiveSection] = useState("Active");
-  const [users, setUsers] = useState("");
+  const [users, setUsers] = useState({});
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -31,74 +30,137 @@ const GuideApplication = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [activeSection]); // Fetch data when activeSection changes
+  }, [activeSection]);
+
+  const handleUserClick = (user) => {
+    setSelectedUser(user);
+    toggleModal();
+  };
+
+  const handleStatusUpdate = async (id, status) => {
+    try {
+      const response = await fetch(
+        `http://192.168.0.105:8000/api/guideRoutes/update_guide_status/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update guide status");
+      }
+
+      // Reload the guide applications after status update
+      handleSectionChange(activeSection);
+    } catch (error) {
+      console.error("Error updating guide status:", error);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(
-        `http://192.168.0.105/api/guideRoutes/guide_details?status=${activeSection}`
+      const response = await axios.get(
+        `http://192.168.0.105:8000/api/guideRoutes/guide_applications?status=${activeSection}`
       );
-      // const data = await response.json();
-      const data = await response.json(); // Parse the JSON response
-      console.log(data); // Check the structure of the response
-      setUsers(data.Results);
+
+      setUsers(response.data);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching users:", error.response);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.Container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.title}>Guide Applications</Text>
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[
-              styles.tabButton,
-              activeSection === "Active" && styles.activeTab,
-            ]}
-            onPress={() => handleSectionChange("Active")}
-          >
-            <Text style={styles.tabText}>Active</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.Text}>Guide Applications</Text>
+        <View style={styles.pagination}>
+          <TouchableOpacity onPress={() => handleSectionChange("Active")}>
+            <Text
+              style={[
+                styles.sectionText,
+                activeSection === "Active" && styles.activeSection,
+              ]}
+            >
+              Active
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.tabButton,
-              activeSection === "Pending" && styles.activeTab,
-            ]}
-            onPress={() => handleSectionChange("Pending")}
-          >
-            <Text style={styles.tabText}>Pending</Text>
+          <TouchableOpacity onPress={() => handleSectionChange("Pending")}>
+            <Text
+              style={[
+                styles.sectionText,
+                activeSection === "Pending" && styles.activeSection,
+              ]}
+            >
+              Pending
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.tabButton,
-              activeSection === "Rejected" && styles.activeTab,
-            ]}
-            onPress={() => handleSectionChange("Rejected")}
-          >
-            <Text style={styles.tabText}>Rejected</Text>
+          <TouchableOpacity onPress={() => handleSectionChange("Rejected")}>
+            <Text
+              style={[
+                styles.sectionText,
+                activeSection === "Rejected" && styles.activeSection,
+              ]}
+            >
+              Rejected
+            </Text>
           </TouchableOpacity>
         </View>
-        {users < 0 ? (
+        {Object.keys(users).length > 0 ? (
           <ScrollView>
-            {users.map((user, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.userItem}
-                onPress={toggleModal}
-              >
-                <Text style={styles.userName}>{user.guide_id}</Text>
-              </TouchableOpacity>
+            {Object.values(users).map((user) => (
+              <View style={[styles.Detail, { width: containerWidth }]}>
+                <Image
+                  style={styles.UserImage}
+                  source={require("../../assets/ellipse.png")}
+                />
+                <View style={styles.UserDetail}>
+                  <View style={styles.UserName}>
+                    <Text style={styles.UserNameText}>{user.guide_name}</Text>
+                    <TouchableOpacity
+                      style={styles.ReadMoreButton}
+                      onPress={() => handleUserClick(user)}
+                    >
+                      <Text style={styles.ReadMoreText}>Read More</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.Buttons}>
+                    {user.status === "active" ? null : (
+                      <TouchableOpacity
+                        style={styles.ApproveButton}
+                        onPress={() =>
+                          handleStatusUpdate(user.guide_id, "active")
+                        }
+                      >
+                        <Text style={styles.ButtonText}>Approve</Text>
+                      </TouchableOpacity>
+                    )}
+                    {user.status === "rejected" ? null : (
+                      <TouchableOpacity
+                        style={styles.RejectButton}
+                        onPress={() =>
+                          handleStatusUpdate(user.guide_id, "rejected")
+                        }
+                      >
+                        <Text style={styles.ButtonText}>Reject</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              </View>
             ))}
           </ScrollView>
         ) : (
           <Text style={styles.noDataText}>No data available</Text>
         )}
       </ScrollView>
+
       <Modal
         isVisible={isModalVisible}
         animationIn="slideInUp"
@@ -117,22 +179,52 @@ const GuideApplication = () => {
           </TouchableOpacity>
 
           <Text style={styles.modalHeading}>Guide Details</Text>
-          <View style={styles.modalDetails}>
-            <Text style={styles.ModalDetailText}>Name :</Text>
-            <Text style={styles.ModalDetailText}>Details :</Text>
-          </View>
-          <TouchableOpacity style={styles.modalButton}>
-            <Text style={styles.modalButtonText}>Picture</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
-            <Text style={styles.modalButtonText}>CNIC-Back</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
-            <Text style={styles.modalButtonText}>CNIC-Front</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton}>
-            <Text style={styles.modalButtonText}>Tour Guide License</Text>
-          </TouchableOpacity>
+
+          <ScrollView>
+            <View style={styles.modalDetails}>
+              <Text
+                style={[
+                  styles.ModalDetailHeading,
+                  { color: "black", fontSize: 20 },
+                ]}
+              >
+                {selectedUser?.guide_name}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Motivation </Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.motivation}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Past Experience</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.past_experience}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Q1 Answer</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.guide_q1}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Q2 Answer</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.guide_q2}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Q3 Answer</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.guide_q3}
+              </Text>
+            </View>
+
+            <TouchableOpacity style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Picture</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>CNIC-Back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>CNIC-Front</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Tour Guide License</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </Modal>
     </View>
@@ -160,31 +252,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 30,
     fontFamily: "Poppins-Bold",
-  },
-  pagination: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  sectionText: {
-    fontSize: 16,
-    fontFamily: "Poppins-Regular",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    color: "#333",
-  },
-  activeSection: {
-    fontFamily: "Poppins-SemiBold",
-    borderBottomWidth: 4,
-    borderBottomColor: "#0B6180", // Change this color as needed
-  },
-  title: {
-    fontFamily: "Poppins-Bold",
-    fontSize: 42,
   },
   Text: {
     fontSize: 30,
@@ -236,6 +303,7 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     flexDirection: "row",
+    justifyContent: 'space-between',
     marginTop: 20,
   },
   ButtonText: {
@@ -259,10 +327,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
     padding: 10,
-    marginLeft: 20,
   },
   modalContainer: {
     backgroundColor: "white",
+    marginTop: 20,
+    marginBottom: 20,
     borderRadius: 10,
     padding: 20,
     alignItems: "center",
@@ -303,10 +372,42 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 20,
   },
+  ModalDetailHeading: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 18,
+    color: "#787473",
+  },
   ModalDetailText: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
     color: "white",
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  sectionText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Regular",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    color: "#333",
+  },
+  activeSection: {
+    fontFamily: "Poppins-SemiBold",
+    borderBottomWidth: 4,
+    borderBottomColor: "#0B6180", // Change this color as needed
+  },
+  noDataText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 

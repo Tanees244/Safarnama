@@ -28,7 +28,7 @@ const GuideBankDetail = () => {
   const handleGuideQuestionnaire = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.0.105:8000/api/guideRoutes/guide_bank_details",
+        "http://192.168.1.119:8000/api/guideRoutes/guide_bank_details",
         {
           guideId,
           accountName,
