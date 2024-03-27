@@ -136,7 +136,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={item.image}
+          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -145,7 +145,7 @@ const HorizontalCard = ({ item, onPress }) => {
               source={require("../../assets/star.png")}
               style={styles.iconStar}
             />
-            <Text style={styles.ratingValue}>{item.ratings}</Text>
+            <Text style={styles.ratingValue}>{item.rating}</Text>
           </View>
         </ImageBackground>
       </View>
@@ -156,7 +156,7 @@ const HorizontalCard = ({ item, onPress }) => {
         ]}
       >
         <View style={styles.contentContainer}>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title}>{item.name}</Text>
           <Text style={styles.subdescription}>{item.city}</Text>
           <View style={styles.descriptionContainer}>
             <Text style={styles.description}>{item.description}</Text>
@@ -549,7 +549,7 @@ const Discover = () => {
 
         <Text style={styles.text}>Places</Text>
         <FlatList
-          data={data}
+          data={placeData}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -563,7 +563,7 @@ const Discover = () => {
 
         <Text style={styles.text}>Hotels</Text>
         <FlatList
-          data={data2}
+          data={hotelData}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
