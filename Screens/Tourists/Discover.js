@@ -338,6 +338,8 @@ const Discover = () => {
     }
   };
 
+  
+
   const handleItemPress = (item) => {
     // Handle item press based on type (place or hotel)
     if (item.type === "place") {

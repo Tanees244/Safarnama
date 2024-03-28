@@ -22,18 +22,18 @@ const RegisterT = () => {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/authRoutes/register/",
+        "http://192.168.100.12:8000/api/authRoutes/register/",
         {
           email: email,
           password: Password,
           user_type: "Vendor",
           vendor_type: "Transport",
-          transport_type: "Airline",
+          transport_type: "Railway",
         }
       );
 
       console.log(response.data);
-      navigation.navigate("Login");
+      navigation.navigate("TrainDetails",{ transportId : response.data.transportId });
     } catch (error) {
       console.error("Error during signup:", error);
       alert("Network Error: Unable to connect to the server.");
