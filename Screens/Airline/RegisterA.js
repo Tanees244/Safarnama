@@ -28,7 +28,7 @@ const RegisterA = () => {
       );
 
       console.log(response.data);
-      navigation.navigate("Login");
+      navigation.navigate("AirlineDetails",{AirlineID: response.data.airline_id});
     } catch (error) {
       console.error("Error during signup:", error);
       alert("Network Error: Unable to connect to the server.");
@@ -36,7 +36,7 @@ const RegisterA = () => {
   };
 
   const navigateToAirlinePersonalDetail = () => {
-    navigation.navigate("AirlineDetails");
+    navigation.navigate("login");
   };
 
   const handleLogin = async () => {
@@ -77,7 +77,7 @@ const RegisterA = () => {
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.RegisterButton}
-              onPress={handleSignup}
+              onPress={navigateToAirlinePersonalDetail}
             >
               <Text style={styles.RegisterText}>Register</Text>
             </TouchableOpacity>

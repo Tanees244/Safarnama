@@ -11,6 +11,7 @@ const AirlineDetails = () => {
   const inputWidth = containerWidth * 0.9;
   const submitButton = screenWidth * 0.4;
   const uploadButtonWidth = containerWidth * 0.9;
+  const { AirlineID } = route.params;
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -25,22 +26,6 @@ const AirlineDetails = () => {
     }));
   };
 
-  const handleUploadDocuments = () => {
-    // Your previous validation here if needed
-
-    /*if (!isFormDataValid()) {
-      Alert.alert('Fill All Fields', 'Please fill in all the fields correctly before proceeding.');
-      return;
-    }*/
-
-    const formDataToStore = formData;
-    navigation.navigate('GuideDocument', { formData: formDataToStore });
-  };
-
-  const handleSubmit = () => {
-    navigation.navigate('AirlineDashboard');
-  };
-
   const isFormDataValid = () => {
     return (
       formData.fullName &&
@@ -48,6 +33,37 @@ const AirlineDetails = () => {
       formData.phoneNumber 
     );
   };
+
+  const handleUploadDocuments =  () =>  {
+  
+    const formDataToStore = formData;
+    navigation.navigate('GuideDocument', { formData: formDataToStore });
+  };
+
+  const handleSubmit = async () =>{
+    try {
+      const response = await fetch(
+        "http://192.168.0.105:8000/api/authRoutes/airline-details",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, AirlineID }),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json(); 
+        console.log(responseData);
+        navigation.navigate("login");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
+
 
   return (
     <View style={styles.Container}>

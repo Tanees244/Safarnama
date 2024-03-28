@@ -13,8 +13,8 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Modal from "react-native-modal";
 import MapView, { Marker } from "react-native-maps";
-import Swiper from 'react-native-swiper';
 import ImageViewer from 'react-native-image-zoom-viewer';
+
 const MAX_TEXT_LENGTH = 200;
 
 const imageGallery = [
