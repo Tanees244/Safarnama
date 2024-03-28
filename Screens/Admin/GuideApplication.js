@@ -64,7 +64,7 @@ const GuideApplication = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.105:8000/api/guideRoutes/guide_applications?status=${activeSection}`
+        `http://192.168.100.12:8000/api/guideRoutes/guide_applications?status=${activeSection}`
       );
 
       setUsers(response.data);

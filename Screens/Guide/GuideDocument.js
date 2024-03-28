@@ -42,7 +42,7 @@ const GuideDocument = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.1.119:8000/api/guideRoutes/guide_submit_documents",
+        "http://192.168.100.12:8000/api/guideRoutes/guide_submit_documents",
         {
           image1 : imageUri1,
           image2 : imageUri2,
