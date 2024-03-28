@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useRoute} from '@react-navigation/native';
 
 const TrainDetails = () => {
   const navigation = useNavigation();
@@ -10,14 +10,13 @@ const TrainDetails = () => {
   const inputWidth = containerWidth * 0.9;
   const submitButton = screenWidth * 0.4;
   const uploadButtonWidth = containerWidth * 0.9;
+  const route = useRoute();
+  const { transportId } = route.params;
 
   const [formData, setFormData] = useState({
     fullName: '',
-    age: '',
     email: '',
-    address: '',
     phoneNumber: '',
-    cnicNumber: '',
   });
 
   const handleFieldChange = (field, value) => {
@@ -39,20 +38,38 @@ const TrainDetails = () => {
     navigation.navigate('GuideDocument', { formData: formDataToStore });
   };
 
-  const handleSubmit = () => {
-    navigation.navigate('TrainDashboard');
-  };
-
   const isFormDataValid = () => {
     return (
       formData.fullName &&
-      formData.age &&
       formData.email &&
-      formData.address &&
-      formData.phoneNumber &&
-      formData.cnicNumber
+      formData.phoneNumber 
     );
   };
+
+  const handleSubmit =  async () => {
+    try {
+      const response = await fetch(
+        "http://192.168.100.12:8000/api/authRoutes/railway_details",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, transportId }),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json(); 
+        console.log(responseData);
+        navigation.navigate("Login");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
+  
 
   return (
     <View style={styles.Container}>

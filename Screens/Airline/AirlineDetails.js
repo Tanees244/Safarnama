@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const AirlineDetails = () => {
   
@@ -11,7 +11,8 @@ const AirlineDetails = () => {
   const inputWidth = containerWidth * 0.9;
   const submitButton = screenWidth * 0.4;
   const uploadButtonWidth = containerWidth * 0.9;
-  const { AirlineID } = route.params;
+  const route = useRoute();
+  const { transportId } = route.params;
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -43,20 +44,20 @@ const AirlineDetails = () => {
   const handleSubmit = async () =>{
     try {
       const response = await fetch(
-        "http://192.168.0.105:8000/api/authRoutes/airline-details",
+        "http://192.168.100.12:8000/api/authRoutes/airline_details",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...formData, AirlineID }),
+          body: JSON.stringify({ ...formData, transportId }),
         }
       );
 
       if (response.ok) {
         const responseData = await response.json(); 
         console.log(responseData);
-        navigation.navigate("login");
+        navigation.navigate("Login");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
