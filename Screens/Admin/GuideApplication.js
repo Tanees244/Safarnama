@@ -40,7 +40,7 @@ const GuideApplication = () => {
   const handleStatusUpdate = async (id, status) => {
     try {
       const response = await fetch(
-        `http://192.168.0.105:8000/api/guideRoutes/update_guide_status/${id}`,
+        `http://192.168.100.12:8000/api/guideRoutes/update_guide_status/${id}`,
         {
           method: "PUT",
           headers: {
