@@ -53,14 +53,14 @@ const TouristProfile = () => {
       console.log("Bearer token:", token);
 
       const response = await fetch(
-        "http://192.168.100.18:8000/api/routes/tourist-details/",
+        "http://192.168.0.106:8000/api/routes/tourist-details/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-
+    
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
@@ -98,7 +98,6 @@ const TouristProfile = () => {
         <View style={[styles.profileContainer, { width: containerWidth }]}>
           <Image
             style={styles.userIcon}
-            // resizeMode="contain"
             source={{ uri: `data:image/jpeg;base64,${user?.picture}` }}
           />
           <View style={styles.buttonsContainer}>
@@ -118,7 +117,6 @@ const TouristProfile = () => {
 
         <View style={[styles.textBox, { width: containerWidth }]}>
           <Text style={{ color: "white", fontFamily: "Poppins-Regular" }}>
-            {/* {user?.bio} */}
           </Text>
         </View>
       </ScrollView>
