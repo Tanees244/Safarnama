@@ -217,17 +217,9 @@ const VerticalCard = ({ item }) => {
   );
 };
 
-const checkAuthentication = async () => {
-  try {
-    const authToken = await AsyncStorage.getItem("authToken");
-    return authToken !== null;
-  } catch (error) {
-    console.error("Error checking authentication:", error);
-    return false;
-  }
-};
 
 const Discover = () => {
+
   const navigation = useNavigation();
 
   const screenWidth = Dimensions.get("window").width;
@@ -247,6 +239,7 @@ const Discover = () => {
       return false;
     }
   };
+  
   useEffect(() => {
     const checkAuthStatus = async () => {
       const authenticated = await checkAuthentication();
@@ -256,10 +249,28 @@ const Discover = () => {
     checkAuthStatus();
   }, []);
 
-  // Function to handle the profile button press
   const handleProfilePress = () => {
     if (isAuthenticated) {
       navigation.navigate("TouristProfile");
+    } else {
+      Alert.alert(
+        "Sign In Required",
+        "Please sign in to view your profile.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          { text: "Sign In", onPress: () => navigation.navigate("Login") },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
+  const handleBookingPress = () => {
+    if (!isAuthenticated) {
+      navigation.navigate("CreatePackage");
     } else {
       Alert.alert(
         "Sign In Required",
@@ -288,10 +299,6 @@ const Discover = () => {
     navigation.navigate("Flight");
   };
 
-  const navigateToCreatePackage = () => {
-    navigation.navigate("CreatePackage");
-  };
-
   const [searchQuery, setSearchQuery] = useState("");
   const [placeData, setPlaceData] = useState([]);
   const [hotelData, setHotelData] = useState([]);
@@ -318,7 +325,7 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/places"
+        "http://192.168.0.106:8000/api/routes/places"
       );
       setPlaceData(response.data);
     } catch (error) {
@@ -326,11 +333,10 @@ const Discover = () => {
     }
   };
 
-  // Fetch hotel data function
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/hotel-details"
+        "http://192.168.0.106:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {
@@ -338,10 +344,8 @@ const Discover = () => {
     }
   };
 
-  
 
   const handleItemPress = (item) => {
-    // Handle item press based on type (place or hotel)
     if (item.type === "place") {
       // Navigate to place info screen
       navigation.navigate("PlacesInfo", { place: item });
@@ -362,11 +366,10 @@ const Discover = () => {
     setIsExpanded(!isExpanded);
   };
 
+
   const handleMenuItemPress = (menuItem) => {
     if (menuItem === "Home") {
       navigation.navigate("Discover");
-    } else if (menuItem === "Booking") {
-      navigation.navigate("CreatePackage");
     } else if (menuItem === "Itinerary") {
       navigation.navigate("Itinerary");
     }
@@ -402,7 +405,7 @@ const Discover = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.expandedMenuItem, { bottom: 65, left: -75 }]}
-            onPress={() => handleMenuItemPress("Booking")}
+            onPress={handleBookingPress}
           >
             <Image
               source={require("../../assets/booking.png")}
@@ -428,13 +431,11 @@ const Discover = () => {
         activeOpacity={0.5}
       >
         {isExpanded ? (
-          // Render close icon or any icon you prefer
           <Image
             source={require("../../assets/WhiteClose.png")}
             style={[{ width: 30, height: 30 }]}
           />
         ) : (
-          // Your existing Home button content
           <Image
             source={require("../../assets/ViewMore.png")}
             style={[{ width: 35, height: 35 }]}
@@ -542,7 +543,7 @@ const Discover = () => {
 
         <View style={styles.PackageContainer}>
           <TouchableOpacity
-            onPress={navigateToCreatePackage}
+            onPress={handleBookingPress}
             style={[styles.Package, { width: PackageWidth }]}
           >
             <Text style={styles.PackageText}>Create Your Package !</Text>
