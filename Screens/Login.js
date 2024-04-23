@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible); // Toggle password visibility state
+    setPasswordVisible(!passwordVisible); 
   };
 
   const handleSignIn = async () => {

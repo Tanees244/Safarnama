@@ -34,14 +34,15 @@ const Flight = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.100.12:8000/api/routes/railway-packages/"
+          "http://192.168.100.18:8000/api/routes/railway-packages/"
         );
         const response2 = await axios.get(
-          "http://192.168.100.12:8000/api/routes/airline-packages/"
+          "http://192.168.100.18:8000/api/routes/airline-packages/"
         );
         const response3 = await axios.get(
-          "http://192.168.100.12:8000/api/routes/bus-packages/"
+          "http://192.168.100.18:8000/api/routes/bus-packages/"
         );
+        
         setAirline(response2.data);
         setRailway(response.data);
         setBus(response3.data);

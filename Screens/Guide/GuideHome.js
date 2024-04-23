@@ -1,14 +1,40 @@
-//done
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GuideHome = () => {
-  const navigation = useNavigation();
 
+  const navigation = useNavigation();
+  const [guideData, setGuideData] = useState(null);
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.8;
-  const buttonWidth = containerWidth * 0.8; // 80% of container width
+  const buttonWidth = containerWidth * 0.8;
+
+  useEffect(() => {
+    const fetchGuideDetails = async () => {
+      try {
+        const authToken = await AsyncStorage.getItem('authToken');
+        const response = await fetch('http://192.168.0.108:8000/api/guideRoutes/guide-details', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+  
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch guide details');
+        }
+        setGuideData(data);
+      } catch (error) {
+        console.error('Error fetching guide details:', error);
+      }
+    };
+  
+    fetchGuideDetails();
+  }, []);
 
   const navigateToPersonalDetails = () => {
     navigation.navigate('GuidePersonalDetail'); // Replace with your screen name
@@ -25,15 +51,14 @@ const GuideHome = () => {
   const navigateToGuideBankDetail = () => {
     navigation.navigate('GuideBankDetail'); // Replace with your screen name
   };
-  
 
   return (
     <View style={styles.container}>
       <View style={styles.rectangle} />
       <View style={[styles.infoContainer, { width: containerWidth }]}>
         <Image style={styles.guideImage} source={require('../../assets/ellipse.png')} />
-        <Text style={styles.guideName}>GUIDE'S NAME</Text>
-        <Text style={styles.guideId}>GUIDE'S ID</Text>
+        <Text style={styles.guideName}>{guideData?.name}</Text>
+        <Text style={styles.guideId}>{guideData?.guide_id}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -68,6 +93,7 @@ const GuideHome = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

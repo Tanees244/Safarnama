@@ -269,7 +269,7 @@ const Discover = () => {
   };
 
   const handleBookingPress = () => {
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
       navigation.navigate("CreatePackage");
     } else {
       Alert.alert(
@@ -325,7 +325,7 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.106:8000/api/routes/places"
+        "http://192.168.100.18:8000/api/routes/places"
       );
       setPlaceData(response.data);
     } catch (error) {
@@ -336,7 +336,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.106:8000/api/routes/hotel-details"
+        "http://192.168.100.18:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {
