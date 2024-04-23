@@ -33,13 +33,13 @@ const Login = () => {
   };
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible); // Toggle password visibility state
+    setPasswordVisible(!passwordVisible); 
   };
 
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://192.168.100.18:8000/api/authRoutes/login",
+        "http://192.168.0.108:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
