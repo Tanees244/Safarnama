@@ -54,8 +54,8 @@ const GuideApplication = () => {
         throw new Error("Failed to update guide status");
       }
 
-      // Reload the guide applications after status update
       handleSectionChange(activeSection);
+      fetchUsers();
     } catch (error) {
       console.error("Error updating guide status:", error);
     }
@@ -146,6 +146,7 @@ const GuideApplication = () => {
                         style={styles.RejectButton}
                         onPress={() =>
                           handleStatusUpdate(user.guide_id, "rejected")
+                          
                         }
                       >
                         <Text style={styles.ButtonText}>Reject</Text>
