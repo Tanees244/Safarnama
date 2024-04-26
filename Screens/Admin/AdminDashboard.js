@@ -13,9 +13,6 @@ const AdminDashboard = () => {
     navigation.navigate('GuideApplication');
   };
 
-  const VendorApplication = () => {
-    navigation.navigate('VendorApplication');
-  };
 
   const TouristDetail = () => {
     navigation.navigate('TouristDetail');
@@ -48,13 +45,7 @@ const AdminDashboard = () => {
                     <Image source={require('../../assets/Application.png')}/>
                     <Text style={styles.ButtonText}>Guide</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.Button}
-                onPress={VendorApplication}
-                >
-                    <Image source={require('../../assets/Application.png')}/>
-                    <Text style={styles.ButtonText}>Vendor</Text>
-            </TouchableOpacity>
+
         </View>
 
         <Text style={[styles.Heading, {color:'black'}]}>Users</Text>
@@ -102,7 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: 'white',
     fontFamily: 'Poppins-Bold',
-    textAlign: 'left',
+    textAlign: 'center',
     marginTop: 80,
     padding: 20,
   },
@@ -116,6 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: 'white',
     padding: 20,
+    textAlign:'center',
   },
   ButtonContainer: {
     width: '100%',
@@ -123,7 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 50,
     paddingVertical: 10,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   Button: {
     backgroundColor: '#4E7596',

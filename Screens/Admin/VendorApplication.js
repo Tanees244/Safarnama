@@ -1,220 +1,222 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import  Modal  from 'react-native-modal';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from "react-native";
+import axios from "axios";
+import Modal from "react-native-modal";
 
 const VendorApplication = () => {
-
-  const navigation = useNavigation();
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
 
+  const [activeSection, setActiveSection] = useState("Hotel");
+  const [vendors, setVendors] = useState([]);
+  const [selectedVendor, setSelectedVendor] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [vendorInfo, setVendorInfo] = useState(null);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
 
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
+  };
+
+  useEffect(() => {
+    fetchVendors();
+  }, [activeSection]);
+
+  const handleVendorClick = (vendor) => {
+    setSelectedVendor(vendor);
+    toggleModal();
+    fetchVendorInfo(vendor.id);
+  };
+
+  const fetchVendors = async () => {
+    let endpoint;
+    switch (activeSection) {
+      case "Hotel":
+        endpoint = "/api/adminRoutes/hotel_details";
+        break;
+      case "Airline":
+        endpoint = "/api/adminRoutes/airline_details";
+        break;
+      case "Railway":
+        endpoint = "/api/adminRoutes/railway_details";
+        break;
+      case "Bus":
+        endpoint = "/api/adminRoutes/bus_details";
+        break;
+      default:
+        endpoint = "";
+    }
+    try {
+      const response = await axios.get(`http://192.168.100.12:8000${endpoint}`);
+      setVendors(response.data);
+    } catch (error) {
+      console.error("Error fetching vendors:", error.response);
+    }
+  };
+
+  const fetchVendorInfo = async (vendorId) => {
+    try {
+      const response = await axios.get(`http://192.168.100.12:8000/api/adminRoutes/vendor_info/${vendorId}`);
+      setVendorInfo(response.data);
+    } catch (error) {
+      console.error("Error fetching vendor info:", error.response);
+    }
+  };
+
   return (
     <View style={styles.Container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Safarnama</Text>
+        <Text style={styles.headerText}>Vendor Applications</Text>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.Text}>
-          Vendor Applications
-        </Text>
-
-        <View style={styles.ButtonContainer}>
-
-          <View style={[styles.Detail, {width: containerWidth}]}>
-            <Image style={styles.UserImage} source={require("../../assets/ellipse.png")}/>
-            <View style={styles.UserDetail}>
-              <View style={styles.UserName}>
-                <Text style={styles.UserNameText}>Vendor Name</Text>
-                <TouchableOpacity
-                  style={styles.ReadMoreButton}
-                  onPress={toggleModal}
-                >
-                  <Text style={styles.ReadMoreText}>Read More</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.Buttons}>
-                <TouchableOpacity
-                  style={styles.ApproveButton}
-                >
-                  <Text style={styles.ButtonText}>Approve</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.RejectButton}
-                >
-                  <Text style={styles.ButtonText}>Reject</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View style={[styles.Detail, {width: containerWidth}]}>
-            <Image style={styles.UserImage} source={require("../../assets/ellipse.png")}/>
-            <View style={styles.UserDetail}>
-              <View style={styles.UserName}>
-                <Text style={styles.UserNameText}>Vendor Name</Text>
-                <TouchableOpacity
-                  style={styles.ReadMoreButton}
-                  onPress={toggleModal}
-                >
-                  <Text style={styles.ReadMoreText}>Read More</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.Buttons}>
-                <TouchableOpacity
-                  style={styles.ApproveButton}
-                >
-                  <Text style={styles.ButtonText}>Approve</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.RejectButton}
-                >
-                  <Text style={styles.ButtonText}>Reject</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
+        <Text style={styles.Text}>Vendor Applications</Text>
+        <View style={styles.pagination}>
+          {["Hotel", "Airline", "Railway", "Bus"].map((section) => (
+            <TouchableOpacity key={section} onPress={() => handleSectionChange(section)}>
+              <Text
+                style={[
+                  styles.sectionText,
+                  activeSection === section && styles.activeSection,
+                ]}
+              >
+                {section}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
-
+        {vendors.length > 0 ? (
+          <ScrollView>
+            {vendors.map((vendor) => (
+              <TouchableOpacity key={vendor.id} onPress={() => handleVendorClick(vendor)}>
+                <View style={[styles.Detail, { width: containerWidth }]}>
+                  <Text style={styles.vendorName}>{vendor.name}</Text>
+                  <Text style={styles.vendorId}>{vendor.id}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : (
+          <Text style={styles.noDataText}>No data available</Text>
+        )}
       </ScrollView>
 
-      <Modal isVisible={isModalVisible} animationIn="slideInUp" animationOut="slideOutDown" onBackdropPress={toggleModal}>
+      <Modal
+        isVisible={isModalVisible}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        onBackdropPress={toggleModal}
+      >
         <View style={styles.modalContainer}>
-         <TouchableOpacity onPress={toggleModal} style={styles.closeIconContainer}>
-            <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
+          <TouchableOpacity onPress={toggleModal} style={styles.closeIconContainer}>
+            <Image style={styles.closeIcon} source={require("../../assets/cross.png")} />
           </TouchableOpacity>
-          
-          <Text style={styles.modalHeading}>Modal Heading</Text>
-          <View style={styles.modalDetails}>
-            <Text style={styles.ModalDetailText}>Name :</Text>
-            <Text style={styles.ModalDetailText}>Type :</Text>
-            <Text style={styles.ModalDetailText}>Details :</Text>
-          </View>
-          <TouchableOpacity style={styles.modalButton}>
-           <Text style={styles.modalButtonText}>Logo</Text>
-         </TouchableOpacity>
-          </View>
-        </Modal>
-
+          <Text style={styles.modalHeading}>Vendor Details</Text>
+          {vendorInfo && (
+            <View style={styles.vendorDetails}>
+              <Text style={styles.vendorInfoText}>Email: {vendorInfo.email}</Text>
+              <Text style={styles.vendorInfoText}>Contact: {vendorInfo.contact}</Text>
+              {/* Render other vendor info here */}
+            </View>
+          )}
+        </View>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    alignItems: 'center',
-    backgroundColor: '#C8F2F5',
-  },
   Container: {
     flex: 1,
   },
   header: {
     height: 140,
-    backgroundColor: '#1a1a1a',
-    shadowColor: 'black',
+    backgroundColor: "#1a1a1a",
+    shadowColor: "black",
     elevation: 20,
   },
   headerText: {
-    textAlign: 'center',
+    textAlign: "center",
     top: 60,
-    color: 'white',
+    color: "white",
     fontSize: 30,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
   },
   Text: {
     fontSize: 30,
-    color: 'black',
-    fontFamily: 'Poppins-Bold',
+    color: "black",
+    fontFamily: "Poppins-Bold",
     marginTop: 40,
     padding: 20,
   },
-  ButtonContainer: {
-    width: '100%',
-    alignItems: 'center',
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    marginBottom: 10,
+    marginTop: 10,
   },
-  Detail:{
-    backgroundColor: '#1E3740',
+  sectionText: {
+    fontSize: 16,
+    fontFamily: "Poppins-Regular",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    color: "#333",
+  },
+  activeSection: {
+    fontFamily: "Poppins-SemiBold",
+    borderBottomWidth: 4,
+    borderBottomColor: "#0B6180",
+  },
+  Detail: {
+    backgroundColor: "#1E3740",
     borderRadius: 30,
     padding: 20,
     marginBottom: 30,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  UserImage: {
-    width: 90,
-    height: 90,
-  },
-  UserDetail:{
-    padding: 15,
-  },  
-  MoreButton:{
-    height: 35,
-    width: 35,
-  },
-  UserName:{
-    alignItems: 'center',
-  },
-  UserNameText:{
-    fontFamily: 'Poppins-Bold',
-    color: 'white',
+  vendorName: {
+    fontFamily: "Poppins-Bold",
+    color: "white",
     fontSize: 24,
   },
-  ReadMoreText:{
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 15,
-    color: 'white',
+  vendorId: {
+    fontFamily: "Poppins-Regular",
+    color: "white",
+    fontSize: 18,
   },
-  ReadMoreButton:{
-    backgroundColor: '#4391F3',
-    padding: 15,
-    borderRadius: 30,
-  },
-  Buttons:{
-    flexDirection: 'row',
+  noDataText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
     marginTop: 20,
   },
-  ButtonText: {
-    fontFamily: 'Poppins-Bold',
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  ApproveButton: {
-    backgroundColor: '#47B2F5',
-    width: 120,
-    borderRadius: 25,
-    borderWidth: 2,
-    borderColor: 'white',
-    padding: 10,
-  },
-  RejectButton: {
-    backgroundColor: '#CE1B2E',
-    width: 120,
-    borderRadius: 25,
-    borderWidth: 2,
-    borderColor: 'white',
-    padding: 10,
-    marginLeft: 20,
-  },
   modalContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
+    marginTop: 20,
+    marginBottom: 20,
     borderRadius: 10,
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   closeIconContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 15,
     right: 15,
-    backgroundColor: '#C4C8CB',
+    backgroundColor: "#C4C8CB",
     borderRadius: 60,
   },
   closeIcon: {
@@ -222,34 +224,18 @@ const styles = StyleSheet.create({
     height: 40,
   },
   modalHeading: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     fontSize: 20,
     marginBottom: 10,
   },
-  modalButton: {
-    backgroundColor: '#47B2F5',
-    padding: 15,
-    width: 300,
-    borderRadius: 30,
+  vendorDetails: {
+    marginTop: 20,
+  },
+  vendorInfoText: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 16,
+    color: "black",
     marginBottom: 10,
-  },
-  modalButtonText: {
-    fontFamily: 'Poppins-Bold',
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  modalDetails:{
-    backgroundColor: '#C4C8CA',
-    borderRadius: 20,
-    padding: 30,
-    width: "100%",
-    marginBottom: 20,
-  },
-  ModalDetailText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 16,
-    color: 'white',
   },
 });
 

@@ -66,7 +66,7 @@ const Login = () => {
       } else if (data.user.user_type === "Guide") {
         navigation.navigate("GuideHome");
       } else {
-        navigation.navigate("GuideProfile");
+        navigation.navigate("AirlineDashboard");
       }
     } catch (error) {
       console.error("Login error:", error);
