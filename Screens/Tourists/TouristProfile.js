@@ -53,7 +53,7 @@ const TouristProfile = () => {
       console.log("Bearer token:", token);
 
       const response = await fetch(
-        "http://192.168.0.106:8000/api/routes/tourist-details/",
+        "http://192.168.100.12:8000/api/routes/tourist-details/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
