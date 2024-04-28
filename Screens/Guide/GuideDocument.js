@@ -23,7 +23,7 @@ const GuideDocument = () => {
   const { guideId } = route.params;
 
   const pickImage = async (setImageUri) => {
-    
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -44,10 +44,10 @@ const GuideDocument = () => {
       const response = await axios.post(
         "http://192.168.100.12:8000/api/guideRoutes/guide_submit_documents",
         {
-          image1 : imageUri1,
-          image2 : imageUri2,
-          image3 : imageUri3,
-          image4 : imageUri4,
+          image1: imageUri1,
+          image2: imageUri2,
+          image3: imageUri3,
+          image4: imageUri4,
           guideId,
         }
       );
@@ -60,7 +60,7 @@ const GuideDocument = () => {
       console.error("Error submitting form:", error);
     }
   };
-  
+
 
   return (
     <View style={styles.Container}>

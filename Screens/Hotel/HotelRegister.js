@@ -19,7 +19,7 @@ const HotelRegister = () => {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/authRoutes/register/",
+        "http://192.168.100.12:8000/api/authRoutes/register/",
         {
           email: email,
           password: Password,
@@ -29,8 +29,8 @@ const HotelRegister = () => {
         }
       );
 
-      console.log(response.data);
-      navigation.navigate("Login");
+      console.log(response.data.userId);
+      navigation.navigate("HotelVendorPersonalDetails", { userId: response.data.userId });
     } catch (error) {
       console.error("Error during signup:", error);
       alert("Network Error: Unable to connect to the server.");

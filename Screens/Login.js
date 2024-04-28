@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible); 
+    setPasswordVisible(!passwordVisible);
   };
 
   const handleSignIn = async () => {
@@ -64,9 +64,9 @@ const Login = () => {
       } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
-        navigation.navigate("GuideHomeScreen");
+        navigation.navigate("GuideHome");
       } else {
-        navigation.navigate("HotelDashboard");
+        navigation.navigate("GuideProfile");
       }
     } catch (error) {
       console.error("Login error:", error);

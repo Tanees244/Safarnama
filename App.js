@@ -65,7 +65,7 @@ import ItineraryDay from './Screens/Tourists/ItineraryDay';
 import GuideApplication from './Screens/Admin/GuideApplication';
 import VendorApplication from './Screens/Admin/VendorApplication';
 import TouristDetail from './Screens/Admin/TouristDetail.js';
-import GuideDetail from './Screens/Admin/TouristDetail.js';
+import GuideDetail from './Screens/Admin/GuideDetail.js';
 import VendorDetail from './Screens/Admin/VendorDetail';
 import Packages from './Screens/Tourists/package.js';
 
