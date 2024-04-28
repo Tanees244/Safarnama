@@ -21,8 +21,16 @@ const GuideHome = () => {
     navigation.navigate("GuideProfile");
   };
 
+  const navigateToGuideHome = () => {
+    navigation.navigate("GuideHomeScreen");
+  };
+
   const navigateToGuideCurrentPackage = () => {
     navigation.navigate("GuideCurrentPackage");
+  };
+
+  const navigateToGuidePastPackage = () => {
+    navigation.navigate("GuidePastPackage");
   };
 
   const navigateToGuideUserReview = () => {
@@ -37,18 +45,12 @@ const GuideHome = () => {
     <ScrollView contentContainerStyle={styles.Container}>
       <View style={styles.Rectangle}>
         <Text style={styles.text}>Safarnama</Text>
+        <Text
+          style={{ color: "white", fontSize: 28, fontFamily: "Poppins-Regular", top: 10 }}
+        >
+          Welcome Guide!
+        </Text>
       </View>
-
-      <Text
-        style={{
-          color: "white",
-          fontSize: 28,
-          fontFamily: "Poppins-Regular",
-          top: 10,
-        }}
-      >
-        Welcome Guide!
-      </Text>
 
       <View style={[styles.ButtonContainer, { width: containerWidth }]}>
         <TouchableOpacity
@@ -56,7 +58,14 @@ const GuideHome = () => {
           onPress={navigateToGuideCurrentPackage}
           style={[styles.Buttons, { width: buttonWidth }]}
         >
-          <Text style={styles.ButtonText}>Packages</Text>
+          <Text style={styles.ButtonText}>Current Packages</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={navigateToGuidePastPackage}
+          style={[styles.Buttons, { width: buttonWidth }]}
+        >
+          <Text style={styles.ButtonText}>Past Packages</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
@@ -73,10 +82,7 @@ const GuideHome = () => {
           <Text style={styles.ButtonText}>Client's Feedback</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={navigateToGuideProfile}
-        style={styles.ProfileButton}
-      >
+      <TouchableOpacity onPress={navigateToGuideProfile} style={styles.ProfileButton}>
         <Image
           source={require("../../assets/account-circle-black.png")}
           style={[{ width: 40, height: 40 }]}
@@ -94,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 45,
+    fontSize: 50,
     fontFamily: "Poppins-Bold",
     color: "white",
   },
@@ -129,7 +135,7 @@ const styles = StyleSheet.create({
   Rectangle: {
     backgroundColor: "#20262E",
     borderRadius: 40,
-    height: 300,
+    height: 30,
     top: -10,
     width: "100%",
     position: "absolute",
@@ -137,6 +143,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   ButtonContainer: {
     borderRadius: 33,
     marginTop: 200,
