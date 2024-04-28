@@ -39,7 +39,7 @@ const Login = () => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://192.168.100.12:8000/api/authRoutes/login",
+        "http://192.168.100.18:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
@@ -64,17 +64,9 @@ const Login = () => {
       } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
-        navigation.navigate("GuideHome");
-      } else if (data.user.user_type === "Vendor") {
-        if (data.isHotel) {
-          navigation.navigate("HotelDashboard");
-        } else if (data.transportType === "Airline") {
-          navigation.navigate("AirlineDashboard");
-        } else if (data.transportType === "Railway") {
-          navigation.navigate("TrainDashboard");
-        } else if (data.transportType === "Bus") {
-          navigation.navigate("BusDashboard");
-        }
+        navigation.navigate("GuideHomeScreen");
+      } else {
+        navigation.navigate("GuideProfile");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -160,7 +152,6 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "cover",
   },
-
   Textcontainer: {
     flex: 1,
     top: 140,
