@@ -17,7 +17,7 @@ import axios from "axios";
 
 const Flight = () => {
   const screenWidth = Dimensions.get("window").width;
-  const containerWidth = screenWidth * 1;
+  const containerWidth = screenWidth * 0.9;
   const [airline, setAirline] = useState([]);
   const [railway, setRailway] = useState([]);
   const [bus, setBus] = useState([]);
@@ -42,7 +42,7 @@ const Flight = () => {
         const response3 = await axios.get(
           "http://192.168.100.18:8000/api/routes/bus-packages/"
         );
-        
+
         setAirline(response2.data);
         setRailway(response.data);
         setBus(response3.data);
@@ -120,7 +120,6 @@ const Flight = () => {
       })),
     ];
 
-    // Set the state with the combined filtered results
     setFilteredTickets(combinedFilteredTickets);
   };
 
@@ -156,13 +155,16 @@ const Flight = () => {
 
   const renderTicketCard = ({ item }) => (
     <View style={styles.Viewticket}>
-      <View style={styles.ticketCard}>
-        <Image source={item.image} style={styles.ticketImage} />
+      <View style={[styles.ticketCard, { width: containerWidth }]}>
+        <View style={styles.flightInfoContainer}>
+          <Text style={styles.flightName}>Serene Airline</Text>
+          <Text style={styles.flightNumber}>
+            {item.train_number || item.bus_number || item.flight_number}
+          </Text>
+        </View>
+
         <View style={styles.dottedLine}>
           <View style={styles.circle1} />
-          <Text>
-            .................................................................................
-          </Text>
           <View style={styles.circle2} />
         </View>
 
@@ -192,12 +194,6 @@ const Flight = () => {
           </View>
 
           <View style={styles.Time1}>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Flight # : </Text>
-              <Text style={styles.ticketText2}>
-                {item.train_number || item.bus_number || item.flight_number}
-              </Text>
-            </View>
             <View style={styles.DTime1}>
               <Text style={styles.title2}>Type : </Text>
               <Text style={styles.ticketText2}>{item.seat_type}</Text>
@@ -231,6 +227,9 @@ const Flight = () => {
             <Text style={styles.labelText}>Seats</Text>
           </View>
         </View>
+        <TouchableOpacity style={styles.bookButton}>
+          <Text style={styles.bookButtonText}>Book</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -238,12 +237,7 @@ const Flight = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <ImageBackground
-          style={styles.Rectangle}
-          source={require("../../assets/blackp.png")}
-        >
-          <Text style={styles.headerText}> safarnama</Text>
-        </ImageBackground>
+        <Text style={styles.headerText}>Safarnama</Text>
       </View>
       <View style={[styles.ProfileContainer, { width: containerWidth }]}>
         <View style={styles.searchInputs}>
@@ -265,7 +259,6 @@ const Flight = () => {
               }
             />
           </View>
-
           <View style={styles.inputRow}>
             <TextInput
               style={styles.input}
@@ -297,8 +290,6 @@ const Flight = () => {
           </View>
         </View>
       </View>
-
-      {/* Display Filtered Results */}
       {filteredTickets.length > 0 && (
         <View style={styles.filteredResults}>
           <FlatList
@@ -310,8 +301,6 @@ const Flight = () => {
           />
         </View>
       )}
-
-      {/* Flight Tickets */}
       <View style={styles.ticketCategory}>
         <Text style={styles.categoryHeading}>Flight Tickets</Text>
         <FlatList
@@ -351,16 +340,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "white",
   },
-  Rectangle: {
-    backgroundColor: "linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))",
-    borderRadius: 80,
-    height: 320,
-    top: -10,
-    width: "100%",
-    position: "absolute",
-    flex: 1,
-    alignItems: "center",
-  },
   ProfileContainer: {
     backgroundColor: "white",
     borderRadius: 28,
@@ -369,19 +348,51 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 140,
-    backgroundColor: "#032844",
+    backgroundColor: "#1a1a1a",
     shadowColor: "black",
     elevation: 20,
     zIndex: -1,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
   },
   headerText: {
     textAlign: "center",
     top: 60,
-    color: "white",
     fontSize: 30,
+    color: "#FFFFFF",
     fontFamily: "Poppins-Bold",
+  },
+  bookButton: {
+    backgroundColor: "black",
+    width: "100%",
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  bookButtonText: {
+    fontSize: 20,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+  },
+  flightInfoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 15,
+    borderColor: "white",
+    borderWidth: 2,
+    backgroundColor: "#1B2430",
+    padding: 20,
+    marginBottom: 25,
+  },
+  flightNumber: {
+    fontSize: 18,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+  },
+  flightName: {
+    fontSize: 18,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+    textAlign: "right",
   },
   Time: {
     flexDirection: "row",
@@ -408,7 +419,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 10,
   },
-
   ticketText: {
     fontSize: 18,
     color: "#fff",
@@ -425,7 +435,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderBottomColor: "white",
     borderStyle: "dashed",
-    marginBottom: 50,
+    marginBottom: 30,
   },
   circle1: {
     width: 25,
@@ -433,8 +443,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "white",
     position: "absolute",
-    top: 10,
-    bottom: 10,
+    top: -10,
     left: -30,
   },
   circle2: {
@@ -443,8 +452,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "white",
     position: "absolute",
-    top: 10,
-    bottom: 10,
+    top: -10,
     right: -30,
   },
   ticketList: {
@@ -452,17 +460,15 @@ const styles = StyleSheet.create({
   },
   Viewticket: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    marginLeft: 15,
   },
   ticketCard: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    marginBottom: 10,
-    backgroundColor: "black",
-    overflow: "hidden",
-    width: "90%",
-    height: 550,
+    backgroundColor: "#393646",
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    marginTop: 20,
   },
   ATime: {
     borderColor: "white",
@@ -499,7 +505,7 @@ const styles = StyleSheet.create({
   },
   placeText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     color: "white",
     textAlign: "center",
     top: 10,
@@ -552,7 +558,7 @@ const styles = StyleSheet.create({
   },
   infoBoxValue: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     color: "white",
     marginTop: 5,
   },
@@ -579,7 +585,7 @@ const styles = StyleSheet.create({
   },
   seatsText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     color: "white",
   },
   labelText: {
@@ -610,6 +616,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: "#ccc",
+    fontFamily: "Poppins-Regular",
     padding: 8,
     marginRight: 10,
   },
@@ -626,13 +633,12 @@ const styles = StyleSheet.create({
   filteredResults: {
     marginTop: 10,
   },
-
   ticketCategory: {
     marginVertical: 10,
   },
   categoryHeading: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     marginBottom: 10,
     marginLeft: 10,
   },
