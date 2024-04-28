@@ -15,7 +15,7 @@ const GuideHome = () => {
     const fetchGuideDetails = async () => {
       try {
         const authToken = await AsyncStorage.getItem('authToken');
-        const response = await fetch('http://192.168.100.18:8000/api/guideRoutes/guide-details', {
+        const response = await fetch('http://192.168.0.108:8000/api/guideRoutes/guide-details', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

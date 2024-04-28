@@ -136,7 +136,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={{ uri: `data:image/jpeg;base64,${item.images}` }}
+          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -293,7 +293,7 @@ const Discover = () => {
     navigation.navigate("HotelsLists");
   };
   const navigateToPlaceLists = () => {
-    navigation.navigate("AirlineDashboard");
+    navigation.navigate("PlaceLists");
   };
   const navigateToFlight = () => {
     navigation.navigate("Flight");

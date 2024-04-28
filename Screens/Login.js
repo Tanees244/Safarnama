@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "cover",
   },
-
   Textcontainer: {
     flex: 1,
     top: 140,
