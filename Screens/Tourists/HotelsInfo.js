@@ -187,9 +187,7 @@ const GalleryList = ({ gallery }) => {
               style={styles.facilityButton}
               onPress={() => handleGalleryButtonClick(index)}
             >
-
-              <Image source={{ uri : item }} style={styles.GalleryImage} />
-              
+              <Image source={{ uri : item }} style={styles.GalleryImage} /> 
             </TouchableOpacity>
           </View>
         )}
@@ -255,7 +253,7 @@ const HotelsInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={{uri: `data:image/jpeg;base64,${Hotel.image}`}}
+          source={{uri: `data:image/jpeg;base64,${Hotel.images}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
