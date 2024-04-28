@@ -39,7 +39,7 @@ const Login = () => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://192.168.100.18:8000/api/authRoutes/login",
+        "http://192.168.100.12:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
@@ -48,32 +48,45 @@ const Login = () => {
           body: JSON.stringify({ email, password }),
         }
       );
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.error || "Login failed");
       }
-
+  
       const token = data.token;
       await AsyncStorage.setItem("authToken", token);
       console.log("Auth Token : ", token);
-
+  
       if (data.isAdmin) {
         navigation.navigate("AdminDashboard");
       } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
         navigation.navigate("GuideHome");
+      } else if (data.user.user_type === "Vendor") {
+        if (data.isHotel) {
+          navigation.navigate("HotelDashboard");
+        } else if (data.transportType === "Airline") {
+          navigation.navigate("AirlineDashboard");
+        } else if (data.transportType === "Railway") {
+          navigation.navigate("RailwayDashboard");
+        } else if (data.transportType === "Bus") {
+          navigation.navigate("BusDashboard");
+        } else {
+          // Default case, navigate to a generic transport dashboard
+          navigation.navigate("TransportDashboard");
+        }
       } else {
-        navigation.navigate("GuideProfile");
+        navigation.navigate("AirlineDashboard");
       }
     } catch (error) {
       console.error("Login error:", error);
       setError(error.message || "Login failed");
     }
   };
-
+  
   return (
     <KeyboardAvoidingView
       style={styles.container}
