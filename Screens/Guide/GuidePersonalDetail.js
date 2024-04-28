@@ -52,7 +52,7 @@ const GuidePersonalDetail = () => {
   const handleUploadDocuments = async () => {
     try {
       const response = await fetch(
-        "http://192.168.100.18:8000/api/guideRoutes/guide_details",
+        "http://192.168.100.18:8000/api/guideRoutes/guide_personal_details",
         {
           method: "POST",
           headers: {

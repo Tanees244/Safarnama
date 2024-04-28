@@ -142,7 +142,7 @@ const PlacesInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={{uri: `data:image/jpeg;base64,${place.images}`}}
+          source={{uri: `data:image/jpeg;base64,${place.image}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>

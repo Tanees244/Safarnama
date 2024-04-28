@@ -1,216 +1,204 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  ImageBackground,
-  Image,
-  Modal,
-} from "react-native";
-import { ScrollView } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, Image } from 'react-native';
+import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const GuideCurrentPackage = () => {
-  const [packages, setPackages] = useState([]);
-  const [selectedPackage, setSelectedPackage] = useState(null);
+    const screenWidth = Dimensions.get('window').width;
+    const containerWidth = screenWidth * 1;
+    const buttonWidth = containerWidth * 0.5;
+    const inputBoxWidth = containerWidth - 40; // Subtract padding
+
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchGuidePackages = async () => {
-      try {
-        const token = await AsyncStorage.getItem("authToken");
-        if (!token) {
-          console.error("Token not found");
-          return;
-        }
-
-        const response = await fetch(
-          "http://192.168.100.18:8000/api/guideRoutes/guide-packages",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setPackages(data); // Update state with fetched packages
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching guide packages:", error);
-      }
-    };
-
-    fetchGuidePackages();
-  }, []);
+  const navigateToGuideProfile = () => {
+    navigation.navigate('GuideProfile');
+  };
 
   const navigateToGuideHome = () => {
-    navigation.navigate("GuideHomeScreen");
-  };
-
-  const handleReadMore = (pkg) => {
-    setSelectedPackage(pkg);
-  };
-
-  const closeModal = () => {
-    setSelectedPackage(null);
+    navigation.navigate('GuideHomeScreen');
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.Container}>
-      <ImageBackground
-        style={styles.Rectangle}
-        source={require("../../assets/5.png")}
-      >
-        <Text style={styles.Text}>
-          Current{" "}
-          <Text style={[styles.Text, { color: "white" }]}>Packages</Text>
-        </Text>
-      </ImageBackground>
-      <View style={styles.ProfileContainer}>
-        {packages &&
-          packages.length > 0 &&
-          packages.map((pkg, index) => (
-            <View key={index} style={styles.PackageBox}>
-              <Image
-                style={styles.UserIcon}
-                source={require("../../assets/ellipse.png")}
-              />
-              <View style={styles.Buttons}>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                  Package ID: {pkg.package_id}
+    <ScrollView contentContainerStyle={styles.Container} >
+    
+    <ImageBackground style={styles.Rectangle} source={require("../../assets/5.png")}>
+                <Text style={styles.Text}>
+                    Current <Text style={[styles.Text, { color: 'white' }]}> Packages</Text>
                 </Text>
-                <Text>Status: {pkg.status}</Text>
-                <TouchableOpacity
-                  style={styles.ReadMoreButton}
-                  onPress={() => handleReadMore(pkg)}
-                >
-                  <Text style={styles.ReadMoreButtonText}>Read More</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-      </View>
-      <TouchableOpacity
-        onPress={navigateToGuideHome}
-        style={styles.ProfileButton}
-      >
-        <Image
-          source={require("../../assets/Home.png")}
-          style={{ width: 40, height: 40 }}
-        />
-      </TouchableOpacity>
 
-      <Modal
-        visible={selectedPackage !== null}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.ModalContainer}>
-          <View style={styles.ModalContent}>
-            <Text style={styles.ModalHeading}>Package Details</Text>
-            <Text>Package ID: {selectedPackage?.package_id}</Text>
-            <Text>Status: {selectedPackage?.status}</Text>
-            <TouchableOpacity
-              style={styles.CloseButton}
-              onPress={closeModal}
-            >
-              <Text style={styles.CloseButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </ScrollView>
-  );
+            </ImageBackground>
+            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 1
+                    </Text>
+                    <Text>
+                    Learn More -->
+                    </Text>
+                </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 2
+                    </Text>
+                    <Text>
+                    Learn More -->
+                    </Text>
+                </View>
+                </TouchableOpacity><TouchableOpacity style={[styles.textBox, {width: inputBoxWidth}]}>
+                <Image
+                    style={styles.UserIcon}
+                    contentFit="cover"
+                    source={require("../../assets/ellipse.png")} />
+
+                <View style={[styles.Buttons, { width: buttonWidth }]}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        Package # 3
+                    </Text>
+                    <Text>
+                        Learn More -->
+                    </Text>
+                </View>
+                </TouchableOpacity>
+                
+
+
+            </View>
+            <View style={styles.ButtonContainer1}>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHome}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/Home.png")} />
+                    <Text style={styles.home}>Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
+                    <Image style={styles.homeicon}
+                        contentFit="cover"
+                        source={require("../../assets/account-circle-black.png")} />
+                    <Text style={styles.home}>Profile</Text>
+                </TouchableOpacity>
+            </View>
+
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
-  Container: {
-    backgroundColor: "white",
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  Text: {
-    fontSize: 30,
-    color: "black",
-    fontFamily: "Poppins-Bold",
-    marginTop: 100,
-    right: 15,
-  },
-  ProfileButton: {
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-    width: 75,
-    height: 75,
-    padding: 15,
-    borderRadius: 35,
-    backgroundColor: "#000000",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "white",
-    elevation: 0,
-    zIndex: 2,
-  },
-  PackageBox: {
-    marginTop: 20,
-    backgroundColor: "#D9D9D9",
-    borderRadius: 20,
-    padding: 20,
-    width: Dimensions.get("window").width - 40,
-  },
-  UserIcon: {
-    width: 50,
-    height: 50,
-    marginBottom: 10,
-  },
-  Buttons: {
-    alignItems: "center",
-  },
-  ReadMoreButton: {
-    backgroundColor: "#007bff",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  ReadMoreButtonText: {
-    color: "white",
-    fontFamily: "Poppins-Bold",
-  },
-  ModalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  ModalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    width: Dimensions.get("window").width - 40,
-    alignItems: "center",
-  },
-  ModalHeading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  CloseButton: {
-    backgroundColor: "#dc3545",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  CloseButtonText: {
-    color: "white",
-    fontFamily: "Poppins-Bold",
-  },
+    Container: {
+        backgroundColor: 'white',
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    text: {
+        fontSize: 50,
+        fontWeight: '900',
+        color: 'white',
+    },
+    Text: {
+        fontSize: 30,
+        color: 'black',
+        fontWeight: 'bold',
+        marginTop: 100,
+        right: 15,
+    },
+    textBox: {
+        marginTop: 10,
+        backgroundColor:  '#D9D9D9',
+        height: 140,
+        borderRadius: 20,
+        padding: 20,
+        borderWidth: 1,
+        borderColor: 'black',
+    },
+    homeicon: {
+        width: 24,
+        height: 24,
+        overflow: "hidden",
+    },
+    bio: {
+        color: 'black',
+        right: 100,
+        marginTop: 30,
+        fontSize: 27,
+    },
+
+    home: {
+        fontSize: 10,
+        lineHeight: 14,
+        fontWeight: "700",
+        marginTop: 2,
+        textAlign: "center",
+        color: 'white',
+    },
+
+    UserIcon: {
+        top: 20,
+        left: 10,
+        width: 90,
+        height: 90,
+        position: "absolute",
+    },
+
+    Rectangle: {
+        backgroundColor: 'linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))',
+        borderRadius: 46,
+        height: 320,
+        top: -10,
+        width: '100%',
+        position: 'absolute',
+        flex: 1,
+        alignItems: 'center',
+      
+    },
+
+    ProfileContainer: {
+        backgroundColor: 'white',
+        borderRadius: 28,
+        marginTop: 200,
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingBottom: 30,
+        height: 480,
+    },
+    Buttons: {
+        backgroundColor: 'white',
+        height: 90,
+        left: 90,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        borderWidth: 1,
+        borderColor: 'black',
+    },
+    ButtonContainer1: {
+        flexDirection: 'row',
+        padding: 20,
+        backgroundColor: '#213555',
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginBottom: 50,
+        marginTop: 50,
+        width: 160,
+
+    },
+
 });
 
 export default GuideCurrentPackage;
