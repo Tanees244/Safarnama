@@ -1,15 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native';
-import { Image } from 'react-native-elements';
-
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native";
+import { Image } from "react-native-elements";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GuideHome = () => {
-    const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 0.8;
-    const buttonWidth = containerWidth * 0.8;
-    const navigation = useNavigation();
+  const screenWidth = Dimensions.get("window").width;
+  const containerWidth = screenWidth * 0.8;
+  const buttonWidth = containerWidth * 0.8;
+  const navigation = useNavigation();
 
     const navigateToGuideProfile = () => {
         navigation.navigate('GuideProfile'); // Replace with your screen name
@@ -27,14 +33,13 @@ const GuideHome = () => {
         navigation.navigate('GuidePastPackage'); // Replace with your screen name
     };
 
-    const navigateToGuideUserReview = () => {
-        navigation.navigate('GuideUserReview'); // Replace with your screen name
-    };
+  const navigateToGuideUserReview = () => {
+    navigation.navigate("GuideUserReview");
+  };
 
-    const navigateToGuideClientsFeedback = () => {
-        navigation.navigate('GuideClientsFeedback'); // Replace with your screen name
-    };
-
+  const navigateToGuideClientsFeedback = () => {
+    navigation.navigate("GuideClientsFeedback");
+  };
 
     return (
         <ScrollView contentContainerStyle={styles.Container} >
@@ -151,5 +156,3 @@ const styles = StyleSheet.create({
 });
 
 export default GuideHome;
-
-

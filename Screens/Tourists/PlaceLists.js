@@ -26,7 +26,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+          source={{ uri: `data:image/jpeg;base64,${item.images}` }}
           style={styles.image}
           borderRadius={20}
         >
