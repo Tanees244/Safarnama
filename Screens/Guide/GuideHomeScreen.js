@@ -37,12 +37,18 @@ const GuideHome = () => {
     <ScrollView contentContainerStyle={styles.Container}>
       <View style={styles.Rectangle}>
         <Text style={styles.text}>Safarnama</Text>
-        <Text
-          style={{ color: "white", fontSize: 28, fontFamily: "Poppins-Regular", top: 10 }}
-        >
-          Welcome Guide!
-        </Text>
       </View>
+
+      <Text
+        style={{
+          color: "white",
+          fontSize: 28,
+          fontFamily: "Poppins-Regular",
+          top: 10,
+        }}
+      >
+        Welcome Guide!
+      </Text>
 
       <View style={[styles.ButtonContainer, { width: containerWidth }]}>
         <TouchableOpacity
@@ -67,7 +73,10 @@ const GuideHome = () => {
           <Text style={styles.ButtonText}>Client's Feedback</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={navigateToGuideProfile} style={styles.ProfileButton}>
+      <TouchableOpacity
+        onPress={navigateToGuideProfile}
+        style={styles.ProfileButton}
+      >
         <Image
           source={require("../../assets/account-circle-black.png")}
           style={[{ width: 40, height: 40 }]}
@@ -128,7 +137,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   ButtonContainer: {
     borderRadius: 33,
     marginTop: 200,

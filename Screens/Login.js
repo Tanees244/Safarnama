@@ -64,7 +64,7 @@ const Login = () => {
       } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
-        navigation.navigate("GuideHome");
+        navigation.navigate("GuideHomeScreen");
       } else {
         navigation.navigate("GuideProfile");
       }
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "cover",
   },
-
   Textcontainer: {
     flex: 1,
     top: 140,
