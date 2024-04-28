@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible); 
+    setPasswordVisible(!passwordVisible);
   };
 
   const handleSignIn = async () => {
@@ -65,8 +65,16 @@ const Login = () => {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
         navigation.navigate("GuideHome");
-      } else {
-        navigation.navigate("AirlineDashboard");
+      } else if (data.user.user_type === "Vendor") {
+        if (data.isHotel) {
+          navigation.navigate("HotelDashboard");
+        } else if (data.transportType === "Airline") {
+          navigation.navigate("AirlineDashboard");
+        } else if (data.transportType === "Railway") {
+          navigation.navigate("TrainDashboard");
+        } else if (data.transportType === "Bus") {
+          navigation.navigate("BusDashboard");
+        }
       }
     } catch (error) {
       console.error("Login error:", error);

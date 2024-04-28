@@ -12,7 +12,7 @@ import {
   Pressable,
 } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
 const HotelVendorPersonalDetails = () => {
@@ -23,6 +23,9 @@ const HotelVendorPersonalDetails = () => {
   const submitButton = screenWidth * 0.4;
   const uploadButtonWidth = containerWidth * 0.9;
   const buttonWidth = screenWidth * 0.26;
+  
+  const route = useRoute();
+  const { userId } = route.params;
 
   const [imageUri1, setImageUri1] = useState(null);
   const [hotelIdModalVisible, setHotelIdModalVisible] = useState(false);
@@ -35,8 +38,7 @@ const HotelVendorPersonalDetails = () => {
     address: '',
     contact_number: '',
     cnic_number: '',
-    picture: null,
-    hotel: null,
+    picture: '',
   });
 
   const handleFieldChange = (field, value) => {
@@ -46,24 +48,20 @@ const HotelVendorPersonalDetails = () => {
     }));
   };
 
-  const pickImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 1,
-      });
+  const pickImage = async (setImageUri) => {
 
-      if (!result.canceled) {
-        setImageUri1(result.uri);
-        setFormData((prevData) => ({
-          ...prevData,
-          picture: result.uri,
-        }));
-      }
-    } catch (error) {
-      console.error('Error picking image:', error);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    setImageUri(result.uri);
+    console.log(result);
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
     }
   };
 
@@ -76,7 +74,6 @@ const HotelVendorPersonalDetails = () => {
       contact_number,
       cnic_number,
       picture,
-      hotel,
     } = formData;
 
     return (
@@ -86,8 +83,7 @@ const HotelVendorPersonalDetails = () => {
       address &&
       contact_number &&
       cnic_number &&
-      picture !== null &&
-      hotel !== null
+      picture !== null
     );
   };
 
@@ -97,26 +93,25 @@ const HotelVendorPersonalDetails = () => {
         console.log('Please fill in all fields');
         return;
       }
-  
-      console.log('Form Data:', JSON.stringify(formData)); // Log form data
-  
+
+      console.log('Form Data:', JSON.stringify(formData));
+
       const response = await fetch(
-        'http://192.168.100.12:8000/api/hotel-vendor-personal-details/',
+        'http://192.168.100.12:8000/api/authRoutes/hotel_vendor_personal_details/',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...formData, userId }),
         }
       );
-  
-      const responseData = await response.json(); // Log the response data
-      console.log('Response Data:', JSON.stringify(responseData));
-  
+
+      console.log(userId);
+
       if (response.ok) {
         console.log('Form data submitted successfully');
-        navigation.navigate('HotelDashboard');
+        navigation.navigate('Login');
       } else {
         console.error('Failed to submit form data');
       }
@@ -190,7 +185,7 @@ const HotelVendorPersonalDetails = () => {
             value={formData.cnic_number}
             keyboardType='numeric'
           />
-   <View style={[styles.UploadButton, { width: uploadButtonWidth }]}>
+          <View style={[styles.UploadButton, { width: uploadButtonWidth }]}>
             <View style={styles.UploadButtonText}>
               <Text style={[{ fontFamily: 'Poppins-SemiBold', color: 'grey' }]}>
                 Picture Of Yourself
@@ -198,7 +193,7 @@ const HotelVendorPersonalDetails = () => {
             </View>
             <TouchableOpacity
               style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={pickImage}
+              onPress={() => pickImage(setImageUri1)}
             >
               {imageUri1 ? (
                 <Image source={{ uri: imageUri1 }} style={styles.image} />
@@ -210,27 +205,6 @@ const HotelVendorPersonalDetails = () => {
               )}
             </TouchableOpacity>
           </View>
-          <View
-            style={[styles.UploadButton, { width: uploadButtonWidth }]}
-          >
-            <View style={styles.UploadButtonText}>
-              <Text
-                style={[{
-                  fontFamily: 'Poppins-SemiBold',
-                  color: 'grey',
-                }]}
-              >
-                Hotel ID
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={() => setHotelIdModalVisible(true)}
-            >
-              <Text>{hotelId || 'Select Hotel ID'}</Text>
-            </TouchableOpacity>
-          </View>
-          {/* Other TextInputs... */}
           <TouchableOpacity
             activeOpacity={0.9}
             style={[styles.submitButton, { width: submitButton }]}
@@ -308,6 +282,10 @@ const styles = StyleSheet.create({
     marginTop: 40,
     padding: 20,
   },
+  image: {
+    width: 60,
+    height: 60,
+  },
   submitButton: {
     borderRadius: 38,
     backgroundColor: '#319BD6',
@@ -346,7 +324,7 @@ const styles = StyleSheet.create({
   },
   UploadButtonText: {
     fontFamily: 'Poppins-SemiBold',
-    justifyContent:''
+    justifyContent: ''
   },
   UploadButtonImage: {
     width: 50,
