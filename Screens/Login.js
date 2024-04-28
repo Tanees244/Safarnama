@@ -39,7 +39,7 @@ const Login = () => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://192.168.0.108:8000/api/authRoutes/login",
+        "http://192.168.100.18:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
@@ -64,9 +64,9 @@ const Login = () => {
       } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
-        navigation.navigate("GuideHome");
+        navigation.navigate("GuideHomeScreen");
       } else {
-        navigation.navigate("GuideProfile");
+        navigation.navigate("HotelDashboard");
       }
     } catch (error) {
       console.error("Login error:", error);
