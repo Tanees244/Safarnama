@@ -8,7 +8,6 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Alert,
 } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import { useNavigation, useRoute } from "@react-navigation/native";

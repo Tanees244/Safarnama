@@ -1,197 +1,223 @@
-//done
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image,TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native';
-import React from 'react';
-
-
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  ScrollView,
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Login from "../Login";
+import { withTheme } from "react-native-elements";
 
 const GuideProfile = () => {
-    const screenWidth = Dimensions.get('window').width;
-    const containerWidth = screenWidth * 0.8;
-    const buttonWidth = containerWidth * 0.5;
-    const inputBoxWidth = containerWidth - 40; // Subtract padding
-    const navigation = useNavigation();
-   
+  const screenWidth = Dimensions.get("window").width;
+  const containerWidth = screenWidth * 0.8;
+  const navigation = useNavigation();
 
-    const navigateToGuideProfile = () => {
-        navigation.navigate('GuideProfile');
-      };
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem("authToken")
+      .then((token) => {
+        console.log("Token retrieved from AsyncStorage:", token);
+        if (token) {
+          fetchUserProfile(token);
+        } else {
+          console.log("Token not found. Redirecting to login...");
+          Alert.alert(
+            "Sign In Required",
+            "Please sign in to view your profile.",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              { text: "Sign In", onPress: () => navigation.navigate("Login") },
+            ],
+            { cancelable: false }
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }, []);
+
+  const fetchUserProfile = async (token) => {
+    try {
+      console.log("Bearer token:", token);
+
+      const response = await fetch(
+        "http://192.168.100.18:8000/api/guideRoutes/guide-details/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     
-      const navigateToGuideHomeScreen = () => {
-        navigation.navigate('GuideHomeScreen');
-      };
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        console.error("Failed to fetch user profile", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
 
-    return (
-        <ScrollView contentContainerStyle={styles.Container} >
-            <View style={styles.Rectangle}>
-                <Text style={styles.Text}>
-                    My <Text style={[styles.Text, { color: 'white' }]}>Account</Text>
-                </Text>
+  const ProfileNavigate = () => {
+    navigation.navigate("GuideHomeScreen");
+  };
 
-            </View>
-            <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-                <Image
-                    style={styles.UserIcon}
-                    contentFit="cover"
-                    source={require("../../assets/USER.png")} />
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("authToken");
+    navigation.navigate(Login);
+  };
 
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text>
-                        User Name
-                    </Text>
-                </View>
-                <View style={[styles.Buttons, { width: buttonWidth }]}>
-                    <Text>
-                        User ID
-                    </Text>
-                </View>
-                <Text style={styles.bio}>BIO</Text>
-                <View style={[styles.textBox, {width: inputBoxWidth}]}>
-                    <Text>
-                    my name is tanees shakeel. i live in karachi, pakistan. lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum 
-                    </Text>
-                </View>
+  return (
+    <View style={styles.Container}>
+      <TouchableOpacity onPress={ProfileNavigate} style={styles.ProfileButton}>
+        <Image
+          
+          source={require("../../assets/Home.png")}
+          style={[{ width: 40, height: 40 }]}
+        />
+      </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.rectangle}>
+          <Text style={styles.text}>Guide Profile</Text>
+        </View>
 
-                <View style={styles.ButtonContainer1}>
-                    <TouchableOpacity activeOpacity={0.5}>
-                        <Text style={{color:'white', fontWeight:'bold'}}>
-                            LOGOUT
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+        <View style={[styles.profileContainer, { width: containerWidth }]}>
+          <Image
+            style={styles.userIcon}
+            source={{ uri: `data:image/jpeg;base64,${user?.picture}` }}
+          />
+          <View style={styles.buttonsContainer}>
+            <Text style={styles.Name}>{user?.name}</Text>
+            <Text style={styles.Id}>Guide ID : {user?.guide_id}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleLogout} activeOpacity={0.5}>
+              <Text style={{ color: "white", fontFamily: "Poppins-Bold" }}>
+                LOGOUT
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
+        <Text style={styles.bio}>About</Text>
 
-            </View>
-            <View style={styles.ButtonContainer1}>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideHomeScreen}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/Home.png")} />
-                    <Text style={styles.home}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={navigateToGuideProfile}>
-                    <Image style={styles.homeicon}
-                        contentFit="cover"
-                        source={require("../../assets/account-circle-black.png")} />
-                    <Text style={styles.home}>Profile</Text>
-                </TouchableOpacity>
-            </View>
-
-        </ScrollView>
-    );
+        <View style={[styles.textBox, { width: containerWidth }]}>
+          <Text style={styles.details}>Email : {user?.email}</Text>
+          <Text style={styles.details}>Contact Number : {user?.contact_number}</Text>
+          <Text style={styles.details}>Address : {user?.address}</Text>
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    Container: {
-        backgroundColor: 'white',
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: 'white',
-    },
-    Text: {
-        fontSize: 40,
-        color: 'black',
-        fontWeight: 'bold',
-        marginTop: 100,
-        right: 30,
-    },
-    textBox: {
-        marginTop: 10,
-        backgroundColor:  '#D9D9D9',
-        height: 140,
-        borderRadius: 20,
-        padding: 20,
-        borderWidth: 0,
-        borderColor: 'black',
-    },
-    homeicon: {
-        width: 24,
-        height: 24,
-        overflow: "hidden",
-    },
-    bio: {
-        color: 'black',
-        right: 100,
-        marginTop: 30,
-        fontSize: 27,
-    },
-
-    home: {
-        fontSize: 10,
-        lineHeight: 14,
-        fontWeight: "700",
-        marginTop: 2,
-        textAlign: "center",
-        color: 'white',
-    },
-
-    UserIcon: {
-        top: 20,
-        left: 10,
-        width: 90,
-        height: 90,
-        position: "absolute",
-    },
-
-    Rectangle: {
-        backgroundColor: '#A5A2D8',
-        borderRadius: 46,
-        height: 320,
-        top: -10,
-        width: '100%',
-        position: 'absolute',
-        flex: 1,
-        alignItems: 'center',
-      
-    },
-
-    ProfileContainer: {
-        backgroundColor: '#BCCADF',
-        borderRadius: 28,
-        marginTop: 200,
-        alignItems: 'center',
-        paddingTop: 20,
-        paddingBottom: 30,
-        height: 460,
-    },
-    Buttons: {
-        backgroundColor: '#D9D9D9',
-        height: 35,
-        left: 40,
-        borderRadius: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'black',
-    },
-    ButtonContainer1: {
-        flexDirection: 'row',
-        padding: 20,
-        backgroundColor: '#213555',
-        height: 60,
-        borderRadius: 30,
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        marginBottom: 50,
-        marginTop: 50,
-        width: 160,
-
-    },
-
-    ButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: 'white',
-    },
+  container: {
+    flexGrow: 1,
+    alignItems: "center",
+  },
+  Container: {
+    backgroundColor: "#20262E",
+    flex: 1,
+  },
+  ProfileButton: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    width: 75,
+    height: 75,
+    padding: 15,
+    borderRadius: 35,
+    backgroundColor: "#000000",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "white",
+    elevation: 0,
+    zIndex: 2,
+  },
+  text: {
+    fontSize: 40,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+    marginTop: 100,
+  },
+  profileContainer: {
+    backgroundColor: "#BCCADF",
+    borderRadius: 28,
+    alignItems: "center",
+    padding: 25,
+    marginTop: 180,
+    flexDirection: "column",
+  },
+  userIcon: {
+    width: 130,
+    height: 130,
+    borderRadius: 50,
+  },
+  buttonsContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    padding: 20,
+  },
+  Name: {
+    fontFamily: "Poppins-Bold",
+    fontSize: 20,
+  },
+  Id: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 18,
+  },
+  details: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 16,
+    color: 'white',
+  },
+  textBox: {
+    borderRadius: 25,
+    padding: 20,
+    textAlign: "center",
+    marginBottom: 100,
+  },
+  bio: {
+    fontFamily: "Poppins-SemiBold",
+    color: "white",
+    marginTop: 30,
+    fontSize: 25,
+  },
+  rectangle: {
+    backgroundColor: "#4F515A",
+    borderRadius: 40,
+    height: 320,
+    top: -20,
+    width: "100%",
+    position: "absolute",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    backgroundColor: "#213555",
+    height: 60,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: 160,
+  },
 });
 
 export default GuideProfile;
-
-
