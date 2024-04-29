@@ -64,14 +64,14 @@ const Login = () => {
       } else if (data.user.user_type === "Tourist") {
         navigation.navigate("Discover");
       } else if (data.user.user_type === "Guide") {
-        navigation.navigate("GuideHome");
+        navigation.navigate("GuideHomeScreen");
       } else if (data.user.user_type === "Vendor") {
         if (data.isHotel) {
           navigation.navigate("HotelDashboard");
         } else if (data.transportType === "Airline") {
           navigation.navigate("AirlineDashboard");
         } else if (data.transportType === "Railway") {
-          navigation.navigate("RailwayDashboard");
+          navigation.navigate("TrainDashboard");
         } else if (data.transportType === "Bus") {
           navigation.navigate("BusDashboard");
         } else {

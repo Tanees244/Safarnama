@@ -136,7 +136,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+          source={{ uri: `data:image/jpeg;base64,${item.images}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -325,7 +325,7 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/places"
+        "http://192.168.100.12:8000/api/routes/places"
       );
       setPlaceData(response.data);
     } catch (error) {
@@ -336,7 +336,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/hotel-details"
+        "http://192.168.100.12:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {

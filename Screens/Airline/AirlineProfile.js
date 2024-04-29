@@ -114,11 +114,13 @@ const AirlineProfile = () => {
           </View>
         </View>
 
-        <Text style={styles.bio}>About</Text>
+        
 
         <View style={[styles.textBox, { width: containerWidth }]}>
-          <Text style={styles.details}>Email : {user?.email}</Text>
-          <Text style={styles.details}>Contact Number : {user?.contact_number}</Text>
+        <Text style={styles.bio}>Email </Text>
+          <Text style={styles.details}> {user?.email}</Text>
+          <Text style={styles.bio}>Contact Number </Text>
+          <Text style={styles.details}> {user?.contact_number}</Text>
         </View>
       </ScrollView>
     </View>
@@ -164,9 +166,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   userIcon: {
-    width: 130,
+    width: 240,
     height: 130,
-    borderRadius: 50,
+    borderRadius: 40,
   },
   buttonsContainer: {
     alignItems: "center",
@@ -177,6 +179,7 @@ const styles = StyleSheet.create({
   Name: {
     fontFamily: "Poppins-Bold",
     fontSize: 20,
+    textAlign:'center',
   },
   Id: {
     fontFamily: "Poppins-SemiBold",
@@ -184,8 +187,9 @@ const styles = StyleSheet.create({
   },
   details: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 16,
+    fontSize: 14,
     color: 'white',
+    textAlign:'center',
   },
   textBox: {
     borderRadius: 25,
@@ -198,6 +202,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 30,
     fontSize: 25,
+    textAlign:'center',
   },
   rectangle: {
     backgroundColor: "#4F515A",

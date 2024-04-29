@@ -26,7 +26,7 @@ const HorizontalCard = ({ item, onPress }) => {
     >
       <View style={styles.imageContainer}>
         <ImageBackground
-          source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+          source={{ uri: `data:image/jpeg;base64,${item.images}` }}
           style={styles.image}
           borderRadius={20}
         >
@@ -117,7 +117,7 @@ const PlaceLists = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.106:8000/api/routes/places",
+        "http://192.168.100.12:8000/api/routes/places",
         {
           timeout: 5000, // Set timeout to 5 seconds
           retry: 3, // Retry up to 3 times on failure

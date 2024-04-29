@@ -4,6 +4,7 @@ import Dropdown from 'react-native-modal-dropdown';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CreateHotel = () => {
 
@@ -12,11 +13,11 @@ const CreateHotel = () => {
   const RegisterContainer = containerWidth * 0.7;
   const inputWidth = containerWidth * 0.9;
   const submitButton = screenWidth * 0.4;
-  
+
   const cities = ['Balakot', 'Naran', 'Kaghan', 'Gilgit Baltistan', 'Kashmir', 'Muzaffarabad'];
-  const facilities = ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental','24-Hour Security', 'Smoke Alarms','Daily Housekeeping', 'Dry Cleaning', 'Laundry', 'Meeting/Banquet \nfacilities', 'Fax/Photocopying'];
-  const types = ['Single Bed', 'Double Bed', 'Standard', 'Executive', 'King Size'];
-  
+  const facilities = ['Shuttle Service', 'Air Conditioning', 'Wake-up Service', 'Car Rental', '24-Hour Security', 'Smoke Alarms', 'Daily Housekeeping', 'Dry Cleaning', 'Laundry', 'Meeting/Banquet \nfacilities', 'Fax/Photocopying'];
+  const types = ['Single Bed', 'Double Bed', 'Standard', 'Executive'];
+
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
   const navigation = useNavigation();
@@ -32,39 +33,69 @@ const CreateHotel = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [image, setImage] = useState(null);
 
-  const handleTextChange = (newText) => {
-    setText(newText);
+  const [hotelDetails, setHotelDetails] = useState({
+    name: '',
+    area: '',
+    city: '',
+    description: '',
+    facilities: [],
+    roomTypes: [],
+    email: '',
+    contactNumber: '',
+    images: [],
+  });
 
-    const totalHeight = (newText.split('\n').length * 25) + 50;
-
-    if (textInputRef.current) {
-      textInputRef.current.setNativeProps({
-        height: Math.max(55, totalHeight),
+  const submitHotelDetails = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      console.log(token);
+      const response = await fetch('http://192.168.100.12:8000/api/VendorsRoutes/hotel_packages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(hotelDetails),
       });
+
+      if (response.ok) {
+        NavigatetoDashboard();
+      } else {
+        console.error('Failed to store hotel details');
+      }
+    } catch (error) {
+      console.error('Error while fetching token from AsyncStorage:', error);
     }
   };
+
+  const handleTextChange = (key, value) => {
+    setHotelDetails(prevState => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
   const NavigatetoDashboard = () => {
-    // Navigate to the login screen
     navigation.navigate('HotelDashboard');
   };
 
   const handleRoomTypeSelect = (index, value) => {
     setSelectedRoomType(value);
-    setRoomType(value); // Update the room type input field
+    setRoomType(value);
   };
 
   const toggleFacilitiesPopup = () => {
     setIsFacilitiesPopupVisible(!isFacilitiesPopupVisible);
   };
-  
+
   const toggleFacility = (facility) => {
-    if (selectedFacilities.includes(facility)) {
-      // Deselect the facility
-      setSelectedFacilities(selectedFacilities.filter((item) => item !== facility));
-    } else {
-      // Select the facility
-      setSelectedFacilities([...selectedFacilities, facility]);
-    }
+    const updatedFacilities = hotelDetails.facilities.includes(facility)
+      ? hotelDetails.facilities.filter(item => item !== facility)
+      : [...hotelDetails.facilities, facility];
+    setHotelDetails(prevState => ({
+      ...prevState,
+      facilities: updatedFacilities,
+    }));
   };
 
   const toggleRoomTypePopup = () => {
@@ -92,7 +123,6 @@ const CreateHotel = () => {
   const addRoomType = (roomType) => {
     if (roomType && roomInfo.price && roomInfo.adultCapacity >= 1 && numberOfRooms) {
       if (roomTypeCount < 5) {
-        // Create a new room type object with details
         const newRoomType = {
           roomType,
           price: roomInfo.price,
@@ -100,12 +130,12 @@ const CreateHotel = () => {
           childCapacity: roomInfo.childCapacity,
           numberOfRooms,
         };
-  
+
         setRoomTypeList([...roomTypeList, newRoomType]);
-  
+
         setRoomTypeCount(roomTypeCount + 1);
-  
-       setRoomType('');
+
+        setRoomType('');
         setRoomInfo({
           price: '',
           adultCapacity: 1,
@@ -115,7 +145,7 @@ const CreateHotel = () => {
       }
     }
   };
-  
+
 
   useEffect(() => {
     // Enable the "Add Room Type" button if all conditions are met
@@ -134,17 +164,15 @@ const CreateHotel = () => {
       setIsAddRoomTypeEnabled(false);
     }
   }, [roomType, roomInfo.price, roomInfo.adultCapacity, roomTypeCount]);
-  
+
 
   const removeRoomType = (roomType) => {
-    // Filter out the selected room type to remove it from the list
     setRoomTypeList(roomTypeList.filter((room) => room.roomType !== roomType));
   };
 
   const renderRoomDetails = (roomType) => {
-    // Find the selected room type object from the list
     const selectedRoom = roomTypeList.find((room) => room.roomType === roomType);
-  
+
     if (selectedRoom) {
       return (
         <View key={selectedRoom.roomType} style={styles.selectedRoomStyle}>
@@ -162,9 +190,9 @@ const CreateHotel = () => {
         </View>
       );
     }
-  
+
     return null;
-  }; 
+  };
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -181,7 +209,7 @@ const CreateHotel = () => {
       setImage(result.assets[0].uri);
     }
   };
-  
+
 
   return (
     <View style={styles.Container}>
@@ -243,7 +271,7 @@ const CreateHotel = () => {
           <View style={styles.PopupButton}>
             <Text style={styles.OpenFacilitiesPopupText}>Add Facilities</Text>
             <TouchableOpacity onPress={toggleFacilitiesPopup}>
-              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
+              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')} />
             </TouchableOpacity>
           </View>
 
@@ -259,7 +287,7 @@ const CreateHotel = () => {
           <View style={styles.PopupButton}>
             <Text style={styles.AddRoomTypeButtonText}>Add Room Type</Text>
             <TouchableOpacity onPress={toggleRoomTypePopup}>
-              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
+              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')} />
             </TouchableOpacity>
           </View>
           <Text style={styles.Heading}>Selected Room Types:</Text>
@@ -289,13 +317,13 @@ const CreateHotel = () => {
           <View style={styles.PopupButton}>
             <Text style={styles.AddRoomTypeButtonText}>Upload Images</Text>
             <TouchableOpacity onPress={pickImage}>
-              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')}/>
+              <Image style={styles.PopupImage} source={require('../../assets/plus2.png')} />
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={NavigatetoDashboard}>
-            <Text style={styles.submitButtonText}>Submit</Text>
-          </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={submitHotelDetails}>
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
       </ScrollView>
 
       <Modal
@@ -325,7 +353,7 @@ const CreateHotel = () => {
           <TouchableOpacity onPress={toggleFacilitiesPopup} style={styles.closeIconContainer}>
             <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
           </TouchableOpacity>
-          
+
         </ScrollView>
       </Modal>
 
@@ -424,7 +452,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Poppins-Bold',
   },
-  HeadingContainer:{
+  HeadingContainer: {
     backgroundColor: '#0a78cd',
     marginHorizontal: 10,
     borderRadius: 20,
@@ -452,7 +480,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 60,
     margin: 30,
-    left:90,
+    left: 90,
   },
   submitButtonText: {
     fontSize: 20,
@@ -690,7 +718,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 15,
   },
-  selectedRoomTextStyle:{
+  selectedRoomTextStyle: {
     color: 'white',
     fontFamily: 'Poppins-Regular',
   },

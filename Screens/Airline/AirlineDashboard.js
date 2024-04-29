@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 import Dropdown from 'react-native-modal-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker;
 import ActiveTicket from './ActiveTicket';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AirlineDashboard = () => {
   
@@ -180,7 +181,7 @@ const AirlineDashboard = () => {
     calculateFlightDuration();
   }, [departureTime, arrivalTime]);
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     toggleAddTicketModal();
     const newTicket = {
       departureCity,
@@ -194,8 +195,134 @@ const AirlineDashboard = () => {
       departureTime,
       calculatedDuration,
     };
+    // Update state with the new ticket
     setActiveTickets([...activeTickets, newTicket]);
 
+    // Add the ticket to the airline_packages API
+    try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      const response = await fetch("http://192.168.100.12:8000/api/VendorsRoutes/airline_packages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(newTicket),
+      });
+      if (response.ok) {
+        // Handle success
+        console.log("Ticket added successfully");
+      } else {
+        // Handle error
+        console.error("Failed to add ticket:", response.status);
+      }
+    } catch (error) {
+      console.error("Error adding ticket:", error);
+    }
+  };
+
+  const [user, setUser] = useState(null);
+  const [airlinePackages, setAirlinePackages] = useState([]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("authToken")
+      .then((token) => {
+        console.log("Token retrieved from AsyncStorage:", token);
+        if (token) {
+          fetchUserProfile(token);
+          fetchAirlinePackages(token);
+        } else {
+          console.log("Token not found. Redirecting to login...");
+          Alert.alert(
+            "Sign In Required",
+            "Please sign in to view your profile.",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              { text: "Sign In", onPress: () => navigation.navigate("Login") },
+            ],
+            { cancelable: false }
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }, []);
+
+
+  const fetchUserProfile = async (token) => {
+    try {
+      console.log("Bearer token:", token);
+
+      const response = await fetch(
+        "http://192.168.100.12:8000/api/VendorsRoutes/airline-details/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      } else {
+        console.error("Failed to fetch user profile", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchAirlinePackages();
+  }, []);
+
+  const fetchAirlinePackages = async () => {
+    try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      const response = await fetch("http://192.168.100.12:8000/api/VendorsRoutes/get_airline_packages", {
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setAirlinePackages(data);
+      } else {
+        console.error("Failed to fetch airline packages:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching airline packages:", error);
+    }
+  };
+
+  const formatTime = (timeString) => {
+    if (!timeString) return "";
+
+    const [hours, minutes, seconds] = timeString.split(':');
+    const arrivalDate = new Date();
+    arrivalDate.setHours(hours);
+    arrivalDate.setMinutes(minutes);
+    arrivalDate.setSeconds(seconds);
+
+    return arrivalDate.toLocaleTimeString();
+  };
+
+  const formatDuration = (durationString) => {
+    if (!durationString) return "";
+  
+    const [month,day, hours] = durationString.split(':').map(Number);
+  
+    const formattedDuration = [];
+      formattedDuration.push(`${hours} hr`);
+  
+    return formattedDuration.join(' ');
   };
 
   return (
@@ -206,9 +333,9 @@ const AirlineDashboard = () => {
       </Svg>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTextHello}>Hello !</Text>
-          <Text style={[ { color: 'white', fontFamily: 'Poppins-Bold', fontSize: 22 }]}>Serene Airline</Text>
+          <Text style={[ { color: 'white', fontFamily: 'Poppins-Bold', fontSize: 18 }]}>{user?.name}</Text>
         </View>
-        <Image source={require('../../assets/serene.png')} style={styles.headerImage} />
+        <Image source={{ uri: `data:image/jpeg;base64,${user?.logo}` }} style={styles.headerImage} />
       </View>
       <TouchableOpacity
         onPress={ProfileNavigate}
@@ -224,8 +351,9 @@ const AirlineDashboard = () => {
             </TouchableOpacity>
           </View>
         </View>
+
         <ScrollView contentContainerStyle={styles.activeTicketsContainer}>
-          {activeTickets.map((ticket, index) => (
+          {airlinePackages.map((ticket, index) => (
             <ActiveTicket
               key={index}
               ticketDetails={ticket}
@@ -403,6 +531,177 @@ const styles = StyleSheet.create({
     backgroundColor: '#4F515A',
     flex: 1,
   },
+  editButton: {
+    backgroundColor: '#319BD6',
+    padding: 10,
+    width: '45%',
+    alignItems: 'center',
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 2,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    width: '45%',
+    alignItems: 'center',
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 2,
+  },
+  activeTicketContainer: {
+    backgroundColor: '#393646',
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  ticketNumber: {
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+  },
+  flightInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderRadius: 15,
+    borderColor: 'white',
+    borderWidth: 2,
+    backgroundColor: '#1B2430',
+    padding: 20,
+    marginBottom: 25,
+  },
+  flightNumber: {
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+
+  },
+  flightName: {
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+  },
+  dottedLine: {
+    borderBottomWidth: 3,
+    borderBottomColor: 'white',
+    borderStyle: 'dashed',
+    marginBottom: 30,
+  },
+  circle1: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    backgroundColor: '#4F515A',
+    position: 'absolute',
+    top: -10,
+    left: -30,
+  },
+  circle2: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    backgroundColor: '#4F515A',
+    position: 'absolute',
+    top: -10,
+    right: -30,
+  },
+  CityContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  flightImage: {
+    width: 50,
+    height: 50,
+  },
+  seatTypeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    marginTop: 20,
+    marginBottom: 20,
+    borderColor: '#fff',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  seatTypeOption: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+  },
+  seatTypeText: {
+    fontSize: 14,
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
+  },
+  selectedSeat: {
+    backgroundColor: '#73777B',
+  },
+  Time: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 10,
+  },
+  DTime: {
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    marginRight: 25,
+    padding: 10,
+  },
+  ATime: {
+    borderColor: 'white',
+    borderWidth: 3,
+    borderRadius: 25,
+    padding: 10,
+  },
+  title: {
+    fontFamily: 'Poppins-Bold',
+    color: '#73777B',
+    fontSize: 16,
+  },
+  ticketTitle: {
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+  },
+  title2: {
+    fontFamily: 'Poppins-Bold',
+    color: '#73777B',
+    fontSize: 10,
+  },
+  Duration: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ticketText: {
+    fontSize: 18,
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+  },
+  ticketText2: {
+    fontSize: 14,
+    color: '#fff',
+    fontFamily: 'Poppins-SemiBold',
+    marginBottom: 10,
+  },
+  ticketInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ticketInfo: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+
   backgroundEllipse1: {
     position: 'absolute',
   },
@@ -418,7 +717,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   headerTextContainer: {
-    marginTop : 20,
+    marginTop: 20,
     flexDirection: 'column',
   },
   headerTextHello: {
@@ -430,13 +729,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 100,
     height: 95,
+    position:'relative',
+    resizeMode: 'contain',
+    
   },
   ButtonContainer: {
     marginHorizontal: 20,
     marginVertical: 20,
     borderRadius: 20,
   },
-  ProfileButton:{
+  ProfileButton: {
     position: 'absolute',
     bottom: 20,
     left: 20,
@@ -450,7 +752,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 2,
   },
-  PackageContainer:{
+  PackageContainer: {
     backgroundColor: '#D8D9DA',
     marginTop: 20,
     borderRadius: 20,
@@ -473,7 +775,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#404258',
     padding: 20,
     borderRadius: 10,
-    height: Dimensions.get('window'). height *0.8,
+    height: Dimensions.get('window').height * 0.8,
   },
   closeIconContainer: {
     position: 'absolute',
@@ -518,28 +820,49 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: 'black',
   },
-  PackageHeading:{
+  PackageHeading: {
     fontFamily: 'Poppins-Medium',
     color: 'white',
     fontSize: 16,
     paddingTop: 20,
   },
-  closeIconContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: '#C4C8CB',
-    borderRadius: 60,
-  },
-  closeIcon: {
-    width: 40,
-    height: 40,
-  },
+
   activeTicketsContainer: {
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 20,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  editButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  deleteButton: {
+    backgroundColor: '#f44336',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+
+  saveButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  saveButtonText: {
+    fontSize: 18,
+    fontFamily: 'Poppins-Bold',
+  },
+
+
 });
 
 export default AirlineDashboard;

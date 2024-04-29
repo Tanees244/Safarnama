@@ -15,7 +15,7 @@ const ActiveTicketT = ({ ticketDetails: initialTicketDetails, ticketNumber, onUp
     const containerWidth = screenWidth * 0.9;
 
     const cityOptions = ['Karachi', 'Lahore', 'Quetta']; // Options for the city dropdown
-    const seatTypes = ['Economy', 'Business', 'First-Class']; 
+    const seatTypes = ['Economy', 'AC Sleeper', 'Business Class']; 
 
     const [departureTime, setDepartureTime] = useState(null);
   const [showDeparturePicker, setShowDeparturePicker] = useState(false);
@@ -56,11 +56,16 @@ const ActiveTicketT = ({ ticketDetails: initialTicketDetails, ticketNumber, onUp
     }
   };
 
-    const formatDuration = (durationInMinutes) => {
-      const hours = Math.floor(durationInMinutes / 60);
-      const minutes = durationInMinutes % 60;
-      return `${hours}h ${minutes}min`;
-    };
+  const formatDuration = (durationString) => {
+    if (!durationString) return "";
+  
+    const [month,day, hours] = durationString.split(':').map(Number);
+  
+    const formattedDuration = [];
+      formattedDuration.push(`${hours} hr`);
+  
+    return formattedDuration.join(' ');
+  };
   
     useEffect(() => {
       setTicketDetails({ ...initialTicketDetails });
@@ -104,102 +109,148 @@ const ActiveTicketT = ({ ticketDetails: initialTicketDetails, ticketNumber, onUp
       setEditModalVisible(true);
     };
   
-    const handleSave = () => {
-      onUpdateTicket(editedTicket); // Pass the edited ticket to the parent component
-      setTicketDetails({ ...editedTicket }); // Update local state with the edited ticket details
-      setEditModalVisible(false); // Close the edit modal after saving
-    };
-      
+    const handleSave = async () => {
+      try {
+          // Call the API to update the airline package
+          const response = await fetch(`http://192.168.100.12:8000/api/VendorsRoutes/update_railway_package/${editedTicket.railway_package_id}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(editedTicket),
+          });
+  
+          if (response.ok) {
+              const updatedPackage = await response.json();
+              onUpdateTicket(updatedPackage.updatedPackage); // Update the ticket details in the parent component
+              setEditModalVisible(false); // Close the edit modal
+          } else {
+              // Handle the error if the API call fails
+              console.error('Failed to update railway package');
+          }
+      } catch (error) {
+          console.error('Error updating railway package:', error);
+      }
+  };
     const handleInputChange = (field, value) => {
       setEditedTicket({ ...editedTicket, [field]: value });
     };
   
-    const handleDelete = () => {
-      onDeleteTicket(ticketNumber);
+    const handleDelete = async () => {
+      try {
+          const response = await fetch(`http://192.168.100.12:8000/api/VendorsRoutes/delete_railway_package/${ticketDetails.railway_package_id}`, {
+              method: 'DELETE',
+          });
+  
+          if (response.ok) {
+              onDeleteTicket(ticketNumber); // Remove the ticket from the UI
+          } else {
+              console.error('Failed to delete airline package');
+          }
+      } catch (error) {
+          console.error('Error deleting railway package:', error);
+      }
+  };
+
+    const formatTime = (timeString) => {
+      if (!timeString) return "";
+  
+      const [hours, minutes, seconds] = timeString.split(':');
+      const arrivalDate = new Date();
+      arrivalDate.setHours(hours);
+      arrivalDate.setMinutes(minutes);
+      arrivalDate.setSeconds(seconds);
+  
+      return arrivalDate.toLocaleTimeString();
     };
+  
+
+  
 
   return (
-    <View style={[styles.activeTicketContainer , { width: containerWidth }]}>
+    <View style={[styles.activeTicketContainer, { width: containerWidth }]}>
 
-        <Text style={[styles.ticketNumber, {backgroundColor: '#A5A5AA', width: '50%', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, marginBottom: 20,}]}>Ticket #{ticketNumber}</Text>
+    <Text style={[styles.ticketNumber, { backgroundColor: '#A5A5AA', width: '50%', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, marginBottom: 20, }]}>Ticket # {ticketDetails.railway_package_id}</Text>
 
-        <View style={styles.flightInfoContainer}>
-            <Text style={styles.flightName}>Green Line</Text>
-            <Text style={styles.flightNumber}>{ticketDetails.flightNumber}</Text>
-        </View>
+    <View style={styles.flightInfoContainer}>
+      <Text style={styles.flightName}>{ticketDetails.name}</Text>
+    </View>
+    <View style={styles.flightInfoContainer}>
+      <Text style={styles.flightNumber}> Train # {ticketDetails.train_number}</Text>
+    </View>
 
-        
-        <View style={styles.dottedLine}>
-            <View style={styles.circle1}/>
-            <View style={styles.circle2}/>
-        </View>
 
-        <View style={styles.CityContainer}>
-            <Text style={styles.ticketText}>{ticketDetails.departureCity}</Text>
-            <Image style={styles.flightImage} source={require('../../assets/whitetrain.png')}/>
-            <Text style={styles.ticketText}>{ticketDetails.arrivalCity}</Text>
-        </View>
+    <View style={styles.dottedLine}>
+      <View style={styles.circle1} />
+      <View style={styles.circle2} />
+    </View>
 
-        <View style={styles.seatTypeContainer}>
-        <View style={[
-            styles.seatTypeOption,
-            ticketDetails.flightType && ticketDetails.flightType.trim().toLowerCase() === 'first-class' && styles.selectedSeat
-            ]}>
-            <Text style={styles.seatTypeText}>First Class</Text>
-        </View>
+    <View style={styles.CityContainer}>
+      <Text style={styles.ticketText}>{ticketDetails.departure_city}</Text>
+      <Image style={styles.flightImage} source={require('../../assets/whitetrain.png')} />
+      <Text style={styles.ticketText}>{ticketDetails.arrival_city}</Text>
+    </View>
 
-        <View style={[
-            styles.seatTypeOption, 
-            ticketDetails.flightType && ticketDetails.flightType.trim().toLowerCase() === 'business' && styles.selectedSeat
-            ]}>
-            <Text style={styles.seatTypeText}>Business</Text>
+    <View style={styles.seatTypeContainer}>
+      <View style={[
+        styles.seatTypeOption,
+        ticketDetails.seat_type && ticketDetails.seat_type.trim().toLowerCase() === 'economy' && styles.selectedSeat
+      ]}>
+        <Text style={styles.seatTypeText}>Economy</Text>
+      </View>
+
+      <View style={[
+        styles.seatTypeOption,
+        ticketDetails.seat_type && ticketDetails.seat_type.trim().toLowerCase() === 'ac sleeper' && styles.selectedSeat
+      ]}>
+        <Text style={styles.seatTypeText}>AC Sleeper</Text>
+      </View>
+      <View style={[
+        styles.seatTypeOption,
+        ticketDetails.seat_type && ticketDetails.seat_type.trim().toLowerCase() === 'business class' && styles.selectedSeat
+      ]}>
+        <Text style={styles.seatTypeText}>Business Class</Text>
+      </View>
+    </View>
+
+    <View style={styles.ticketInfoContainer}>
+      <View style={styles.ticketText}>
+        <View style={styles.Time}>
+          <View style={styles.DTime}>
+            <Text style={styles.title2}>Departure Date</Text>
+            <Text style={styles.ticketText2}>
+              {(ticketDetails.departure_date && new Date(ticketDetails.departure_date)?.toDateString()) || " "}
+            </Text>
+            <Text style={styles.title2}>Departure Time : </Text>
+            <Text style={styles.ticketText2}>
+              {(ticketDetails.departure_time && formatTime(ticketDetails.departure_time)) || " "}
+            </Text>
+          </View>
+          <View style={styles.ATime}>
+            <Text style={styles.title2}>Arrival Date : </Text>
+            <Text style={styles.ticketText2}>
+              {(ticketDetails.arrival_date && new Date(ticketDetails.arrival_date)?.toDateString()) || " "}
+            </Text>
+            <Text style={styles.title2}>Arrival Time : </Text>
+            <Text style={styles.ticketText2}>
+              {(ticketDetails.arrival_time && formatTime(ticketDetails.arrival_time)) || " "}
+            </Text>
+          </View>
         </View>
-        <View style={[
-            styles.seatTypeOption, 
-            ticketDetails.flightType && ticketDetails.flightType.trim().toLowerCase() === 'economy' && styles.selectedSeat
-            ]}>
-            <Text style={styles.seatTypeText}>Economy</Text>
+        <View style={styles.Duration}>
+          <View>
+            <Text style={styles.title}>Price : </Text>
+            <Text style={styles.ticketText}>{ticketDetails.ticket_price}PKR</Text>
+          </View>
+          <View>
+            <Text style={styles.title}>Flight Duration:</Text>
+            <Text style={styles.ticketText}>
+            {formatDuration(ticketDetails.journey_duration)}
+            </Text>
+          </View>
         </View>
-        </View>
-        
-        <View style={styles.ticketInfoContainer}>
-            <View style={styles.ticketText}>
-              <View style={styles.Time}>
-                <View style={styles.DTime}>  
-                  <Text style={styles.title2}>Departure Date</Text>
-                  <Text style={styles.ticketText2}>
-                  {(editedTicket.departureDate && new Date(editedTicket.departureDate)?.toDateString()) || " "}
-                  </Text> 
-                  <Text style={styles.title2}>Departure Time : </Text>
-                  <Text style={styles.ticketText2}>
-                  {(editedTicket.departureTime && new Date(editedTicket.departureTime)?.toLocaleTimeString()) || " "}
-                  </Text>             
-                </View>
-                <View style={styles.ATime}>
-                  <Text style={styles.title2}>Arrival Date : </Text>
-                  <Text style={styles.ticketText2}>
-                  {(editedTicket.arrivalDate && new Date(editedTicket.arrivalDate)?.toDateString()) || " "}
-                  </Text>
-                  <Text style={styles.title2}>Arrival Time : </Text>
-                  <Text style={styles.ticketText2}>
-                  {(editedTicket.arrivalTime && new Date(editedTicket.arrivalTime)?.toLocaleTimeString()) || " "}
-                  </Text>
-                </View>
-                </View>
-                <View style={styles.Duration}>
-                  <View>
-                  <Text style={styles.title}>Price : </Text>
-                  <Text style={styles.ticketText}>{ticketDetails.price} PKR</Text>
-                  </View>
-                  <View>
-                  <Text style={styles.title}>Travel Duration:</Text>
-                  <Text style={styles.ticketText}>
-                      {editedTicket.calculatedDuration || ''}
-                  </Text>
-                  </View>
-                </View>
-            </View>
-        </View>
+      </View>
+    </View>
 
         <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={handleEdit} style={styles.editButton}>
@@ -221,8 +272,8 @@ const ActiveTicketT = ({ ticketDetails: initialTicketDetails, ticketNumber, onUp
         <TextInput
           style={styles.input}
           placeholder="Train Number"
-          value={editedTicket.flightNumber}
-          onChangeText={(text) => handleInputChange('flightNumber', text)}
+          value={editedTicket.BusNumber}
+          onChangeText={(text) => handleInputChange('BusNumber', text)}
         />
         <View style={styles.input}>
           <Dropdown
@@ -245,7 +296,7 @@ const ActiveTicketT = ({ ticketDetails: initialTicketDetails, ticketNumber, onUp
         />
         <View style={styles.input}>
           <Dropdown
-            defaultValue={editedTicket.flightType || 'Train Type'} 
+            defaultValue={editedTicket.flightType || 'Flight Type'} 
             options={seatTypes}
             textStyle={styles.DropdownText}
             dropdownStyle={styles.DropdownContainer}
