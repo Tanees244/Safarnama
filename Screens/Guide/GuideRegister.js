@@ -19,7 +19,7 @@ const GuideRegister = () => {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.100.12:8000/api/authRoutes/register/",
+        "http://192.168.100.18:8000/api/authRoutes/register/",
         {
           email: email,
           password: Password,
@@ -37,11 +37,6 @@ const GuideRegister = () => {
     }
   };
 
-  // const handleSignup = async () => {
-  //   navigation.navigate('GuidePersonalDetail');
-  // }
-   
-   
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.container}>

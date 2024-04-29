@@ -40,7 +40,7 @@ const GuideApplication = () => {
   const handleStatusUpdate = async (id, status) => {
     try {
       const response = await fetch(
-        `http://192.168.100.12:8000/api/guideRoutes/update_guide_status/${id}`,
+        `http://192.168.100.18:8000/api/guideRoutes/update_guide_status/${id}`,
         {
           method: "PUT",
           headers: {
@@ -64,13 +64,21 @@ const GuideApplication = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.100.12:8000/api/guideRoutes/guide_applications?status=${activeSection}`
+        `http://192.168.100.18:8000/api/guideRoutes/guide_applications?status=${activeSection}`
       );
 
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error.response);
     }
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [imageUri, setImageUri] = useState("");
+
+  const handlePicturePress = (imageData) => {
+    setImageUri(imageData);
+    setShowModal(true);
   };
 
   return (
@@ -118,7 +126,7 @@ const GuideApplication = () => {
               <View style={[styles.Detail, { width: containerWidth }]}>
                 <Image
                   style={styles.UserImage}
-                  source={require("../../assets/ellipse.png")}
+                  source={{ uri: `data:image/jpeg;base64,${user.picture}` }}
                 />
                 <View style={styles.UserDetail}>
                   <View style={styles.UserName}>
@@ -146,7 +154,6 @@ const GuideApplication = () => {
                         style={styles.RejectButton}
                         onPress={() =>
                           handleStatusUpdate(user.guide_id, "rejected")
-                          
                         }
                       >
                         <Text style={styles.ButtonText}>Reject</Text>
@@ -213,9 +220,28 @@ const GuideApplication = () => {
               </Text>
             </View>
 
-            <TouchableOpacity style={styles.modalButton}>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => handlePicturePress(selectedUser?.picture)}
+            >
               <Text style={styles.modalButtonText}>Picture</Text>
             </TouchableOpacity>
+            <Modal visible={showModal} transparent animationType="fade">
+              <View style={styles.modalContainer1}>
+                <TouchableOpacity
+                  style={styles.closeButton1}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.closeButtonText1}>Close</Text>
+                </TouchableOpacity>
+                <View style={styles.imageContainer1}>
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${imageUri}` }}
+                    style={styles.image1}
+                  />
+                </View>
+              </View>
+            </Modal>
             <TouchableOpacity style={styles.modalButton}>
               <Text style={styles.modalButtonText}>CNIC-Back</Text>
             </TouchableOpacity>
@@ -253,6 +279,37 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 30,
     fontFamily: "Poppins-Bold",
+  },
+  modalContainer1: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  },
+  closeButton1: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "#FF6347",
+    padding: 10,
+    borderRadius: 8,
+  },
+  closeButtonText1: {
+    color: "white",
+    fontFamily: "Poppins-Bold",
+    fontSize: 16,
+  },
+  imageContainer1: {
+    width: 200,
+    height: 200,
+    backgroundColor: "white",
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  image1: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   Text: {
     fontSize: 30,
@@ -304,7 +361,7 @@ const styles = StyleSheet.create({
   },
   Buttons: {
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginTop: 20,
   },
   ButtonText: {

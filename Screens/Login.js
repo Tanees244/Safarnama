@@ -39,7 +39,7 @@ const Login = () => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://192.168.100.12:8000/api/authRoutes/login",
+        "http://192.168.100.18:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
@@ -75,7 +75,6 @@ const Login = () => {
         } else if (data.transportType === "Bus") {
           navigation.navigate("BusDashboard");
         } else {
-          // Default case, navigate to a generic transport dashboard
           navigation.navigate("TransportDashboard");
         }
       } else {
