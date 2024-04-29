@@ -59,20 +59,20 @@ const GuideClientsFeeback = () => {
       <ScrollView contentContainerStyle={styles.Container}>
         <View style={styles.ProfileContainer}>
           <Text style={styles.Text}>
-            Guide{" "}
-            <Text style={[styles.Text, { color: "#506266" }]}>Rating</Text>
+            User's{" "}
+            <Text style={[styles.Text, { color: "#506266" }]}> Feedback</Text>
           </Text>
           {packages &&
             packages.length > 0 &&
             packages.map((pkg, index) => (
-              <TouchableOpacity key={index} style={styles.reviewBox}>
+              <View key={index} style={styles.reviewBox}>
                 <Text style={styles.detailsHeading}>Details</Text>
                 <Text style={styles.details}>Package ID: {pkg.package_id}</Text>
                 <Text style={styles.details}>
-                  Guide Rating:{" "}
-                  {pkg.guide_rating ? pkg.guide_rating : "Not Available"}
+                  User Rating:{" "}
+                  {pkg.user_rating ? pkg.user_rating : "Not Available"}
                 </Text>
-              </TouchableOpacity>
+              </View>
             ))}
         </View>
       </ScrollView>

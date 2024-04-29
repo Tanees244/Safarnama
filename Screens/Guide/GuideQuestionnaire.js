@@ -26,7 +26,7 @@ const GuideQuestionnaire = () => {
     if (isChecked) {
       try {
         const response = await axios.post(
-          "http://192.168.100.12:8000/api/guideRoutes/guide_questionnaire",
+          "http://192.168.100.18:8000/api/guideRoutes/guide_questionnaire",
           {
             guideId,
             answers,
@@ -35,7 +35,7 @@ const GuideQuestionnaire = () => {
 
         if (response.status === 200) {
           console.log(response.data);
-          navigation.navigate("GuideHomeScreen");
+          navigation.navigate("Login");
         }
       } catch (error) {
         console.error("Error submitting form:", error);

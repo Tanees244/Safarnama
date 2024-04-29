@@ -95,14 +95,14 @@ const GuideHomeScreen = () => {
             onPress={navigateToGuideClientsFeedback}
             style={[styles.Buttons, { width: buttonWidth }]}
           >
-            <Text style={styles.ButtonText}>Guide's Feedback</Text>
+            <Text style={styles.ButtonText}>Guide To User Rating</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={navigateToGuideUserReview}
             style={[styles.Buttons, { width: buttonWidth }]}
           >
-            <Text style={styles.ButtonText}>User Reviews </Text>
+            <Text style={styles.ButtonText}>User To Guide Rating</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -30,25 +31,72 @@ const GuidePersonalDetail = () => {
     cnicNumber: "",
   });
 
+  const [formErrors, setFormErrors] = useState({
+    fullName: "",
+    age: "",
+    email: "",
+    phoneNumber: "",
+    cnicNumber: "",
+  });
+
   const handleFieldChange = (field, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
+
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "",
+    }));
   };
 
   const isFormDataValid = () => {
-    return (
-      formData.fullName &&
-      formData.age &&
-      formData.email &&
-      formData.address &&
-      formData.phoneNumber &&
-      formData.cnicNumber
-    );
-  };
+    let errors = {
+      fullName: "",
+      age: "",
+      email: "",
+      phoneNumber: "",
+      cnicNumber: "",
+    };
 
+    let isValid = true;
+
+    if (!formData.fullName) {
+      errors.fullName = "Full Name is required";
+      isValid = false;
+    }
+
+    if (!formData.age || isNaN(formData.age) || formData.age <= 0 || formData.age > 100) {
+      errors.age = "Age must be a number between 1 and 100";
+      isValid = false;
+    }
+
+    if (!formData.email || !formData.email.includes("@")) {
+      errors.email = "Invalid Email";
+      isValid = false;
+    }
+
+    if (!formData.phoneNumber || formData.phoneNumber.length !== 11) {
+      errors.phoneNumber = "Phone Number must be 11 digits";
+      isValid = false;
+    }
+
+    if (!formData.cnicNumber || formData.cnicNumber.length !== 13) {
+      errors.cnicNumber = "CNIC must be 13 digits";
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+
+    return isValid;
+  };
   const handleUploadDocuments = async () => {
+
+    if (!isFormDataValid()) {
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://192.168.100.18:8000/api/guideRoutes/guide_personal_details",

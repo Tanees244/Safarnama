@@ -82,11 +82,11 @@ const GuideCurrentPackage = () => {
                     Package ID: {pkg.package_id}
                   </Text>
                   <Text style={styles.details}>
-                    User Rating: {pkg.user_rating}
+                    Guide Rating: {pkg.guide_rating}
                   </Text>
-                  {pkg.guide_rating ? (
+                  {pkg.user_rating ? (
                     <Text style={styles.details}>
-                      Guide Rating: {pkg.guide_rating}
+                      User Rating: {pkg.user_rating}
                     </Text>
                   ) : (
                     <Text style={styles.needToBeRated}>Need To Be Rated</Text>
@@ -127,11 +127,11 @@ const GuideCurrentPackage = () => {
                     Package ID: {pkg.package_id}
                   </Text>
                   <Text style={styles.details}>
-                    User Rating: {pkg.user_rating}
+                    Guide Rating: {pkg.guide_rating}
                   </Text>
-                  {pkg.guide_rating ? (
+                  {pkg.user_rating ? (
                     <Text style={styles.details}>
-                      Guide Rating: {pkg.guide_rating}
+                      User Rating: {pkg.user_rating}
                     </Text>
                   ) : (
                     <Text style={styles.needToBeRated}>Guide Rating: Need To Be Rated</Text>
