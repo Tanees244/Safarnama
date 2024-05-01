@@ -26,12 +26,12 @@ const GuideExperience = () => {
     setText(newText);
     const totalHeight = newText.split("\n").length * 25 + 50;
 
-    if (textInputRef.current) {
-      textInputRef.current.setNativeProps({
-        height: Math.max(55, totalHeight),
-      });
-    }
-  };
+      if (textInputRef.current) {
+        textInputRef.current.setNativeProps({
+          height: Math.max(0, totalHeight),
+        });
+      }
+    };
 
   const handleExperienceChange = (newExperience) => {
     setExperience(newExperience);
@@ -76,8 +76,8 @@ const GuideExperience = () => {
   const screenWidth = Dimensions.get("window").width;
   const inputContainerWidth = screenWidth * 0.9;
   const buttonWidth = screenWidth * 0.4;
-  const submitButton = screenWidth * 0.4;
-  const inputBoxWidth = inputContainerWidth - 40; // Subtract padding
+  const submitButton = screenWidth * 0.8;
+  const inputBoxWidth = inputContainerWidth - 1; // Subtract padding
 
   return (
     <View style={styles.Container}>
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 30,
     alignItems: "flex-start",
+    
   },
   inputHeading: {
     fontSize: 20,
@@ -192,11 +193,11 @@ const styles = StyleSheet.create({
   inputBox: {
     marginTop: 10,
     backgroundColor: "#D9D9D9",
-    height: 140,
-    borderRadius: 20,
+    height: 80,
     padding: 20,
     borderWidth: 1,
     borderColor: "black",
+    borderRadius: 25,
   },
   input: {
     flex: 1,
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginTop: 30,
+    marginTop: 160,
     marginBottom: 30,
   },
   submitButtonText: {

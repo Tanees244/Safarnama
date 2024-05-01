@@ -10,7 +10,7 @@ const GuideDocument = () => {
 
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = screenWidth * 0.26;
-  const submitButton = screenWidth * 0.4;
+  const submitButton = screenWidth * 0.8;
   const containerWidth = screenWidth * 0.9;
   const indicatorWidth = screenWidth * 0.2;
 

@@ -94,6 +94,7 @@ const GuidePersonalDetail = () => {
   const handleUploadDocuments = async () => {
 
     if (!isFormDataValid()) {
+      Alert.alert("Error", "Please fill out all fields correctly.");
       return;
     }
 
@@ -151,6 +152,10 @@ const GuidePersonalDetail = () => {
             onChangeText={(text) => handleFieldChange("fullName", text)}
             value={formData.fullName}
           />
+          {formErrors.fullName !== "" && (
+            <Text style={styles.errorText}>{formErrors.fullName}</Text>
+          )}
+
           <TextInput
             placeholder="Enter Your Age"
             style={[styles.Input, { width: inputWidth }]}
@@ -158,18 +163,27 @@ const GuidePersonalDetail = () => {
             value={formData.age}
             keyboardType="numeric"
           />
+          {formErrors.age !== "" && (
+            <Text style={styles.errorText}>{formErrors.age}</Text>
+          )}
+
           <TextInput
             placeholder="Enter Your Email"
             style={[styles.Input, { width: inputWidth }]}
             onChangeText={(text) => handleFieldChange("email", text)}
             value={formData.email}
           />
+          {formErrors.email !== "" && (
+            <Text style={styles.errorText}>{formErrors.email}</Text>
+          )}
+
           <TextInput
             placeholder="Enter Your Address"
             style={[styles.Input, { width: inputWidth }]}
             onChangeText={(text) => handleFieldChange("address", text)}
             value={formData.address}
           />
+
           <TextInput
             placeholder="Enter Your Phone Number"
             style={[styles.Input, { width: inputWidth }]}
@@ -177,6 +191,10 @@ const GuidePersonalDetail = () => {
             value={formData.phoneNumber}
             keyboardType="numeric"
           />
+          {formErrors.phoneNumber !== "" && (
+            <Text style={styles.errorText}>{formErrors.phoneNumber}</Text>
+          )}
+
           <TextInput
             placeholder="Enter Your CNIC"
             style={[styles.Input, { width: inputWidth }]}
@@ -184,6 +202,10 @@ const GuidePersonalDetail = () => {
             value={formData.cnicNumber}
             keyboardType="numeric"
           />
+          {formErrors.cnicNumber !== "" && (
+            <Text style={styles.errorText}>{formErrors.cnicNumber}</Text>
+          )}
+
           <TouchableOpacity
             activeOpacity={0.9}
             style={[styles.UploadButton, { width: uploadButtonWidth }]}
@@ -305,6 +327,12 @@ const styles = StyleSheet.create({
   UploadButtonImage: {
     width: 50,
     height: 50,
+  },
+  errorText: {
+    color: "red",
+    fontFamily: "Poppins-Bold",
+    fontSize: 15,
+    marginTop: 5,
   },
 });
 
