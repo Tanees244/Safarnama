@@ -39,7 +39,7 @@ const GuideHomeScreen = () => {
       try {
         const authToken = await AsyncStorage.getItem("authToken");
         const response = await fetch(
-          "http://192.168.100.18:8000/api/guideRoutes/guide-details",
+          "http://192.168.100.12:8000/api/guideRoutes/guide-details",
           {
             method: "GET",
             headers: {

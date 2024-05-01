@@ -40,7 +40,7 @@ const GuideApplication = () => {
   const handleStatusUpdate = async (id, status) => {
     try {
       const response = await fetch(
-        `http://192.168.100.18:8000/api/guideRoutes/update_guide_status/${id}`,
+        `http://192.168.100.12:8000/api/guideRoutes/update_guide_status/${id}`,
         {
           method: "PUT",
           headers: {
@@ -64,7 +64,7 @@ const GuideApplication = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.100.18:8000/api/guideRoutes/guide_applications?status=${activeSection}`
+        `http://192.168.100.12:8000/api/guideRoutes/guide_applications?status=${activeSection}`
       );
 
       setUsers(response.data);
@@ -126,7 +126,7 @@ const GuideApplication = () => {
               <View style={[styles.Detail, { width: containerWidth }]}>
                 <Image
                   style={styles.UserImage}
-                  source={{ uri: `data:image/jpeg;base64,${user.picture}` }}
+                  source={{ uri: `data:image/jpeg;base64,${user.guide_picture}` }}
                 />
                 <View style={styles.UserDetail}>
                   <View style={styles.UserName}>
@@ -222,7 +222,7 @@ const GuideApplication = () => {
 
             <TouchableOpacity
               style={styles.modalButton}
-              onPress={() => handlePicturePress(selectedUser?.picture)}
+              onPress={() => handlePicturePress(selectedUser?.guide_picture)}
             >
               <Text style={styles.modalButtonText}>Picture</Text>
             </TouchableOpacity>
@@ -235,6 +235,7 @@ const GuideApplication = () => {
                   <Text style={styles.closeButtonText1}>Close</Text>
                 </TouchableOpacity>
                 <View style={styles.imageContainer1}>
+                
                   <Image
                     source={{ uri: `data:image/jpeg;base64,${imageUri}` }}
                     style={styles.image1}
@@ -242,15 +243,72 @@ const GuideApplication = () => {
                 </View>
               </View>
             </Modal>
-            <TouchableOpacity style={styles.modalButton}>
+            <TouchableOpacity style={styles.modalButton}
+                          onPress={() => handlePicturePress(selectedUser?.cfp)}
+            >
               <Text style={styles.modalButtonText}>CNIC-Back</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton}>
+            <Modal visible={showModal} transparent animationType="fade">
+              <View style={styles.modalContainer1}>
+                <TouchableOpacity
+                  style={styles.closeButton1}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.closeButtonText1}>Close</Text>
+                </TouchableOpacity>
+                <View style={styles.imageContainer1}>
+                
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${imageUri}` }}
+                    style={styles.image1}
+                  />
+                </View>
+              </View>
+            </Modal>
+            <TouchableOpacity style={styles.modalButton}
+                          onPress={() => handlePicturePress(selectedUser?.cbp)}
+            >
               <Text style={styles.modalButtonText}>CNIC-Front</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton}>
+            <Modal visible={showModal} transparent animationType="fade">
+              <View style={styles.modalContainer1}>
+                <TouchableOpacity
+                  style={styles.closeButton1}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.closeButtonText1}>Close</Text>
+                </TouchableOpacity>
+                <View style={styles.imageContainer1}>
+                
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${imageUri}` }}
+                    style={styles.image1}
+                  />
+                </View>
+              </View>
+            </Modal>
+            <TouchableOpacity style={styles.modalButton}
+                          onPress={() => handlePicturePress(selectedUser?.glp)}
+            >
               <Text style={styles.modalButtonText}>Tour Guide License</Text>
             </TouchableOpacity>
+            <Modal visible={showModal} transparent animationType="fade">
+              <View style={styles.modalContainer1}>
+                <TouchableOpacity
+                  style={styles.closeButton1}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.closeButtonText1}>Close</Text>
+                </TouchableOpacity>
+                <View style={styles.imageContainer1}>
+                
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${imageUri}` }}
+                    style={styles.image1}
+                  />
+                </View>
+              </View>
+            </Modal>
           </ScrollView>
         </View>
       </Modal>
@@ -309,7 +367,7 @@ const styles = StyleSheet.create({
   image1: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
   Text: {
     fontSize: 30,
@@ -333,6 +391,7 @@ const styles = StyleSheet.create({
   UserImage: {
     width: 90,
     height: 90,
+    resizeMode:'contain',
   },
   UserDetail: {
     padding: 15,

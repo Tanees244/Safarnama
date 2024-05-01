@@ -30,7 +30,7 @@ const GuideCurrentPackage = () => {
         }
 
         const response = await fetch(
-          "http://192.168.100.18:8000/api/guideRoutes/guide-packages",
+          "http://192.168.100.12:8000/api/guideRoutes/guide-packages",
           {
             headers: {
               Authorization: `Bearer ${token}`,

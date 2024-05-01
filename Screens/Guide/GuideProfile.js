@@ -54,7 +54,7 @@ const GuideProfile = () => {
       console.log("Bearer token:", token);
 
       const response = await fetch(
-        "http://192.168.100.18:8000/api/guideRoutes/guide-details/",
+        "http://192.168.100.12:8000/api/guideRoutes/guide-details/",
         {
           headers: {
             Authorization: `Bearer ${token}`,

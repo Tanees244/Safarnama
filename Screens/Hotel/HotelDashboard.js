@@ -6,6 +6,8 @@ import Modal from 'react-native-modal';
 import Dropdown from 'react-native-modal-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ActiveTicket from "./Activehotels";
+import { Hotels } from '../../assets';
 
 const HotelDashboard = () => {
 
@@ -27,7 +29,7 @@ const HotelDashboard = () => {
   }
 
     const [user, setUser] = useState(null);
-  const [BusPackages, setBusPackages] = useState([]);
+  const [hotel, setHotel] = useState([]);
 
   useEffect(() => {
     AsyncStorage.getItem("authToken")
@@ -63,7 +65,7 @@ const HotelDashboard = () => {
     try {
 
       const response = await fetch(
-        "http://192.168.100.12:8000/api/VendorsRoutes/bus-details/",
+        "http://192.168.100.12:8000/api/VendorsRoutes/hotel-vendor-details/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,14 +92,14 @@ const HotelDashboard = () => {
   const fetchAirlinePackages = async () => {
     try {
       const authToken = await AsyncStorage.getItem("authToken");
-      const response = await fetch("http://192.168.100.12:8000/api/VendorsRoutes/get_bus_packages", {
+      const response = await fetch("http://192.168.100.12:8000/api/VendorsRoutes/hotel-details", {
         headers: {
           "Authorization": `Bearer ${authToken}`,
         },
       });
       if (response.ok) {
         const data = await response.json();
-        setBusPackages(data);
+        setHotel(data);
       } else {
         console.error("Failed to fetch airline packages:", response.status);
       }
@@ -139,7 +141,7 @@ const HotelDashboard = () => {
           <Text style={styles.headerTextHello}>Hello !</Text>
           <Text style={[ { color: 'white', fontFamily: 'Poppins-Bold', fontSize: 18 }]}>{user?.name}</Text>
         </View>
-        <Image source={{ uri: `data:image/jpeg;base64,${user?.logo}` }} style={styles.headerImage} />
+        <Image source={{ uri: `data:image/jpeg;base64,${user?.picture}` }} style={styles.headerImage} />
       </View>
       <TouchableOpacity
         onPress={ProfileNavigate}
@@ -156,90 +158,13 @@ const HotelDashboard = () => {
           </View>
         </View>
         <ScrollView contentContainerStyle={styles.activeTicketsContainer}>
-
-<View style={[styles.activeTicketContainer, { width: containerWidth }]}>
-
-<Text style={[styles.ticketNumber, { backgroundColor: '#A5A5AA', width: '50%', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10, marginBottom: 20, }]}>Ticket # </Text>
-
-<View style={styles.flightInfoContainer}>
-<Text style={styles.flightName}> hotel name</Text>
-</View>
-<View style={styles.flightInfoContainer}>
-<Text style={styles.flightNumber}> hotel # </Text>
-</View>
-
-
-
-<View style={styles.CityContainer}>
-<Text style={styles.ticketText}></Text>
-<Image style={styles.flightImage} source={require('../../assets/whitebus.png')} />
-<Text style={styles.ticketText}></Text>
-</View>
-
-<View style={styles.seatTypeContainer}>
-<View style={
-styles.seatTypeOption}>
-<Text style={styles.seatTypeText}>Luxury</Text>
-</View>
-
-<View style={
-styles.seatTypeOption}>
-<Text style={styles.seatTypeText}>Business</Text>
-</View>
-<View style={
-styles.seatTypeOption}>
-<Text style={styles.seatTypeText}>Standard</Text>
-</View>
-</View>
-
-<View style={styles.ticketInfoContainer}>
-<View style={styles.ticketText}>
-<View style={styles.Time}>
-<View style={styles.DTime}>
-  <Text style={styles.title2}>Departure Date</Text>
-  <Text style={styles.ticketText2}>
-   
-  </Text>
-  <Text style={styles.title2}>Departure Time : </Text>
-  <Text style={styles.ticketText2}>
-    
-  </Text>
-</View>
-<View style={styles.ATime}>
-  <Text style={styles.title2}>Arrival Date : </Text>
-  <Text style={styles.ticketText2}>
-    
-  </Text>
-  <Text style={styles.title2}>Arrival Time : </Text>
-  <Text style={styles.ticketText2}>
-   
-  </Text>
-</View>
-</View>
-<View style={styles.Duration}>
-<View>
-  <Text style={styles.title}>Price : </Text>
-  <Text style={styles.ticketText}>PKR</Text>
-</View>
-<View>
-  <Text style={styles.title}>Flight Duration:</Text>
-  <Text style={styles.ticketText}>
- 
-  </Text>
-</View>
-</View>
-</View>
-</View>
-
-<View style={styles.buttonContainer}>
-  <TouchableOpacity  style={styles.editButton}>
-      <Text style={[{color: 'white', fontFamily: 'Poppins-Bold', fontSize: 18,}]}>Edit</Text>
-  </TouchableOpacity>
-  <TouchableOpacity  style={styles.deleteButton}>
-      <Text style={[{color: 'white', fontFamily: 'Poppins-Bold', fontSize: 18,}]}>Delete</Text>
-  </TouchableOpacity>
-</View>
-</View>
+          {hotel.map((ticket, index) => (
+            <ActiveTicket
+              key={index}
+              ticketDetails={ticket}
+              ticketNumber={1}
+            />
+          ))}
 </ScrollView>
 
       </ScrollView>
@@ -263,164 +188,6 @@ const styles = StyleSheet.create({
   Container: {
     backgroundColor: '#4F515A',
     flex: 1,
-  },
-  editButton: {
-    backgroundColor: '#319BD6',
-    padding: 10,
-    width: '45%',
-    alignItems: 'center',
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 2,
-  },
-  deleteButton: {
-    backgroundColor: 'red',
-    padding: 10,
-    width: '45%',
-    alignItems: 'center',
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 2,
-  },
-  activeTicketContainer: {
-    backgroundColor: '#393646',
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 20,
-    marginTop: 20,
-  },
-  ticketNumber: {
-    fontSize: 18,
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-    marginBottom: 10,
-  },
-  flightInfoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderRadius: 15,
-    borderColor: 'white',
-    borderWidth: 2,
-    backgroundColor: '#1B2430',
-    padding: 20,
-    marginBottom: 25,
-  },
-  flightNumber: {
-    fontSize: 18,
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-
-  },
-  flightName: {
-    fontSize: 18,
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-  },
-  dottedLine: {
-    borderBottomWidth: 3,
-    borderBottomColor: 'white',
-    borderStyle: 'dashed',
-    marginBottom: 30,
-  },
-  circle1: {
-    width: 25,
-    height: 25,
-    borderRadius: 50,
-    backgroundColor: '#4F515A',
-    position: 'absolute',
-    top: -10,
-    left: -30,
-  },
-  circle2: {
-    width: 25,
-    height: 25,
-    borderRadius: 50,
-    backgroundColor: '#4F515A',
-    position: 'absolute',
-    top: -10,
-    right: -30,
-  },
-  CityContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  flightImage: {
-    width: 50,
-    height: 50,
-  },
-  seatTypeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    marginTop: 20,
-    marginBottom: 20,
-    borderColor: '#fff',
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  seatTypeOption: {
-    flex: 1,
-    padding: 10,
-    alignItems: 'center',
-  },
-  seatTypeText: {
-    fontSize: 14,
-    color: '#fff',
-    fontFamily: 'Poppins-Regular',
-  },
-  selectedSeat: {
-    backgroundColor: '#73777B',
-  },
-  Time: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    padding: 10,
-  },
-  DTime: {
-    borderColor: 'white',
-    borderWidth: 3,
-    borderRadius: 25,
-    marginRight: 25,
-    padding: 10,
-  },
-  ATime: {
-    borderColor: 'white',
-    borderWidth: 3,
-    borderRadius: 25,
-    padding: 10,
-  },
-  title: {
-    fontFamily: 'Poppins-Bold',
-    color: '#73777B',
-    fontSize: 16,
-  },
-  ticketTitle: {
-    fontSize: 16,
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-  },
-  title2: {
-    fontFamily: 'Poppins-Bold',
-    color: '#73777B',
-    fontSize: 10,
-  },
-  Duration: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  ticketText: {
-    fontSize: 18,
-    color: '#fff',
-    fontFamily: 'Poppins-Bold',
-    marginBottom: 10,
-  },
-  ticketText2: {
-    fontSize: 14,
-    color: '#fff',
-    fontFamily: 'Poppins-SemiBold',
-    marginBottom: 10,
   },
   ticketInfoContainer: {
     flexDirection: 'row',
@@ -570,18 +337,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 20,
   },
-  editButton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
-  deleteButton: {
-    backgroundColor: '#f44336',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
+
 
   saveButton: {
     backgroundColor: '#4CAF50',
@@ -658,12 +414,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   flightImage:{
-    width: 50,
-    height: 50, 
+    width: 150,
+    height: 150, 
+    resizeMode:'contain',
  },
- seatTypeContainer: {
+
+  roomTypeContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     borderWidth: 1,
     marginTop: 20,
     marginBottom: 20,
@@ -673,21 +431,24 @@ const styles = StyleSheet.create({
   },
   seatTypeOption: {
     flex: 1,
-    padding: 10,
+    padding: 0,
     alignItems: 'center',
   },
   seatTypeText: {
-    fontSize: 14,
-    color: '#fff',
-    fontFamily: 'Poppins-Regular',
+    fontSize: 11,
+    color: 'white',
+    fontFamily: 'Poppins-Bold',
+    borderWidth:1,
+    borderBottomColor:'white',
   },
   selectedSeat: {
-    backgroundColor: '#73777B', 
+    borderWidth:1,
+    borderColor:'white',
   },
   Time:{
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    padding: 10,
+    justifyContent: 'center',
+    marginBottom:30,
+
   },
   DTime:{
     borderColor: 'white',
@@ -713,9 +474,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
   },
   title2:{
-    fontFamily: 'Poppins-Bold',
-    color: '#73777B',
-    fontSize: 10,
+    fontFamily: 'Poppins-ExtraBold',
+    color: 'white',
+    fontSize: 18,
+    textAlign:'center',
   },
   Duration: {
     flexDirection: 'row',
@@ -732,6 +494,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Poppins-SemiBold',
     marginBottom: 10,
+    textAlign:'center',
   },
   ticketInfoContainer: {
     flexDirection: 'row',

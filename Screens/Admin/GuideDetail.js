@@ -16,7 +16,7 @@ const GuideDetail = () => {
 
   const fetchGuideDetails = async () => {
     try {
-      const response = await fetch('http://192.168.100.18:8000/api/adminRoutes/guide-details');
+      const response = await fetch('http://192.168.100.12:8000/api/adminRoutes/guide-details');
       if (!response.ok) {
         throw new Error('Failed to fetch guide details');
       }
@@ -54,7 +54,7 @@ const GuideDetail = () => {
   const rejectGuide = async (guideId) => {
     console.log('Rejecting guide with ID:', guideId);
     try {
-      const response = await fetch(`http://192.168.100.18:8000/api/adminRoutes/guide/${guideId}`, {
+      const response = await fetch(`http://192.168.100.12:8000/api/adminRoutes/guide/${guideId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

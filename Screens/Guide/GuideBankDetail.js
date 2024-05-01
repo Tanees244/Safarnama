@@ -70,6 +70,7 @@ const GuideBankDetail = () => {
               ref={textInputRef}
               multiline={true}
               style={styles.input}
+              value={accountName}
               onChangeText={setAccountName}
             />
           </View>
@@ -82,6 +83,7 @@ const GuideBankDetail = () => {
               ref={textInputRef}
               multiline={true}
               style={styles.input}
+              value={ibanNumber}
               onChangeText={setIbanNumber}
             />
           </View>
