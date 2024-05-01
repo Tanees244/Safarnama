@@ -114,12 +114,12 @@ const GuideProfile = () => {
           </View>
         </View>
 
-        <Text style={styles.bio}>About</Text>
 
         <View style={[styles.textBox, { width: containerWidth }]}>
-          <Text style={styles.details}>Email : {user?.email}</Text>
-          <Text style={styles.details}>Contact Number : {user?.contact_number}</Text>
-          <Text style={styles.details}>Address : {user?.address}</Text>
+        <Text style={styles.bio}>Email </Text>
+          <Text style={styles.details}> {user?.email}</Text>
+          <Text style={styles.bio}>Contact Number </Text>
+          <Text style={styles.details}> {user?.contact_number}</Text>
         </View>
       </ScrollView>
     </View>
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     width: 130,
     height: 130,
     borderRadius: 50,
+    resizeMode:'contain',
   },
   buttonsContainer: {
     alignItems: "center",
@@ -187,6 +188,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
     color: 'white',
+    textAlign: "center",
   },
   textBox: {
     borderRadius: 25,
@@ -199,6 +201,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 30,
     fontSize: 25,
+    textAlign:'center',
   },
   rectangle: {
     backgroundColor: "#4F515A",
