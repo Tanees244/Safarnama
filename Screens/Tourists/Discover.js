@@ -290,7 +290,7 @@ const Discover = () => {
   const scaleValue = new Animated.Value(0);
 
   const navigateToHotelsInfo = () => {
-    navigation.navigate("HotelsLists");
+    navigation.navigate("CreatePackage2");
   };
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");

@@ -14,14 +14,22 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
+import { useNavigation } from '@react-navigation/native';
 
 const Flight = () => {
+
+  const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
-  const containerWidth = screenWidth * 1;
+  const containerWidth = screenWidth * 0.9;
   const [airline, setAirline] = useState([]);
   const [railway, setRailway] = useState([]);
   const [bus, setBus] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
+
+  const handleBookNow = (ticketId) => {
+    console.log('Book Now clicked for ticketId:', ticketId);
+    navigation.navigate('CreatePackage2', { ticketId });
+  };
 
   const [searchInput, setSearchInput] = useState({
     departure_city: "",
@@ -42,7 +50,7 @@ const Flight = () => {
         const response3 = await axios.get(
           "http://192.168.100.18:8000/api/routes/bus-packages/"
         );
-        
+
         setAirline(response2.data);
         setRailway(response.data);
         setBus(response3.data);
@@ -120,7 +128,6 @@ const Flight = () => {
       })),
     ];
 
-    // Set the state with the combined filtered results
     setFilteredTickets(combinedFilteredTickets);
   };
 
@@ -154,234 +161,234 @@ const Flight = () => {
     );
   };
 
+
   const renderTicketCard = ({ item }) => (
-    <View style={styles.Viewticket}>
-      <View style={styles.ticketCard}>
-        <Image source={item.image} style={styles.ticketImage} />
-        <View style={styles.dottedLine}>
-          <View style={styles.circle1} />
-          <Text>
-            .................................................................................
-          </Text>
-          <View style={styles.circle2} />
+    <View style={[styles.activeTicketContainer, { width: containerWidth }]}>
+      <Text
+        style={[
+          styles.ticketNumber,
+          {
+            backgroundColor: "#A5A5AA",
+            width: "50%",
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 10,
+            marginBottom: 20,
+          },
+        ]}
+      >
+        Ticket # {item.train_number || item.bus_number || item.flight_number}
+      </Text>
+
+      <View style={styles.dottedLine}>
+        <View style={styles.circle1} />
+        <View style={styles.circle2} />
+      </View>
+
+      <View style={styles.ticketDetails}>
+        <View style={styles.CityContainer}>
+          <Text style={styles.placeText}>{item.departure_city}</Text>
+          <Image
+            style={styles.flightImage}
+            source={require("../../assets/whitetrain.png")}
+          />
+          <Text style={styles.placeText}>{item.arrival_city}</Text>
         </View>
 
-        <View style={styles.ticketDetails}>
-          <View style={styles.CityContainer}>
-            <Text style={styles.placeText}>{item.departure_city}</Text>
-            <Image
-              style={styles.flightImage}
-              source={require("../../assets/whitetrain.png")}
+        <View style={styles.Time}>
+          <View style={styles.DTime}>
+            <Text style={styles.title2}>Departure Date : </Text>
+            <Text style={styles.ticketText2}>{item.departure_date}</Text>
+            <Text style={styles.title2}>Departure Time : </Text>
+            <Text style={styles.ticketText2}>{item.departure_time}</Text>
+          </View>
+          <View style={styles.ATime}>
+            <Text style={styles.title2}>Arrival Date : </Text>
+            <Text style={styles.ticketText2}>{item.arrival_date}</Text>
+            <Text style={styles.title2}>Arrival Time : </Text>
+            <Text style={styles.ticketText2}>{item.arrival_time}</Text>
+          </View>
+        </View>
+
+        <View style={styles.Time1}>
+          <View style={styles.DTime1}>
+            <Text style={styles.title2}>Type : </Text>
+            <Text style={styles.ticketText2}>{item.seat_type}</Text>
+          </View>
+          <View style={styles.DTime1}>
+            <Text style={styles.title2}>Duration : </Text>
+            <Text style={styles.ticketText2}>
+              {item.journey_duration || item.flight_duration}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.seatsContainer}>
+          <TouchableOpacity onPress={() => handleDecrement(item.id)}>
+            <Ionicons
+              name="remove-circle"
+              size={24}
+              color="black"
+              style={styles.icon}
             />
-            <Text style={styles.placeText}>{item.arrival_city}</Text>
-          </View>
-
-          <View style={styles.Time}>
-            <View style={styles.DTime}>
-              <Text style={styles.title2}>Departure Date : </Text>
-              <Text style={styles.ticketText2}>{item.departure_date}</Text>
-              <Text style={styles.title2}>Departure Time : </Text>
-              <Text style={styles.ticketText2}>{item.departure_time}</Text>
-            </View>
-            <View style={styles.ATime}>
-              <Text style={styles.title2}>Arrival Date : </Text>
-              <Text style={styles.ticketText2}>{item.arrival_date}</Text>
-              <Text style={styles.title2}>Arrival Time : </Text>
-              <Text style={styles.ticketText2}>{item.arrival_time}</Text>
-            </View>
-          </View>
-
-          <View style={styles.Time1}>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Flight # : </Text>
-              <Text style={styles.ticketText2}>
-                {item.train_number || item.bus_number || item.flight_number}
-              </Text>
-            </View>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Type : </Text>
-              <Text style={styles.ticketText2}>{item.seat_type}</Text>
-            </View>
-            <View style={styles.DTime1}>
-              <Text style={styles.title2}>Duration : </Text>
-              <Text style={styles.ticketText2}>
-                {item.journey_duration || item.flight_duration}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.seatsContainer}>
-            <TouchableOpacity onPress={() => handleDecrement(item.id)}>
-              <Ionicons
-                name="remove-circle"
-                size={24}
-                color="black"
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <Text style={styles.seatsText}>{item.totalSeats}</Text>
-            <TouchableOpacity onPress={() => handleIncrement(item.id)}>
-              <Ionicons
-                name="add-circle"
-                size={24}
-                color="black"
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <Text style={styles.labelText}>Seats</Text>
-          </View>
+          </TouchableOpacity>
+          <Text style={styles.seatsText}>{item.totalSeats}</Text>
+          <TouchableOpacity onPress={() => handleIncrement(item.id)}>
+            <Ionicons
+              name="add-circle"
+              size={24}
+              color="black"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.labelText}>Seats</Text>
         </View>
+
+        <TouchableOpacity
+          onPress={() => handleBookNow(item.train_number || item.bus_number || item.flight_number)}
+          style={styles.bookNowButton}
+        >
+          <Text style={styles.bookNowText}>Book Now</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
-        <ImageBackground
-          style={styles.Rectangle}
-          source={require("../../assets/blackp.png")}
-        >
-          <Text style={styles.headerText}> safarnama</Text>
-        </ImageBackground>
+        <Text style={styles.headerText}>Safarnama</Text>
       </View>
-      <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-        <View style={styles.searchInputs}>
-          <View style={styles.inputRow}>
-            <TextInput
-              style={styles.input}
-              placeholder="Departure City"
-              value={searchInput.departure_city}
-              onChangeText={(text) =>
-                setSearchInput({ ...searchInput, departure_city: text })
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Arrival City"
-              value={searchInput.arrival_city}
-              onChangeText={(text) =>
-                setSearchInput({ ...searchInput, arrival_city: text })
-              }
-            />
-          </View>
 
-          <View style={styles.inputRow}>
-            <TextInput
-              style={styles.input}
-              placeholder="Departure Date"
-              value={searchInput.departure_date}
-              onChangeText={(text) =>
-                setSearchInput({ ...searchInput, departure_date: text })
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Return Date"
-              value={searchInput.returnDate}
-              onChangeText={(text) =>
-                setSearchInput({ ...searchInput, returnDate: text })
-              }
-            />
-          </View>
-          <View style={styles.searchButtons}>
-            <TouchableOpacity
-              onPress={handleSearch}
-              style={styles.searchbutton}
-            >
-              <Text style={styles.placeText}>Search</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleClear} style={styles.searchbutton}>
-              <Text style={styles.placeText}>Clear</Text>
-            </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.Container}>
+        <View style={[styles.ProfileContainer, { width: containerWidth }]}>
+          <View style={styles.searchInputs}>
+            <View style={styles.inputRow}>
+              <TextInput
+                style={styles.input}
+                placeholder="Departure City"
+                value={searchInput.departure_city}
+                onChangeText={(text) =>
+                  setSearchInput({ ...searchInput, departure_city: text })
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Arrival City"
+                value={searchInput.arrival_city}
+                onChangeText={(text) =>
+                  setSearchInput({ ...searchInput, arrival_city: text })
+                }
+              />
+            </View>
+
+            <View style={styles.inputRow}>
+              <TextInput
+                style={styles.input}
+                placeholder="Departure Date"
+                value={searchInput.departure_date}
+                onChangeText={(text) =>
+                  setSearchInput({ ...searchInput, departure_date: text })
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Return Date"
+                value={searchInput.returnDate}
+                onChangeText={(text) =>
+                  setSearchInput({ ...searchInput, returnDate: text })
+                }
+              />
+            </View>
+            <View style={styles.searchButtons}>
+              <TouchableOpacity
+                onPress={handleSearch}
+                style={styles.searchbutton}
+              >
+                <Text style={styles.placeText}>Search</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleClear}
+                style={styles.searchbutton}
+              >
+                <Text style={styles.placeText}>Clear</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Display Filtered Results */}
-      {filteredTickets.length > 0 && (
-        <View style={styles.filteredResults}>
+        {filteredTickets.length > 0 && (
+          <View style={styles.filteredResults}>
+            <FlatList
+              horizontal
+              data={filteredTickets}
+              keyExtractor={(item) => item.id}
+              renderItem={renderTicketCard}
+              contentContainerStyle={styles.ticketList}
+            />
+          </View>
+        )}
+
+        <View style={styles.ticketCategory}>
+          <Text style={styles.categoryHeading}>Flight Tickets</Text>
           <FlatList
             horizontal
-            data={filteredTickets}
-            keyExtractor={(item) => item.id}
+            data={airline}
+            keyExtractor={(item) => item.airline_operations_id}
             renderItem={renderTicketCard}
             contentContainerStyle={styles.ticketList}
           />
         </View>
-      )}
-
-      {/* Flight Tickets */}
-      <View style={styles.ticketCategory}>
-        <Text style={styles.categoryHeading}>Flight Tickets</Text>
-        <FlatList
-          horizontal
-          data={airline}
-          keyExtractor={(item) => item.airline_operations_id}
-          renderItem={renderTicketCard}
-          contentContainerStyle={styles.ticketList}
-        />
-      </View>
-      <View style={styles.ticketCategory}>
-        <Text style={styles.categoryHeading}>Railway Tickets</Text>
-        <FlatList
-          horizontal
-          data={railway}
-          keyExtractor={(item) => item.railway_package_id}
-          renderItem={renderTicketCard}
-          contentContainerStyle={styles.ticketList}
-        />
-      </View>
-      <View style={styles.ticketCategory}>
-        <Text style={styles.categoryHeading}>Bus Tickets</Text>
-        <FlatList
-          horizontal
-          data={bus}
-          keyExtractor={(item) => item.bus_ticket_id}
-          renderItem={renderTicketCard}
-          contentContainerStyle={styles.ticketList}
-        />
-      </View>
-    </ScrollView>
+        <View style={styles.ticketCategory}>
+          <Text style={styles.categoryHeading}>Railway Tickets</Text>
+          <FlatList
+            horizontal
+            data={railway}
+            keyExtractor={(item) => item.railway_package_id}
+            renderItem={renderTicketCard}
+            contentContainerStyle={styles.ticketList}
+          />
+        </View>
+        <View style={styles.ticketCategory}>
+          <Text style={styles.categoryHeading}>Bus Tickets</Text>
+          <FlatList
+            horizontal
+            data={bus}
+            keyExtractor={(item) => item.bus_ticket_id}
+            renderItem={renderTicketCard}
+            contentContainerStyle={styles.ticketList}
+          />
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: "white",
-  },
-  Rectangle: {
-    backgroundColor: "linear-gradient(190deg, rgb(3, 16, 69), rgb(3, 16, 69))",
-    borderRadius: 80,
-    height: 320,
-    top: -10,
-    width: "100%",
-    position: "absolute",
     flex: 1,
+    backgroundColor: "white",
+    justifyContent: "center",
+  },
+  Container: {
     alignItems: "center",
+  },
+  header: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 140,
+    backgroundColor: "#20262E",
+  },
+  headerText: {
+    fontSize: 30,
+    color: "white",
+    fontFamily: "Poppins-Bold",
+    marginTop: 40,
   },
   ProfileContainer: {
     backgroundColor: "white",
-    borderRadius: 28,
     marginTop: 100,
     height: 100,
-  },
-  header: {
-    height: 140,
-    backgroundColor: "#032844",
-    shadowColor: "black",
-    elevation: 20,
-    zIndex: -1,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-  },
-  headerText: {
-    textAlign: "center",
-    top: 60,
-    color: "white",
-    fontSize: 30,
-    fontFamily: "Poppins-Bold",
   },
   Time: {
     flexDirection: "row",
@@ -408,7 +415,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 10,
   },
-
   ticketText: {
     fontSize: 18,
     color: "#fff",
@@ -421,11 +427,19 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     marginBottom: 10,
   },
+  activeTicketContainer: {
+    backgroundColor: "#393646",
+    borderRadius: 15,
+    padding: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    marginTop: 20,
+  },
   dottedLine: {
     borderBottomWidth: 3,
     borderBottomColor: "white",
     borderStyle: "dashed",
-    marginBottom: 50,
+    marginBottom: 30,
   },
   circle1: {
     width: 25,
@@ -433,8 +447,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "white",
     position: "absolute",
-    top: 10,
-    bottom: 10,
+    top: -10,
     left: -30,
   },
   circle2: {
@@ -443,8 +456,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "white",
     position: "absolute",
-    top: 10,
-    bottom: 10,
+    top: -10,
     right: -30,
   },
   ticketList: {
@@ -499,10 +511,9 @@ const styles = StyleSheet.create({
   },
   placeText: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-    top: 10,
+    color: "#fff",
+    fontFamily: "Poppins-Bold",
+    marginBottom: 10,
   },
   CityContainer: {
     flexDirection: "row",
@@ -615,6 +626,7 @@ const styles = StyleSheet.create({
   },
   searchButtons: {
     flexDirection: "row",
+    justifyContent: "center",
     justifyContent: "space-around",
     paddingHorizontal: 10,
   },
@@ -635,6 +647,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     marginLeft: 10,
+  },
+  bookNowButton: {
+    backgroundColor: "black",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    alignSelf: "center",
+  },
+  bookNowText: {
+    color: "white",
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
   },
 });
 

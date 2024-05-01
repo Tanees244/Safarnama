@@ -1,243 +1,272 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { CheckBox } from 'react-native-elements';
+  import React, { useState, useEffect } from "react";
+  import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    TouchableOpacity,
+    Dimensions,
+    ActivityIndicator,
+  } from "react-native";
+  import { useNavigation, useRoute } from "@react-navigation/native";
+  import { CheckBox } from "react-native-elements";
+  import axios from "axios";
 
-const CreatePackage2 = () => {
-  const screenWidth = Dimensions.get('window').width;
-  const containerWidth = screenWidth * 0.9;
-  const RegisterContainer = containerWidth * 1.05;
-  const inputWidth = containerWidth * 0.6;
-  const RWidth = containerWidth * 0.9;
+  const CreatePackage2 = () => {
+    const screenWidth = Dimensions.get("window").width;
+    const containerWidth = screenWidth * 0.9;
+    const RegisterContainer = containerWidth * 1.05;
+    const inputWidth = containerWidth * 0.75;
 
-  const navigation = useNavigation();
-  const [flightSelected, setFlightSelected] = useState(false);
-  const [busSelected, setBusSelected] = useState(false);
-  const [trainSelected, setTrainSelected] = useState(false);
-  const [skipSelected, setSkipSelected] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+    const navigation = useNavigation();
+    const route = useRoute();
 
-   
-  const handleCheckBox = () => {
-    setIsChecked(!isChecked);
-  };
+    const [flightSelected, setFlightSelected] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+    const [ticketDetails, setTicketDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  const handleCreatePackage3 = () => {
-    if (!isChecked && !(flightSelected || busSelected || trainSelected)) {
-      alert('Please select a transportation option or skip this part.');
-      return;
-    }
+    const { ticketId } = route.params ?? { ticketId: null };
 
-    navigation.navigate('CreatePackage3');
-  };
+    useEffect(() => {
+      const fetchTicketDetails = async () => {
+        try {
+          const response = await axios.get(
+            `http://192.168.100.18:8000/api/routes/airline-packages/${ticketId}`
+          );
+          setTicketDetails(response.data);
+          setLoading(false);
+          console.log("TicketId", ticketId);
+          console.log("Details", ticketDetails);
+        } catch (error) {
+          console.error("Error fetching ticket details:", error);
+        }
+      };
 
-  const handleFlight = () => {
-    setFlightSelected(true);
-    setBusSelected(false);
-    setTrainSelected(false);
-    navigation.navigate('Flight');
-  };
+      fetchTicketDetails();
+    }, [ticketId]);
 
-  const handleBus = () => {
-    setFlightSelected(false);
-    setBusSelected(true);
-    setTrainSelected(false);
-    navigation.navigate('Bus');
-  };
+    const handleCheckBox = () => {
+      setIsChecked(!isChecked);
+    };
 
-  const handleTrain = () => {
-    setFlightSelected(false);
-    setBusSelected(false);
-    setTrainSelected(true);
-    navigation.navigate('Train');
-  };
+    const handleCreatePackage3 = () => {
+      if (!isChecked && !flightSelected) {
+        alert("Please select a transportation option or skip this part.");
+        return;
+      }
+      sendDataToDatabase();
+      navigation.navigate("CreatePackage3");
+    };
 
-  return (
-    <View style={styles.Container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Safarnama</Text>
-      </View>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={[styles.RegisterContainer, { width: RegisterContainer }]}>
-          <Text style={{ fontSize: 22, fontFamily: 'Poppins-Bold', textAlign: 'center', color: 'white' }}>
-            Transport To <Text style={styles.Text}>Islamabad</Text>
-          </Text>
+    const handleFlight = () => {
+      setFlightSelected(true);
+      navigation.navigate("Flight", { ticketId });
+    };
+
+    const sendDataToDatabase = async () => {
+      try {
+        const response = await axios.post(
+          "http://example.com/api/new-endpoint",
+          ticketDetails 
+        );
+        console.log("Data sent to database:", response.data);
+      } catch (error) {
+        console.error("Error sending data to database:", error);
+      }
+    };
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Safarnama</Text>
         </View>
-
-        <View style={styles.ButtonContainer}>
-          <Text style={styles.Heading}>Select Mode Of Transport</Text>
-          <View style={[{ width: RWidth }, styles.Roww]}>
-            <Image style={styles.train} contentFit="cover" source={require('../../assets/airplane.png')} />
-            <TouchableOpacity
-              style={[{ width: inputWidth }, styles.Input, flightSelected && styles.selectedOption]}
-              onPress={handleFlight}>
-              <Text style={styles.DropdownText}>
-                FLIGHT
-              </Text>
-            </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={[styles.RegisterContainer, { width: RegisterContainer }]}>
+            <Text style={styles.transportText}>Transport To Islamabad</Text>
           </View>
 
-          <View style={[{ width: RWidth }, styles.Roww]}>
-            <Image style={styles.train} contentFit="cover" source={require('../../assets/bus.png')} />
+          <View style={styles.optionContainer}>
+            <Text style={styles.optionHeading}>Select Mode Of Transport</Text>
             <TouchableOpacity
-              style={[{ width: inputWidth }, styles.Input, busSelected && styles.selectedOption]}
-              onPress={handleBus}>
-              <Text style={styles.DropdownText}>
-                BUS
-              </Text>
+              style={[
+                styles.transportOption,
+                flightSelected && styles.selectedOption,
+              ]}
+              onPress={handleFlight}
+            >
+              <Text style={styles.optionText}>Choose Transport</Text>
             </TouchableOpacity>
-          </View>
 
-          <View style={[{ width: RWidth }, styles.Roww]}>
-            <Image style={styles.train} contentFit="cover" source={require('../../assets/train.png')} />
-            <TouchableOpacity
-              style={[{ width: inputWidth }, styles.Input, trainSelected && styles.selectedOption]}
-              onPress={handleTrain}>
-              <Text style={styles.DropdownText}>
-                TRAIN
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* <View style={styles.checkboxContainer}> */}
             <CheckBox
-              title='Skip this part if you want to go on your own!'
+              title="Skip transport"
               checked={isChecked}
               onPress={handleCheckBox}
               textStyle={styles.checkboxText}
               containerStyle={styles.checkboxContainer}
             />
-          {/* </View> */}
-        </View>
+          </View>
 
-        <View style={styles.Button}>
+          {loading ? (
+            <ActivityIndicator style={styles.loadingIndicator} />
+          ) : ticketDetails ? (
+            <View style={styles.ticketDetailsContainer}>
+              <Text style={styles.ticketHeading}>Selected Ticket Details</Text>
+              <Text style={styles.ticketText}>
+                Departure City: {ticketDetails.departure_city}
+              </Text>
+              <Text style={styles.ticketText}>
+                Arrival City: {ticketDetails.arrival_city}
+              </Text>
+              <Text style={styles.ticketText}>
+                Departure Date: {ticketDetails.departure_date}
+              </Text>
+              <Text style={styles.ticketText}>
+                Return Date: {ticketDetails.arrival_date}
+              </Text>
+              <Text style={styles.ticketText}>
+                Seat Type: {ticketDetails.seat_type}
+              </Text>
+              <Text style={styles.ticketText}>
+                Ticket Price: {ticketDetails.ticket_price}
+              </Text>
+            </View>
+          ) : (
+            <Text style={styles.ticketText}>No ticket details available</Text>
+          )}
+
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleCreatePackage3}
-            style={[styles.buttonText, { width: inputWidth }]}
-            disabled={!isChecked && !(flightSelected || busSelected || trainSelected)}>
-            <Text style={styles.TextDesign}>Next</Text>
+            style={[styles.nextButton, { width: inputWidth }]}
+            disabled={!isChecked && !flightSelected}
+          >
+            <Text style={styles.nextButtonText}>Next</Text>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-  Container: {
-    backgroundColor: '#cee7fa',
-    flex: 1,
-  },
-  header: {
-      alignItems: 'center',
-      justifyContent: 'center',
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#cee7fa",
+    },
+    header: {
+      alignItems: "center",
+      justifyContent: "center",
       height: 120,
-      backgroundColor: '#032844',
-  },
-  headerText: {
+      backgroundColor: "#032844",
+    },
+    headerText: {
       fontSize: 30,
-      color: 'white',
-      fontFamily: 'Poppins-Bold',
+      color: "white",
+      fontFamily: "Poppins-Bold",
       marginTop: 40,
-  },
-  Button:{
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  buttonText: {
+    },
+    contentContainer: {
+      flexGrow: 1,
+    },
+    RegisterContainer: {
+      backgroundColor: "#092547",
+      marginHorizontal: 10,
+      height: 150,
+      borderRadius: 20,
+      paddingVertical: 20,
+      marginTop: 30,
+      marginBottom: 10,
+      zIndex: 2,
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
+    },
+    transportText: {
+      fontSize: 22,
+      color: "#54aaec",
+      fontFamily: "Poppins-Bold",
+      textAlign: "center",
+    },
+    optionContainer: {
+      marginTop: 20,
+      backgroundColor: "#264769",
+      marginHorizontal: 20,
+      marginVertical: 20,
+      borderRadius: 20,
+      paddingHorizontal: 20,
+      paddingVertical: 20,
+    },
+    optionHeading: {
+      fontFamily: "Poppins-Bold",
+      marginTop: 10,
+      marginBottom: 10,
+      fontSize: 20,
+      color: "white",
+      textAlign: "center",
+    },
+    transportOption: {
+      backgroundColor: "#092547",
+      paddingHorizontal: 15,
+      borderRadius: 20,
+      fontFamily: "Poppins-Regular",
+      justifyContent: "center",
+      height: 60,
+      alignItems: "center",
+    },
+    optionText: {
+      fontSize: 18,
+      color: "white",
+      fontFamily: "Poppins-Bold",
+    },
+    selectedOption: {
+      backgroundColor: "#54aaec",
+    },
+    checkboxText: {
+      fontSize: 14,
+      color: "black",
+      fontFamily: "Poppins-Bold",
+    },
+    checkboxContainer: {
+      backgroundColor: "#EEEDEB",
+      opacity: 0.9,
+      borderRadius: 15,
+      borderWidth: 1,
+      marginTop: 20,
+    },
+    ticketDetailsContainer: {
+      marginTop: 20,
+      paddingHorizontal: 20,
+    },
+    ticketHeading: {
+      fontSize: 18,
+      fontFamily: "Poppins-Bold",
+      marginBottom: 10,
+      color: "#264769",
+    },
+    ticketText: {
+      fontSize: 16,
+      fontFamily: "Poppins-Regular",
+      marginBottom: 5,
+      color: "#264769",
+    },
+    nextButton: {
+      alignItems: "center",
+      marginVertical: 20,
+      backgroundColor: "#54aaec",
       borderRadius: 38,
-      backgroundColor: '#54aaec',
-      justifyContent: 'center',
-      alignItems: 'center',
-  },
-  TextDesign: {
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
+    },
+    nextButtonText: {
       fontSize: 20,
       padding: 10,
-      color: '#082847',
-      fontFamily: 'Poppins-Bold',
-  },
-  RegisterContainer: {
-    backgroundColor: '#092547',
-    marginHorizontal: 10,
-    borderRadius: 20,
-    paddingVertical: 20,
-    marginTop: 30,
-    marginBottom: 10,
-    zIndex: 2,
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
-  },
-  Text: {
-    fontSize: 24,
-    color: '#54aaec',
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-  },
-  ButtonContainer: {
-    marginTop: 20,
-    backgroundColor: '#264769',
-    marginHorizontal: 20,
-    marginVertical: 20,
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-  },
-  Heading: {
-    fontFamily: 'Poppins-Bold',
-    marginTop: 10,
-    marginBottom: 10,
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center',
-  },
-  Roww: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    marginTop: 10,
-    height: 100,
-    backgroundColor: '#cee7fa',
-    borderRadius: 25,
-  },
-  train: {
-    margin: 8,
-    marginTop: 15,
-    height: 35,
-    width: 35,
-  },
-  Input: {
-    backgroundColor: '#092547',
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    fontFamily: 'Poppins-Regular',
-    justifyContent: 'center',
-    height: 60,
-  },
-  DropdownText: {
-    fontSize: 18,
-    color: 'white',
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
-  },
-  selectedOption: {
-    backgroundColor: '#54aaec', // Change to your desired highlight color
-  },
-  checkboxText: {
-    fontSize: 16,
-    color: 'black', // Adjust the color to your preference
-    fontFamily: 'Poppins-Bold',
-  },
-  checkboxContainer: {
-    backgroundColor: 'white', // Change the background color of the checkbox container
-    borderRadius: 25,
-    borderWidth: 2, // Optionally, remove border if not needed
-    marginTop: 20,
-  },
-});
+      color: "#082847",
+      fontFamily: "Poppins-Bold",
+    },
+    loadingIndicator: {
+      marginTop: 20,
+    },
+  });
 
-export default CreatePackage2;
+  export default CreatePackage2;

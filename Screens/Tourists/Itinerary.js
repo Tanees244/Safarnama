@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import ItineraryDay from './ItineraryDay';
 
 const Itinerary = () => {
+  
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
@@ -19,6 +20,41 @@ const Itinerary = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState('');
   const [selectedDayData, setSelectedDayData] = useState(null);
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token !== null) {
+          fetchData(token);
+        }
+      } catch (error) {
+        console.error('Error retrieving token:', error);
+      }
+    };
+    getToken();
+  }, []);
+
+  const fetchData = async (token) => {
+    try {
+      const response = await fetch('https://example.com/api/data', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // Process the data as needed
+        console.log(data);
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const toggleModal = (dayData) => {
     setSelectedDayData(dayData);
@@ -75,11 +111,10 @@ const Itinerary = () => {
         </ScrollView>
 
         <Modal isVisible={isModalVisible} style={styles.modalContent}>
-            <ItineraryDay dayData={selectedDayData} />
-            <TouchableOpacity onPress={() => setIsModalVisible(false)}>
-              <Text style={styles.closeModal}>Close</Text>
-            </TouchableOpacity>
-          
+          <ItineraryDay dayData={selectedDayData} />
+          <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+            <Text style={styles.closeModal}>Close</Text>
+          </TouchableOpacity>
         </Modal>
       </View>
     </View>
