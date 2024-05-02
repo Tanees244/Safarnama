@@ -7,14 +7,12 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
-  Modal,
-  TouchableHighlight,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
 import axios from "axios";
 
-const CreatePackage2 = () => {
+const TicketDetailCard = () => {
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
   const RegisterContainer = containerWidth * 1.05;
@@ -27,8 +25,6 @@ const CreatePackage2 = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [ticketDetails, setTicketDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [shouldRefresh, setShouldRefresh] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
   const { ticketId } = route.params ?? { ticketId: null };
 
@@ -36,22 +32,19 @@ const CreatePackage2 = () => {
     const fetchTicketDetails = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.169.72:8000/api/routes/airline-packages/${ticketId}`
+          `http://192.168.100.18:8000/api/routes/airline-packages/${ticketId}`
         );
         setTicketDetails(response.data);
         setLoading(false);
+        console.log("TicketId", ticketId);
+        console.log("Details", ticketDetails);
       } catch (error) {
         console.error("Error fetching ticket details:", error);
-        setLoading(false);
       }
     };
 
     fetchTicketDetails();
   }, [ticketId]);
-
-  useEffect(() => {
-    console.log(ticketDetails); // Log ticketDetails after it has been updated
-  }, [ticketDetails]);
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -62,6 +55,7 @@ const CreatePackage2 = () => {
       alert("Please select a transportation option or skip this part.");
       return;
     }
+    // sendDataToDatabase();
     navigation.navigate("CreatePackage3");
   };
 
@@ -70,9 +64,6 @@ const CreatePackage2 = () => {
     navigation.navigate("Flight", { ticketId });
   };
 
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
 
   return (
     <View style={styles.container}>
@@ -105,15 +96,35 @@ const CreatePackage2 = () => {
           />
         </View>
 
-        <View style={styles.ticketDetailsContainer}>
-          <Text style={styles.ticketHeading}>Selected Ticket Details</Text>
-          <TouchableOpacity
-            style={styles.ticketDetailsButton}
-            onPress={toggleModal}
-          >
-            <Text style={styles.ticketDetailsButtonText}>Ticket Details</Text>
-          </TouchableOpacity>
-        </View>
+
+
+        {loading ? (
+          <ActivityIndicator style={styles.loadingIndicator} />
+        ) : ticketDetails ? (
+          <View style={styles.ticketDetailsContainer}>
+            <Text style={styles.ticketHeading}>Selected Ticket Details</Text>
+            <Text style={styles.ticketText}>
+              Departure City: {ticketDetails.departure_city}
+            </Text>
+            <Text style={styles.ticketText}>
+              Arrival City: {ticketDetails.arrival_city}
+            </Text>
+            <Text style={styles.ticketText}>
+              Departure Date: {ticketDetails.departure_date}
+            </Text>
+            <Text style={styles.ticketText}>
+              Return Date: {ticketDetails.arrival_date}
+            </Text>
+            <Text style={styles.ticketText}>
+              Seat Type: {ticketDetails.seat_type}
+            </Text>
+            <Text style={styles.ticketText}>
+              Ticket Price: {ticketDetails.ticket_price}
+            </Text>
+          </View>
+        ) : (
+          <Text style={styles.ticketText}>No ticket details available</Text>
+        )}
 
         <TouchableOpacity
           activeOpacity={0.5}
@@ -123,44 +134,6 @@ const CreatePackage2 = () => {
         >
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={toggleModal}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalHeading}>Ticket Details</Text>
-
-              <Text style={styles.modalText}>
-                Departure City: {ticketDetails.departure_city}
-              </Text>
-              <Text style={styles.modalText}>
-                Arrival City: {ticketDetails.arrival_city}
-              </Text>
-              <Text style={styles.modalText}>
-                Departure Date: {ticketDetails.departure_date}
-              </Text>
-              <Text style={styles.modalText}>
-                Return Date: {ticketDetails.arrival_date}
-              </Text>
-              <Text style={styles.modalText}>
-                Seat Type: {ticketDetails.seat_type}
-              </Text>
-              <Text style={styles.modalText}>
-                Ticket Price: {ticketDetails.ticket_price}
-              </Text>
-              <TouchableHighlight
-                style={styles.closeButton}
-                onPress={toggleModal}
-              >
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
       </ScrollView>
     </View>
   );
@@ -267,20 +240,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: "#264769",
   },
-  ticketDetailsButton: {
-    backgroundColor: "#54aaec",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-    marginBottom: 20,
-    width: "50%",
-  },
-  ticketDetailsButtonText: {
-    color: "#082847",
-    fontFamily: "Poppins-Bold",
-    fontSize: 16,
-    textAlign: "center",
-  },
   nextButton: {
     alignItems: "center",
     marginVertical: 20,
@@ -299,43 +258,6 @@ const styles = StyleSheet.create({
   loadingIndicator: {
     marginTop: 20,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 20,
-    alignItems: "center",
-    elevation: 5,
-  },
-  modalHeading: {
-    fontSize: 20,
-    fontFamily: "Poppins-Bold",
-    marginBottom: 10,
-    color: "#264769",
-  },
-  modalText: {
-    fontSize: 16,
-    fontFamily: "Poppins-Regular",
-    marginBottom: 5,
-    color: "#264769",
-  },
-  closeButton: {
-    backgroundColor: "#54aaec",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-  },
-  closeButtonText: {
-    color: "#082847",
-    fontFamily: "Poppins-Bold",
-    fontSize: 16,
-    textAlign: "center",
-  },
 });
 
-export default CreatePackage2;
+export default TicketDetailCard;

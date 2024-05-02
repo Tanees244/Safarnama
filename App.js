@@ -68,6 +68,7 @@ import TouristDetail from './Screens/Admin/TouristDetail.js';
 import GuideDetail from './Screens/Admin/GuideDetail.js';
 import VendorDetail from './Screens/Admin/VendorDetail';
 import Packages from './Screens/Tourists/package.js';
+import TicketDetailCard from './Screens/Tourists/TicketDetailCard.js';
 
 import { useFonts } from 'expo-font';
 
@@ -170,6 +171,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Itinerary' component={Itinerary} />
         <Stack.Screen options={{ headerShown: false }} name='ItineraryDay' component={ItineraryDay} />
         <Stack.Screen options={{ headerShown: false }} name='Packages' component={Packages} />
+        <Stack.Screen options={{ headerShown: false }} name='TicketDetailCard' component={TicketDetailCard} />
+        
       </Stack.Navigator>
     </NavigationContainer>
     

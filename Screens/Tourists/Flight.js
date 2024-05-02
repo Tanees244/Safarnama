@@ -42,13 +42,13 @@ const Flight = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.100.18:8000/api/routes/railway-packages/"
+          "http://192.168.169.72:8000/api/routes/railway-packages/"
         );
         const response2 = await axios.get(
-          "http://192.168.100.18:8000/api/routes/airline-packages/"
+          "http://192.168.169.72:8000/api/routes/airline-packages/"
         );
         const response3 = await axios.get(
-          "http://192.168.100.18:8000/api/routes/bus-packages/"
+          "http://192.168.169.72:8000/api/routes/bus-packages/"
         );
 
         setAirline(response2.data);
@@ -309,7 +309,7 @@ const Flight = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleClear}
-                style={styles.searchbutton}
+                style={styles.searchbutton2}
               >
                 <Text style={styles.placeText}>Clear</Text>
               </TouchableOpacity>
@@ -371,8 +371,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   Container: {
-    alignItems: "center",
-  },
+    alignContent: "center",
+    },
   header: {
     alignItems: "center",
     justifyContent: "center",
@@ -389,6 +389,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 100,
     height: 100,
+    alignSelf:'center',
   },
   Time: {
     flexDirection: "row",
@@ -431,7 +432,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#393646",
     borderRadius: 15,
     padding: 20,
-    marginHorizontal: 20,
+    marginRight:10,
     marginBottom: 20,
     marginTop: 20,
   },
@@ -514,6 +515,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "Poppins-Bold",
     marginBottom: 10,
+    textAlign:'center',
   },
   CityContainer: {
     flexDirection: "row",
@@ -626,14 +628,20 @@ const styles = StyleSheet.create({
   },
   searchButtons: {
     flexDirection: "row",
-    justifyContent: "center",
-    justifyContent: "space-around",
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
   searchbutton: {
-    backgroundColor: "black",
-    width: 130,
+    backgroundColor: "green",
+    width: 110,
     height: 50,
+    justifyContent:'center',
+  },
+  searchbutton2: {
+    backgroundColor: "red",
+    width: 110,
+    height: 50,
+    justifyContent:'center',
   },
   filteredResults: {
     marginTop: 10,
@@ -644,9 +652,9 @@ const styles = StyleSheet.create({
   },
   categoryHeading: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold",
     marginBottom: 10,
-    marginLeft: 10,
+    marginLeft: 15,
   },
   bookNowButton: {
     backgroundColor: "black",
