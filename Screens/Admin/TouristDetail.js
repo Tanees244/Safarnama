@@ -16,7 +16,7 @@ const TouristDetail = () => {
 
   const fetchTouristDetails = async () => {
     try {
-      const response = await fetch('http://192.168.100.18:8000/api/adminRoutes/tourist-details');
+      const response = await fetch('http://192.168.100.12:8000/api/adminRoutes/tourist-details');
       if (!response.ok) {
         throw new Error('Failed to fetch tourist details');
       }

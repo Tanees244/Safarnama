@@ -7,25 +7,34 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
+  Alert,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 
 const GuideBankDetail = () => {
-
   const [accountName, setAccountName] = useState("");
   const [ibanNumber, setIbanNumber] = useState("");
   const screenWidth = Dimensions.get("window").width;
   const inputContainerWidth = screenWidth * 0.9;
   const submitButton = screenWidth * 0.8;
-  const inputBoxWidth = inputContainerWidth - 40;
+  const inputBoxWidth = inputContainerWidth - 1;
   const textInputRef = useRef(null);
   const navigation = useNavigation();
-
   const route = useRoute();
   const { guideId } = route.params;
 
   const handleGuideQuestionnaire = async () => {
+    if (!accountName || !ibanNumber) {
+      Alert.alert("Missing Information", "Please fill in all fields.");
+      return;
+    }
+
+    if (ibanNumber.length !== 24) {
+      Alert.alert("Invalid IBAN Number", "IBAN number must be 24 characters long.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://192.168.100.12:8000/api/guideRoutes/guide_bank_details",
@@ -64,7 +73,7 @@ const GuideBankDetail = () => {
         </View>
 
         <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-          <Text style={styles.inputHeading}>Account Name : </Text>
+          <Text style={styles.inputHeading}>Account Name</Text>
           <View style={[styles.inputBox, { width: inputBoxWidth }]}>
             <TextInput
               ref={textInputRef}
@@ -76,12 +85,13 @@ const GuideBankDetail = () => {
         </View>
 
         <View style={[styles.inputContainer, { width: inputContainerWidth }]}>
-          <Text style={styles.inputHeading}>Your IBAN No# :</Text>
+          <Text style={styles.inputHeading}>IBAN Number</Text>
           <View style={[styles.inputBox, { width: inputBoxWidth }]}>
             <TextInput
               ref={textInputRef}
               multiline={true}
               style={styles.input}
+              value={ibanNumber}
               onChangeText={setIbanNumber}
             />
           </View>
@@ -167,14 +177,13 @@ const styles = StyleSheet.create({
   inputBox: {
     marginTop: 10,
     backgroundColor: "#D9D9D9",
-    height: 40,
-    borderRadius: 20,
+    height: 80,
+    borderRadius: 25,
     padding: 20,
     borderWidth: 1,
     borderColor: "black",
   },
   input: {
-    flex: 1,
     fontSize: 16,
   },
   submitButton: {
@@ -183,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginTop: 30,
+    marginTop: 160,
     marginBottom: 30,
   },
   submitButtonText: {

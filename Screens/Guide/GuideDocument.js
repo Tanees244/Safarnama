@@ -10,7 +10,7 @@ const GuideDocument = () => {
 
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = screenWidth * 0.26;
-  const submitButton = screenWidth * 0.4;
+  const submitButton = screenWidth * 0.8;
   const containerWidth = screenWidth * 0.9;
   const indicatorWidth = screenWidth * 0.2;
 
@@ -42,7 +42,7 @@ const GuideDocument = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/guideRoutes/guide_submit_documents",
+        "http://192.168.100.12:8000/api/guideRoutes/guide_submit_documents",
         {
           image1: imageUri1,
           image2: imageUri2,
