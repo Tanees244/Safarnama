@@ -85,8 +85,8 @@ const CreatePackage = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log("Data saved successfully:", responseData);
-        navigation.navigate("CreatePackage2");
+        console.log("Data saved successfully:", responseData.package_id);
+        navigation.navigate("CreatePackage2", { package_id: responseData.package_id });
       } else {
         console.error("Failed to save data to API");
         Alert.alert("Error", "Failed to save data. Please try again.");

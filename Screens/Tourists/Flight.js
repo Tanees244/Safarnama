@@ -7,17 +7,14 @@ import {
   Image,
   FlatList,
   TextInput,
-  Button,
   ScrollView,
-  ImageBackground,
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const Flight = () => {
-
   const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
@@ -26,11 +23,28 @@ const Flight = () => {
   const [bus, setBus] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
 
-  const handleBookNow = (ticketId) => {
-    console.log('Book Now clicked for ticketId:', ticketId);
-    navigation.navigate('CreatePackage2', { ticketId });
-  };
+  const route = useRoute();
+  const package_id = route.params?.package_id;
 
+  const handleBookNow = (item) => {
+    let transportType = '';
+    let ticketId = '';
+  
+    if (item.train_number) {
+      transportType = 'railway';
+      ticketId = item.train_number;
+    } else if (item.bus_number) {
+      transportType = 'bus';
+      ticketId = item.bus_number;
+    } else if (item.flight_number) {
+      transportType = 'airline';
+      ticketId = item.flight_number;
+    }
+  
+    console.log('Book Now clicked for ticketId:', ticketId, 'and transportType:', transportType);
+    navigation.navigate('CreatePackage2', { ticketId, transportType, package_id });
+  };
+  
   const [searchInput, setSearchInput] = useState({
     departure_city: "",
     arrival_city: "",
@@ -42,13 +56,13 @@ const Flight = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.169.72:8000/api/routes/railway-packages/"
+          "http://192.168.100.18:8000/api/routes/railway-packages/"
         );
         const response2 = await axios.get(
-          "http://192.168.169.72:8000/api/routes/airline-packages/"
+          "http://192.168.100.18:8000/api/routes/airline-packages/"
         );
         const response3 = await axios.get(
-          "http://192.168.169.72:8000/api/routes/bus-packages/"
+          "http://192.168.100.18:8000/api/routes/bus-packages/"
         );
 
         setAirline(response2.data);
@@ -161,7 +175,6 @@ const Flight = () => {
     );
   };
 
-
   const renderTicketCard = ({ item }) => (
     <View style={[styles.activeTicketContainer, { width: containerWidth }]}>
       <Text
@@ -245,7 +258,11 @@ const Flight = () => {
         </View>
 
         <TouchableOpacity
-          onPress={() => handleBookNow(item.train_number || item.bus_number || item.flight_number)}
+          onPress={() =>
+            handleBookNow(
+              item
+            )
+          }
           style={styles.bookNowButton}
         >
           <Text style={styles.bookNowText}>Book Now</Text>
@@ -372,7 +389,7 @@ const styles = StyleSheet.create({
   },
   Container: {
     alignContent: "center",
-    },
+  },
   header: {
     alignItems: "center",
     justifyContent: "center",
@@ -389,7 +406,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 100,
     height: 100,
-    alignSelf:'center',
+    alignSelf: "center",
   },
   Time: {
     flexDirection: "row",
@@ -432,7 +449,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#393646",
     borderRadius: 15,
     padding: 20,
-    marginRight:10,
+    marginRight: 10,
     marginBottom: 20,
     marginTop: 20,
   },
@@ -515,7 +532,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "Poppins-Bold",
     marginBottom: 10,
-    textAlign:'center',
+    textAlign: "center",
   },
   CityContainer: {
     flexDirection: "row",
@@ -628,20 +645,20 @@ const styles = StyleSheet.create({
   },
   searchButtons: {
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingHorizontal: 10,
   },
   searchbutton: {
     backgroundColor: "green",
     width: 110,
     height: 50,
-    justifyContent:'center',
+    justifyContent: "center",
   },
   searchbutton2: {
     backgroundColor: "red",
     width: 110,
     height: 50,
-    justifyContent:'center',
+    justifyContent: "center",
   },
   filteredResults: {
     marginTop: 10,
