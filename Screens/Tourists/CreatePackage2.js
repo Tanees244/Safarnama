@@ -83,8 +83,12 @@ const CreatePackage2 = () => {
   }, [route.params, ticketId, package_id]); 
 
   const handleCheckBox = () => {
-    setIsChecked(!isChecked);
+    setIsChecked(isChecked);
+    if (!isChecked) {
+      setFlightSelected(true);
+    }
   };
+  
 
   const handleCreatePackage3 = async () => {
 
@@ -92,6 +96,7 @@ const CreatePackage2 = () => {
       alert("Please select a transportation option or skip this part.");
       return;
     }
+
     if (route.params && route.params.transportType) {
       const { transportType } = route.params;
       console.log(transportType);
@@ -103,31 +108,29 @@ const CreatePackage2 = () => {
           );
           alert("Ticket data inserted successfully for airline!");
           console.log(response.data);
-          navigation.navigate("CreatePackage3");
+          navigation.navigate("CreatePackage3", { package_id });
         } catch (error) {
           console.error("Error inserting ticket data for airline:", error);
           alert("Failed to insert ticket data for airline");
         }
       } else if (transportType === "bus") {
-        // Call API endpoint for bus
         try {
           const response = await axios.post(
             `http://192.168.100.18:8000/api/routes/add-bus-package-details/${ticketId}`, { package_id }
           );
           alert("Ticket data inserted successfully for bus!");
-          navigation.navigate("CreatePackage3");
+          navigation.navigate("CreatePackage3", { package_id });
         } catch (error) {
           console.error("Error inserting ticket data for bus:", error);
           alert("Failed to insert ticket data for bus");
         }
       } else if (transportType === "railway") {
-        // Call API endpoint for railway
         try {
           const response = await axios.post(
             `http://192.168.100.18:8000/api/routes/add-railway-package-details/${ticketId}`, { package_id }
           );
           alert("Ticket data inserted successfully for railway!");
-          navigation.navigate("CreatePackage3");
+          navigation.navigate("CreatePackage3", { package_id });
         } catch (error) {
           console.error("Error inserting ticket data for railway:", error);
           alert("Failed to insert ticket data for railway");
@@ -136,6 +139,9 @@ const CreatePackage2 = () => {
         alert("Invalid transport type!");
       }
     }
+
+    navigation.navigate("CreatePackage3", { package_id });
+    
   };
 
   const handleFlight = () => {

@@ -66,7 +66,7 @@ const VendorDetail = () => {
 
   const handleRemoveairline = async (vendorId) => {
     try {
-      await axios.delete(`http://192.168.100.12:8000/api/adminRoutes/vendor/${vendorId}`);
+      await axios.delete(`http://192.168.100.18:8000/api/adminRoutes/vendor/${vendorId}`);
       fetchVendorDetails();
     } catch (error) {
       console.error('Error removing vendor:', error);
@@ -75,7 +75,7 @@ const VendorDetail = () => {
 
   const handleRemovehotel = async (vendorId) => {
     try {
-      await axios.delete(`http://192.168.100.12:8000/api/adminRoutes/hotel/${vendorId}`);
+      await axios.delete(`http://192.168.100.18:8000/api/adminRoutes/hotel/${vendorId}`);
       fetchVendorDetails();
     } catch (error) {
       console.error('Error removing vendor:', error);
@@ -84,7 +84,7 @@ const VendorDetail = () => {
 
   const handleRemoverailway = async (vendorId) => {
     try {
-      await axios.delete(`http://192.168.100.12:8000/api/adminRoutes/railway/${vendorId}`);
+      await axios.delete(`http://192.168.100.18:8000/api/adminRoutes/railway/${vendorId}`);
       fetchVendorDetails();
     } catch (error) {
       console.error('Error removing vendor:', error);
@@ -93,7 +93,7 @@ const VendorDetail = () => {
 
   const handleRemoveBus = async (vendorId) => {
     try {
-      await axios.delete(`http://192.168.100.12:8000/api/adminRoutes/bus/${vendorId}`);
+      await axios.delete(`http://192.168.100.18:8000/api/adminRoutes/bus/${vendorId}`);
       fetchVendorDetails();
     } catch (error) {
       console.error('Error removing vendor:', error);

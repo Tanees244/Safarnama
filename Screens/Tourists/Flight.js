@@ -27,24 +27,33 @@ const Flight = () => {
   const package_id = route.params?.package_id;
 
   const handleBookNow = (item) => {
-    let transportType = '';
-    let ticketId = '';
-  
+    let transportType = "";
+    let ticketId = "";
+
     if (item.train_number) {
-      transportType = 'railway';
+      transportType = "railway";
       ticketId = item.train_number;
     } else if (item.bus_number) {
-      transportType = 'bus';
+      transportType = "bus";
       ticketId = item.bus_number;
     } else if (item.flight_number) {
-      transportType = 'airline';
+      transportType = "airline";
       ticketId = item.flight_number;
     }
-  
-    console.log('Book Now clicked for ticketId:', ticketId, 'and transportType:', transportType);
-    navigation.navigate('CreatePackage2', { ticketId, transportType, package_id });
+
+    console.log(
+      "Book Now clicked for ticketId:",
+      ticketId,
+      "and transportType:",
+      transportType
+    );
+    navigation.navigate("CreatePackage2", {
+      ticketId,
+      transportType,
+      package_id,
+    });
   };
-  
+
   const [searchInput, setSearchInput] = useState({
     departure_city: "",
     arrival_city: "",
@@ -258,11 +267,7 @@ const Flight = () => {
         </View>
 
         <TouchableOpacity
-          onPress={() =>
-            handleBookNow(
-              item
-            )
-          }
+          onPress={() => handleBookNow(item)}
           style={styles.bookNowButton}
         >
           <Text style={styles.bookNowText}>Book Now</Text>
@@ -279,59 +284,59 @@ const Flight = () => {
 
       <ScrollView contentContainerStyle={styles.Container}>
         <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-          <View style={styles.searchInputs}>
-            <View style={styles.inputRow}>
-              <TextInput
-                style={styles.input}
-                placeholder="Departure City"
-                value={searchInput.departure_city}
-                onChangeText={(text) =>
-                  setSearchInput({ ...searchInput, departure_city: text })
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Arrival City"
-                value={searchInput.arrival_city}
-                onChangeText={(text) =>
-                  setSearchInput({ ...searchInput, arrival_city: text })
-                }
-              />
-            </View>
-
-            <View style={styles.inputRow}>
-              <TextInput
-                style={styles.input}
-                placeholder="Departure Date"
-                value={searchInput.departure_date}
-                onChangeText={(text) =>
-                  setSearchInput({ ...searchInput, departure_date: text })
-                }
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Return Date"
-                value={searchInput.returnDate}
-                onChangeText={(text) =>
-                  setSearchInput({ ...searchInput, returnDate: text })
-                }
-              />
-            </View>
-            <View style={styles.searchButtons}>
-              <TouchableOpacity
-                onPress={handleSearch}
-                style={styles.searchbutton}
-              >
-                <Text style={styles.placeText}>Search</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleClear}
-                style={styles.searchbutton2}
-              >
-                <Text style={styles.placeText}>Clear</Text>
-              </TouchableOpacity>
-            </View>
+          {/* <View style={styles.searchInputs}> */}
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.input}
+              placeholder="Departure City"
+              value={searchInput.departure_city}
+              onChangeText={(text) =>
+                setSearchInput({ ...searchInput, departure_city: text })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Arrival City"
+              value={searchInput.arrival_city}
+              onChangeText={(text) =>
+                setSearchInput({ ...searchInput, arrival_city: text })
+              }
+            />
           </View>
+
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.input}
+              placeholder="Departure Date"
+              value={searchInput.departure_date}
+              onChangeText={(text) =>
+                setSearchInput({ ...searchInput, departure_date: text })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Return Date"
+              value={searchInput.returnDate}
+              onChangeText={(text) =>
+                setSearchInput({ ...searchInput, returnDate: text })
+              }
+            />
+          </View>
+          <View style={styles.searchButtons}>
+            <TouchableOpacity
+              onPress={handleSearch}
+              style={styles.searchbutton}
+            >
+              <Text style={styles.placeText}>Search</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClear}
+              style={styles.searchbutton2}
+            >
+              <Text style={styles.placeText}>Clear</Text>
+            </TouchableOpacity>
+          </View>
+          {/* </View> */}
         </View>
 
         {filteredTickets.length > 0 && (
@@ -404,8 +409,8 @@ const styles = StyleSheet.create({
   },
   ProfileContainer: {
     backgroundColor: "white",
-    marginTop: 100,
-    height: 100,
+    marginTop: 40,
+    // height: 100,
     alignSelf: "center",
   },
   Time: {
@@ -628,25 +633,27 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     top: -120,
-    borderRadius: 40,
+    // borderRadius: 40,
     padding: 20,
   },
   inputRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
+    paddingHorizontal: 10,
   },
   input: {
     flex: 1,
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 8,
-    marginRight: 10,
+    padding: 10,
+    marginHorizontal: 10,
   },
   searchButtons: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    // paddingHorizontal: 15,
   },
   searchbutton: {
     backgroundColor: "green",

@@ -1,169 +1,178 @@
-//done
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions,ScrollView, ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const CreatePackage3 = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const [package_id, setPackageId] = useState(null);
+  const [dates, setDates] = useState({ start_date: "", end_date: "" });
+  const [days, setDays] = useState([]);
 
-  const screenWidth = Dimensions.get('window').width;
-  const containerWidth = screenWidth * 1;
-  const buttonWidth = containerWidth * 0.45; // 80% of container width
-  const inputWidth = containerWidth * 0.6;
+  useEffect(() => {
+    if (route.params && route.params.package_id) {
+      setPackageId(route.params.package_id);
+    }
 
-  const handleCreatePackage3 = () => {
-      navigation.navigate('Option');
-    };
-  const navigateToHotelsLists = () => {
-    navigation.navigate('HotelsLists'); // Replace with your screen name
+    if (package_id) {
+      fetchDates(package_id);
+    }
+  }, [route.params, package_id]);
+
+  useEffect(() => {
+    if (dates.start_date && dates.end_date) {
+      const startDate = new Date(dates.start_date);
+      const endDate = new Date(dates.end_date);
+      const differenceInTime = endDate.getTime() - startDate.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+      const daysArray = [];
+      for (let i = 0; i <= differenceInDays; i++) {
+        daysArray.push(i + 1);
+      }
+      setDays(daysArray);
+    }
+  }, [dates]);
+
+  const fetchDates = async (packageId) => {
+    try {
+      const response = await fetch(
+        `http://192.168.100.18:8000/api/routes/packages/${packageId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch dates");
+      }
+      const data = await response.json();
+      console.log(packageId);
+      setDates(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const navigateToTransportLists = () => {
-    navigation.navigate('TransportLists'); // Replace with your screen name
+  const navigateToHotelsLists = () => {
+    navigation.navigate("HotelsLists");
   };
 
   const navigateToPlacesLists = () => {
-    navigation.navigate('PlaceLists'); // Replace with your screen name
+    navigation.navigate("PlaceLists");
   };
-  
+
+  const handleSubmit = () => {
+    navigation.navigate("PaymentGateway");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
-      <ImageBackground style={styles.Rectangle} source={require("../../assets/8.png")}>
+      <ImageBackground
+        style={styles.Rectangle}
+        source={require("../../assets/8.png")}
+      >
         <Text style={styles.Text}>
-          Planning<Text style={[styles.Text, { color: 'white' }]}> Your Trip</Text>
+          Planning
+          <Text style={[styles.Text, { color: "white" }]}> Your Trip</Text>
         </Text>
       </ImageBackground>
-     
-     <View style={[styles.ProfileContainer, { width: containerWidth }]}>
-
-        <View style={styles.Roww}>
-          <Text style={styles.Heading}>Day 1</Text>
-        </View>
-
-        <Text style={styles.SubHeading}>Select Your Hotel and Place</Text>
-
-        <View style={styles.buttonContainer}>
-
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={[styles.buttons, { width: buttonWidth }]}
-            onPress={navigateToHotelsLists}
-          >
-            <Text style={styles.buttonText}>Hotel</Text>
-          </TouchableOpacity>
-            
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={[styles.buttons, { width: buttonWidth }]}
-            onPress={navigateToPlacesLists}
-          >
-            <Text style={styles.buttonText}>Places</Text>
-          </TouchableOpacity>
-            
-        </View>
-
-        <View style={styles.Button}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={handleCreatePackage3}
-            style={[styles.buttonText2, { width: inputWidth }]}
+      <View style={styles.ProfileContainer}>
+        {days.map((day) => (
+          <View key={day} style={styles.dayContainer}>
+            <Text style={styles.dayHeading}>Day {day}</Text>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={styles.buttons}
+              onPress={navigateToHotelsLists}
             >
-            <Text style={styles.TextDesign}>Next</Text>
-          </TouchableOpacity>
-        </View>
-
+              <Text style={styles.buttonText}>Hotel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.buttons}
+              onPress={navigateToPlacesLists}
+            >
+              <Text style={styles.buttonText}>Places</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
       </View>
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitText}>Submit</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#071B26',
-    flexGrow:1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#071B26",
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   Rectangle: {
     height: 300,
     top: -10,
-    width: '100%',
-    position: 'absolute',
+    width: "100%",
+    position: "absolute",
   },
   Text: {
     fontSize: 30,
-    color: 'black',
+    color: "black",
     marginTop: 150,
-    fontFamily: 'Poppins-ExtraBold',
-    textAlign:'center',
-  },
-  SubHeading:{
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 20,
-    color: 'white',
-    marginRight: 10,
-    marginVertical: 20,
-  },
-  Roww: {
-    width: '100%',
-    alignItems: 'flex-start',
-  },
-  Heading: {
-    fontFamily: 'Poppins-Bold',
-    marginTop: 10,
-    marginLeft: 30,
-    marginBottom: 10,
-    fontSize: 28,
-    color:'white',
+    fontFamily: "Poppins-ExtraBold",
+    textAlign: "center",
   },
   ProfileContainer: {
-    backgroundColor: '#071B26',
+    backgroundColor: "#071B26",
     borderRadius: 40,
     marginTop: 250,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 20,
     paddingBottom: 30,
-    flexGrow:1,
+    width: "100%",
+    // flexGrow: 1,
   },
-  buttonContainer: {
-    width: '100%',
-    marginTop: 5,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    flexDirection: 'row',
+  dayHeading:{
+    fontFamily: "Poppins-Regular",
+    color: "white",
+    fontSize: 16  
+  },
+  dayContainer:{
+    alignItems: "center",
+    width: "80%",
   },
   buttons: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 100,
+    width: "70%",
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 10,
   },
   buttonText: {
     fontSize: 20,
-    color: 'black',
-    fontFamily: 'Poppins-Bold',
-    textAlign: 'center',
+    color: "black",
+    fontFamily: "Poppins-Bold",
+    textAlign: "center",
   },
-  Button:{
+  submitButton: {
+    backgroundColor: '#54aaec',
+    borderRadius: 10,
+    padding: 15,
     alignItems: 'center',
-    marginVertical: 20,
+    marginTop: 20,
   },
-  buttonText2: {
-      borderRadius: 38,
-      backgroundColor: '#54aaec',
-      justifyContent: 'center',
-      alignItems: 'center',
-  },
-  TextDesign: {
-      fontSize: 20,
-      padding: 10,
-      color: '#082847',
-      fontFamily: 'Poppins-Bold',
+  submitText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: "Poppins-Bold",
   },
 });
 

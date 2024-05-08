@@ -18,7 +18,7 @@ const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const containerHeight = screenHeight * 0.8;
-  const containerWidth = screenWidth * 0.9;
+  const containerWidth = screenWidth * 0.85;
 
   return (
     <View
@@ -58,7 +58,7 @@ const HorizontalCard = ({ item, onPress }) => {
           style={styles.Cardbutton}
           onPress={() => onPress(item)}
         >
-          <Text style={styles.CardbuttonText}>Book Now</Text>
+          <Text style={styles.CardbuttonText}>Explore</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -260,8 +260,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   card: {
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 15,
+    marginRight: 10,
     marginBottom: 30,
     flexDirection: "column",
     width: 340,

@@ -17,24 +17,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 const MAX_TEXT_LENGTH = 200;
 
-const imageGallery = [
-  {
-    id: "1",
-    image: require("../../assets/Naran1.png"),
-  },
-  {
-    id: "2",
-    image: require("../../assets/Naran2.png"),
-  },
-  {
-    id: "3",
-    image: require("../../assets/Naran3.png"),
-  },
-  {
-    id: "4",
-    image: require("../../assets/Naran4.png"),
-  },
-];
 
 const GalleryList = ({ gallery }) => {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
@@ -142,7 +124,7 @@ const PlacesInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={{uri: `data:image/jpeg;base64,${place.image}`}}
+          source={{uri: `data:image/jpeg;base64,${place.images}`}}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
@@ -265,7 +247,7 @@ const PlacesInfo = () => {
           </View>
           <View style={styles.ButtonContainer}>
             <TouchableOpacity style={styles.Cardbutton}>
-              <Text style={styles.CardbuttonText}>Explore Now</Text>
+              <Text style={styles.CardbuttonText}>Select</Text>
             </TouchableOpacity>
           </View>
         </View>

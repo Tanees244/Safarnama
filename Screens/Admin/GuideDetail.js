@@ -16,7 +16,7 @@ const GuideDetail = () => {
 
   const fetchGuideDetails = async () => {
     try {
-      const response = await fetch('http://192.168.100.12:8000/api/adminRoutes/guide-details');
+      const response = await fetch('http://192.168.100.18:8000/api/adminRoutes/guide-details');
       if (!response.ok) {
         throw new Error('Failed to fetch guide details');
       }
@@ -116,9 +116,6 @@ const GuideDetail = () => {
           onRequestClose={closeModal}
         >
           <View style={styles.modalContainer}>
-            <TouchableWithoutFeedback onPress={closeModal}>
-              <View style={styles.modalOverlay} />
-            </TouchableWithoutFeedback>
             <View style={styles.modalContent}>
               <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                 <Text style={styles.closeButtonText}>Close</Text>

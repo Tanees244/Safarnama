@@ -121,18 +121,16 @@ const CreatePackage = () => {
       setDate(currentDate);
       if (Platform.OS === "android") {
         toggleDatepicker1();
-        const formattedDate = `${currentDate
-          .toDateString()
-          .slice(0, 3)}, ${currentDate.getDate()} ${currentDate
-          .toDateString()
-          .slice(4, 7)}`;
+        const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${currentDate.getDate().toString().padStart(2, "0")}`;
         setdateSelect1(formattedDate);
       }
     } else {
       toggleDatepicker1();
     }
   };
-
+  
   const onChange2 = ({ type }, selectedDate) => {
     if (type == "set") {
       const currentDate = selectedDate;
@@ -149,18 +147,16 @@ const CreatePackage = () => {
       setDate(currentDate);
       if (Platform.OS === "android") {
         toggleDatepicker2();
-        const formattedDate = `${currentDate
-          .toDateString()
-          .slice(0, 3)}, ${currentDate.getDate()} ${currentDate
-          .toDateString()
-          .slice(4, 7)}`;
+        const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${currentDate.getDate().toString().padStart(2, "0")}`;
         setdateSelect2(formattedDate);
       }
     } else {
       toggleDatepicker2();
     }
   };
-
+  
   return (
     <View style={styles.Container}>
       <View style={styles.header}>
