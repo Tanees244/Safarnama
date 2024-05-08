@@ -38,7 +38,7 @@ const VendorDetail = () => {
     }
 
     try {
-      const response = await axios.get(`http://192.168.100.18:8000${endpoint}`);
+      const response = await axios.get(`http://192.168.100.12:8000${endpoint}`);
       switch (activeSection) {
         case "Hotel":
           setHotelVendors(response.data);
