@@ -1,17 +1,22 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  Alert,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   ImageBackground,
   Image,
   ScrollView,
+  TextInput,
   FlatList,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Modal from "react-native-modal";
+import axios from "axios";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const data = [
   {
@@ -44,30 +49,593 @@ const data = [
     image: require("../../assets/F6.png"),
     title: "Parking",
   },
-  {
-    id: "7",
-    image: require("../../assets/plus.png"),
-    title: "Parking",
-  },
+
 ];
 
+const ReservationSection = ({ room }) => {
+  const [checkInDate, setCheckInDate] = useState(new Date());
+  const [checkOutDate, setCheckOutDate] = useState(new Date());
+  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
+  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+  const [guests, setGuests] = useState(1);
+  const [adults, setAdults] = useState(1);
+  const [Name, setName] = useState(1);
+  const [Price, setPrice] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [showGuestModal, setShowGuestModal] = useState(false);
+  const [showRoomModal, setShowRoomModal] = useState(false);
+  const [rooms, setRooms] = useState(SelectedRoomDetails ? SelectedRoomDetails.rooms : 1);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [SelectedRoomDetails, setSelectedRoomDetails] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [Id, setID] = useState('');
+  const navigation = useNavigation();
+  
+
+
+  const toggleCheckInPicker = () => {
+    setShowCheckInPicker(!showCheckInPicker);
+  };
+
+  const toggleCheckOutPicker = () => {
+    setShowCheckOutPicker(!showCheckOutPicker);
+  };
+
+  const handleCheckInChange = ({ type }, selectedDate) => {
+    if (type === "set") {
+      const currentDate = selectedDate || checkInDate;
+      setCheckInDate(currentDate);
+      toggleCheckInPicker();
+    } else {
+      toggleCheckInPicker();
+    }
+  };
+
+  const handleCheckOutChange = ({ type }, selectedDate) => {
+    if (type === "set") {
+      const currentDate = selectedDate || checkOutDate;
+      setCheckOutDate(currentDate);
+      toggleCheckOutPicker();
+    } else {
+      toggleCheckOutPicker();
+    }
+  };
+
+  const toggleGuestModal = () => {
+    setShowGuestModal(!showGuestModal);
+  };
+
+  const toggleRoomModal = () => {
+    setShowRoomModal(!showRoomModal);
+  };
+
+  const handleGuestsConfirm = () => {
+    setGuests(adults + children);
+    toggleGuestModal();
+  };
+
+  const incrementAdults = () => {
+    if (adults < 4) {
+      setAdults(adults + 1);
+    }
+  };
+
+  const decrementAdults = () => {
+    if (adults > 0) {
+      setAdults(adults - 1);
+    }
+  };
+
+  const incrementChildren = () => {
+    if (children < 4 && adults + children < 4) {
+      setChildren(children + 1);
+    }
+  };
+
+  const decrementChildren = () => {
+    if (children > 0) {
+      setChildren(children - 1);
+    }
+  };
+
+  const closePopup = () => {
+    setShowGuestModal(false);
+  };
+
+  const closePopuproom = () => {
+    setShowRoomModal(false);
+  };
+
+  const incrementRooms = (availableRooms) => {
+    if (rooms < availableRooms) {
+      setRooms(rooms => rooms + 1);
+    } else {
+      alert("You cannot add more rooms than available.");
+    }
+  };
+
+  const decrementRooms = () => {
+    if (rooms > 1) {
+      setRooms(rooms - 1);
+    }
+  };
+
+  const handleClear = () => {
+    setSelectedRoom(null);
+    setSelectedRoomDetails(null);
+  };
+
+  const handleBook = () => {
+    setShowRoomModal(false);
+    // Update state with selected room information
+    setSelectedRoomDetails({
+      name: Name,
+      price: Price,
+      adults: adults,
+      children: children,
+      rooms: rooms,
+      checkInDate: checkInDate.toLocaleDateString(),
+      checkOutDate: checkOutDate.toLocaleDateString(),
+      hotel_details_id: Id,
+    });
+  };
+
+  const checkAuthentication = async () => {
+    try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      return authToken !== null;
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const authenticated = await checkAuthentication();
+      setIsAuthenticated(authenticated);
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  const handleBookNow = async () => {
+    if (isAuthenticated) {
+      if (SelectedRoomDetails) {
+        // API call to post SelectedRoomDetails to the backend
+        const token = await AsyncStorage.getItem("authToken");
+        axios.post("http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking", SelectedRoomDetails, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            console.log(response.data);
+            handleClear();
+            Alert.alert(
+              "Room Reserved",
+              "Your room has been reserved. Do you want to add more rooms?",
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ],
+              { cancelable: false }
+            );
+            // Navigate to the next screen or perform other actions
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+    } else {
+      Alert.alert(
+        "Sign In Required",
+        "Please sign in to view your profile.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          { text: "Sign In", onPress: () => navigation.navigate("Login") },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Make a Reservation</Text>
+      <View style={styles.dateSelection}>
+        <View >
+          <TouchableOpacity onPress={toggleRoomModal} style={styles.button}>
+            <Text style={styles.buttonText1}>Add A Room</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      {SelectedRoomDetails && (
+        <View style={styles.selectedRoomContainer}>
+          <Text style={styles.selectedRoomText}>
+            Selected Room: {SelectedRoomDetails.name}
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            Price: {SelectedRoomDetails.price} pkr/night
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            Adults: {SelectedRoomDetails.adults}
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            Children: {SelectedRoomDetails.children}
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            Rooms: {SelectedRoomDetails.rooms}
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            Check-in Date: {SelectedRoomDetails.checkInDate}
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            Check-out Date: {SelectedRoomDetails.checkOutDate}
+          </Text>
+          <Text style={styles.selectedRoomText}>
+            ID: {SelectedRoomDetails.hotel_details_id}
+          </Text>
+          <View style={styles.confirmbutton}>
+          <TouchableOpacity onPress={handleBookNow} style={styles.confirm}>
+            <Text style={styles.clearButton}>CONFIRM</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleClear} style={styles.clear}>
+            <Text style={styles.clearButton}>CLEAR</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+
+      )}
+
+      <Modal visible={showRoomModal} animationType="slide"
+        animationOut="slideOutDown"
+        onBackdropPress={closePopuproom}
+      >
+        <View style={styles.popupContent1}>
+          <TouchableOpacity
+            onPress={closePopuproom}
+            style={styles.closeIconContainer}
+          >
+            <Image
+              style={styles.closeIcon}
+              source={require("../../assets/cross.png")}
+            />
+          </TouchableOpacity>
+          <ScrollView>
+            <View style={styles.roomCard}>
+              <Text style={styles.roomCardTitle}>Single Bed Room</Text>
+              <Text style={styles.roomCardPrice} >{room.price_single_bed} pkr/night</Text>
+              <Text>Number Of Rooms Available : {room.rooms_single_bed}</Text>
+              <View style={styles.controlsContainer}>
+                <Text style={styles.label}>Adults:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementAdults}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{adults}</Text>
+                  <TouchableOpacity onPress={incrementAdults}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Children:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementChildren}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{children}</Text>
+                  <TouchableOpacity onPress={incrementChildren}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Number of Rooms:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementRooms}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{rooms}</Text>
+                  <TouchableOpacity onPress={() => incrementRooms( room.rooms_single_bed)}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckInPicker}>
+                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckInPicker && (
+                    <DateTimePicker
+                      value={checkInDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckInChange}
+                    />
+                  )}
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckOutPicker}>
+                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckOutPicker && (
+                    <DateTimePicker
+                      value={checkOutDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckOutChange}
+                    />
+                  )}
+                </View>
+              </View>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                setSelectedRoom({ name: "Single Bed Room", price: room.price_single_bed });
+                setName("Single Bed Room");
+                setPrice(room.price_single_bed);
+                setID(room.hotel_details_id);
+                handleBook();
+              }}>
+                <Text style={styles.modalButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+
+
+            <View style={styles.roomCard} >
+              <Text style={styles.roomCardTitle}>Double Bed Room</Text>
+              <Text style={styles.roomCardPrice}>{room.price_double_bed} pkr/night</Text>
+              <Text>Number Of Rooms Available : {room.rooms_double_bed}</Text>
+              <View style={styles.controlsContainer}>
+                <Text style={styles.label}>Adults:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementAdults}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{adults}</Text>
+                  <TouchableOpacity onPress={incrementAdults}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Children:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementChildren}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{children}</Text>
+                  <TouchableOpacity onPress={incrementChildren}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Number of Rooms:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementRooms}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{rooms}</Text>
+                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_double_bed)}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckInPicker}>
+                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckInPicker && (
+                    <DateTimePicker
+                      value={checkInDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckInChange}
+                    />
+                  )}
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckOutPicker}>
+                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckOutPicker && (
+                    <DateTimePicker
+                      value={checkOutDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckOutChange}
+                    />
+                  )}
+                </View>
+              </View>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                setName("Double Bed Room");
+                setPrice(room.price_double_bed);
+                setID(room.hotel_details_id);
+                handleBook();
+              }}>
+                <Text style={styles.modalButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+
+
+            <View style={styles.roomCard}>
+              <Text style={styles.roomCardTitle}>Standard Room</Text>
+              <Text style={styles.roomCardPrice}>{room.price_standard} pkr/night</Text>
+              <Text>Number Of Rooms Available : {room.rooms_standard}</Text>
+              <View style={styles.controlsContainer}>
+                <Text style={styles.label}>Adults:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementAdults}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{adults}</Text>
+                  <TouchableOpacity onPress={incrementAdults}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Children:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementChildren}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{children}</Text>
+                  <TouchableOpacity onPress={incrementChildren}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Number of Rooms:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementRooms}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{rooms}</Text>
+                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_standard)}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckInPicker}>
+                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckInPicker && (
+                    <DateTimePicker
+                      value={checkInDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckInChange}
+                    />
+                  )}
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckOutPicker}>
+                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckOutPicker && (
+                    <DateTimePicker
+                      value={checkOutDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckOutChange}
+                    />
+                  )}
+                </View>
+              </View>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                setName("Standard Room");
+                setPrice(room.price_standard);
+                setID(room.hotel_details_id);
+                handleBook();
+              }}>
+                <Text style={styles.modalButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+
+
+            <View style={styles.roomCard}>
+              <Text style={styles.roomCardTitle}>Executive Room</Text>
+              <Text style={styles.roomCardPrice}>{room.price_executive} pkr/nightt</Text>
+              <Text>Number Of Rooms Available : {room.rooms_executive}</Text>
+              <View style={styles.controlsContainer}>
+                <Text style={styles.label}>Adults:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementAdults}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{adults}</Text>
+                  <TouchableOpacity onPress={incrementAdults}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Children:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementChildren}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{children}</Text>
+                  <TouchableOpacity onPress={incrementChildren}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.label}>Number of Rooms:</Text>
+                <View style={styles.controls}>
+                  <TouchableOpacity onPress={decrementRooms}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text>{rooms}</Text>
+                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_executive)}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckInPicker}>
+                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckInPicker && (
+                    <DateTimePicker
+                      value={checkInDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckInChange}
+                    />
+                  )}
+                </View>
+                <View style={styles.fieldContainer}>
+                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
+                  <TouchableOpacity onPress={toggleCheckOutPicker}>
+                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                  </TouchableOpacity>
+                  {showCheckOutPicker && (
+                    <DateTimePicker
+                      value={checkOutDate}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={handleCheckOutChange}
+                    />
+                  )}
+                </View>
+              </View>
+              <TouchableOpacity style={styles.modalButton} onPress={() => {
+                setSelectedRoom({ name: "Executive Room", price: room.price_executive, });
+                setName("Executive Room");
+                setPrice(room.price_executive);
+                setID(room.hotel_details_id);
+                handleBook();
+              }}>
+                <Text style={styles.modalButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+
+          </ScrollView>
+        </View>
+      </Modal>
+
+    </View>
+  );
+};
 
 const FacilityListDetails = ({ details }) => {
+  const facilityItems = JSON.parse(details);
+
   return (
     <View style={styles.facilityDetails}>
-      {details.map((facility, index) => (
+      {facilityItems.map((item, index) => (
         <View key={index} style={styles.facilityDetail}>
-          <Text style={styles.detailTitle}>{facility.title}</Text>
-          {facility.items.map((item, itemIndex) => (
-            <Text key={itemIndex} style={styles.detailText}>
-              {item}
-            </Text>
-          ))}
+          <Text style={styles.detailText}>{item}</Text>
         </View>
       ))}
     </View>
   );
 };
+
 
 const FacilitiesList = ({ data }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -76,33 +644,6 @@ const FacilitiesList = ({ data }) => {
     setIsPopupVisible(true);
   };
 
-  const closePopup = () => {
-    setIsPopupVisible(false);
-  };
-
-  const facilityDetails = [
-    {
-      title: "General",
-      items: [
-        "Shuttle Service",
-        "Air Conditioning",
-        "Wake-up Service",
-        "Car Rental",
-      ],
-    },
-    {
-      title: "Safety & Security",
-      items: ["24-Hour Security", "Smoke Alarms"],
-    },
-    {
-      title: "Cleaning Services",
-      items: ["Daily Housekeeping", "Dry Cleaning", "Laundry"],
-    },
-    {
-      title: "Business Facilities",
-      items: ["Meeting/Banquet facilities", "Fax/Photocopying"],
-    },
-  ];
 
   return (
     <View>
@@ -128,31 +669,6 @@ const FacilitiesList = ({ data }) => {
           </View>
         )}
       />
-
-      <Modal
-        isVisible={isPopupVisible}
-        onBackdropPress={closePopup}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-      >
-        <View style={styles.popupContainer}>
-          <View style={styles.popupContent}>
-            <TouchableOpacity
-              onPress={closePopup}
-              style={styles.closeIconContainer}
-            >
-              <Image
-                style={styles.closeIcon}
-                source={require("../../assets/cross.png")}
-              />
-            </TouchableOpacity>
-            <ScrollView>
-              <Text style={styles.popupTitle}>Facilities And Services</Text>
-              <FacilityListDetails details={facilityDetails} />
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -176,7 +692,7 @@ const GalleryList = ({ gallery }) => {
 
   return (
     <View>
-    <FlatList
+      <FlatList
         data={gallery}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -188,8 +704,8 @@ const GalleryList = ({ gallery }) => {
               onPress={() => handleGalleryButtonClick(index)}
             >
 
-              <Image source={{ uri : item }} style={styles.GalleryImage} />
-              
+              <Image source={{ uri: item }} style={styles.GalleryImage} />
+
             </TouchableOpacity>
           </View>
         )}
@@ -202,7 +718,7 @@ const GalleryList = ({ gallery }) => {
         animationOut="slideOutDown"
       >
         <ImageBackground
-          source={{uri: gallery[selectedImageIndex]}}
+          source={{ uri: gallery[selectedImageIndex] }}
           style={styles.PopupGalleryImage}
           contentFit="cover"
         >
@@ -234,6 +750,16 @@ const HotelsInfo = () => {
     navigation.navigate("Discover");
   };
 
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const handleFacilityButtonClick = () => {
+    setIsPopupVisible(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupVisible(false);
+  };
+
   return (
     <View>
       <TouchableOpacity
@@ -255,7 +781,7 @@ const HotelsInfo = () => {
         </TouchableOpacity>
         <Image
           style={styles.Image}
-          source={{uri: `data:image/jpeg;base64,${Hotel.image}`}}
+          source={{ uri: `data:image/jpeg;base64,${Hotel.images}` }}
         />
         <View style={styles.ContentContainer}>
           <View style={styles.TextContainer}>
@@ -276,7 +802,42 @@ const HotelsInfo = () => {
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Facilities</Text>
-            <FacilitiesList data={data} />
+            <ScrollView horizontal>
+              <View style={styles.faccontainer}>
+                <FacilitiesList data={data} />
+                <TouchableOpacity
+                  style={styles.facilityButton}
+                  onPress={handleFacilityButtonClick}
+                >
+                  <Image source={require("../../assets/plus.png")} style={styles.plus} />
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+
+            <Modal
+              isVisible={isPopupVisible}
+              onBackdropPress={closePopup}
+              animationIn="slideInUp"
+              animationOut="slideOutDown"
+            >
+              <View style={styles.popupContainer}>
+                <View style={styles.popupContent}>
+                  <TouchableOpacity
+                    onPress={closePopup}
+                    style={styles.closeIconContainer}
+                  >
+                    <Image
+                      style={styles.closeIcon}
+                      source={require("../../assets/cross.png")}
+                    />
+                  </TouchableOpacity>
+                  <ScrollView>
+                    <Text style={styles.popupTitle}>Facilities And Services</Text>
+                    <FacilityListDetails details={Hotel.facilities} />
+                  </ScrollView>
+                </View>
+              </View>
+            </Modal>
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Gallery</Text>
@@ -285,7 +846,7 @@ const HotelsInfo = () => {
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Description</Text>
             <Text style={styles.Description}>
-              {Hotel.facilities}
+              {Hotel.description}
             </Text>
           </View>
           <View style={styles.FacilityContainer}>
@@ -310,12 +871,14 @@ const HotelsInfo = () => {
                 full-service hotels and resorts based in Bethesda,
               </Text>
             </View>
+            <ReservationSection room={Hotel} />
           </View>
           <View style={styles.ButtonContainer}>
-            <TouchableOpacity style={styles.Cardbutton}>
-              <Text style={styles.CardbuttonText}>Book Now</Text>
-            </TouchableOpacity>
-          </View>
+        <TouchableOpacity style={styles.Cardbutton} >
+          <Text style={styles.CardbuttonText}>Next</Text>
+        </TouchableOpacity>
+      </View>
+
         </View>
       </ScrollView>
     </View>
@@ -331,8 +894,16 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1, // Maintain aspect ratio
     resizeMode: 'cover',
-    width:'100%',
-    height:'100%',
+    width: '100%',
+    height: '100%',
+  },
+  faccontainer: {
+    flexDirection: 'row',
+  },
+
+  plus: {
+    height: 70,
+    width: 70,
   },
   HomeButton: {
     position: "absolute",
@@ -356,8 +927,36 @@ const styles = StyleSheet.create({
     paddingBottom: 100, // Adjust this value as needed
     marginTop: -40, // Adjust this value as needed
   },
+  reservationSection: {
+    marginTop: 20,
+  },
+
+  guestSelection: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  guestControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 10,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
+  },
   TextContainer: {
     flexDirection: "row",
+  },
+  button: {
+    borderRadius: 20,
+    width: 300,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#353893",
+    borderWidth:5,
+    borderColor:"#319BD6",
   },
   RightText: {
     width: "65%",
@@ -462,11 +1061,24 @@ const styles = StyleSheet.create({
     // Adjust the alpha value for the blur effect
   },
   popupContent: {
-    backgroundColor: "white",
+    backgroundColor: '#cee7fa',
     borderRadius: 20,
     width: "80%",
     alignSelf: "center",
     justifyContent: "center",
+    alignItems: 'center',
+    padding: 20,
+    height: 400,
+    marginBottom: 100,
+    marginTop: 100,
+  },
+  popupContent1: {
+    backgroundColor: '#cee7fa',
+    borderRadius: 20,
+    width: "100%",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: 'center',
     padding: 20,
     height: 600,
     marginBottom: 100,
@@ -497,6 +1109,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
+    color: 'black',
   },
   popupTitle: {
     fontSize: 24,
@@ -547,6 +1160,203 @@ const styles = StyleSheet.create({
     marginTop: 60,
     alignItems: "center",
   },
+  container: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 20,
+    marginTop: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontFamily:"Poppins-ExtraBold",
+    marginBottom: 10,
+    textAlign:'center',
+  },
+  fieldContainer: {
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    padding: 10,
+    marginHorizontal: 5,
+    width: '100%',
+    marginBottom: 20,
+  },
+  fieldLabel: {
+    fontSize: 18,
+    fontFamily: "Poppins-Regular",
+    marginBottom: 5,
+  },
+  dateText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  guestControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  buttonText1: {
+    fontSize: 18,
+    fontFamily: "Poppins-Bold",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    color: "white",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  modalInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 8,
+    marginLeft: 10,
+    width: 50,
+  },
+  modalButton: {
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 20,
+    width: 100,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    textAlign: 'center',
+  },
+  modalInputContainer1: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+
+  },
+  FacilityText1: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginRight: 20,
+  },
+  guestControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
+    color: "#007bff",
+  },
+
+  roomCard: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+    backgroundColor: 'white',
+    width: 280,
+  },
+  roomCardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  roomCardPrice: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  controlsContainer: {
+    marginTop: 10,
+  },
+  controls: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "#007BFF",
+    marginHorizontal: 10,
+  },
+  bookButton: {
+    backgroundColor: "#007BFF",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  bookButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  selectedRoomContainer: {
+    margin: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "black",
+    backgroundColor:'#cee7fa',
+    borderRadius:20,
+  },
+  selectedRoomText: {
+    marginBottom: 5,
+    fontFamily:'Poppins-Regular',
+    fontSize:15,
+  },
+
+  clearButton: {
+    color: "white",
+    textAlign: "center",
+    marginTop: 10,
+    fontFamily:'Poppins-Bold',
+  },
+
+  clear: {
+    backgroundColor: 'red',
+    width: 100,
+    justifyContent: 'center',
+    alignSelf:'center',
+    padding:5,
+    borderRadius:20,
+  },
+
+  confirm: {
+    backgroundColor: 'green',
+    width: 100,
+    justifyContent: 'center',
+    alignSelf:'center',
+    padding:5,
+    borderRadius:20,
+  },
+
+  confirmbutton: {
+    flexDirection:'row',
+    justifyContent:'space-between',
+  },
+
 });
 
 export default HotelsInfo;
