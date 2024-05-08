@@ -251,7 +251,7 @@ const Discover = () => {
 
   const handleProfilePress = () => {
     if (isAuthenticated) {
-      navigation.navigate("TouristProfile");
+      navigation.navigate("PaymentGateway");
     } else {
       Alert.alert(
         "Sign In Required",
@@ -290,7 +290,7 @@ const Discover = () => {
   const scaleValue = new Animated.Value(0);
 
   const navigateToHotelsInfo = () => {
-    navigation.navigate("CreatePackage3");
+    navigation.navigate("HotelsLists");
   };
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");
@@ -325,7 +325,7 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/places"
+        "http://192.168.100.18:8000/api/routes/places"
       );
       setPlaceData(response.data);
     } catch (error) {
@@ -336,7 +336,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/hotel-details"
+        "http://192.168.100.18:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {
