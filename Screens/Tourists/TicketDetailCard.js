@@ -12,12 +12,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
 import axios from "axios";
 
-const CreatePackage2 = () => {
+const TicketDetailCard = () => {
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
   const RegisterContainer = containerWidth * 1.05;
   const inputWidth = containerWidth * 0.75;
-  const RWidth = containerWidth * 0.9;
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -26,123 +25,45 @@ const CreatePackage2 = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [ticketDetails, setTicketDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [ticketId, setTicketId] = useState(null);
-  const [transportType, setTransportType] = useState("");
-  const [package_id, setPackageId] = useState(null);
 
-  useEffect(() => {
-    if (route.params && route.params.ticketId && route.params.transportType) {
-      setTicketId(route.params.ticketId);
-      setTransportType(route.params.transportType);
-    }
-  
-    if (route.params && route.params.package_id) {
-      setPackageId(route.params.package_id);
-    }
-  }, [route.params]);
+  const { ticketId } = route.params ?? { ticketId: null };
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
-        let endpoint = "";
-
-        if (route.params && route.params.transportType) {
-          const { transportType } = route.params;
-          console.log(transportType);
-          const baseEndpoint = "http://192.168.100.18:8000/api/routes";
-
-          switch (transportType) {
-            case "airline":
-              endpoint = `${baseEndpoint}/airline-packages/${ticketId}`;
-              break;
-            case "bus":
-              endpoint = `${baseEndpoint}/bus-packages/${ticketId}`;
-              break;
-            case "railway":
-            default:
-              endpoint = `${baseEndpoint}/railway-packages/${ticketId}`;
-              break;
-          }
-
-          const response = await axios.get(endpoint);
-          console.log(response.data);
-          if (Array.isArray(response.data) && response.data.length > 0) {
-            setTicketDetails(response.data[0]);
-          }
-        }
-
+        const response = await axios.get(
+          `http://192.168.100.18:8000/api/routes/airline-packages/${ticketId}`
+        );
+        setTicketDetails(response.data);
         setLoading(false);
-        console.log(package_id);
+        console.log("TicketId", ticketId);
+        console.log("Details", ticketDetails);
       } catch (error) {
         console.error("Error fetching ticket details:", error);
-        setLoading(false);
       }
     };
 
     fetchTicketDetails();
-  }, [route.params, ticketId, package_id]); 
+  }, [ticketId]);
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
   };
 
-  const handleCreatePackage3 = async () => {
-
+  const handleCreatePackage3 = () => {
     if (!isChecked && !flightSelected) {
       alert("Please select a transportation option or skip this part.");
       return;
     }
-    if (route.params && route.params.transportType) {
-      const { transportType } = route.params;
-      console.log(transportType);
-      
-      if (transportType === "airline") {
-        try {
-          const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-airline-package-details/${ticketId}`, { package_id }
-          );
-          alert("Ticket data inserted successfully for airline!");
-          console.log(response.data);
-          navigation.navigate("CreatePackage3");
-        } catch (error) {
-          console.error("Error inserting ticket data for airline:", error);
-          alert("Failed to insert ticket data for airline");
-        }
-      } else if (transportType === "bus") {
-        // Call API endpoint for bus
-        try {
-          const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-bus-package-details/${ticketId}`, { package_id }
-          );
-          alert("Ticket data inserted successfully for bus!");
-          navigation.navigate("CreatePackage3");
-        } catch (error) {
-          console.error("Error inserting ticket data for bus:", error);
-          alert("Failed to insert ticket data for bus");
-        }
-      } else if (transportType === "railway") {
-        // Call API endpoint for railway
-        try {
-          const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-railway-package-details/${ticketId}`, { package_id }
-          );
-          alert("Ticket data inserted successfully for railway!");
-          navigation.navigate("CreatePackage3");
-        } catch (error) {
-          console.error("Error inserting ticket data for railway:", error);
-          alert("Failed to insert ticket data for railway");
-        }
-      } else {
-        alert("Invalid transport type!");
-      }
-    }
+    // sendDataToDatabase();
+    navigation.navigate("CreatePackage3");
   };
 
   const handleFlight = () => {
     setFlightSelected(true);
-    navigation.navigate("Flight", { ticketId: "your_ticket_id_here", package_id });
+    navigation.navigate("Flight", { ticketId });
   };
-  
+
 
   return (
     <View style={styles.container}>
@@ -175,6 +96,8 @@ const CreatePackage2 = () => {
           />
         </View>
 
+
+
         {loading ? (
           <ActivityIndicator style={styles.loadingIndicator} />
         ) : ticketDetails ? (
@@ -200,9 +123,7 @@ const CreatePackage2 = () => {
             </Text>
           </View>
         ) : (
-          <View style={styles.ticketDetailsContainer}>
-            <Text style={styles.ticketText}>No ticket details available</Text>
-          </View>
+          <Text style={styles.ticketText}>No ticket details available</Text>
         )}
 
         <TouchableOpacity
@@ -339,4 +260,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreatePackage2;
+export default TicketDetailCard;

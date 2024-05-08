@@ -171,8 +171,6 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Itinerary' component={Itinerary} />
         <Stack.Screen options={{ headerShown: false }} name='ItineraryDay' component={ItineraryDay} />
         <Stack.Screen options={{ headerShown: false }} name='Packages' component={Packages} />
-        <Stack.Screen options={{ headerShown: false }} name='Activehotels' component={Activehotels} />
-        
       </Stack.Navigator>
     </NavigationContainer>
     
