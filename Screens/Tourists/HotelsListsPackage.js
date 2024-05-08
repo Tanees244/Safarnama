@@ -13,7 +13,7 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 
 const HorizontalCard = ({ item, onPress }) => {
@@ -64,18 +64,18 @@ const HorizontalCard = ({ item, onPress }) => {
   );
 };
 
-const HotelsLists = () => {
+const HotelsListsPackage = () => {
 
   const navigation = useNavigation();
+  const route = useRoute();
 
   const screenWidth = Dimensions.get("window").width;
   const PackageWidth1 = screenWidth * 0.72;
   const [isExpanded, setIsExpanded] = useState(false);
   const scaleValue = new Animated.Value(0);
-
-  const navigateToHotesInfo = () => {
-    navigation.navigate("HotelsInfo");
-  };
+  const [hotels, setHotels] = useState([]);
+  const [package_id, setPackageId] = useState(null);
+  const [day, setDay] = useState(null);
 
   const toggleMenu = () => {
     const toValue = isExpanded ? 0 : 1;
@@ -100,16 +100,20 @@ const HotelsLists = () => {
     toggleMenu();
   };
 
-  const scale = scaleValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 4],
-  });
+
+  useEffect(() => {
+    if (route.params && route.params.package_id) {
+      setPackageId(route.params.package_id);
+      setDay(route.params.day);
+    }
+  }, [route.params]);
+
+  console.log("Package ID:", package_id);
+  console.log("Day:", day);
 
   const navigateToHotelsInfo = (selectedHotel) => {
-    navigation.navigate('HotelsInfo', { Hotel: selectedHotel });
+    navigation.navigate('HotelsInfoPackage', { Hotel: selectedHotel , package_id, day });
   };
-
-  const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -195,7 +199,7 @@ const HotelsLists = () => {
       <ScrollView>
         <Text style={styles.text}>
           Top{" "}
-          <Text style={[styles.text, { color: "#2D78A2" }]}>Hotels</Text>
+          <Text style={[styles.text, { color: "#2D78A2" }]}>Rated Hotels</Text>
         </Text>
         <FlatList
           data={hotels}
@@ -379,4 +383,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HotelsLists;
+export default HotelsListsPackage;

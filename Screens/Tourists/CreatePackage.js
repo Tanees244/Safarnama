@@ -74,7 +74,7 @@ const CreatePackage = () => {
         numberOfIndividuals,
       };
 
-      const response = await fetch("http://192.168.100.18:8000/api/routes/create-package/", {
+      const response = await fetch("http://192.168.100.12:8000/api/routes/create-package/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -274,7 +274,7 @@ const Discover = () => {
     } else {
       Alert.alert(
         "Sign In Required",
-        "Please sign in to view your profile.",
+        "Please sign in to to book your package.",
         [
           {
             text: "Cancel",
@@ -290,7 +290,7 @@ const Discover = () => {
   const scaleValue = new Animated.Value(0);
 
   const navigateToHotelsInfo = () => {
-    navigation.navigate("CreatePackage3");
+    navigation.navigate("HotelsLists");
   };
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");
@@ -468,7 +468,7 @@ const Discover = () => {
                   <View style={styles.searchContainer}>
                     <TouchableOpacity onPress={() => handleItemPress(item)}>
                       <View style={styles.resultItem}>
-                        <Image source={{ uri: `data:image/jpeg;base64,${item.image}` }} style={styles.itemImage} />
+                        <Image source={{ uri: `data:image/jpeg;base64,${item.images }` }} style={styles.itemImage} />
                         <Text style={styles.itemTitle}>{item.name}</Text>
                         <Text style={styles.rating}>{item.rating}</Text>
                       </View>
@@ -524,10 +524,10 @@ const Discover = () => {
           >
             <View style={styles.buttonContent}>
               <Image
-                source={require("../../assets/deal.png")}
+                source={require("../../assets/cart.png")}
                 style={styles.icon}
               />
-              <Text style={styles.buttonText}>Deals</Text>
+              <Text style={styles.buttonText}>Cart</Text>
             </View>
           </TouchableOpacity>
         </View>

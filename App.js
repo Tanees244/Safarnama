@@ -58,7 +58,7 @@ import ActiveTicket from './Screens/Airline/ActiveTicket';
 import ActiveTicketB from './Screens/Bus/ActiveTicketB';
 import ActiveTicketT from './Screens/Train/ActiveTicketT';
 import PaymentGateway from './Screens/Tourists/PaymentGateway';
-// import TransportLists from './Screens/Tourists/TransportLists';
+import HotelsInfoPackage from './Screens/Tourists/HotelsInfoPackage';
 import Option from './Screens/Tourists/option';
 import Itinerary from './Screens/Tourists/Itinerary';
 import ItineraryDay from './Screens/Tourists/ItineraryDay';
@@ -68,7 +68,7 @@ import TouristDetail from './Screens/Admin/TouristDetail.js';
 import GuideDetail from './Screens/Admin/GuideDetail.js';
 import VendorDetail from './Screens/Admin/VendorDetail';
 import Packages from './Screens/Tourists/package.js';
-// import Activehotels from './Screens/Hotel/Activehotels.js';
+import HotelsListsPackage from './Screens/Tourists/HotelsListsPackage.js';
 
 import { useFonts } from 'expo-font';
 
@@ -165,7 +165,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicketB' component={ActiveTicketB} />
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicketT' component={ActiveTicketT} />
         <Stack.Screen options={{ headerShown: false }} name='PaymentGateway' component={PaymentGateway} />
-        {/* <Stack.Screen options={{ headerShown: false }} name='TransportLists' component={TransportLists} /> */}
+        <Stack.Screen options={{ headerShown: false }} name='HotelsInfoPackage' component={HotelsInfoPackage} />
+        <Stack.Screen options={{ headerShown: false }} name='HotelsListsPackage' component={HotelsListsPackage} />
         <Stack.Screen options={{ headerShown: false }} name='Option' component={Option} />
         <Stack.Screen options={{ headerShown: false }} name='TrainProfile' component={TrainProfile} />
         <Stack.Screen options={{ headerShown: false }} name='Itinerary' component={Itinerary} />

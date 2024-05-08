@@ -71,8 +71,6 @@ const ReservationSection = ({ room }) => {
   const [Id, setID] = useState('');
   const navigation = useNavigation();
 
-
-
   const toggleCheckInPicker = () => {
     setShowCheckInPicker(!showCheckInPicker);
   };
@@ -198,48 +196,13 @@ const ReservationSection = ({ room }) => {
     checkAuthStatus();
   }, []);
 
-  const handleBookNow = async () => {
-    if (isAuthenticated) {
-      if (SelectedRoomDetails) {
-        const token = await AsyncStorage.getItem("authToken");
-        axios.post("http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking", SelectedRoomDetails, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-          .then(response => {
-            console.log(response.data);
-            handleClear();
-            Alert.alert(
-              "Room Reserved",
-              "Your room has been reserved. Do you want to add more rooms?",
-              [
-                { text: "OK", onPress: () => console.log("OK Pressed") }
-              ],
-              { cancelable: false }
-            );
-            // Navigate to the next screen or perform other actions
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-      }
-    } else {
-      Alert.alert(
-        "Sign In Required",
-        "Please sign in to view your profile.",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          { text: "Sign In", onPress: () => navigation.navigate("Login") },
-        ],
-        { cancelable: false }
-      );
+  const handleBookNow = () => {
+    if (SelectedRoomDetails) {
+      handleClear();
+      navigation.navigate("HotelsListsPackage", { selectedRoomDetails: SelectedRoomDetails });
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Make a Reservation</Text>
@@ -277,12 +240,12 @@ const ReservationSection = ({ room }) => {
             ID: {SelectedRoomDetails.hotel_details_id}
           </Text>
           <View style={styles.confirmbutton}>
-            <TouchableOpacity onPress={handleBookNow} style={styles.confirm}>
-              <Text style={styles.clearButton}>CONFIRM</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleClear} style={styles.clear}>
-              <Text style={styles.clearButton}>CLEAR</Text>
-            </TouchableOpacity>
+          <TouchableOpacity onPress={handleBookNow} style={styles.confirm}>
+            <Text style={styles.clearButton}>CONFIRM</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleClear} style={styles.clear}>
+            <Text style={styles.clearButton}>CLEAR</Text>
+          </TouchableOpacity>
           </View>
         </View>
 
@@ -305,7 +268,7 @@ const ReservationSection = ({ room }) => {
           <ScrollView>
             <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Single Bed Room</Text>
-              <Text style={styles.roomCardPrice} >{room.price_single_bed} pkr/night</Text>
+              <Text style={styles.roomCardPrice} >{room.price_single_bed} * {rooms} pkr/night</Text>
               <Text>Number Of Rooms Available : {room.rooms_single_bed}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -334,7 +297,7 @@ const ReservationSection = ({ room }) => {
                     <Text style={styles.buttonText}>-</Text>
                   </TouchableOpacity>
                   <Text>{rooms}</Text>
-                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_single_bed)}>
+                  <TouchableOpacity onPress={() => incrementRooms( room.rooms_single_bed)}>
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
@@ -383,7 +346,7 @@ const ReservationSection = ({ room }) => {
 
             <View style={styles.roomCard} >
               <Text style={styles.roomCardTitle}>Double Bed Room</Text>
-              <Text style={styles.roomCardPrice}>{room.price_double_bed} pkr/night</Text>
+              <Text style={styles.roomCardPrice}>{room.price_double_bed} * {rooms} pkr/night</Text>
               <Text>Number Of Rooms Available : {room.rooms_double_bed}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -460,7 +423,7 @@ const ReservationSection = ({ room }) => {
 
             <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Standard Room</Text>
-              <Text style={styles.roomCardPrice}>{room.price_standard} pkr/night</Text>
+              <Text style={styles.roomCardPrice}>{room.price_standard} * {rooms} pkr/night</Text>
               <Text>Number Of Rooms Available : {room.rooms_standard}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -537,7 +500,7 @@ const ReservationSection = ({ room }) => {
 
             <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Executive Room</Text>
-              <Text style={styles.roomCardPrice}>{room.price_executive} pkr/nightt</Text>
+              <Text style={styles.roomCardPrice}>{room.price_executive} * {rooms} pkr/nightt</Text>
               <Text>Number Of Rooms Available : {room.rooms_executive}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -701,7 +664,9 @@ const GalleryList = ({ gallery }) => {
               style={styles.facilityButton}
               onPress={() => handleGalleryButtonClick(index)}
             >
+
               <Image source={{ uri: item }} style={styles.GalleryImage} />
+
             </TouchableOpacity>
           </View>
         )}
@@ -733,9 +698,23 @@ const GalleryList = ({ gallery }) => {
   );
 };
 
-const HotelsInfo = () => {
+const HotelsInfoPackage = () => {
+
   const route = useRoute();
   const { Hotel } = route.params;
+  const [package_id, setPackageId] = useState(null); // Corrected square brackets
+  const [day, setDay] = useState(null); // Corrected square brackets
+
+  useEffect(() => {
+    if (route.params && route.params.package_id) {
+      setPackageId(route.params.package_id);
+      setDay(route.params.day);
+    }
+  }, [route.params]);
+
+  console.log("ID:", package_id);
+  console.log("Day:", day);
+
 
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
@@ -870,10 +849,10 @@ const HotelsInfo = () => {
             <ReservationSection room={Hotel} />
           </View>
           <View style={styles.ButtonContainer}>
-            <TouchableOpacity style={styles.Cardbutton} >
-              <Text style={styles.CardbuttonText}>Next</Text>
-            </TouchableOpacity>
-          </View>
+        <TouchableOpacity style={styles.Cardbutton} >
+          <Text style={styles.CardbuttonText}>Next</Text>
+        </TouchableOpacity>
+      </View>
 
         </View>
       </ScrollView>
@@ -896,7 +875,6 @@ const styles = StyleSheet.create({
   faccontainer: {
     flexDirection: 'row',
   },
-
   plus: {
     height: 70,
     width: 70,
@@ -951,8 +929,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#353893",
-    borderWidth: 5,
-    borderColor: "#319BD6",
+    borderWidth:5,
+    borderColor:"#319BD6",
   },
   RightText: {
     width: "65%",
@@ -1164,9 +1142,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily: "Poppins-ExtraBold",
+    fontFamily:"Poppins-ExtraBold",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign:'center',
   },
   fieldContainer: {
     backgroundColor: "#f0f0f0",
@@ -1314,45 +1292,45 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: "black",
-    backgroundColor: '#cee7fa',
-    borderRadius: 20,
+    backgroundColor:'#cee7fa',
+    borderRadius:20,
   },
   selectedRoomText: {
     marginBottom: 5,
-    fontFamily: 'Poppins-Regular',
-    fontSize: 15,
+    fontFamily:'Poppins-Regular',
+    fontSize:15,
   },
 
   clearButton: {
     color: "white",
     textAlign: "center",
     marginTop: 10,
-    fontFamily: 'Poppins-Bold',
+    fontFamily:'Poppins-Bold',
   },
 
   clear: {
     backgroundColor: 'red',
     width: 100,
     justifyContent: 'center',
-    alignSelf: 'center',
-    padding: 5,
-    borderRadius: 20,
+    alignSelf:'center',
+    padding:5,
+    borderRadius:20,
   },
 
   confirm: {
     backgroundColor: 'green',
     width: 100,
     justifyContent: 'center',
-    alignSelf: 'center',
-    padding: 5,
-    borderRadius: 20,
+    alignSelf:'center',
+    padding:5,
+    borderRadius:20,
   },
 
   confirmbutton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection:'row',
+    justifyContent:'space-between',
   },
 
 });
 
-export default HotelsInfo;
+export default HotelsInfoPackage;

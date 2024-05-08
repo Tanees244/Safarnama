@@ -10,6 +10,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const CreatePackage3 = () => {
+
   const navigation = useNavigation();
   const route = useRoute();
   const [package_id, setPackageId] = useState(null);
@@ -44,7 +45,7 @@ const CreatePackage3 = () => {
   const fetchDates = async (packageId) => {
     try {
       const response = await fetch(
-        `http://192.168.100.18:8000/api/routes/packages/${packageId}`
+        `http://192.168.100.12:8000/api/routes/packages/${packageId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch dates");
@@ -57,8 +58,8 @@ const CreatePackage3 = () => {
     }
   };
 
-  const navigateToHotelsLists = () => {
-    navigation.navigate("HotelsLists");
+  const navigateToHotelsLists = (day) => {
+    navigation.navigate("HotelsListsPackage",{day , package_id});
   };
 
   const navigateToPlacesLists = () => {
@@ -87,7 +88,7 @@ const CreatePackage3 = () => {
             <TouchableOpacity
               activeOpacity={0.9}
               style={styles.buttons}
-              onPress={navigateToHotelsLists}
+              onPress={() => navigateToHotelsLists(day)}
             >
               <Text style={styles.buttonText}>Hotel</Text>
             </TouchableOpacity>
@@ -104,7 +105,7 @@ const CreatePackage3 = () => {
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </ScrollView >
   );
 };
 
@@ -138,12 +139,12 @@ const styles = StyleSheet.create({
     width: "100%",
     // flexGrow: 1,
   },
-  dayHeading:{
+  dayHeading: {
     fontFamily: "Poppins-Regular",
     color: "white",
-    fontSize: 16  
+    fontSize: 16
   },
-  dayContainer:{
+  dayContainer: {
     alignItems: "center",
     width: "80%",
   },

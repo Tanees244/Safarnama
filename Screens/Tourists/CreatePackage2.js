@@ -49,7 +49,7 @@ const CreatePackage2 = () => {
         if (route.params && route.params.transportType) {
           const { transportType } = route.params;
           console.log(transportType);
-          const baseEndpoint = "http://192.168.100.18:8000/api/routes";
+          const baseEndpoint = "http://192.168.100.12:8000/api/routes";
 
           switch (transportType) {
             case "airline":
@@ -104,9 +104,9 @@ const CreatePackage2 = () => {
       if (transportType === "airline") {
         try {
           const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-airline-package-details/${ticketId}`, { package_id }
+            `http://192.168.100.12:8000/api/routes/add-airline-package-details/${ticketId}`, { package_id }
           );
-          alert("Ticket data inserted successfully for airline!");
+          // alert("Ticket data inserted successfully for airline!");
           console.log(response.data);
           navigation.navigate("CreatePackage3", { package_id });
         } catch (error) {
@@ -116,9 +116,9 @@ const CreatePackage2 = () => {
       } else if (transportType === "bus") {
         try {
           const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-bus-package-details/${ticketId}`, { package_id }
+            `http://192.168.100.12:8000/api/routes/add-bus-package-details/${ticketId}`, { package_id }
           );
-          alert("Ticket data inserted successfully for bus!");
+          // alert("Ticket data inserted successfully for bus!");
           navigation.navigate("CreatePackage3", { package_id });
         } catch (error) {
           console.error("Error inserting ticket data for bus:", error);
@@ -127,9 +127,9 @@ const CreatePackage2 = () => {
       } else if (transportType === "railway") {
         try {
           const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-railway-package-details/${ticketId}`, { package_id }
+            `http://192.168.100.12:8000/api/routes/add-railway-package-details/${ticketId}`, { package_id }
           );
-          alert("Ticket data inserted successfully for railway!");
+          // alert("Ticket data inserted successfully for railway!");
           navigation.navigate("CreatePackage3", { package_id });
         } catch (error) {
           console.error("Error inserting ticket data for railway:", error);
