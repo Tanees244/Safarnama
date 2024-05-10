@@ -69,6 +69,9 @@ import GuideDetail from './Screens/Admin/GuideDetail.js';
 import VendorDetail from './Screens/Admin/VendorDetail';
 import Packages from './Screens/Tourists/package.js';
 import HotelsListsPackage from './Screens/Tourists/HotelsListsPackage.js';
+import Plantrip from './Screens/Tourists/Plantrip.js';
+import LoadingScreen from './Screens/Tourists/LoadingScreen.js';
+import Details from './Screens/Tourists/Details.js';
 
 import { useFonts } from 'expo-font';
 
@@ -172,6 +175,11 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Itinerary' component={Itinerary} />
         <Stack.Screen options={{ headerShown: false }} name='ItineraryDay' component={ItineraryDay} />
         <Stack.Screen options={{ headerShown: false }} name='Packages' component={Packages} />
+        <Stack.Screen options={{ headerShown: false }} name='Plantrip' component={Plantrip} />
+        <Stack.Screen options={{ headerShown: false }} name='LoadingScreen' component={LoadingScreen} />
+        <Stack.Screen options={{ headerShown: false }} name='Details' component={Details} />
+        
+
       </Stack.Navigator>
     </NavigationContainer>
     

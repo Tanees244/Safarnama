@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   View,
   Text,
@@ -82,21 +82,32 @@ const PlacesInfo = () => {
 
   const navigation = useNavigation();
 
-  const [showFullText, setShowFullText] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
-
-  const toggleReadMore = () => {
-    setShowFullText(!showFullText);
-  };
-
-  const reviewText = `Visited Saif-ul-Muluk Lake in August 2022. I was staying in Naran and rented a jeep to the lake, which cost about 4000pkr for a round trip staying there for 1.5 hours. The journey up to the lake was thrilling and stunning as it took us about 45 minutes to get there. The mountains, clouds, and the lake itself is just stunning.`;
-
-  const truncatedText = showFullText
-    ? reviewText
-    : reviewText.slice(0, MAX_TEXT_LENGTH);
+  const [coordinates, setCoordinates] = useState(null);  
 
   const handleDiscoverPress = () => {
     navigation.navigate("Discover");
+  };
+
+  useEffect(() => {
+    fetchCoordinates(place.name);
+  }, [place]);
+
+  const fetchCoordinates = async (placeName) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+          placeName
+        )}&key=YOUR_API_KEY`
+      );
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry.location;
+        setCoordinates({ latitude: lat, longitude: lng });
+      }
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+    }
   };
 
   return (
@@ -148,108 +159,6 @@ const PlacesInfo = () => {
             <Text style={styles.FacilityText}>Description</Text>
             <Text style={styles.Description}>{place.description}</Text>
           </View>
-          <View style={styles.FacilityContainer}>
-            <Text style={styles.FacilityText}>Reviews</Text>
-
-            <View style={styles.ReviewsContainer1}>
-              <View style={styles.ReviewsContainer}>
-                <Image
-                  source={require("../../assets/avatar.png")}
-                  style={styles.ReviewImage}
-                />
-                <Text style={styles.ReviewText}>
-                  {truncatedText}
-                  {showFullText && reviewText.length > MAX_TEXT_LENGTH && (
-                    <TouchableOpacity onPress={toggleReadMore}>
-                      <Text
-                        style={{
-                          color: "#54aaec",
-                          fontFamily: "Poppins-Bold",
-                          fontSize: 18,
-                        }}
-                      >
-                        {" "}
-                        Read Less
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                  {!showFullText && reviewText.length > MAX_TEXT_LENGTH && (
-                    <TouchableOpacity onPress={toggleReadMore}>
-                      <Text
-                        style={{
-                          color: "#54aaec",
-                          fontFamily: "Poppins-Bold",
-                          fontSize: 18,
-                        }}
-                      >
-                        {" "}
-                        Read More
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </Text>
-              </View>
-              <View style={styles.ratingContainer}>
-                <Image
-                  source={require("../../assets/star.png")}
-                  style={styles.iconStar}
-                />
-                <Text style={styles.ratingValue}>4.5</Text>
-              </View>
-            </View>
-
-            <View style={styles.ReviewsContainer1}>
-              <View style={styles.ReviewsContainer}>
-                <Image
-                  source={require("../../assets/avatar.png")}
-                  style={styles.ReviewImage}
-                />
-                <Text style={styles.ReviewText}>
-                  {truncatedText}
-                  {showFullText && reviewText.length > MAX_TEXT_LENGTH && (
-                    <TouchableOpacity onPress={toggleReadMore}>
-                      <Text
-                        style={{
-                          color: "#54aaec",
-                          fontFamily: "Poppins-Bold",
-                          fontSize: 18,
-                        }}
-                      >
-                        {" "}
-                        Read Less
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                  {!showFullText && reviewText.length > MAX_TEXT_LENGTH && (
-                    <TouchableOpacity onPress={toggleReadMore}>
-                      <Text
-                        style={{
-                          color: "#54aaec",
-                          fontFamily: "Poppins-Bold",
-                          fontSize: 18,
-                        }}
-                      >
-                        {" "}
-                        Read More
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </Text>
-              </View>
-              <View style={styles.ratingContainer}>
-                <Image
-                  source={require("../../assets/star.png")}
-                  style={styles.iconStar}
-                />
-                <Text style={styles.ratingValue}>4.9</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.ButtonContainer}>
-            <TouchableOpacity style={styles.Cardbutton}>
-              <Text style={styles.CardbuttonText}>Select</Text>
-            </TouchableOpacity>
-          </View>
         </View>
         <Modal
           isVisible={isMapVisible}
@@ -258,24 +167,26 @@ const PlacesInfo = () => {
           animationOut="slideOutDown"
         >
           <View style={{ flex: 1 }}>
+          {isMapVisible && coordinates && (
             <MapView
-              style={{ flex: 1 }}
-              initialRegion={{
-                latitude: 34.9093,
-                longitude: 73.6507,
+              style={styles.map}
+              region={{
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
               <Marker
                 coordinate={{
-                  latitude: 34.9093,
-                  longitude: 73.6507,
+                  latitude: coordinates.latitude,
+                  longitude: coordinates.longitude,
                 }}
                 title={place.name}
                 description={place.city}
               />
             </MapView>
+          )}
             <TouchableOpacity
               onPress={() => setIsMapVisible(false)}
               style={styles.closeIconContainer}
