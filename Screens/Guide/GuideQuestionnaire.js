@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions, Modal } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { CheckBox } from 'react-native-elements';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+  Dimensions,
+  Modal,
+  Alert,
+} from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { CheckBox } from "react-native-elements";
+import axios from "axios";
 
 const GuideQuestionnaire = () => {
-  const [answers, setAnswers] = useState(['', '', '']); // Initialize with empty strings for 3 questions
+  const [answers, setAnswers] = useState(["", "", ""]); // Initialize with empty strings for 3 questions
   const [isChecked, setIsChecked] = useState(false);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
@@ -20,7 +30,6 @@ const GuideQuestionnaire = () => {
     setShowTermsModal(true);
     setIsChecked(!isChecked);
   };
-  
 
   const handleTextChange = (index, newText) => {
     const updatedAnswers = [...answers];
@@ -55,14 +64,35 @@ const GuideQuestionnaire = () => {
     const questionBank = [
       { id: 1, text: "What is the highest peak in Northern Pakistan?" },
       { id: 2, text: "Which river flows through Hunza Valley?" },
-      { id: 3, text: "Name the famous mountain pass located in the Karakoram Range." },
-      { id: 4, text: "Which city is known as the Gateway to the Northern Areas of Pakistan?" },
-      { id: 5, text: "What is the altitude of Fairy Meadows, a popular tourist destination in Northern Pakistan?" },
-      { id: 6, text: "Which lake in Northern Pakistan is famous for its turquoise-colored waters?" },
-      { id: 7, text: "Name the famous ancient fort located in Skardu, Baltistan." },
-      { id: 8, text: "What is the main attraction of the Deosai National Park?" },
+      {
+        id: 3,
+        text: "Name the famous mountain pass located in the Karakoram Range.",
+      },
+      {
+        id: 4,
+        text: "Which city is known as the Gateway to the Northern Areas of Pakistan?",
+      },
+      {
+        id: 5,
+        text: "What is the altitude of Fairy Meadows, a popular tourist destination in Northern Pakistan?",
+      },
+      {
+        id: 6,
+        text: "Which lake in Northern Pakistan is famous for its turquoise-colored waters?",
+      },
+      {
+        id: 7,
+        text: "Name the famous ancient fort located in Skardu, Baltistan.",
+      },
+      {
+        id: 8,
+        text: "What is the main attraction of the Deosai National Park?",
+      },
       { id: 9, text: "Which valley is known as the Switzerland of the East?" },
-      { id: 10, text:"Name the highest paved international border crossing in the world, located in Northern Pakistan." },
+      {
+        id: 10,
+        text: "Name the highest paved international border crossing in the world, located in Northern Pakistan.",
+      },
     ];
 
     const shuffledQuestions = shuffle(questionBank).slice(0, 3);
@@ -72,27 +102,38 @@ const GuideQuestionnaire = () => {
   const handleApply = async () => {
     if (isChecked) {
       try {
+        const questionsToSend = selectedQuestions.map((question) => question.text);
+        const answersToSend = answers.slice(0, selectedQuestions.length);
+        console.log(answersToSend);
+  
         const response = await axios.post(
-          "http://192.168.100.12:8000/api/guideRoutes/guide_questionnaire",
+          "http://192.168.100.18:8000/api/guideRoutes/guide_questionnaire",
           {
             guideId,
-            answers,
+            questions: questionsToSend,
+            answers: answersToSend,
           }
         );
-
+  
         if (response.status === 200) {
           console.log(response.data);
-          navigation.navigate("Login");
+          Alert.alert(
+            "Registration Successful",
+            "Your application is pending for approval",
+            [{ text: "OK", onPress: () => navigation.navigate("Login") }],
+            { cancelable: false }
+          );
         }
       } catch (error) {
         console.error("Error submitting form:", error);
       }
     } else {
-      alert('Please accept the terms and conditions before applying.');
+      alert("Please accept the terms and conditions before applying.");
     }
   };
-
-  const screenWidth = Dimensions.get('window').width;
+  
+  
+  const screenWidth = Dimensions.get("window").width;
   const buttonWidth = screenWidth * 0.4;
 
   return (
@@ -126,14 +167,14 @@ const GuideQuestionnaire = () => {
 
         <View style={styles.checkboxContainer}>
           <CheckBox
-            title='Privacy Policy'
+            title="Privacy Policy"
             checked={isChecked}
             onPress={handleCheckBox1}
           />
         </View>
         <View style={styles.checkboxContainer}>
           <CheckBox
-            title='Terms & Condition'
+            title="Terms & Condition"
             checked={isChecked}
             onPress={handleCheckBox2}
           />
@@ -146,19 +187,29 @@ const GuideQuestionnaire = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Privacy Policy Modal */}
       <Modal
         visible={showPrivacyPolicyModal}
         transparent={true}
-        animationType='slide'
+        animationType="slide"
         onRequestClose={() => setShowPrivacyPolicyModal(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Privacy Policy</Text>
             <Text style={styles.modalText}>
-              {/* Add your privacy policy text here */}
-              Safarnama is dedicated to safeguarding the privacy and security of our guides. When you apply to become a guide with Safarnama, we collect certain personal information to assess your eligibility and suitability for the position. This information may include your name, contact details, address, educational background, and work experience. We use this information solely for employment-related purposes, such as evaluating qualifications and communicating with applicants. Safarnama takes measures to protect the personal information provided by guides and does not share it with third parties unless required by law or necessary for employment purposes. By applying to become a guide, you consent to the collection, use, and processing of your personal information as described in this privacy policy.
+              Safarnama is dedicated to safeguarding the privacy and security of
+              our guides. When you apply to become a guide with Safarnama, we
+              collect certain personal information to assess your eligibility
+              and suitability for the position. This information may include
+              your name, contact details, address, educational background, and
+              work experience. We use this information solely for
+              employment-related purposes, such as evaluating qualifications and
+              communicating with applicants. Safarnama takes measures to protect
+              the personal information provided by guides and does not share it
+              with third parties unless required by law or necessary for
+              employment purposes. By applying to become a guide, you consent to
+              the collection, use, and processing of your personal information
+              as described in this privacy policy.
             </Text>
             <TouchableOpacity
               style={styles.closeButton}
@@ -170,18 +221,29 @@ const GuideQuestionnaire = () => {
         </View>
       </Modal>
 
-      {/* Terms & Conditions Modal */}
       <Modal
         visible={showTermsModal}
         transparent={true}
-        animationType='slide'
+        animationType="slide"
         onRequestClose={() => setShowTermsModal(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Terms & Conditions</Text>
             <Text style={styles.modalText}>
-            By applying to become a guide with Safarnama, you agree to the following terms and conditions. You must be legally eligible to work in the country where you seek employment with Safarnama. You certify that all information provided in your application is accurate and truthful. You agree to maintain the confidentiality of any sensitive information obtained during the application process. As a guide, you commit to conducting yourself professionally and ethically, complying with all applicable laws and regulations. Safarnama reserves the right to terminate your employment as a guide at any time, with or without cause. By accepting these terms and conditions, you acknowledge your understanding of the obligations and responsibilities associated with being a guide with Safarnama.
+              By applying to become a guide with Safarnama, you agree to the
+              following terms and conditions. You must be legally eligible to
+              work in the country where you seek employment with Safarnama. You
+              certify that all information provided in your application is
+              accurate and truthful. You agree to maintain the confidentiality
+              of any sensitive information obtained during the application
+              process. As a guide, you commit to conducting yourself
+              professionally and ethically, complying with all applicable laws
+              and regulations. Safarnama reserves the right to terminate your
+              employment as a guide at any time, with or without cause. By
+              accepting these terms and conditions, you acknowledge your
+              understanding of the obligations and responsibilities associated
+              with being a guide with Safarnama.
             </Text>
             <TouchableOpacity
               style={styles.closeButton}
@@ -268,56 +330,56 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#319BD6',
+    backgroundColor: "#319BD6",
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 15,
     marginBottom: 20,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   modalText: {
     fontSize: 14,
-    textAlign:'justify',
+    textAlign: "justify",
 
     marginBottom: 20,
   },
   closeButton: {
-    backgroundColor: '#319BD6',
+    backgroundColor: "#319BD6",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   closeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontFamily: "Poppins-Bold",
     fontSize: 16,
   },
 });

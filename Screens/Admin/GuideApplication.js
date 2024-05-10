@@ -64,10 +64,11 @@ const GuideApplication = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.100.12:8000/api/guideRoutes/guide_applications?status=${activeSection}`
+        `http://192.168.100.18:8000/api/guideRoutes/guide_applications?status=${activeSection}`
       );
 
       setUsers(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching users:", error.response);
     }
@@ -206,17 +207,29 @@ const GuideApplication = () => {
               <Text style={styles.ModalDetailText}>
                 {selectedUser?.past_experience}
               </Text>
-              <Text style={styles.ModalDetailHeading}>Q1 Answer</Text>
+              <Text style={styles.ModalDetailHeading}>Q1</Text>
               <Text style={styles.ModalDetailText}>
                 {selectedUser?.guide_q1}
               </Text>
-              <Text style={styles.ModalDetailHeading}>Q2 Answer</Text>
+              <Text style={styles.ModalDetailHeading}>Answer</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.guide_a1}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Q2</Text>
               <Text style={styles.ModalDetailText}>
                 {selectedUser?.guide_q2}
               </Text>
-              <Text style={styles.ModalDetailHeading}>Q3 Answer</Text>
+              <Text style={styles.ModalDetailHeading}>Answer</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.guide_a2}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Q3</Text>
               <Text style={styles.ModalDetailText}>
                 {selectedUser?.guide_q3}
+              </Text>
+              <Text style={styles.ModalDetailHeading}>Answer</Text>
+              <Text style={styles.ModalDetailText}>
+                {selectedUser?.guide_a3}
               </Text>
             </View>
 
