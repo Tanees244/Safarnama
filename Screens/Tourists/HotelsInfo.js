@@ -9,7 +9,6 @@ import {
   ImageBackground,
   Image,
   ScrollView,
-  TextInput,
   FlatList,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";

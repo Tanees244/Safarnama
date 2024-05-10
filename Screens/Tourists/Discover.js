@@ -251,7 +251,7 @@ const Discover = () => {
 
   const handleProfilePress = () => {
     if (isAuthenticated) {
-      navigation.navigate("PaymentGateway");
+      navigation.navigate("TouristProfile");
     } else {
       Alert.alert(
         "Sign In Required",

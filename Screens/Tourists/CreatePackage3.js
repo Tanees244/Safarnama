@@ -10,12 +10,12 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const CreatePackage3 = () => {
-
   const navigation = useNavigation();
   const route = useRoute();
   const [package_id, setPackageId] = useState(null);
   const [dates, setDates] = useState({ start_date: "", end_date: "" });
   const [days, setDays] = useState([]);
+  const [hotel_booking_id, setHotelBookingId] = useState(null); // State for hotel_booking_id
 
   useEffect(() => {
     if (route.params && route.params.package_id) {
@@ -51,15 +51,23 @@ const CreatePackage3 = () => {
         throw new Error("Failed to fetch dates");
       }
       const data = await response.json();
-      console.log(packageId);
       setDates(data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    if (route.params && route.params.hotel_booking_id) {
+      setHotelBookingId(route.params.hotel_booking_id);
+    }
+    
+  }, [route.params]);
+
+  console.log(hotel_booking_id);
+
   const navigateToHotelsLists = (day) => {
-    navigation.navigate("HotelsListsPackage",{day , package_id});
+    navigation.navigate("HotelsListsPackage", { day, package_id, setHotelBookingId });
   };
 
   const navigateToPlacesLists = () => {
@@ -85,6 +93,8 @@ const CreatePackage3 = () => {
         {days.map((day) => (
           <View key={day} style={styles.dayContainer}>
             <Text style={styles.dayHeading}>Day {day}</Text>
+            {/* Display hotel_booking_id for each day */}
+            <Text style={styles.text}>{`Hotel Booking ID: ${hotel_booking_id} (Day ${day})`}</Text>
             <TouchableOpacity
               activeOpacity={0.9}
               style={styles.buttons}
@@ -105,7 +115,7 @@ const CreatePackage3 = () => {
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
-    </ScrollView >
+    </ScrollView>
   );
 };
 
@@ -137,12 +147,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 30,
     width: "100%",
-    // flexGrow: 1,
   },
   dayHeading: {
     fontFamily: "Poppins-Regular",
     color: "white",
-    fontSize: 16
+    fontSize: 16,
   },
   dayContainer: {
     alignItems: "center",
@@ -164,14 +173,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   submitButton: {
-    backgroundColor: '#54aaec',
+    backgroundColor: "#54aaec",
     borderRadius: 10,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   submitText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
     fontFamily: "Poppins-Bold",
   },

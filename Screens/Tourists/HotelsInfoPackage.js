@@ -9,13 +9,11 @@ import {
   ImageBackground,
   Image,
   ScrollView,
-  TextInput,
   FlatList,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Modal from "react-native-modal";
 import axios from "axios";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const data = [
@@ -49,10 +47,9 @@ const data = [
     image: require("../../assets/F6.png"),
     title: "Parking",
   },
-
 ];
 
-const ReservationSection = ({ room }) => {
+const ReservationSection = ({ room, id, setId }) => {
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
   const [showCheckInPicker, setShowCheckInPicker] = useState(false);
@@ -64,11 +61,13 @@ const ReservationSection = ({ room }) => {
   const [children, setChildren] = useState(0);
   const [showGuestModal, setShowGuestModal] = useState(false);
   const [showRoomModal, setShowRoomModal] = useState(false);
-  const [rooms, setRooms] = useState(SelectedRoomDetails ? SelectedRoomDetails.rooms : 1);
+  const [rooms, setRooms] = useState(
+    SelectedRoomDetails ? SelectedRoomDetails.rooms : 1
+  );
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [SelectedRoomDetails, setSelectedRoomDetails] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [Id, setID] = useState('');
+  const [hotel_booking_id, setID] = useState("");
   const navigation = useNavigation();
 
   const toggleCheckInPicker = () => {
@@ -146,7 +145,7 @@ const ReservationSection = ({ room }) => {
 
   const incrementRooms = (availableRooms) => {
     if (rooms < availableRooms) {
-      setRooms(rooms => rooms + 1);
+      setRooms((rooms) => rooms + 1);
     } else {
       alert("You cannot add more rooms than available.");
     }
@@ -173,7 +172,7 @@ const ReservationSection = ({ room }) => {
       rooms: rooms,
       checkInDate: checkInDate.toLocaleDateString(),
       checkOutDate: checkOutDate.toLocaleDateString(),
-      hotel_details_id: Id,
+      hotel_details_id: hotel_booking_id,
     });
   };
 
@@ -196,18 +195,58 @@ const ReservationSection = ({ room }) => {
     checkAuthStatus();
   }, []);
 
-  const handleBookNow = () => {
-    if (SelectedRoomDetails) {
-      handleClear();
-      navigation.navigate("HotelsListsPackage", { selectedRoomDetails: SelectedRoomDetails });
+  const handleBookNow = async () => {
+    if (isAuthenticated) {
+      if (SelectedRoomDetails) {
+        const token = await AsyncStorage.getItem("authToken");
+        axios
+          .post(
+            "http://192.168.100.18:8000/api/VendorsRoutes/hotel-booking",
+            SelectedRoomDetails,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response.data);
+            const { hotel_booking_id } = response.data;
+            setID(hotel_booking_id);
+            console.log("Booking_Id: ", hotel_booking_id);
+            handleClear();
+            Alert.alert(
+              "Room Reserved",
+              "Your room has been reserved. Do you want to add more rooms?",
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+              { cancelable: false }
+            );
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    } else {
+      Alert.alert(
+        "Sign In Required",
+        "Please sign in to view your profile.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          { text: "Sign In", onPress: () => navigation.navigate("Login") },
+        ],
+        { cancelable: false }
+      );
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Make a Reservation</Text>
       <View style={styles.dateSelection}>
-        <View >
+        <View>
           <TouchableOpacity onPress={toggleRoomModal} style={styles.button}>
             <Text style={styles.buttonText1}>Add A Room</Text>
           </TouchableOpacity>
@@ -219,7 +258,8 @@ const ReservationSection = ({ room }) => {
             Selected Room: {SelectedRoomDetails.name}
           </Text>
           <Text style={styles.selectedRoomText}>
-            Price: {SelectedRoomDetails.price * SelectedRoomDetails.rooms} pkr/night
+            Price: {SelectedRoomDetails.price * SelectedRoomDetails.rooms}{" "}
+            pkr/night
           </Text>
           <Text style={styles.selectedRoomText}>
             Adults: {SelectedRoomDetails.adults}
@@ -240,18 +280,19 @@ const ReservationSection = ({ room }) => {
             ID: {SelectedRoomDetails.hotel_details_id}
           </Text>
           <View style={styles.confirmbutton}>
-          <TouchableOpacity onPress={handleBookNow} style={styles.confirm}>
-            <Text style={styles.clearButton}>CONFIRM</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleClear} style={styles.clear}>
-            <Text style={styles.clearButton}>CLEAR</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={handleBookNow} style={styles.confirm}>
+              <Text style={styles.clearButton}>CONFIRM</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleClear} style={styles.clear}>
+              <Text style={styles.clearButton}>CLEAR</Text>
+            </TouchableOpacity>
           </View>
         </View>
-
       )}
 
-      <Modal visible={showRoomModal} animationType="slide"
+      <Modal
+        visible={showRoomModal}
+        animationType="slide"
         animationOut="slideOutDown"
         onBackdropPress={closePopuproom}
       >
@@ -268,7 +309,9 @@ const ReservationSection = ({ room }) => {
           <ScrollView>
             <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Single Bed Room</Text>
-              <Text style={styles.roomCardPrice} >{room.price_single_bed} * {rooms} pkr/night</Text>
+              <Text style={styles.roomCardPrice}>
+                {room.price_single_bed} * {rooms} pkr/night
+              </Text>
               <Text>Number Of Rooms Available : {room.rooms_single_bed}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -297,14 +340,18 @@ const ReservationSection = ({ room }) => {
                     <Text style={styles.buttonText}>-</Text>
                   </TouchableOpacity>
                   <Text>{rooms}</Text>
-                  <TouchableOpacity onPress={() => incrementRooms( room.rooms_single_bed)}>
+                  <TouchableOpacity
+                    onPress={() => incrementRooms(room.rooms_single_bed)}
+                  >
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-in Date:</Text>
                   <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkInDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckInPicker && (
                     <DateTimePicker
@@ -319,7 +366,9 @@ const ReservationSection = ({ room }) => {
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-out Date:</Text>
                   <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkOutDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckOutPicker && (
                     <DateTimePicker
@@ -332,21 +381,28 @@ const ReservationSection = ({ room }) => {
                   )}
                 </View>
               </View>
-              <TouchableOpacity style={styles.modalButton} onPress={() => {
-                setSelectedRoom({ name: "Single Bed Room", price: room.price_single_bed });
-                setName("Single Bed Room");
-                setPrice(room.price_single_bed);
-                setID(room.hotel_details_id);
-                handleBook();
-              }}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setSelectedRoom({
+                    name: "Single Bed Room",
+                    price: room.price_single_bed,
+                  });
+                  setName("Single Bed Room");
+                  setPrice(room.price_single_bed);
+                  setID(room.hotel_details_id);
+                  handleBook();
+                }}
+              >
                 <Text style={styles.modalButtonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
 
-
-            <View style={styles.roomCard} >
+            <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Double Bed Room</Text>
-              <Text style={styles.roomCardPrice}>{room.price_double_bed} * {rooms} pkr/night</Text>
+              <Text style={styles.roomCardPrice}>
+                {room.price_double_bed} * {rooms} pkr/night
+              </Text>
               <Text>Number Of Rooms Available : {room.rooms_double_bed}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -375,14 +431,18 @@ const ReservationSection = ({ room }) => {
                     <Text style={styles.buttonText}>-</Text>
                   </TouchableOpacity>
                   <Text>{rooms}</Text>
-                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_double_bed)}>
+                  <TouchableOpacity
+                    onPress={() => incrementRooms(room.rooms_double_bed)}
+                  >
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-in Date:</Text>
                   <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkInDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckInPicker && (
                     <DateTimePicker
@@ -397,7 +457,9 @@ const ReservationSection = ({ room }) => {
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-out Date:</Text>
                   <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkOutDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckOutPicker && (
                     <DateTimePicker
@@ -410,20 +472,24 @@ const ReservationSection = ({ room }) => {
                   )}
                 </View>
               </View>
-              <TouchableOpacity style={styles.modalButton} onPress={() => {
-                setName("Double Bed Room");
-                setPrice(room.price_double_bed);
-                setID(room.hotel_details_id);
-                handleBook();
-              }}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setName("Double Bed Room");
+                  setPrice(room.price_double_bed);
+                  setID(room.hotel_details_id);
+                  handleBook();
+                }}
+              >
                 <Text style={styles.modalButtonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
 
-
             <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Standard Room</Text>
-              <Text style={styles.roomCardPrice}>{room.price_standard} * {rooms} pkr/night</Text>
+              <Text style={styles.roomCardPrice}>
+                {room.price_standard} * {rooms} pkr/night
+              </Text>
               <Text>Number Of Rooms Available : {room.rooms_standard}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -452,14 +518,18 @@ const ReservationSection = ({ room }) => {
                     <Text style={styles.buttonText}>-</Text>
                   </TouchableOpacity>
                   <Text>{rooms}</Text>
-                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_standard)}>
+                  <TouchableOpacity
+                    onPress={() => incrementRooms(room.rooms_standard)}
+                  >
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-in Date:</Text>
                   <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkInDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckInPicker && (
                     <DateTimePicker
@@ -474,7 +544,9 @@ const ReservationSection = ({ room }) => {
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-out Date:</Text>
                   <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkOutDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckOutPicker && (
                     <DateTimePicker
@@ -487,20 +559,24 @@ const ReservationSection = ({ room }) => {
                   )}
                 </View>
               </View>
-              <TouchableOpacity style={styles.modalButton} onPress={() => {
-                setName("Standard Room");
-                setPrice(room.price_standard);
-                setID(room.hotel_details_id);
-                handleBook();
-              }}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setName("Standard Room");
+                  setPrice(room.price_standard);
+                  setID(room.hotel_details_id);
+                  handleBook();
+                }}
+              >
                 <Text style={styles.modalButtonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
 
-
             <View style={styles.roomCard}>
               <Text style={styles.roomCardTitle}>Executive Room</Text>
-              <Text style={styles.roomCardPrice}>{room.price_executive} * {rooms} pkr/nightt</Text>
+              <Text style={styles.roomCardPrice}>
+                {room.price_executive} * {rooms} pkr/nightt
+              </Text>
               <Text>Number Of Rooms Available : {room.rooms_executive}</Text>
               <View style={styles.controlsContainer}>
                 <Text style={styles.label}>Adults:</Text>
@@ -529,14 +605,18 @@ const ReservationSection = ({ room }) => {
                     <Text style={styles.buttonText}>-</Text>
                   </TouchableOpacity>
                   <Text>{rooms}</Text>
-                  <TouchableOpacity onPress={() => incrementRooms(room.rooms_executive)}>
+                  <TouchableOpacity
+                    onPress={() => incrementRooms(room.rooms_executive)}
+                  >
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-in Date:</Text>
                   <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>{checkInDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkInDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckInPicker && (
                     <DateTimePicker
@@ -551,7 +631,9 @@ const ReservationSection = ({ room }) => {
                 <View style={styles.fieldContainer}>
                   <Text style={styles.fieldLabel}>Check-out Date:</Text>
                   <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>{checkOutDate.toLocaleDateString()}</Text>
+                    <Text style={styles.dateText}>
+                      {checkOutDate.toLocaleDateString()}
+                    </Text>
                   </TouchableOpacity>
                   {showCheckOutPicker && (
                     <DateTimePicker
@@ -564,21 +646,25 @@ const ReservationSection = ({ room }) => {
                   )}
                 </View>
               </View>
-              <TouchableOpacity style={styles.modalButton} onPress={() => {
-                setSelectedRoom({ name: "Executive Room", price: room.price_executive, });
-                setName("Executive Room");
-                setPrice(room.price_executive);
-                setID(room.hotel_details_id);
-                handleBook();
-              }}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setSelectedRoom({
+                    name: "Executive Room",
+                    price: room.price_executive,
+                  });
+                  setName("Executive Room");
+                  setPrice(room.price_executive);
+                  setID(room.hotel_details_id);
+                  handleBook();
+                }}
+              >
                 <Text style={styles.modalButtonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
-
           </ScrollView>
         </View>
       </Modal>
-
     </View>
   );
 };
@@ -597,14 +683,12 @@ const FacilityListDetails = ({ details }) => {
   );
 };
 
-
 const FacilitiesList = ({ data }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleFacilityButtonClick = () => {
     setIsPopupVisible(true);
   };
-
 
   return (
     <View>
@@ -638,13 +722,11 @@ const GalleryList = ({ gallery }) => {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-
   console.log(gallery[0]);
 
   const handleGalleryButtonClick = (index) => {
     setSelectedImageIndex(index);
     setIsGalleryVisible(true);
-
   };
 
   const closeGallery = () => {
@@ -664,9 +746,7 @@ const GalleryList = ({ gallery }) => {
               style={styles.facilityButton}
               onPress={() => handleGalleryButtonClick(index)}
             >
-
               <Image source={{ uri: item }} style={styles.GalleryImage} />
-
             </TouchableOpacity>
           </View>
         )}
@@ -699,11 +779,11 @@ const GalleryList = ({ gallery }) => {
 };
 
 const HotelsInfoPackage = () => {
-
   const route = useRoute();
   const { Hotel } = route.params;
   const [package_id, setPackageId] = useState(null); // Corrected square brackets
-  const [day, setDay] = useState(null); // Corrected square brackets
+  const [day, setDay] = useState(null);
+  const [hotel_booking_id, setID] = useState(""); // Corrected square brackets
 
   useEffect(() => {
     if (route.params && route.params.package_id) {
@@ -714,7 +794,7 @@ const HotelsInfoPackage = () => {
 
   console.log("ID:", package_id);
   console.log("Day:", day);
-
+  console.log("Hotel Id:", hotel_booking_id);
 
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
@@ -784,7 +864,10 @@ const HotelsInfoPackage = () => {
                   style={styles.facilityButton}
                   onPress={handleFacilityButtonClick}
                 >
-                  <Image source={require("../../assets/plus.png")} style={styles.plus} />
+                  <Image
+                    source={require("../../assets/plus.png")}
+                    style={styles.plus}
+                  />
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -807,7 +890,9 @@ const HotelsInfoPackage = () => {
                     />
                   </TouchableOpacity>
                   <ScrollView>
-                    <Text style={styles.popupTitle}>Facilities And Services</Text>
+                    <Text style={styles.popupTitle}>
+                      Facilities And Services
+                    </Text>
                     <FacilityListDetails details={Hotel.facilities} />
                   </ScrollView>
                 </View>
@@ -820,9 +905,7 @@ const HotelsInfoPackage = () => {
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Description</Text>
-            <Text style={styles.Description}>
-              {Hotel.description}
-            </Text>
+            <Text style={styles.Description}>{Hotel.description}</Text>
           </View>
           <View style={styles.FacilityContainer}>
             <Text style={styles.FacilityText}>Reviews</Text>
@@ -846,14 +929,26 @@ const HotelsInfoPackage = () => {
                 full-service hotels and resorts based in Bethesda,
               </Text>
             </View>
-            <ReservationSection room={Hotel} />
+            <ReservationSection
+              room={Hotel}
+              id={hotel_booking_id}
+              setId={setID}
+            />
           </View>
           <View style={styles.ButtonContainer}>
-        <TouchableOpacity style={styles.Cardbutton} >
-          <Text style={styles.CardbuttonText}>Next</Text>
-        </TouchableOpacity>
-      </View>
-
+            <TouchableOpacity
+              style={styles.Cardbutton}
+              onPress={() => {
+                navigation.navigate("CreatePackage3", {
+                  day: day,
+                  package_id: package_id,
+                  hotel_booking_id: hotel_booking_id,
+                });
+              }}
+            >
+              <Text style={styles.CardbuttonText}>Next</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -868,12 +963,12 @@ const styles = StyleSheet.create({
   Image: {
     flex: 1,
     aspectRatio: 1, // Maintain aspect ratio
-    resizeMode: 'cover',
-    width: '100%',
-    height: '100%',
+    resizeMode: "cover",
+    width: "100%",
+    height: "100%",
   },
   faccontainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   plus: {
     height: 70,
@@ -929,8 +1024,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#353893",
-    borderWidth:5,
-    borderColor:"#319BD6",
+    borderWidth: 5,
+    borderColor: "#319BD6",
   },
   RightText: {
     width: "65%",
@@ -1035,24 +1130,24 @@ const styles = StyleSheet.create({
     // Adjust the alpha value for the blur effect
   },
   popupContent: {
-    backgroundColor: '#cee7fa',
+    backgroundColor: "#cee7fa",
     borderRadius: 20,
     width: "80%",
     alignSelf: "center",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
     height: 400,
     marginBottom: 100,
     marginTop: 100,
   },
   popupContent1: {
-    backgroundColor: '#cee7fa',
+    backgroundColor: "#cee7fa",
     borderRadius: 20,
     width: "100%",
     alignSelf: "center",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
     height: 600,
     marginBottom: 100,
@@ -1083,7 +1178,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
-    color: 'black',
+    color: "black",
   },
   popupTitle: {
     fontSize: 24,
@@ -1142,16 +1237,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily:"Poppins-ExtraBold",
+    fontFamily: "Poppins-ExtraBold",
     marginBottom: 10,
-    textAlign:'center',
+    textAlign: "center",
   },
   fieldContainer: {
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
     padding: 10,
     marginHorizontal: 5,
-    width: '100%',
+    width: "100%",
     marginBottom: 20,
   },
   fieldLabel: {
@@ -1216,13 +1311,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontFamily: "Poppins-Bold",
-    textAlign: 'center',
+    textAlign: "center",
   },
   modalInputContainer1: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
-
   },
   FacilityText1: {
     fontSize: 16,
@@ -1250,14 +1344,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     marginBottom: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: 280,
   },
   roomCardTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   roomCardPrice: {
     fontSize: 16,
@@ -1292,45 +1386,44 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: "black",
-    backgroundColor:'#cee7fa',
-    borderRadius:20,
+    backgroundColor: "#cee7fa",
+    borderRadius: 20,
   },
   selectedRoomText: {
     marginBottom: 5,
-    fontFamily:'Poppins-Regular',
-    fontSize:15,
+    fontFamily: "Poppins-Regular",
+    fontSize: 15,
   },
 
   clearButton: {
     color: "white",
     textAlign: "center",
     marginTop: 10,
-    fontFamily:'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
   },
 
   clear: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     width: 100,
-    justifyContent: 'center',
-    alignSelf:'center',
-    padding:5,
-    borderRadius:20,
+    justifyContent: "center",
+    alignSelf: "center",
+    padding: 5,
+    borderRadius: 20,
   },
 
   confirm: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
     width: 100,
-    justifyContent: 'center',
-    alignSelf:'center',
-    padding:5,
-    borderRadius:20,
+    justifyContent: "center",
+    alignSelf: "center",
+    padding: 5,
+    borderRadius: 20,
   },
 
   confirmbutton: {
-    flexDirection:'row',
-    justifyContent:'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-
 });
 
 export default HotelsInfoPackage;
