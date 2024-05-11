@@ -14,46 +14,66 @@ const GuideDocument = () => {
   const containerWidth = screenWidth * 0.9;
   const indicatorWidth = screenWidth * 0.2;
 
-  const [imageUri1, setImageUri1] = useState(null);
-  const [imageUri2, setImageUri2] = useState(null);
-  const [imageUri3, setImageUri3] = useState(null);
-  const [imageUri4, setImageUri4] = useState(null);
+  const [images, setImages] = useState(new Array(4).fill(null));
 
   const route = useRoute();
   const { guideId } = route.params;
 
-  const pickImage = async (setImageUri) => {
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
-
-    setImageUri(result.uri);
-    console.log(result);
-
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+  const pickImage = async (index) => {
+    try {
+      console.log(index);
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      });
+    
+      console.log("ImagePicker Result:", result);
+    
+      if (!result.canceled && result.assets.length > 0) {
+        const newImages = [...images];
+        newImages[index] = result.assets[0].uri; // Accessing URI from the first asset
+        setImages(newImages);
+        console.log("Selected Image URI:", result.assets[0].uri);
+      } else {
+        console.log("Image picking cancelled.");
+      }
+    } catch (error) {
+      console.error("Error picking image:", error);
     }
   };
-
+  
+  
   const handleSubmit = async () => {
+    const formData = new FormData();
+    images.forEach((image, index) => {
+      formData.append(`image${index + 1}`, {
+        uri: image,
+        type: 'image/jpeg',
+        name: `image${index + 1}.jpg`,
+      });
+    });
+
+    formData.append('guideId', guideId);
+  
     try {
+      console.log("Submitting form with images:", images);
+  
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/guideRoutes/guide_submit_documents",
+        "http://192.168.100.12:8000/api/guideRoutes/guide_submit_documents",
+        formData,
         {
-          image1: imageUri1,
-          image2: imageUri2,
-          image3: imageUri3,
-          image4: imageUri4,
-          guideId,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
         }
       );
-
+  
+      console.log("Form submission response:", response.data);
+  
       if (response.status === 200) {
-        console.log(response.data);
+        console.log("User registered successfully");
         navigation.navigate("GuideExperience", { guideId });
       }
     } catch (error) {
@@ -78,67 +98,26 @@ const GuideDocument = () => {
         </View>
 
         <View style={[styles.uploadContainer, { width: containerWidth }]}>
-          <View style={styles.subContainer}>
+        {/* Image upload buttons */}
+        {images.map((image, index) => (
+          <View style={styles.subContainer} key={index}>
             <TouchableOpacity
               style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={() => pickImage(setImageUri1)}
+              onPress={() => pickImage(index)}
             >
-              {imageUri1 ? (
-                <Image source={{ uri: imageUri1 }} style={styles.image} />
+              {image ? (
+                <Image source={{ uri: image }} style={styles.image} />
               ) : (
                 <Image source={require('../../assets/upload.png')} style={styles.image} />
               )}
             </TouchableOpacity>
             <View style={styles.textContainer}>
-              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>Picture Of Yourself</Text>
+              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>Placeholder Text</Text>
             </View>
           </View>
-          <View style={styles.subContainer}>
-            <TouchableOpacity
-              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={() => pickImage(setImageUri2)}
-            >
-              {imageUri2 ? (
-                <Image source={{ uri: imageUri2 }} style={styles.image} />
-              ) : (
-                <Image source={require('../../assets/upload.png')} style={styles.image} />
-              )}
-            </TouchableOpacity>
-            <View style={styles.textContainer}>
-              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>CNIC (FRONT)</Text>
-            </View>
-          </View>
-          <View style={styles.subContainer}>
-            <TouchableOpacity
-              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={() => pickImage(setImageUri3)}
-            >
-              {imageUri1 ? (
-                <Image source={{ uri: imageUri3 }} style={styles.image} />
-              ) : (
-                <Image source={require('../../assets/upload.png')} style={styles.image} />
-              )}
-            </TouchableOpacity>
-            <View style={styles.textContainer}>
-              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>CNIC (BACK)</Text>
-            </View>
-          </View>
-          <View style={styles.subContainer}>
-            <TouchableOpacity
-              style={[styles.button, { width: buttonWidth, height: buttonWidth }]}
-              onPress={() => pickImage(setImageUri4)}
-            >
-              {imageUri1 ? (
-                <Image source={{ uri: imageUri4 }} style={styles.image} />
-              ) : (
-                <Image source={require('../../assets/upload.png')} style={styles.image} />
-              )}
-            </TouchableOpacity>
-            <View style={styles.textContainer}>
-              <Text style={[{ fontFamily: 'Poppins-Regular', color: 'white' }]}>Tour Guide License</Text>
-            </View>
-          </View>
-        </View>
+        ))}
+      </View>
+
         <TouchableOpacity activeOpacity={0.9} style={[styles.submitButton, { width: submitButton }]} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>

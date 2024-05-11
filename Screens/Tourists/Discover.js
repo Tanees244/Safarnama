@@ -232,8 +232,11 @@ const Discover = () => {
   const navigateToHotelsInfo = () => {
     navigation.navigate("HotelsLists");
   };
-  const navigateToPlan = () => {
+  const handleplan = () => {
     navigation.navigate("Plantrip");
+  };
+  const navigateToPlan = () => {
+    navigation.navigate("PaymentGateway");
   };
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");
@@ -475,6 +478,20 @@ const Discover = () => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.PackageContainer}>
+          <TouchableOpacity
+            onPress={handleplan}
+            style={[styles.Package, { width: PackageWidth }]}
+          >
+                        <Image
+                source={require("../../assets/ai.png")}
+                style={styles.icon}
+              />
+            <Text style={styles.PackageText}>Plan Your Trip With AI </Text>
+
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.text}>Packages</Text>
         <FlatList
           data={packageData}
@@ -712,7 +729,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   Package: {
-    backgroundColor: "#092547",
+    backgroundColor: "#D4EBFF",
     borderRadius: 30,
     padding: 20,
     marginTop: 20,
@@ -723,7 +740,7 @@ const styles = StyleSheet.create({
   PackageText: {
     fontFamily: "Poppins-Bold",
     fontSize: 15,
-    color: "white",
+    color: "black",
   },
   card: {
     marginLeft: 20,
