@@ -37,7 +37,7 @@ const GuideBankDetail = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/guideRoutes/guide_bank_details",
+        "http://192.168.100.12:8000/api/guideRoutes/guide_bank_details",
         {
           guideId,
           accountName,

@@ -35,19 +35,18 @@ const PaymentGateway = () => {
 
         // Fetch hotel booking price
         const hotelBookingResponse = await axios.get(
-          "http://192.168.100.18:8000/api/VendorsRoutes/hotel-booking-price",
+          "http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking-price",
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        console.log(hotelBookingResponse.data);
         setData(hotelBookingResponse.data);
 
         // Fetch package price
         const packagePriceResponse = await axios.get(
-          "http://192.168.100.18:8000/api/VendorsRoutes/package-price",
+          "http://192.168.100.12:8000/api/VendorsRoutes/package-price",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -75,6 +74,20 @@ const PaymentGateway = () => {
       totalPrice += item.price * item.rooms;
     });
     return totalPrice;
+  };
+
+  const getTotalPayment = () => {
+    // Initialize total payment with service fee
+    let totalPayment = 1000;
+  
+    // Add package price if available
+    if (packagePrice && packagePrice.p !== null) {
+      totalPayment += parseFloat(packagePrice.p);
+    }
+    totalPayment += getTotalPrice();
+    totalPayment += 7000;
+  
+    return totalPayment;
   };
 
   return (
@@ -152,7 +165,7 @@ const PaymentGateway = () => {
           </Text>
           <View style={[styles.Buttons2, { width: buttonWidth }]}>
             <Text style={{ fontFamily: "Poppins-Bold" }}>Package Price: </Text>
-            <Text style={{ fontFamily: "Poppins-Light" }}>{packagePrice.price}</Text>
+            <Text style={{ fontFamily: "Poppins-Light" }}>{packagePrice?.p !== null ? packagePrice.p : "NaN"} PKR</Text>
           </View>
           <View style={[styles.Buttons2, { width: buttonWidth }]}>
             <Text style={{ fontFamily: "Poppins-Bold" }}>
@@ -190,7 +203,7 @@ const PaymentGateway = () => {
                 color: "white",
               }}
             >
-              41,000 pkr
+             {getTotalPayment()} PKR
             </Text>
           </View>
           <TouchableOpacity

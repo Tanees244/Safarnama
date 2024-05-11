@@ -17,65 +17,6 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const data = [
-  {
-    id: "1",
-    image: require("../../assets/Place1.jpg"),
-    title: "Naran",
-    city: "Islamabad",
-    description:
-      "Naran is a town and popular tourist destination in upper Kaghan Valley in the Mansehra District of the Khyber Pakhtunkhwa province of Pakistan. It is located 119 kilometers from Mansehra city at the altitude of 2,409 meters. It is located about 65 kilometers away from Babusar Top",
-    ratings: "4.5/5.0",
-  },
-  {
-    id: "2",
-    image: require("../../assets/Place2.jpg"),
-    title: "Kalam",
-    city: "Islamabad",
-    description:
-      "Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.",
-    ratings: "3.3/5.0",
-  },
-  {
-    id: "3",
-    image: require("../../assets/Place3.jpg"),
-    title: "Kashmir",
-    city: "Islamabad",
-    description:
-      'Kashmir is the northernmost geographical region of the Indian subcontinent. Until the mid-19th century, the term "Kashmir" denoted only the Kashmir Valley between the Great Himalayas and the Pir Panjal Range',
-    ratings: "3.9/5.0",
-  },
-];
-
-const data2 = [
-  {
-    id: "4",
-    image: require("../../assets/Hotel1.jpg"),
-    title: "Marriot Hotel",
-    city: "Islamabad",
-    description:
-      "Marriott Hotels & Resorts is Marriott International`s brand of full-service hotels and resorts based in Bethesda, Maryland. As of June 30, 2020, there were 582 hotels and resorts with 205,053 rooms operating under the brand, in addition to 160 hotels with 47,765 rooms planned for development.",
-    ratings: "4.5/5.0",
-  },
-  {
-    id: "5",
-    image: require("../../assets/Hotel2.jpg"),
-    title: "Pearl Continental",
-    city: "Islamabad",
-    description:
-      "Kalam is a valley located 99 kilometres from Mingora in the northern upper section of Swat valley along the banks of the Swat River in the Khyber Pakhtunkhwa province of Pakistan. The Swat River was formed as a result of the confluence of two major tributaries, the Gabral and Ushu river.",
-    ratings: "3.3/5.0",
-  },
-  {
-    id: "6",
-    image: require("../../assets/Hotel3.jpg"),
-    title: "Ramada",
-    city: "Islamabad",
-    description:
-      "Ramada is a large American multinational hotel chain owned by Wyndham Hotels & Resorts. As of December 31, 2022, it operates 851 hotels with 120,3444 rooms across 63 countries under the Ramada brand",
-    ratings: "3.9/5.0",
-  },
-];
 
 const packageData = [
   {
@@ -221,7 +162,6 @@ const VerticalCard = ({ item }) => {
 const Discover = () => {
 
   const navigation = useNavigation();
-
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth;
   const PackageWidth = screenWidth * 0.8;
@@ -292,6 +232,12 @@ const Discover = () => {
   const navigateToHotelsInfo = () => {
     navigation.navigate("HotelsLists");
   };
+  const handleplan = () => {
+    navigation.navigate("Plantrip");
+  };
+  const navigateToPlan = () => {
+    navigation.navigate("PaymentGateway");
+  };
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");
   };
@@ -325,7 +271,7 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/places"
+        "http://192.168.100.12:8000/api/routes/places"
       );
       setPlaceData(response.data);
     } catch (error) {
@@ -336,7 +282,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/hotel-details"
+        "http://192.168.100.12:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {
@@ -450,7 +396,7 @@ const Discover = () => {
             <Text style={{ color: "#c7f3ff" }}>Travel plans ?</Text>
           </Text>
         </View>
-
+ 
         <TextInput
           style={styles.searchInput}
           placeholder="Search places and hotels"
@@ -520,7 +466,7 @@ const Discover = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.buttons, { width: buttonWidth }]}
-            onPress={navigateToHotelsInfo}
+            onPress={navigateToPlan}
           >
             <View style={styles.buttonContent}>
               <Image
@@ -529,6 +475,20 @@ const Discover = () => {
               />
               <Text style={styles.buttonText}>Cart</Text>
             </View>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.PackageContainer}>
+          <TouchableOpacity
+            onPress={handleplan}
+            style={[styles.Package, { width: PackageWidth }]}
+          >
+                        <Image
+                source={require("../../assets/ai.png")}
+                style={styles.icon}
+              />
+            <Text style={styles.PackageText}>Plan Your Trip With AI </Text>
+
           </TouchableOpacity>
         </View>
 
@@ -586,6 +546,17 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#041c23",
     flex: 1,
+  },
+  input: {
+    height:50,
+    width: '80%',
+    borderColor: 'gray',
+    borderWidth:1,
+    marginVertical:7,
+    paddingHorizontal:10,
+    fontSize:15,
+    borderRadius:15,
+    color:'white',
   },
   arrow: {
     height: 30,
@@ -758,7 +729,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   Package: {
-    backgroundColor: "#092547",
+    backgroundColor: "#D4EBFF",
     borderRadius: 30,
     padding: 20,
     marginTop: 20,
@@ -769,7 +740,7 @@ const styles = StyleSheet.create({
   PackageText: {
     fontFamily: "Poppins-Bold",
     fontSize: 15,
-    color: "white",
+    color: "black",
   },
   card: {
     marginLeft: 20,
@@ -785,7 +756,7 @@ const styles = StyleSheet.create({
     height: 220,
     width: 280,
     shadowColor: "black",
-    elevation: 20,
+    resizeMode:'contain',
   },
   contentContainer: {
     top: 130,

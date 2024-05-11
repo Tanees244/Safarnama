@@ -201,7 +201,7 @@ const ReservationSection = ({ room }) => {
     if (isAuthenticated) {
       if (SelectedRoomDetails) {
         const token = await AsyncStorage.getItem("authToken");
-        axios.post("http://192.168.100.18:8000/api/VendorsRoutes/hotel-booking", SelectedRoomDetails, {
+        axios.post("http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking", SelectedRoomDetails, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -845,27 +845,6 @@ const HotelsInfo = () => {
             </Text>
           </View>
           <View style={styles.FacilityContainer}>
-            <Text style={styles.FacilityText}>Reviews</Text>
-            <View style={[styles.ReviewsContainer, { width: containerWidth }]}>
-              <Image
-                source={require("../../assets/avatar.png")}
-                style={styles.ReviewImage}
-              />
-              <Text style={styles.ReviewText}>
-                Marriott Hotels & Resorts is Marriott International's brand of
-                full-service hotels and resorts based in Bethesda,
-              </Text>
-            </View>
-            <View style={[styles.ReviewsContainer, { width: containerWidth }]}>
-              <Image
-                source={require("../../assets/avatar.png")}
-                style={styles.ReviewImage}
-              />
-              <Text style={styles.ReviewText}>
-                Marriott Hotels & Resorts is Marriott International's brand of
-                full-service hotels and resorts based in Bethesda,
-              </Text>
-            </View>
             <ReservationSection room={Hotel} />
           </View>
           <View style={styles.ButtonContainer}>
