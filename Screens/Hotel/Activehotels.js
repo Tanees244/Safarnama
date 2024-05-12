@@ -109,41 +109,20 @@ const Activehotels = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
       setEditModalVisible(true);
     };
   
-    const handleSave = async () => {
-      try {
-          // Call the API to update the airline package
-          const response = await fetch(`http://192.168.100.12:8000/api/VendorsRoutes/update_bus_package/${editedTicket.bus_package_id}`, {
-              method: 'PUT',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(editedTicket),
-          });
-  
-          if (response.ok) {
-              const updatedPackage = await response.json();
-              onUpdateTicket(updatedPackage.updatedPackage); // Update the ticket details in the parent component
-              setEditModalVisible(false); // Close the edit modal
-          } else {
-              // Handle the error if the API call fails
-              console.error('Failed to update airline package');
-          }
-      } catch (error) {
-          console.error('Error updating airline package:', error);
-      }
-  };
+
     const handleInputChange = (field, value) => {
       setEditedTicket({ ...editedTicket, [field]: value });
     };
   
     const handleDelete = async () => {
       try {
-          const response = await fetch(`http://192.168.100.12:8000/api/VendorsRoutes/delete_bus_package/${ticketDetails.bus_package_id}`, {
+        console.log(ticketDetails.hotel_details_id);
+          const response = await fetch(`http://192.168.100.12:8000/api/VendorsRoutes/delete_hotel/${ticketDetails.hotel_details_id}`, {
               method: 'DELETE',
           });
   
           if (response.ok) {
-              onDeleteTicket(ticketNumber); // Remove the ticket from the UI
+             
           } else {
               console.error('Failed to delete airline package');
           }
@@ -270,97 +249,10 @@ const Activehotels = ({ ticketDetails: initialTicketDetails, ticketNumber, onUpd
     </View>
     
     <View style={styles.buttonContainer}>
-      <TouchableOpacity  style={styles.editButton}>
-          <Text style={[{color: 'white', fontFamily: 'Poppins-Bold', fontSize: 18,}]}>Edit</Text>
-      </TouchableOpacity>
-      <TouchableOpacity  style={styles.deleteButton}>
+      <TouchableOpacity  style={styles.deleteButton} onPress={handleDelete}>
           <Text style={[{color: 'white', fontFamily: 'Poppins-Bold', fontSize: 18,}]}>Delete</Text>
       </TouchableOpacity>
     </View>
-      <Modal visible={isEditModalVisible} animationType="slide">
-      <View style={styles.modalContent}>
-        <TouchableOpacity onPress={() => setEditModalVisible(false)} style={styles.closeIconContainer}>
-          <Image style={styles.closeIcon} source={require('../../assets/cross.png')} />
-        </TouchableOpacity>
-
-        <Text style={styles.PopupHeading}>Edit Ticket</Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Bus Number"
-          value={editedTicket.BusNumber}
-          onChangeText={(text) => handleInputChange('BusNumber', text)}
-        />
-        <View style={styles.input}>
-          <Dropdown
-            defaultValue={editedTicket.departureCity || 'Departure City'} 
-            options={cityOptions}
-            textStyle={styles.DropdownText}
-            dropdownStyle={styles.DropdownContainer}
-            dropdownTextStyle={styles.CustomDropdownText}
-            onSelect={(index, value) => {
-              setEditedTicket({ ...editedTicket, departureCity: value });
-              setSeatType(value);
-            }}
-          />
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Arrival City"
-          value={editedTicket.arrivalCity}
-          onChangeText={(text) => handleInputChange('arrivalCity', text)}
-        />
-        <View style={styles.input}>
-          <Dropdown
-            defaultValue={editedTicket.flightType || 'Flight Type'} 
-            options={seatTypes}
-            textStyle={styles.DropdownText}
-            dropdownStyle={styles.DropdownContainer}
-            dropdownTextStyle={styles.CustomDropdownText}
-            onSelect={(index, value) => {
-              setEditedTicket({ ...editedTicket, flightType: value });
-              setSeatType(value);
-            }}
-          />
-        </View>
-        <View style={styles.input}>
-          {showPicker && showDatePicker()}
-          {!showPicker && (
-            <Pressable onPress={toggleDatepicker}>
-              <TextInput
-                style={styles.DropdownText}
-                placeholder="Departure Date"
-                value={dateSelect || editedTicket.departureDate?.toDateString() || ''}
-                editable={false}
-              />
-            </Pressable>
-          )}
-        </View>
-        <View style={styles.input}>
-          {showPicker && showDatePicker()}
-          {!showPicker && (
-            <Pressable onPress={toggleDatepicker}>
-              <TextInput
-                style={styles.DropdownText}
-                placeholder="Arrival Date"
-                value={dateSelect || editedTicket.arrivalDate?.toDateString() || ''}
-                editable={false}
-              />
-            </Pressable>
-          )}
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Price"
-          value={(editedTicket.price !== undefined ? editedTicket.price.toString() : '')}
-          onChangeText={(text) => handleInputChange('price', text)}
-          keyboardType="numeric"
-        />
-        <TouchableOpacity onPress={handleSave} style={styles.AddTicketButton}>
-          <Text style={styles.AddTicketButtonText}>Save</Text>
-        </TouchableOpacity>
-      </View>
-    </Modal>
     </View>
   );
 };
@@ -428,8 +320,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
       },
       buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        alignSelf:'center',
         marginTop: 20,
       },
     
@@ -598,25 +489,15 @@ const styles = StyleSheet.create({
       ticketInfo: {
         flex: 1,
       },
-      buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10,
-      },
-      editButton: {
-        backgroundColor: '#319BD6',
-        padding: 10,
-        width: '45%',
-        alignItems: 'center',
-        borderRadius: 15,
-        borderColor: 'white',
-        borderWidth: 2,
-      },
+
+
       deleteButton: {
         backgroundColor: 'red',
         padding: 10,
         width: '45%',
         alignItems: 'center',
+        alignContent:'center',
+        justifyContent:'center',
         borderRadius: 15,
         borderColor: 'white',
         borderWidth: 2,

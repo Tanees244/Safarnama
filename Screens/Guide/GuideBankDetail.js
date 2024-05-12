@@ -30,10 +30,10 @@ const GuideBankDetail = () => {
       return;
     }
 
-    // if (ibanNumber.length !== 24) {
-    //   Alert.alert("Invalid IBAN Number", "IBAN number must be 24 characters long.");
-    //   return;
-    // }
+    if (ibanNumber.length !== 24) {
+      Alert.alert("Invalid IBAN Number", "IBAN number must be 24 characters long.");
+      return;
+    }
 
     try {
       const response = await axios.post(

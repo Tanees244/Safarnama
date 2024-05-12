@@ -10,6 +10,7 @@ import {
     ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 const packageData = [
     {
@@ -37,9 +38,9 @@ const Packages = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://192.168.100.12:8000/api/routes/packages/");
-                const data = await response.json();
-                setApiPackageData(data);
+                const response = await axios.get("http://192.168.100.12:8000/api/routes/packages/");
+                // const data = await response.json();
+                setApiPackageData(response.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -56,6 +57,32 @@ const Packages = () => {
         console.log("Book Now Pressed for package:", packageItem);
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        const formattedDate = `${day}${getDaySuffix(day)} ${month} ${year}`;
+        return formattedDate;
+    };
+
+    const getDaySuffix = (day) => {
+        if (day >= 11 && day <= 13) {
+            return "th";
+        }
+        switch (day % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    };
+
+
     return (
         <View style={styles.Container}>
 
@@ -69,63 +96,84 @@ const Packages = () => {
             >
                 <Image source={require("../../assets/Home.png")} style={styles.icon} />
             </TouchableOpacity>
-
             <ScrollView contentContainerStyle={styles.container}>
-                {packageData.map((packageItem, index) => (
-                    <ImageBackground
-                        key={packageItem.id}
-                        source={packageItem.image}
-                        style={styles.packageItemBackground}
-                        imageStyle={styles.imageStyle}
-                    >
-                        <View style={styles.packageItem}>
-                            <View style={styles.textContainer}>
-                                <View style={styles.rightText}>
-                                    <Image
-                                        source={require("../../assets/star.png")}
-                                        style={styles.icon}
-                                    />
-                                    <Text style={{ color: "white" }}>
-                                        {apiPackageData[index]?.rating}
-                                    </Text>
+                {apiPackageData.map((packageItem, index) => {
+                    // Select a random image from packageData every 4th item
+                    const randomIndex = index % 1 === 0 ? Math.floor(Math.random() * packageData.length) : null;
+                    const randomPackageData = randomIndex !== null ? packageData[randomIndex] : null;
+
+
+
+                    return (
+                        <ImageBackground
+                            key={packageItem.package_id}
+                            source={randomPackageData ? randomPackageData.image : null}
+                            style={styles.packageItemBackground}
+                            imageStyle={styles.imageStyle}
+                        >
+                            <View style={styles.packageItem}>
+                                <View style={styles.textContainer}>
+                                    <View style={styles.rightText}>
+                                        <Image
+                                            source={require("../../assets/star.png")}
+                                            style={styles.icon}
+                                        />
+                                        <Text style={{ color: "white" }}>
+                                            {packageItem.rating}
+                                        </Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <Text style={styles.packageDestination}>
-                                Destination: {apiPackageData[index]?.destination}
-                            </Text>
-                            <View style={styles.Time}>
-                                <View style={styles.dates}>
-                                    <Text style={styles.packageDates}>
-                                        Start: {apiPackageData[index]?.start_date}
-                                    </Text>
-                                </View>
-                                <View style={styles.dates}>
-                                    <Text style={styles.packageDates}>
-                                        End: {apiPackageData[index]?.end_date}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={{
-                                alignItems: "center",
-                                borderColor: "white",
-                                borderWidth: 3,
-                                borderRadius: 25,
-                                padding: 10,
-                                width: 220,
-                            }}>
-                                <Text style={styles.packagePrice}>
-                                    Price: {parseFloat(apiPackageData[index]?.price)} pkr
+                                <Text style={styles.packageDestination}>
+                                    Destination: {packageItem.destination}
                                 </Text>
+                                <View style={styles.Time}>
+                                    <View style={styles.dates}>
+                                        <Text style={styles.packageDates}>
+                                            Start: {formatDate(packageItem.start_date)}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.dates}>
+                                        <Text style={styles.packageDates}>
+                                            End: {formatDate(packageItem.end_date)}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={{
+                                    alignItems: "center",
+                                    borderColor: "white",
+                                    borderWidth: 3,
+                                    borderRadius: 25,
+                                    padding: 10,
+                                    width: 220,
+                                    marginBottom:10,
+                                }}>
+                                    <Text style={styles.packagePrice}>
+                                       {packageItem.preferences}
+                                    </Text>
+                                </View>
+                                <View style={{
+                                    alignItems: "center",
+                                    borderColor: "white",
+                                    borderWidth: 3,
+                                    borderRadius: 25,
+                                    padding: 10,
+                                    width: 220,
+                                }}>
+                                    <Text style={styles.packagePrice}>
+                                        Price: {parseFloat(packageItem.price)} pkr
+                                    </Text>
+                                </View>
+                                <TouchableOpacity
+                                    style={styles.bookNowButton}
+                                    onPress={() => handleBookNowPress(packageItem)}
+                                >
+                                    <Text style={styles.bookNowButtonText}>Book Now</Text>
+                                </TouchableOpacity>
                             </View>
-                            <TouchableOpacity
-                                style={styles.bookNowButton}
-                                onPress={() => handleBookNowPress(apiPackageData[index])}
-                            >
-                                <Text style={styles.bookNowButtonText}>Book Now</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ImageBackground>
-                ))}
+                        </ImageBackground>
+                    );
+
+                })}
             </ScrollView>
 
         </View>
@@ -184,7 +232,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderColor: "white",
         borderWidth: 3,
-        borderRadius: 25, 
+        borderRadius: 25,
         marginRight: 0,
         padding: 10,
         width: 115,

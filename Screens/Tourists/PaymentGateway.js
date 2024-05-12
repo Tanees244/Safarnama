@@ -53,8 +53,9 @@ const PaymentGateway = () => {
             },
           }
         );
-        console.log(packagePriceResponse.data);
+
         setPackagePrice(packagePriceResponse.data);
+        console.log(packagePriceResponse.data);
       } catch (error) {
         console.error("Error:", error);
         Alert.alert("Error", "Failed to fetch data. Please try again later.");
@@ -165,7 +166,7 @@ const PaymentGateway = () => {
           </Text>
           <View style={[styles.Buttons2, { width: buttonWidth }]}>
             <Text style={{ fontFamily: "Poppins-Bold" }}>Package Price: </Text>
-            <Text style={{ fontFamily: "Poppins-Light" }}>{packagePrice?.p !== null ? packagePrice.p : "NaN"} PKR</Text>
+            <Text style={{ fontFamily: "Poppins-Light" }}>{packagePrice.p} PKR</Text>
           </View>
           <View style={[styles.Buttons2, { width: buttonWidth }]}>
             <Text style={{ fontFamily: "Poppins-Bold" }}>

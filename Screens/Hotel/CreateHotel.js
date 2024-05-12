@@ -74,19 +74,27 @@ const CreateHotel = () => {
   };
 
   const handleImageUpload = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImages(result.assets[0].uri);
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      console.log("ImagePicker Result:", result);
+  
+      if (!result.canceled) {
+        setImages(result.assets[0].uri);
+        console.log("Selected Image URI:", result.assets[0].uri);
+      } else {
+        console.log("Image picking cancelled.");
+      }
+    } catch (error) {
+      console.error("Error picking image:", error);
     }
   };
+  
 
   const handleChange = (name, value) => {
     switch (name) {
@@ -162,58 +170,65 @@ const CreateHotel = () => {
     setSelectedFacilities(selectedFacilities);
   };
 
-  const handleSubmit = async () =>{
-    // Construct hotelDetails object
-    const hotelDetails = {
-      name,
-      area,
-      city,
-      description,
-      rooms_executive: roomsExecutive,
-      rooms_single_bed: roomsSingleBed,
-      rooms_double_bed: roomsDoubleBed,
-      rooms_standard_bed: roomsStandardBed,
-      price_single_bed: priceSingleBed,
-      price_double_bed: priceDoubleBed,
-      price_standard: priceStandard,
-      price_executive: priceExecutive,
-      adults_single_bed: adultsSingleBed,
-      children_single_bed: childrenSingleBed,
-      adults_double_bed: adultsDoubleBed,
-      children_double_bed: childrenDoubleBed,
-      adults_standard: adultsStandard,
-      children_standard: childrenStandard,
-      adults_executive: adultsExecutive,
-      children_executive: childrenExecutive,
-      email,
-      contact_number: contactNumber,
-      images,
-    };
+const handleSubmit = async () => {
+  try {
+    // Construct formData object with the image and other form data
+    const formData = new FormData();
+    formData.append('image', {
+      uri: images,
+      type: 'image/jpeg',
+      name: `image.jpg`,
+    });
 
-    // Send hotelDetails object to API for submitting the form
-    console.log('Submitting form:', hotelDetails);
-    try {
-      const authToken = await AsyncStorage.getItem('authToken');
-   const facilitiesString = JSON.stringify(selectedFacilities);
-      const response = await fetch('http://192.168.100.12:8000/api/VendorsRoutes/hotel_packages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({ ...hotelDetails, facilities: facilitiesString }), // Assuming hotelDetails is an object containing all your form data
-      });
+    // Append other form data to formData
+    formData.append('name', name);
+    formData.append('area', area);
+    formData.append('city', city);
+    formData.append('description', description);
+    formData.append('rooms_executive', roomsExecutive);
+    formData.append('rooms_single_bed', roomsSingleBed);
+    formData.append('rooms_double_bed', roomsDoubleBed);
+    formData.append('rooms_standard_bed', roomsStandardBed);
+    formData.append('price_single_bed', priceSingleBed);
+    formData.append('price_double_bed', priceDoubleBed);
+    formData.append('price_standard', priceStandard);
+    formData.append('price_executive', priceExecutive);
+    formData.append('adults_single_bed', adultsSingleBed);
+    formData.append('children_single_bed', childrenSingleBed);
+    formData.append('adults_double_bed', adultsDoubleBed);
+    formData.append('children_double_bed', childrenDoubleBed);
+    formData.append('adults_standard', adultsStandard);
+    formData.append('children_standard', childrenStandard);
+    formData.append('adults_executive', adultsExecutive);
+    formData.append('children_executive', childrenExecutive);
+    formData.append('email', email);
+    formData.append('contact_number', contactNumber);
+    formData.append('facilities', JSON.stringify(selectedFacilities)); // Convert facilities array to JSON string
 
-      if (response.ok) {
-        console.log('Hotel details added successfully');
-        navigation.navigate("HotelDashboard");
-      } else {
-        console.error('Failed to add hotel details:', response.status);
-      }
-    } catch (error) {
-      console.error('Error adding hotel details:', error);  
+    console.log("Submitting form with image and data:", formData);
+
+    // Send formData to API for submitting the form
+    const authToken = await AsyncStorage.getItem('authToken');
+    const response = await fetch('http://192.168.100.12:8000/api/VendorsRoutes/hotel_packages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      console.log('Hotel details added successfully');
+      navigation.navigate("HotelDashboard");
+    } else {
+      console.error('Failed to add hotel details:', response.status);
     }
-  };
+  } catch (error) {
+    console.error('Error adding hotel details:', error);  
+  }
+};
+
  
 
   return (
