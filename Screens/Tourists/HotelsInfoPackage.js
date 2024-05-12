@@ -14,6 +14,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Modal from "react-native-modal";
 import axios from "axios";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const data = [
@@ -49,7 +50,7 @@ const data = [
   },
 ];
 
-const ReservationSection = ({ room, id, setId }) => {
+const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
   const [showCheckInPicker, setShowCheckInPicker] = useState(false);
@@ -173,6 +174,7 @@ const ReservationSection = ({ room, id, setId }) => {
       checkInDate: checkInDate.toLocaleDateString(),
       checkOutDate: checkOutDate.toLocaleDateString(),
       hotel_details_id: hotel_booking_id,
+      package_id : package_id,
     });
   };
 
@@ -214,7 +216,7 @@ const ReservationSection = ({ room, id, setId }) => {
             const { hotel_booking_id } = response.data;
             setID(hotel_booking_id);
             console.log("Booking_Id: ", hotel_booking_id);
-            handleClear();
+            // handleClear();
             Alert.alert(
               "Room Reserved",
               "Your room has been reserved. Do you want to add more rooms?",
@@ -285,6 +287,21 @@ const ReservationSection = ({ room, id, setId }) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={handleClear} style={styles.clear}>
               <Text style={styles.clearButton}>CLEAR</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.ButtonContainer}>
+            <TouchableOpacity
+              style={styles.Cardbutton}
+              onPress={() => {
+                navigation.navigate("CreatePackage3", {
+                  day: day,
+                  package_id: package_id,
+                  hotel_booking_id : hotel_booking_id,
+                  hotel_details_id : hotel_details_id,
+                });
+              }}
+            >
+              <Text style={styles.CardbuttonText}>Next</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -782,8 +799,7 @@ const HotelsInfoPackage = () => {
   const route = useRoute();
   const { Hotel } = route.params;
   const [package_id, setPackageId] = useState(null); // Corrected square brackets
-  const [day, setDay] = useState(null);
-  const [hotel_booking_id, setID] = useState(""); // Corrected square brackets
+  const [day, setDay] = useState(null); // Corrected square brackets
 
   useEffect(() => {
     if (route.params && route.params.package_id) {
@@ -791,10 +807,6 @@ const HotelsInfoPackage = () => {
       setDay(route.params.day);
     }
   }, [route.params]);
-
-  console.log("ID:", package_id);
-  console.log("Day:", day);
-  console.log("Hotel Id:", hotel_booking_id);
 
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.9;
@@ -931,23 +943,10 @@ const HotelsInfoPackage = () => {
             </View>
             <ReservationSection
               room={Hotel}
-              id={hotel_booking_id}
-              setId={setID}
+              day={day}
+              package_id={package_id}
+              hotel_details_id={Hotel.hotel_details_id} // Assuming this property exists in Hotel
             />
-          </View>
-          <View style={styles.ButtonContainer}>
-            <TouchableOpacity
-              style={styles.Cardbutton}
-              onPress={() => {
-                navigation.navigate("CreatePackage3", {
-                  day: day,
-                  package_id: package_id,
-                  hotel_booking_id: hotel_booking_id,
-                });
-              }}
-            >
-              <Text style={styles.CardbuttonText}>Next</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
