@@ -109,9 +109,11 @@ const PlaceLists = () => {
   };
 
   const [places, setPlaces] = useState([]);
+  const [TopPlaces, setTopPlaces] = useState([]);
 
   useEffect(() => {
     fetchData();
+    fetchTopData();
   }, []);
 
   const fetchData = async () => {
@@ -125,6 +127,23 @@ const PlaceLists = () => {
         }
       );
       setPlaces(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error or set an appropriate state
+    }
+  };
+
+  const fetchTopData = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.100.12:8000/api/routes/top-rated-places",
+        {
+          // timeout: 5000, // Set timeout to 5 seconds
+          // retry: 3, // Retry up to 3 times on failure
+          // retryDelay: 1000, // Delay between retries in milliseconds
+        }
+      );
+      setTopPlaces(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       // Handle error or set an appropriate state
@@ -186,13 +205,11 @@ const PlaceLists = () => {
         activeOpacity={0.5}
       >
         {isExpanded ? (
-          // Render close icon or any icon you prefer
           <Image
             source={require("../../assets/WhiteClose.png")}
             style={[{ width: 30, height: 30 }]}
           />
         ) : (
-          // Your existing Home button content
           <Image
             source={require("../../assets/ViewMore.png")}
             style={[{ width: 35, height: 35 }]}
@@ -205,7 +222,7 @@ const PlaceLists = () => {
           <Text style={[styles.text, { color: "#2D78A2" }]}>Rated Places</Text>
         </Text>
         <FlatList
-          data={places}
+          data={TopPlaces}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (

@@ -172,6 +172,21 @@ const CreateHotel = () => {
 
 const handleSubmit = async () => {
   try {
+
+    if (
+      parseInt(adultsSingleBed) > 3 ||
+      parseInt(childrenSingleBed) > 3 ||
+      parseInt(adultsDoubleBed) > 3 ||
+      parseInt(childrenDoubleBed) > 3 ||
+      parseInt(adultsStandard) > 3 ||
+      parseInt(childrenStandard) > 3 ||
+      parseInt(adultsExecutive) > 3 ||
+      parseInt(childrenExecutive) > 3
+    ) {
+      alert('Capacities cannot exceed 3 adults and 3 children for each room type');
+      // You can display an error message or handle it as per your application's requirements
+      return;
+    }
     // Construct formData object with the image and other form data
     const formData = new FormData();
     formData.append('image', {

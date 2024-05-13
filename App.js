@@ -72,6 +72,7 @@ import HotelsListsPackage from './Screens/Tourists/HotelsListsPackage.js';
 import Plantrip from './Screens/Tourists/Plantrip.js';
 import LoadingScreen from './Screens/Tourists/LoadingScreen.js';
 import Details from './Screens/Tourists/Details.js';
+import PaymentFormModal from './Screens/Tourists/PaymentFormModal.js';
 
 import { useFonts } from 'expo-font';
 
@@ -167,6 +168,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicket' component={ActiveTicket} />
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicketB' component={ActiveTicketB} />
         <Stack.Screen options={{ headerShown: false }} name='ActiveTicketT' component={ActiveTicketT} />
+        <Stack.Screen options={{ headerShown: false }} name='PaymentFormModal' component={PaymentFormModal} />
         <Stack.Screen options={{ headerShown: false }} name='PaymentGateway' component={PaymentGateway} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsInfoPackage' component={HotelsInfoPackage} />
         <Stack.Screen options={{ headerShown: false }} name='HotelsListsPackage' component={HotelsListsPackage} />
@@ -178,6 +180,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Plantrip' component={Plantrip} />
         <Stack.Screen options={{ headerShown: false }} name='LoadingScreen' component={LoadingScreen} />
         <Stack.Screen options={{ headerShown: false }} name='Details' component={Details} />
+        
         
 
       </Stack.Navigator>
