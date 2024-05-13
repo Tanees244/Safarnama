@@ -125,8 +125,6 @@ const HotelsListsPackage = () => {
       setHotels(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      console.error(error.response.data);
-      console.error(error.response.status);
     }
   }
 

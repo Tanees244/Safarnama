@@ -46,7 +46,6 @@ const Itinerary = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        // Process the data as needed
         console.log(data);
       } else {
         console.error('Failed to fetch data');

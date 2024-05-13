@@ -17,8 +17,9 @@ const CreatePackage3 = () => {
   const [days, setDays] = useState([]);
   const [hotel_booking_id, setHotelBookingId] = useState(null);
   const [hotel_details_id, setHotelDetailsId] = useState(null);
-  const [hotel_details, setHotelDetails] = useState(null);
+  const [hotel_details, setHotelDetails] = useState({});
   const [error, setError] = useState(null);
+  const [dayHotelBookings, setDayHotelBookings] = useState([]);
 
   useEffect(() => {
     if (route.params && route.params.package_id) {
@@ -41,12 +42,6 @@ const CreatePackage3 = () => {
   }, [route.params]);
 
   useEffect(() => {
-    if (hotel_booking_id) {
-      fetchHotelDetails(hotel_booking_id);
-    }
-  }, [hotel_booking_id]);
-
-  useEffect(() => {
     if (dates.start_date && dates.end_date) {
       const startDate = new Date(dates.start_date);
       const endDate = new Date(dates.end_date);
@@ -66,6 +61,7 @@ const CreatePackage3 = () => {
       const response = await fetch(
         `http://192.168.100.18:8000/api/routes/packages/${packageId}`
       );
+
       if (!response.ok) {
         throw new Error("Failed to fetch dates");
       }
@@ -75,47 +71,6 @@ const CreatePackage3 = () => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (hotel_booking_id) {
-      fetchHotelDetails({
-        hotel_booking_id,
-        package_id,
-        hotel_details_id,
-      });
-    }
-  }, [hotel_booking_id, package_id, hotel_details_id]);
-  
-  const fetchHotelDetails = async (requestData) => {
-    try {
-      const response = await fetch(
-        'http://192.168.100.18:8000/api/routes/hotels',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
-  
-      if (!response.ok) {
-        const errorMessage = `HTTP Error: ${response.status} - ${response.statusText}`;
-        throw new Error(errorMessage);
-      }
-  
-    
-      setHotelDetails(response.data);
-      setError(null); // Reset error state
-    } catch (error) {
-      console.error("Fetch Hotel Details Error:", error);
-      setError(error.message); // Set error message in state
-    }
-  };
-  
-  
-
-  
 
   const navigateToHotelsLists = (day) => {
     navigation.navigate("HotelsListsPackage", {
@@ -130,7 +85,18 @@ const CreatePackage3 = () => {
   };
 
   const handleSubmit = () => {
-    navigation.navigate("PaymentGateway");
+    navigation.navigate("Option", package_id);
+  };
+
+  const handleHotelDetails = (day, details) => {
+    setHotelDetails((prevDetails) => ({
+      ...prevDetails,
+      [day]: details,
+    }));
+  };
+
+  const handleHotelBooking = (day) => {
+    setDayHotelBookings((prevBookings) => [...prevBookings, day]);
   };
 
   return (
@@ -145,24 +111,15 @@ const CreatePackage3 = () => {
         </Text>
       </ImageBackground>
       <View style={styles.ProfileContainer}>
-        {hotel_booking_id ? (
-          <View style={styles.hotelDetailsContainer}>
-            <Text style={styles.hotelDetailText}>Hotel Details</Text>
-            {hotel_details ? (
-              <Text style={styles.hotelDetailText}>
-                Name: {hotel_details.name}, Address: {hotel_details.city}
-              </Text>
+        {days.map((day) => (
+          <View key={day} style={styles.dayContainer}>
+            <Text style={styles.dayHeading}>Day {day}</Text>
+            {dayHotelBookings.includes(day) ? (
+              <View style={styles.hotelDetailsContainer}>
+                <Text style={styles.hotelDetailText}>Hotel Booked!</Text>
+              </View>
             ) : (
-              <Text style={styles.hotelDetailText}>
-                Loading hotel details...
-              </Text>
-            )}
-          </View>
-        ) : (
-          <>
-            {days.map((day) => (
-              <View key={day} style={styles.dayContainer}>
-                <Text style={styles.dayHeading}>Day {day}</Text>
+              <>
                 <TouchableOpacity
                   activeOpacity={0.9}
                   style={styles.buttons}
@@ -173,14 +130,21 @@ const CreatePackage3 = () => {
                 <TouchableOpacity
                   activeOpacity={0.5}
                   style={styles.buttons}
+                  onPress={() => handleHotelBooking(day)}
+                >
+                  <Text style={styles.buttonText}>Book Hotel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  style={styles.buttons}
                   onPress={navigateToPlacesLists}
                 >
                   <Text style={styles.buttonText}>Places</Text>
                 </TouchableOpacity>
-              </View>
-            ))}
-          </>
-        )}
+              </>
+            )}
+          </View>
+        ))}
       </View>
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitText}>Submit</Text>

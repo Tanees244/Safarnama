@@ -201,7 +201,7 @@ const ReservationSection = ({ room }) => {
     if (isAuthenticated) {
       if (SelectedRoomDetails) {
         const token = await AsyncStorage.getItem("authToken");
-        axios.post("http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking", SelectedRoomDetails, {
+        axios.post("http://192.168.100.18:8000/api/VendorsRoutes/hotel-booking", SelectedRoomDetails, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

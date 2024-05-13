@@ -69,6 +69,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
   const [SelectedRoomDetails, setSelectedRoomDetails] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hotel_booking_id, setID] = useState("");
+  const [package_hotel_details_id, setpackageHotelDetails] = useState("");
   const navigation = useNavigation();
 
   const toggleCheckInPicker = () => {
@@ -107,11 +108,6 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
     setShowRoomModal(!showRoomModal);
   };
 
-  const handleGuestsConfirm = () => {
-    setGuests(adults + children);
-    toggleGuestModal();
-  };
-
   const incrementAdults = () => {
     if (adults < 4) {
       setAdults(adults + 1);
@@ -134,10 +130,6 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
     if (children > 0) {
       setChildren(children - 1);
     }
-  };
-
-  const closePopup = () => {
-    setShowGuestModal(false);
   };
 
   const closePopuproom = () => {
@@ -173,8 +165,9 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
       rooms: rooms,
       checkInDate: checkInDate.toLocaleDateString(),
       checkOutDate: checkOutDate.toLocaleDateString(),
-      hotel_details_id: hotel_booking_id,
+      hotel_details_id: hotel_details_id,
       package_id : package_id,
+      day : day,
     });
   };
 
@@ -203,7 +196,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
         const token = await AsyncStorage.getItem("authToken");
         axios
           .post(
-            "http://192.168.100.18:8000/api/VendorsRoutes/hotel-booking",
+            "http://192.168.100.18:8000/api/routes/hotel-booking",
             SelectedRoomDetails,
             {
               headers: {
@@ -212,11 +205,10 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
             }
           )
           .then((response) => {
-            console.log(response.data);
-            const { hotel_booking_id } = response.data;
+            const { package_hotel_details_id, hotel_booking_id } = response.data;
             setID(hotel_booking_id);
-            console.log("Booking_Id: ", hotel_booking_id);
-            // handleClear();
+            setpackageHotelDetails(package_hotel_details_id);
+      
             Alert.alert(
               "Room Reserved",
               "Your room has been reserved. Do you want to add more rooms?",
@@ -298,6 +290,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
                   package_id: package_id,
                   hotel_booking_id : hotel_booking_id,
                   hotel_details_id : hotel_details_id,
+                  package_hotel_details_id : package_hotel_details_id,
                 });
               }}
             >
