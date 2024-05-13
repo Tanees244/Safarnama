@@ -14,9 +14,11 @@ import Svg, { Ellipse } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { StripeProvider, usePaymentSheet } from '@stripe/stripe-react-native';
 
-const PaymentGateway = () => {
+const PaymentGateway = ({ route }) => {
   const navigation = useNavigation();
+  const { email, totalPrice } = route.params;
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.95;
   const buttonWidth = containerWidth * 0.95;
@@ -27,165 +29,86 @@ const PaymentGateway = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [Data, setData] = useState([]);
   const [packagePrice, setPackagePrice] = useState(0);
+  const { initPaymentSheet, presentPaymentSheet, loading } = usePaymentSheet();
+  const [paymentInitialized, setPaymentInitialized] = useState(false); // Track if payment sheet is initialized
+  const [showModal, setShowModal] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [ready, setReady] = useState(false);
+  
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = await AsyncStorage.getItem("authToken");
+useEffect(() => {
+  initializePaymentSheet();
+}, []);
 
-        // Fetch hotel booking price
-        const hotelBookingResponse = await axios.get(
-          "http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking-price",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setData(hotelBookingResponse.data);
 
-        // Fetch package price
-        const packagePriceResponse = await axios.get(
-          "http://192.168.100.12:8000/api/VendorsRoutes/package-price",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+  
 
-        setPackagePrice(packagePriceResponse.data);
-        console.log(packagePriceResponse.data);
-      } catch (error) {
-        console.error("Error:", error);
-        Alert.alert("Error", "Failed to fetch data. Please try again later.");
-      }
+    const initializePaymentSheet = async () => {
+ 
+        const { paymentIntent, ephemeralKey, customer } = await fetchPaymentSheetParams();
+
+        const { error } = await initPaymentSheet({
+          merchantDisplayName: "Example, Inc.",
+          customerId: customer,
+          customerEphemeralKeySecret: ephemeralKey,
+          paymentIntentClientSecret: paymentIntent,
+          allowsDelayedPaymentMethods: true,
+        });
+        if(error){
+          Alert.alert(`Error Code: ${error.code}`,error.message);
+        }
+        else{
+          setReady(true);
+        }
     };
 
-    fetchData();
-  }, []);
-  
-  const getTotalPrice = () => {
-    if (!Array.isArray(Data) || Data.length === 0) {
-      return 0; // Return 0 if data is not an array or is empty
-    }
+    const fetchPaymentSheetParams = async () => {
+      const response = await fetch(`http://192.168.100.12:8000/api/PaymentRoutes/payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          amount: totalPrice,
+        }),
+      });
+      const { paymentIntent, ephemeralKey, customer} = await response.json();
+  console.log(response.data);
 
-    let totalPrice = 0;
-    Data.forEach(item => {
-      totalPrice += item.price * item.rooms;
-    });
-    return totalPrice;
+      return {
+        paymentIntent,
+        ephemeralKey,
+        customer,
+      };
+    };
+
+    
+  const handlePayment = async () => {
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert('Success', 'Your order is confirmed!');
+      setReady(false);
+    }
   };
 
-  const getTotalPayment = () => {
-    // Initialize total payment with service fee
-    let totalPayment = 1000;
-  
-    // Add package price if available
-    if (packagePrice && packagePrice.p !== null) {
-      totalPayment += parseFloat(packagePrice.p);
-    }
-    totalPayment += getTotalPrice();
-    totalPayment += 7000;
-  
-    return totalPayment;
-  };
 
   return (
     <View style={styles.Container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Safarnama</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.container}>
+
         <Text style={styles.Text}>
           Payment{" "}
           <Text style={[styles.Text, { color: "#405676" }]}>Checkout</Text>
         </Text>
 
-        <View style={[styles.Headercontainer, { width: containerWidth }]}>
-          <View style={[styles.paymentheader, { width: containerWidth }]}>
-            <Text
-              style={{ fontSize: 20, fontFamily: "Poppins-SemiBold", left: 10 }}
-            >
-              Package Itinerary
-            </Text>
-            <TouchableOpacity style={styles.ChangeButton}>
-              <Text style={{ color: "blue" }}>Change</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={{ fontSize: 15, left: 30 }}>
-            11 - 16 Juni 2023 * 2 Per, 1 Chi
-          </Text>
 
-          <View style={[styles.Buttons, { width: buttonWidth }]}>
-            <Image
-              style={styles.UserIcon}
-              contentFit="cover"
-              source={require("../../assets/Naran2.png")}
-            />
-            <View>
-              <TouchableOpacity style={[styles.cont, { width: inputWidth }]}>
-                <Text style={{ fontFamily: "Poppins-Bold", left: 20 }}>
-                  Your Package{" "}
-                </Text>
-                <Text style={{ left: 20 }}>
-                  You can see your package Itinerary, lorem ipsum lorem ipsum
-                  lorem ipsum{" "}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View style={[styles.paymentcontainer, { width: containerWidth }]}>
-          <Text
-            style={{ fontSize: 20, fontFamily: "Poppins-SemiBold", left: 10 }}
-          >
-            Payment Method
-          </Text>
-          <View style={[styles.Buttons1, { width: buttonWidth }]}>
-            <Image
-              style={styles.UserIcon1}
-              source={require("../../assets/stripe.png")}
-            />
-            <View style={[styles.cont, { width: inputWidth1 }]}>
-              <Text style={{ fontFamily: "Poppins-Bold", left: 20 }}>
-                5543 9929 0013 9925
-              </Text>
-              <Text style={{ left: 20 }}>Afnan Iqbal </Text>
-            </View>
-            <TouchableOpacity>
-              <Text style={{ color: "blue", left: 30 }}>Change</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.paymentbox, { width: containerWidth }]}>
-          <Text
-            style={{ fontSize: 20, fontFamily: "Poppins-SemiBold", left: 10 }}
-          >
-            Price Details
-          </Text>
-          <View style={[styles.Buttons2, { width: buttonWidth }]}>
-            <Text style={{ fontFamily: "Poppins-Bold" }}>Package Price: </Text>
-            <Text style={{ fontFamily: "Poppins-Light" }}>{packagePrice.p} PKR</Text>
-          </View>
-          <View style={[styles.Buttons2, { width: buttonWidth }]}>
-            <Text style={{ fontFamily: "Poppins-Bold" }}>
-             Hotel Prices
-            </Text>
-            <Text style={{ fontFamily: "Poppins-Light" }}>{getTotalPrice()} PKR</Text>
-          </View>
 
-          <View style={[styles.Buttons2, { width: buttonWidth }]}>
-            <Text style={{ fontFamily: "Poppins-Bold" }}>
-              Transport Price:{" "}
-            </Text>
-            <Text style={{ fontFamily: "Poppins-Light" }}>7,000 pkr</Text>
-          </View>
-          <View style={[styles.Buttons2, { width: buttonWidth }]}>
-            <Text style={{ fontFamily: "Poppins-Bold" }}>Service Fee: </Text>
-            <Text style={{ fontFamily: "Poppins-Light" }}>1000 pkr</Text>
-          </View>
-        </View>
         <View style={[styles.paybox, { width: containerWidth }]}>
           <View style={[styles.Buttons3, { width: buttonWidth }]}>
             <Text
@@ -204,17 +127,22 @@ const PaymentGateway = () => {
                 color: "white",
               }}
             >
-             {getTotalPayment()} PKR
+             {totalPrice} PKR
             </Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={[styles.submitButton, { width: submitButton }]}
-          >
-            <Text style={styles.submitButtonText}>Pay Now</Text>
-          </TouchableOpacity>
+          <StripeProvider publishableKey="pk_test_51N4iDhKsAkXEeSiVqAMxPzEdV665Osiy3pdcg2h3tI4ANiO6JPPW6P3wkSOPc8Z122WPv6Eyx3C48hXY4oj6sWge00ohqxmG8d">
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={[styles.submitButton, { width: submitButton }]}
+          disabled={!ready || loading}
+          onPress={handlePayment}
+          
+        >
+          <Text style={styles.submitButtonText}>Pay Now</Text>
+        </TouchableOpacity>
+      </StripeProvider>
         </View>
-      </ScrollView>
+
     </View>
   );
 };
@@ -228,6 +156,7 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
   },
+
   header: {
     height: 100,
     backgroundColor: "#405676",
@@ -272,7 +201,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 30,
   },
-  cont: {},
   UserIcon: {
     width: 110,
     height: 110,
@@ -306,6 +234,7 @@ const styles = StyleSheet.create({
   paymentbox: {
     backgroundColor: "#F0F3F9",
     marginBottom: 30,
+    marginTop:40,
     height: 180,
   },
   paybox: {

@@ -236,7 +236,7 @@ const Discover = () => {
     navigation.navigate("Plantrip");
   };
   const navigateToPlan = () => {
-    navigation.navigate("PaymentGateway");
+    navigation.navigate("PaymentFormModal");
   };
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");
