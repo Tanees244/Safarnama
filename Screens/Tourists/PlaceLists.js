@@ -136,7 +136,7 @@ const PlaceLists = () => {
   const fetchTopData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/top-rated-places",
+        "http://192.168.100.18:8000/api/routes/top-rated-places",
         {
           // timeout: 5000, // Set timeout to 5 seconds
           // retry: 3, // Retry up to 3 times on failure
