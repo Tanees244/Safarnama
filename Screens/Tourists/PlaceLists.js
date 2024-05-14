@@ -10,6 +10,7 @@ import {
   ScrollView,
   Dimensions,
   Animated,
+  TextInput
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -110,6 +111,9 @@ const PlaceLists = () => {
 
   const [places, setPlaces] = useState([]);
   const [TopPlaces, setTopPlaces] = useState([]);
+  const [searchText, setSearchText] = useState(""); 
+  const [filteredPlaces, setFilteredPlaces] = useState([]); 
+
 
   useEffect(() => {
     fetchData();
@@ -119,14 +123,10 @@ const PlaceLists = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/places",
-        {
-          timeout: 5000, // Set timeout to 5 seconds
-          retry: 3, // Retry up to 3 times on failure
-          retryDelay: 1000, // Delay between retries in milliseconds
-        }
+        "http://192.168.100.12:8000/api/routes/places"
       );
       setPlaces(response.data);
+      setFilteredPlaces(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       // Handle error or set an appropriate state
@@ -136,18 +136,23 @@ const PlaceLists = () => {
   const fetchTopData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/top-rated-places",
-        {
-          // timeout: 5000, // Set timeout to 5 seconds
-          // retry: 3, // Retry up to 3 times on failure
-          // retryDelay: 1000, // Delay between retries in milliseconds
-        }
+        "http://192.168.100.12:8000/api/routes/top-rated-places"
       );
       setTopPlaces(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       // Handle error or set an appropriate state
     }
+  };
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    const filtered = places.filter(
+      (place) =>
+        place.name.toLowerCase().includes(text.toLowerCase()) ||
+        place.city.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredPlaces(filtered);
   };
 
   return (
@@ -231,8 +236,14 @@ const PlaceLists = () => {
           keyExtractor={(item) => item.id}
         />
         <Text style={styles.text}>Places</Text>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search places and hotels"
+          onChangeText={handleSearch}
+          value={searchText}
+        />
         <FlatList
-          data={places}
+          data={searchText.length > 0 ? filteredPlaces : places}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -256,6 +267,19 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     elevation: 20,
     zIndex: -1,
+  },
+  searchBar: {
+    height: 60,
+    borderColor: "black",
+    backgroundColor: "white",
+    borderWidth: 2,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    fontFamily: "Poppins-Regular",
+    marginBottom:25,
+    width:300,
+    alignSelf:'center',
   },
   headerText: {
     textAlign: "center",
