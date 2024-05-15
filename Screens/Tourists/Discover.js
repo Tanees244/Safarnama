@@ -17,54 +17,6 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-
-const packageData = [
-  {
-    id: "7",
-    image: require("../../assets/Naran1.png"),
-    title: "Naran",
-    numberOfPeople: "5 Adults, 2 Child",
-    preference: "Luxury",
-    startDate: "2023-12-01",
-    endDate: "2023-12-07",
-    price: "$2500",
-    ratings: "4.2/5.0",
-  },
-  {
-    id: "8",
-    image: require("../../assets/Naran2.png"),
-    title: "Kashmir",
-    numberOfPeople: "2 Adults, 1 Child",
-    preference: "Luxury",
-    startDate: "2023-12-01",
-    endDate: "2023-12-07",
-    price: "$2500",
-    ratings: "4.5/5.0",
-  },
-  {
-    id: "9",
-    image: require("../../assets/Naran3.png"),
-    title: "Naran",
-    numberOfPeople: "2 Adults, 1 Child",
-    preference: "Luxury",
-    startDate: "2023-12-01",
-    endDate: "2023-12-07",
-    price: "$2500",
-    ratings: "3.5/5.0",
-  },
-  {
-    id: "10",
-    image: require("../../assets/Naran4.png"),
-    title: "Kaghan",
-    numberOfPeople: "2 Adults, 1 Child",
-    preference: "Luxury",
-    startDate: "2023-12-01",
-    endDate: "2023-12-07",
-    price: "$2500",
-    ratings: "4.2/5.0",
-  },
-];
-
 const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -114,13 +66,12 @@ const HorizontalCard = ({ item, onPress }) => {
 };
 
 const VerticalCard = ({ item }) => {
-  
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const containerHeight = screenHeight * 0.5;
   const containerWidth = screenWidth * 0.8;
   const navigation = useNavigation();
-  
+
   const navigatetopackages = () => {
     navigation.navigate("Packages");
   };
@@ -135,22 +86,23 @@ const VerticalCard = ({ item }) => {
       <ImageBackground source={item.image} style={styles.verticalImage}>
         <View style={styles.blurContainer}>
           <View style={styles.cardContent}>
-            <Text style={styles.packageDetail}>{item.destination}</Text>
-            <Text style={styles.packageDetail}>{item.numberOfPeople}</Text>
-            <Text style={styles.packageDetail}>{item.preference}</Text>
-            <Text
-              style={styles.packageDetail}
-            >{`${item.startDate} - ${item.endDate}`}</Text>
-            <Text style={styles.packageDetail}>{item.price}</Text>
-            <Text style={styles.packageDetail}>{item.ratings}</Text>
-          <TouchableOpacity style={styles.arrowbutton}
-          onPress={navigatetopackages}
-          >
-          <Image
-          style={styles.arrow}
-          source={require("../../assets/arrow-4.png")}
-        />
-          </TouchableOpacity>
+            <Text style={styles.packageDetail}>
+              Destination : {item.destination}
+            </Text>
+            <Text style={styles.packageDetail}>
+              Persons : {item.no_of_person}
+            </Text>
+            <Text style={styles.packageDetail}>
+              Preference : {item.preferences}
+            </Text>
+            <Text style={styles.packageDetail}>Price : {item.price}</Text>
+            <Text style={styles.packageDetail}>Rating : {item.rating}</Text>
+            <TouchableOpacity
+              style={styles.arrowbutton}
+              onPress={navigatetopackages}
+            >
+              <Text style = {styles.buttonText}>View More</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
@@ -158,9 +110,7 @@ const VerticalCard = ({ item }) => {
   );
 };
 
-
 const Discover = () => {
-
   const navigation = useNavigation();
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth;
@@ -179,7 +129,7 @@ const Discover = () => {
       return false;
     }
   };
-  
+
   useEffect(() => {
     const checkAuthStatus = async () => {
       const authenticated = await checkAuthentication();
@@ -241,6 +191,9 @@ const Discover = () => {
   const navigateToPlaceLists = () => {
     navigation.navigate("PlaceLists");
   };
+  const navigateToRatings = () => {
+    navigation.navigate("Rating");
+  };
   const navigateToFlight = () => {
     navigation.navigate("Flight");
   };
@@ -248,30 +201,43 @@ const Discover = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [placeData, setPlaceData] = useState([]);
   const [hotelData, setHotelData] = useState([]);
+  const [packageData, setPackageData] = useState([]);
 
   useEffect(() => {
-    // Fetch place data
     fetchPlaceData();
-
-    // Fetch hotel data
+    fetchData();
     fetchHotelData();
   }, []);
 
   const combinedData = [...placeData, ...hotelData];
 
-  const filteredData = combinedData.map(item => {
-    if (item.hasOwnProperty("gallery")) {
-      return { ...item, type: "place" };
-    } else {
-      return { ...item, type: "hotel" };
+  const filteredData = combinedData
+    .map((item) => {
+      if (item.hasOwnProperty("gallery")) {
+        return { ...item, type: "place" };
+      } else {
+        return { ...item, type: "hotel" };
+      }
+    })
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.0.101:8000/api/routes/packages/"
+      );
+      setPackageData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }).filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
-  
+  };
 
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/places"
+        "http://192.168.0.101:8000/api/routes/top-rated-places"
       );
       setPlaceData(response.data);
     } catch (error) {
@@ -282,7 +248,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/hotel-details"
+        "http://192.168.0.101:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {
@@ -290,16 +256,13 @@ const Discover = () => {
     }
   };
 
-
   const handleItemPress = (item) => {
     if (item.type === "place") {
-      // Navigate to place info screen
       navigation.navigate("PlacesInfo", { place: item });
     } else if (item.type === "hotel") {
-      // Navigate to hotel info screen
       navigation.navigate("HotelsInfo", { Hotel: item });
     }
-    setSearchQuery(""); // Clear search query after navigation
+    setSearchQuery("");
   };
 
   const toggleMenu = () => {
@@ -311,7 +274,6 @@ const Discover = () => {
     }).start();
     setIsExpanded(!isExpanded);
   };
-
 
   const handleMenuItemPress = (menuItem) => {
     if (menuItem === "Home") {
@@ -396,7 +358,7 @@ const Discover = () => {
             <Text style={{ color: "#c7f3ff" }}>Travel plans ?</Text>
           </Text>
         </View>
- 
+
         <TextInput
           style={styles.searchInput}
           placeholder="Search places and hotels"
@@ -414,7 +376,12 @@ const Discover = () => {
                   <View style={styles.searchContainer}>
                     <TouchableOpacity onPress={() => handleItemPress(item)}>
                       <View style={styles.resultItem}>
-                        <Image source={{ uri: `data:image/jpeg;base64,${item.images }` }} style={styles.itemImage} />
+                        <Image
+                          source={{
+                            uri: `data:image/jpeg;base64,${item.images}`,
+                          }}
+                          style={styles.itemImage}
+                        />
                         <Text style={styles.itemTitle}>{item.name}</Text>
                         <Text style={styles.rating}>{item.rating}</Text>
                       </View>
@@ -483,18 +450,30 @@ const Discover = () => {
             onPress={handleplan}
             style={[styles.Package, { width: PackageWidth }]}
           >
-                        <Image
-                source={require("../../assets/ai.png")}
-                style={styles.icon}
-              />
+            <Image
+              source={require("../../assets/ai.png")}
+              style={styles.icon}
+            />
             <Text style={styles.PackageText}>Plan Your Trip With AI </Text>
-
           </TouchableOpacity>
         </View>
 
+        <TouchableOpacity
+            style={[styles.buttons, { width: buttonWidth }]}
+            onPress={navigateToRatings}
+          >
+            <View style={styles.buttonContent}>
+              <Image
+                source={require("../../assets/placess.png")}
+                style={styles.icon}
+              />
+              <Text style={styles.buttonText}>Rating</Text>
+            </View>
+          </TouchableOpacity>
+
         <Text style={styles.text}>Packages</Text>
         <FlatList
-          data={packageData}
+          data={packageData.slice(0, 10)}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => <VerticalCard item={item} />}
@@ -548,29 +527,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    height:50,
-    width: '80%',
-    borderColor: 'gray',
-    borderWidth:1,
-    marginVertical:7,
-    paddingHorizontal:10,
-    fontSize:15,
-    borderRadius:15,
-    color:'white',
+    height: 50,
+    width: "80%",
+    borderColor: "gray",
+    borderWidth: 1,
+    marginVertical: 7,
+    paddingHorizontal: 10,
+    fontSize: 15,
+    borderRadius: 15,
+    color: "white",
   },
   arrow: {
     height: 30,
     width: "30%",
-    position: 'absolute',
+    position: "absolute",
   },
   arrowbutton: {
-    backgroundColor:" rgba(0, 0, 0, 0.6)",
-    height:40,
-    width:150,
+    backgroundColor: " rgba(0, 0, 0, 0.6)",
+    height: 40,
+    width: 150,
     borderRadius: 40,
-    justifyContent:'center',
-    alignItems:'center',
-
+    justifyContent: "center",
+    alignItems: "center",
   },
   home: {
     fontSize: 10,
@@ -756,7 +734,7 @@ const styles = StyleSheet.create({
     height: 220,
     width: 280,
     shadowColor: "black",
-    resizeMode:'contain',
+    resizeMode: "contain",
   },
   contentContainer: {
     top: 130,

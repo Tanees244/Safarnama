@@ -10,35 +10,46 @@ import {
   ScrollView,
   Dimensions,
   Animated,
-  TextInput
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Modal from "react-native-modal";
 
 const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const containerHeight = screenHeight * 0.8;
   const containerWidth = screenWidth * 0.85;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [rating, setRating] = useState("");
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const handleSubmitRating = () => {
+    if (rating >= 1 && rating <= 5) {
+      console.log("Package ID:", packageId);
+      console.log("Rating:", rating);
+      // Implement logic to submit rating to the database
+      setModalVisible(false);
+    } else {
+      alert("Please enter a valid rating between 1 and 5.");
+    }
+  };
 
   return (
     <View
       style={[styles.card, { width: containerWidth, height: containerHeight }]}
     >
-      <View style={styles.imageContainer}>
-        <ImageBackground
-          source={{ uri: `data:image/jpeg;base64,${item.images}` }}
-          style={styles.image}
-          borderRadius={20}
-        >
-          <View style={styles.ratingContainer}>
-            <Image
-              source={require("../../assets/star.png")}
-              style={styles.iconStar}
-            />
-            <Text style={styles.ratingValue}>{item.rating}</Text>
-          </View>
-        </ImageBackground>
+      <View style={styles.ratingContainer}>
+        <Image
+          source={require("../../assets/star.png")}
+          style={styles.iconStar}
+        />
+        <Text style={styles.ratingValue}>{item.rating}</Text>
       </View>
       <View
         style={[
@@ -47,26 +58,53 @@ const HorizontalCard = ({ item, onPress }) => {
         ]}
       >
         <View style={styles.contentContainer}>
-          <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.subdescription}>{item.city}</Text>
+          <Text style={styles.title}>Destination: {item.package_id}</Text>
+          <Text style={styles.subdescription}>
+            Number Of Person: {item.no_of_person}
+          </Text>
+          <Text style={styles.subdescription}>
+            Tourist id: {item.tourist_id}
+          </Text>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.description}>
+              Preferences: {item.preferences}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.CardbuttonContainer}>
-        <TouchableOpacity
-          style={styles.Cardbutton}
-          onPress={() => onPress(item)}
-        >
-          <Text style={styles.CardbuttonText}>Explore</Text>
+        <TouchableOpacity style={styles.Cardbutton} onPress={toggleModal(item.package_id)}>
+          <Text style={styles.CardbuttonText}>Rate Package</Text>
         </TouchableOpacity>
       </View>
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Rate Package</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter rating (1-5)"
+            keyboardType="numeric"
+            onChangeText={(text) => setRating(text)}
+          />
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={handleSubmitRating}
+          >
+            <Text style={styles.submitButtonText}>Submit Rating</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={toggleModal}
+          >
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
 
-const PlaceLists = () => {
+const Rating = () => {
   const navigation = useNavigation();
 
   const screenWidth = Dimensions.get("window").width;
@@ -76,11 +114,6 @@ const PlaceLists = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const scaleValue = new Animated.Value(0);
-
-  const scale = scaleValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 4],
-  });
 
   const toggleMenu = () => {
     const toValue = isExpanded ? 0 : 1;
@@ -111,9 +144,6 @@ const PlaceLists = () => {
 
   const [places, setPlaces] = useState([]);
   const [TopPlaces, setTopPlaces] = useState([]);
-  const [searchText, setSearchText] = useState(""); 
-  const [filteredPlaces, setFilteredPlaces] = useState([]); 
-
 
   useEffect(() => {
     fetchData();
@@ -122,11 +152,17 @@ const PlaceLists = () => {
 
   const fetchData = async () => {
     try {
+      const token = await AsyncStorage.getItem("authToken");
+      console.log(token);
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/places"
+        "http://192.168.0.101:8000/api/routes/tourist-unrated-packages",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPlaces(response.data);
-      setFilteredPlaces(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       // Handle error or set an appropriate state
@@ -135,24 +171,20 @@ const PlaceLists = () => {
 
   const fetchTopData = async () => {
     try {
+      const token = await AsyncStorage.getItem("authToken");
+      console.log(token);
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/top-rated-places"
+        "http://192.168.0.101:8000/api/routes/tourist-rated-packages",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setTopPlaces(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Handle error or set an appropriate state
     }
-  };
-
-  const handleSearch = (text) => {
-    setSearchText(text);
-    const filtered = places.filter(
-      (place) =>
-        place.name.toLowerCase().includes(text.toLowerCase()) ||
-        place.city.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredPlaces(filtered);
   };
 
   return (
@@ -223,11 +255,13 @@ const PlaceLists = () => {
       </TouchableOpacity>
       <ScrollView>
         <Text style={styles.text}>
-          Top{" "}
-          <Text style={[styles.text, { color: "#2D78A2" }]}>Rated Places</Text>
+          Un
+          <Text style={[styles.text, { color: "#2D78A2" }]}>
+            Rated Pakcages
+          </Text>
         </Text>
         <FlatList
-          data={TopPlaces}
+          data={places}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -235,15 +269,9 @@ const PlaceLists = () => {
           )}
           keyExtractor={(item) => item.id}
         />
-        <Text style={styles.text}>Places</Text>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search places and hotels"
-          onChangeText={handleSearch}
-          value={searchText}
-        />
+        <Text style={styles.text}>Rated Pacakges</Text>
         <FlatList
-          data={searchText.length > 0 ? filteredPlaces : places}
+          data={TopPlaces}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -261,6 +289,46 @@ const styles = StyleSheet.create({
     backgroundColor: "#cee7fa",
     flex: 1,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  input: {
+    width: "80%",
+    height: 40,
+    borderColor: "#cccccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  submitButton: {
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  submitButtonText: {
+    color: "#ffffff",
+    textAlign: "center",
+  },
+  closeButton: {
+    backgroundColor: "#dc3545",
+    padding: 10,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: "#ffffff",
+    textAlign: "center",
+  },
   header: {
     height: 140,
     backgroundColor: "#1a1a1a",
@@ -277,9 +345,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 10,
     fontFamily: "Poppins-Regular",
-    marginBottom:25,
-    width:300,
-    alignSelf:'center',
+    marginBottom: 25,
+    width: 300,
+    alignSelf: "center",
   },
   headerText: {
     textAlign: "center",
@@ -426,4 +494,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlaceLists;
+export default Rating;

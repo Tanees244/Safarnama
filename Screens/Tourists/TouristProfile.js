@@ -53,7 +53,7 @@ const TouristProfile = () => {
       console.log("Bearer token:", token);
 
       const response = await fetch(
-        "http://192.168.100.12:8000/api/routes/tourist-details/",
+        "http://192.168.0.101:8000/api/routes/tourist-details/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -113,11 +113,13 @@ const TouristProfile = () => {
           </View>
         </View>
 
-        <Text style={styles.bio}>About</Text>
+        {/* <Text style={styles.bio}>About</Text> */}
 
         <View style={[styles.textBox, { width: containerWidth }]}>
-          <Text style={{ color: "white", fontFamily: "Poppins-Regular" }}>
-          </Text>
+        <Text style={styles.bio}>Email </Text>
+          <Text style={styles.details}> {user?.email}</Text>
+          <Text style={styles.bio}>Contact Number </Text>
+          <Text style={styles.details}> {user?.contact_number}</Text>
         </View>
       </ScrollView>
     </View>
@@ -132,6 +134,12 @@ const styles = StyleSheet.create({
   Container: {
     backgroundColor: "#20262E",
     flex: 1,
+  },
+  details: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 16,
+    color: 'white',
+    textAlign: "center",
   },
   ProfileButton: {
     position: "absolute",

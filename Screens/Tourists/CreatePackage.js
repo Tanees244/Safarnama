@@ -32,7 +32,7 @@ const CreatePackage = () => {
     "Kashmir",
     "Muzaffarabad",
   ];
-  const preference = ["Going Solo", "Partner", "Friends", "Family"];
+  const preference = ["Solo", "Partner", "Friends", "Family"];
 
   const navigation = useNavigation();
   const [date, setDate] = useState(new Date());
@@ -74,7 +74,7 @@ const CreatePackage = () => {
         numberOfIndividuals,
       };
 
-      const response = await fetch("http://192.168.100.18:8000/api/routes/create-package/", {
+      const response = await fetch("http://192.168.0.101:8000/api/routes/create-package/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -190,8 +190,6 @@ const CreatePackage = () => {
               dropdownOffset={{ top: 0, left: 10 }}
             />
           </View>
-          {/* <Text style={styles.Heading}>When do you want to go?</Text>
-                    <Text style={{ color: 'red', fontSize: 12, textAlign: 'center', }}>*Choose a date range up to 7 days</Text> */}
 
           <View style={[{ width: inputWidth }, styles.DateContainer]}>
             <View style={styles.DepartureContainer}>

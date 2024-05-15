@@ -1,18 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const getRandomValue = (options) => {
   const randomIndex = Math.floor(Math.random() * options.length);
   return options[randomIndex];
 };
 
-const ItineraryDay = ({ dayData }) => {
-  const { day, destination, hotel } = dayData;
+const ItineraryDay = ({ dayWiseData }) => {
 
   const [activeSection, setActiveSection] = useState('Itinerary');
-
+  const [dayData, setDayData] = useState({});
   const randomTime = ['Morning', 'Afternoon', 'Evening'];
   const randomActivity = getRandomValue(['Explore Karimabad and Baltit Fort', 'Hike to Rakaposhi Base Camp', 'Visit Attabad Lake']);
+
+  console.log(dayWiseData);
+
+  useEffect(() => {
+    AsyncStorage.getItem("authToken")
+      .then((token) => {
+        console.log("Token retrieved from AsyncStorage:", token);
+        if (token) {
+          fetchData(token);
+        } else {
+          console.log("Token not found. Redirecting to login...");
+          Alert.alert(
+            "Sign In Required",
+            "Please sign in to view your profile.",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              { text: "Sign In", onPress: () => navigation.navigate("Login") },
+            ],
+            { cancelable: false }
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }, []);
+
+  const fetchData = async (token) => {
+    try {
+      const response = await fetch('http://192.168.0.101:8000/api/routes/Itinerary', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setDayData(data);
+        console.log(data);
+      } else {
+        console.error('Failed to fetch data');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
+    }
+  };
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -20,13 +72,13 @@ const ItineraryDay = ({ dayData }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Day {day}</Text>
+      <Text style={styles.title}>Day {dayWiseData?.hotelBookingDetails[0]?.day}</Text>
       <View style={styles.DayDetails}>
         <View style={styles.destination}>
-          <Text style={styles.subtitle}>{destination}</Text>
+          <Text style={styles.subtitle}>{dayWiseData?.hotelDetails[0]?.area}</Text>
         </View>
         <View style={styles.hotel}>
-          <Text style={styles.subtitle}>{hotel}</Text>
+          <Text style={styles.subtitle}>{dayWiseData?.hotelDetails[0]?.name}</Text>
         </View>
       </View>
       <View style={styles.pagination}>
@@ -65,20 +117,20 @@ const ItineraryDay = ({ dayData }) => {
         )}
         {activeSection === 'Guide' && (
           <View style={styles.GuideContainer}>
-              <Image source={require('../../assets/ellipse.png')}style={styles.GuidePic} />
+              <Image source={{uri: `data:image/jpeg;base64,${dayData?.guideDetails?.picture}`}} style={styles.GuidePic} />
               <View style={styles.GuideDetails}>
-                <Text style={styles.subtitle}>Guide Name</Text>
-                <Text style={styles.GuideText}>Contact Number</Text>
+                <Text style={styles.subtitle}>{dayData?.guideDetails?.name}</Text>
+                <Text style={styles.GuideText}>{dayData?.guideDetails?.contact_number}</Text>
               </View>
           </View>
         )}
         {activeSection === 'Transport' && (
           <View style={styles.GuideContainer}>
-            <Image source={require('../../assets/ellipse.png')}style={styles.GuidePic} />
+            <Image  source={{ uri: `data:image/jpeg;base64,${dayData?.guideDetails?.Picture}` }} style={styles.GuidePic} />
             <View style={styles.GuideDetails}>
-              <Text style={styles.subtitle}>Car Name</Text>
-              <Text style={styles.GuideText}>Driver's Name</Text>
-              <Text style={styles.GuideText}>Driver's Contact Number</Text>
+              <Text style={styles.subtitle}>{dayData?.carRentalDetails?.car_name}</Text>
+              <Text style={styles.GuideText}>{dayData?.carRentalDetails?.driver_name}</Text>
+              <Text style={styles.GuideText}>{dayData?.carRentalDetails?.contact_number}</Text>
             </View>
         </View>
         )}
@@ -171,7 +223,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   GuideDetails:{
-   
+   alignContent: "center",
+  },
+  GuidePic: {
+    height: 200,
+    width: 280,
+    resizeMode: "cover",
+    marginBottom: 20,
+    borderRadius: 20,
   },
 });
 
