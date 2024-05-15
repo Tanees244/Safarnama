@@ -69,6 +69,9 @@ const PaymentGateway = ({ route }) => {
       setReady(false);
     }
   };
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   return (
     <View style={styles.container}>
@@ -79,7 +82,10 @@ const PaymentGateway = ({ route }) => {
         Payment <Text style={styles.titleTextHighlight}>Checkout</Text>
       </Text>
       <View style={styles.paybox}>
-        <Text style={styles.totalText}>Total payment: {PaymentPrice} PKR</Text>
+        <Text style={styles.totalText}>Total Payment</Text>
+        <View style={styles.priceContainer}>
+  <Text style={styles.totalText1}>{formatPrice(PaymentPrice)} PKR</Text>
+</View>
         <StripeProvider publishableKey="pk_test_51N4iDhKsAkXEeSiVqAMxPzEdV665Osiy3pdcg2h3tI4ANiO6JPPW6P3wkSOPc8Z122WPv6Eyx3C48hXY4oj6sWge00ohqxmG8d">
           <TouchableOpacity
             activeOpacity={0.9}
@@ -88,6 +94,7 @@ const PaymentGateway = ({ route }) => {
             onPress={handlePayment}
           >
             <Text style={styles.payButtonText}>Pay Now</Text>
+
           </TouchableOpacity>
         </StripeProvider>
       </View>
@@ -113,6 +120,14 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     elevation: 20,
     zIndex: 1,
+  },
+  priceContainer: {
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
+    marginBottom:20,
+    alignItems: "center",
   },
   headerText: {
     color: "white",
@@ -141,7 +156,13 @@ const styles = StyleSheet.create({
   totalText: {
     color: "white",
     fontSize: 20,
-    fontFamily: "Poppins-MediumItalic",
+    fontFamily: "Poppins-Bold",
+    marginBottom: 20,
+  },
+  totalText1: {
+    color: "black",
+    fontSize: 20,
+    fontFamily: "Poppins-Bold",
     marginBottom: 20,
   },
   payButton: {
