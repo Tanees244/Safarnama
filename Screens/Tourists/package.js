@@ -4,13 +4,14 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Dimensions,
     Image,
     ScrollView,
     ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 const packageData = [
     {
@@ -33,29 +34,73 @@ const packageData = [
 
 const Packages = () => {
     const [apiPackageData, setApiPackageData] = useState([]);
+    const [filteredPackages, setFilteredPackages] = useState([]);
     const navigation = useNavigation();
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("http://192.168.100.12:8000/api/routes/packages/");
-                // const data = await response.json();
-                setApiPackageData(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
         fetchData();
     }, []);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get("http://192.168.100.12:8000/api/routes/packages/");
+            setApiPackageData(response.data);
+            setFilteredPackages(response.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const filterPackages = (preference) => {
+        const filtered = apiPackageData.filter(packageItem => packageItem.preferences === preference);
+        setFilteredPackages(filtered);
+    };
 
     const handleDiscoverPress = () => {
         navigation.navigate("Discover");
     };
 
-    const handleBookNowPress = (packageItem) => {
-        console.log("Book Now Pressed for package:", packageItem);
+    const handleBookNowPress = async (packageItem) => {
+        try {
+            const token = await AsyncStorage.getItem("authToken");
+            console.log(token);
+    
+            if (!token) {
+                console.log("Token not found. Redirecting to login...");
+                Alert.alert(
+                    "Sign In Required",
+                    "Please sign in to book the package.",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                        },
+                        { text: "Sign In", onPress: () => navigation.navigate("Login") },
+                    ],
+                    { cancelable: false }
+                );
+                return; // Exit the function if token is not found
+            }
+    
+            // Make the API call to book the package using the package ID
+            const response = await axios.get(
+                `http://192.168.100.12:8000/api/routes/booked-packages?packageId=${packageItem}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+    
+            console.log("Package booked successfully:", response.data);
+            // Handle success response as needed
+        } catch (error) {
+            console.error("Error booking package:", error);
+            // Handle error or set an appropriate state
+        }
     };
+    
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -82,10 +127,11 @@ const Packages = () => {
         }
     };
 
+    // Sort the filtered packages based on rating in descending order
+    const topRatedPackages = filteredPackages.slice().sort((a, b) => b.rating - a.rating);
 
     return (
-        <View style={styles.Container}>
-
+        <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Safarnama</Text>
             </View>
@@ -96,14 +142,21 @@ const Packages = () => {
             >
                 <Image source={require("../../assets/Home.png")} style={styles.icon} />
             </TouchableOpacity>
-            <ScrollView contentContainerStyle={styles.container}>
-                {apiPackageData.map((packageItem, index) => {
-                    // Select a random image from packageData every 4th item
-                    const randomIndex = index % 1 === 0 ? Math.floor(Math.random() * packageData.length) : null;
-                    const randomPackageData = randomIndex !== null ? packageData[randomIndex] : null;
-
-
-
+            <View style={styles.preferenceBar}>
+                <TouchableOpacity onPress={() => filterPackages('Solo')}>
+                    <Text style={[styles.preferenceText, { color: 'white' }]}>Solo</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => filterPackages('Family')}>
+                    <Text style={[styles.preferenceText, { color: 'white' }]}>Family</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => filterPackages('Friends')}>
+                    <Text style={[styles.preferenceText, { color: 'white' }]}>Friends</Text>
+                </TouchableOpacity>
+            </View>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                {topRatedPackages.map((packageItem) => {
+                    const randomIndex = Math.floor(Math.random() * packageData.length);
+                    const randomPackageData = packageData[randomIndex];
                     return (
                         <ImageBackground
                             key={packageItem.package_id}
@@ -138,64 +191,38 @@ const Packages = () => {
                                         </Text>
                                     </View>
                                 </View>
-                                <View style={{
-                                    alignItems: "center",
-                                    borderColor: "white",
-                                    borderWidth: 3,
-                                    borderRadius: 25,
-                                    padding: 10,
-                                    width: 220,
-                                    marginBottom:10,
-                                }}>
+                                <View style={styles.packageInfo}>
                                     <Text style={styles.packagePrice}>
-                                       {packageItem.preferences}
+                                        {packageItem.preferences}
                                     </Text>
-                                </View>
-                                <View style={{
-                                    alignItems: "center",
-                                    borderColor: "white",
-                                    borderWidth: 3,
-                                    borderRadius: 25,
-                                    padding: 10,
-                                    width: 220,
-                                }}>
                                     <Text style={styles.packagePrice}>
                                         Price: {parseFloat(packageItem.price)} pkr
                                     </Text>
                                 </View>
                                 <TouchableOpacity
                                     style={styles.bookNowButton}
-                                    onPress={() => handleBookNowPress(packageItem)}
+                                    onPress={() => handleBookNowPress(packageItem.package_id)}
                                 >
                                     <Text style={styles.bookNowButtonText}>Book Now</Text>
                                 </TouchableOpacity>
                             </View>
                         </ImageBackground>
                     );
-
                 })}
             </ScrollView>
-
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
-    },
-    Container: {
         flex: 1,
         backgroundColor: 'black',
-    },
-    backgroundImage: {
-        flex: 1,
-        resizeMode: "cover",
     },
     header: {
         alignItems: "center",
         justifyContent: "center",
-        height: 120,
+        height: 140,
         backgroundColor: "#032844",
     },
     headerText: {
@@ -217,6 +244,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         elevation: 5,
         zIndex: 2,
+    },
+    scrollView: {
+        flexGrow: 1,
     },
     textContainer: {
         flexDirection: "row",
@@ -258,9 +288,9 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     packageItem: {
-        backgroundColor: "rgba(38, 71, 105, 0.5)", // Adjust the background color and opacity as needed
+        backgroundColor: "rgba(38, 71, 105, 0.5)",
         borderRadius: 20,
-        padding: 10,
+        padding: 15,
         alignItems: "center",
     },
     packageDestination: {
@@ -295,6 +325,16 @@ const styles = StyleSheet.create({
         color: "white",
         textAlign: "center",
         fontSize: 15,
+        fontFamily: "Poppins-Bold",
+    },
+    preferenceBar: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        marginVertical: 10,
+    },
+    preferenceText: {
+        fontSize: 18,
         fontFamily: "Poppins-Bold",
     },
 });

@@ -26,6 +26,7 @@ const PaymentFormModal = () => {
   const [Data, setData] = useState([]);
   const [packagePrice, setPackagePrice] = useState(0);
   const navigation = useNavigation();
+  const [PackageBooking, setPackageBooking] = useState([]);
 
   const handleProceed = () => {
     // Navigate to PaymentGateway screen and pass data as props
@@ -52,7 +53,7 @@ const PaymentFormModal = () => {
 
         setData(hotelBookingResponse.data.hotelBookingResults);
 
-        console.log(hotelBookingResponse.data);
+        // console.log(hotelBookingResponse.data);
         // Fetch package price
         const packagePriceResponse = await axios.get(
           "http://192.168.100.12:8000/api/VendorsRoutes/package-price",
@@ -64,7 +65,19 @@ const PaymentFormModal = () => {
         );
 
         setPackagePrice(packagePriceResponse.data);
-        console.log(packagePriceResponse.data);
+
+        const PackageBookingResponse = await axios.get(
+          "http://192.168.100.12:8000/api/PaymentRoutes/user-packages",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setPackageBooking(PackageBookingResponse.data);
+        console.log(PackageBooking.data);
+
       } catch (error) {
         console.error("Error:", error);
         Alert.alert("Error", "Failed to fetch data. Please try again later.");
@@ -93,9 +106,13 @@ const PaymentFormModal = () => {
     if (packagePrice && packagePrice.p !== null) {
       totalPayment += parseFloat(packagePrice.totalPrice);
     }
+    if (PackageBooking && PackageBooking.totalPrice2 !== null) {
+      totalPayment += parseFloat(PackageBooking.totalPrice2);
+    }
     totalPayment += getTotalPrice();
     totalPayment += 7000;
-    console.log(totalPayment);
+    // totalPayment += 
+    // console.log(totalPayment);
     return totalPayment;
   };
 
@@ -191,6 +208,12 @@ const PaymentFormModal = () => {
             <Text style={{ fontFamily: "Poppins-Bold" }}>Hotel Prices</Text>
             <Text style={{ fontFamily: "Poppins-Light" }}>
               {getTotalPrice()} PKR
+            </Text>
+          </View>
+          <View style={[styles.Buttons2, { width: buttonWidth }]}>
+            <Text style={{ fontFamily: "Poppins-Bold" }}>Booked Packages Price</Text>
+            <Text style={{ fontFamily: "Poppins-Light" }}>
+              {PackageBooking.totalPrice2} PKR
             </Text>
           </View>
 

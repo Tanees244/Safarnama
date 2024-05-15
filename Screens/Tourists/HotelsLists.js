@@ -12,6 +12,7 @@ import {
   ScrollView,
   Dimensions,
   Animated,
+  TextInput
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -110,6 +111,8 @@ const HotelsLists = () => {
   };
 
   const [hotels, setHotels] = useState([]);
+  const [searchText, setSearchText] = useState(""); 
+  const [filteredPlaces, setFilteredPlaces] = useState([]); 
 
   useEffect(() => {
     fetchData();
@@ -125,6 +128,16 @@ const HotelsLists = () => {
       console.error(error.response.status);
     }
   }
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    const filtered = hotels.filter(
+      (place) =>
+        place.name.toLowerCase().includes(text.toLowerCase()) ||
+        place.city.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredPlaces(filtered);
+  };
 
   return (
     <View style={styles.Container}>
@@ -206,9 +219,15 @@ const HotelsLists = () => {
           )}
           keyExtractor={(item) => item.id}
         />
+                <TextInput
+          style={styles.searchBar}
+          placeholder="Search hotels"
+          onChangeText={handleSearch}
+          value={searchText}
+        />
         <Text style={styles.text}>Hotels</Text>
         <FlatList
-          data={hotels}
+          data={searchText.length > 0 ? filteredPlaces : hotels}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
@@ -239,6 +258,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#FFFFFF",
     fontFamily: "Poppins-Bold",
+  },
+  searchBar: {
+    height: 60,
+    borderColor: "black",
+    backgroundColor: "white",
+    borderWidth: 2,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    fontFamily: "Poppins-Regular",
+    marginBottom:25,
+    width:300,
+    alignSelf:'center',
   },
   text: {
     width: "75%",

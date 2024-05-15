@@ -238,7 +238,7 @@ const PlaceLists = () => {
         <Text style={styles.text}>Places</Text>
         <TextInput
           style={styles.searchBar}
-          placeholder="Search places and hotels"
+          placeholder="Search places"
           onChangeText={handleSearch}
           value={searchText}
         />

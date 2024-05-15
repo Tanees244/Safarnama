@@ -20,16 +20,18 @@ const Option = () => {
   const [isModalVisible1, setModalVisible1] = useState(false);
   const [transportData, setTransportData] = useState([]);
   const [guideData, setGuideData] = useState([]);
-  const [package_id, setPackageId] = useState(null);
-
   const navigation = useNavigation();
   const route = useRoute();
+
+  const [packageId, setPackageId] = useState(route.params.package_id || null);
 
   useEffect(() => {
     if (route.params && route.params.package_id) {
       setPackageId(route.params.package_id);
     }
   }, [route.params]);
+
+  console.log("package: ", packageId);
 
   useEffect(() => {
     fetchTransportData();
@@ -73,17 +75,19 @@ const Option = () => {
   const navigateToPaymentGateway = async () => {
     try {
       const requestData = {
-        package_id: package_id, // Provide the selected package detail ID
+        packageId: packageId, // Provide the selected package detail ID
       };
   
       if (selectedGuide) {
-        requestData.guideId = selectedGuide.guide_id; // Provide the selected guide ID
+        requestData.guideId = selectedGuide.guide_id;
+        requestData.packageId = packageId; // Provide the selected guide ID
       } else {
         requestData.guideId = null;
       }
   
       if (selectedTransport) {
-        requestData.carRentalId = selectedTransport.car_rental_id; // Provide the selected car rental ID
+        requestData.carRentalId = selectedTransport.car_rental_id;
+        requestData.packageId = packageId; // Provide the selected car rental ID
       } else {
         requestData.carRentalId = null;
       }
@@ -92,7 +96,7 @@ const Option = () => {
         "http://192.168.100.12:8000/api/routes/update-package-details",
         requestData
       );
-      // console.log(requestData); // Log success message
+      console.log(requestData); // Log success message
       navigation.navigate("PaymentFormModal");
     } catch (error) {
       console.error("Error updating package details:", error);

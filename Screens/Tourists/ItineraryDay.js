@@ -100,12 +100,12 @@ const ItineraryDay = ({ dayWiseData }) => {
             <View style={styles.DayItem}>
               <Text style={styles.detailTime}>{randomTime[0]}</Text>
               <Text style={styles.detailActivity}>• {randomActivity}</Text>
-              <Text style={styles.detailActivity}>• {randomActivity}</Text>
-              <Text style={styles.detailActivity}>• {randomActivity}</Text>
+              {/* <Text style={styles.detailActivity}>• {randomActivity}</Text>
+              <Text style={styles.detailActivity}>• {randomActivity}</Text> */}
             </View>
             <View style={styles.DayItem}>
               <Text style={styles.detailTime}>{randomTime[1]}</Text>
-              <Text style={styles.detailActivity}>• {randomActivity}</Text>
+              {/* <Text style={styles.detailActivity}>• {randomActivity}</Text> */}
               <Text style={styles.detailActivity}>• {randomActivity}</Text>
             </View>
             <View style={styles.DayItem}>
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   GuidePic: {
     height: 200,
     width: 280,
-    resizeMode: "cover",
+    resizeMode: "contain",
     marginBottom: 20,
     borderRadius: 20,
   },

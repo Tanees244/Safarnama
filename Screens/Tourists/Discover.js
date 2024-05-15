@@ -17,6 +17,27 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+
+
+const packageData1 = [
+  {
+    id: "7",
+    image: require("../../assets/Naran1.png"),
+  },
+  {
+    id: "8",
+    image: require("../../assets/Naran2.png"),
+  },
+  {
+    id: "9",
+    image: require("../../assets/Naran3.png"),
+  },
+  {
+    id: "10",
+    image: require("../../assets/Naran4.png"),
+  },
+];
+
 const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -75,6 +96,8 @@ const VerticalCard = ({ item }) => {
   const navigatetopackages = () => {
     navigation.navigate("Packages");
   };
+  const randomIndex = Math.floor(Math.random() * packageData1.length);
+  const randomImage = packageData1[randomIndex].image;
 
   return (
     <View
@@ -83,7 +106,9 @@ const VerticalCard = ({ item }) => {
         { width: containerWidth, height: containerHeight },
       ]}
     >
-      <ImageBackground source={item.image} style={styles.verticalImage}>
+
+    
+      <ImageBackground source={randomImage} style={styles.verticalImage}>
         <View style={styles.blurContainer}>
           <View style={styles.cardContent}>
             <Text style={styles.packageDetail}>
@@ -396,18 +421,20 @@ const Discover = () => {
 
         <Text style={styles.text}>Popular Categories</Text>
         <View style={[styles.buttonContainer, { width: containerWidth }]}>
-          <TouchableOpacity
+
+        <TouchableOpacity
             style={[styles.buttons, { width: buttonWidth }]}
-            onPress={navigateToFlight}
+            onPress={navigateToRatings}
           >
             <View style={styles.buttonContent}>
               <Image
-                source={require("../../assets/plane.png")}
+                source={require("../../assets/placess.png")}
                 style={styles.icon}
               />
-              <Text style={styles.buttonText}>Flights</Text>
+              <Text style={styles.buttonText}>Rating</Text>
             </View>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.buttons, { width: buttonWidth }]}
             onPress={navigateToHotelsInfo}
@@ -458,19 +485,6 @@ const Discover = () => {
             <Text style={styles.PackageText}>Plan Your Trip With AI </Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-            style={[styles.buttons, { width: buttonWidth }]}
-            onPress={navigateToRatings}
-          >
-            <View style={styles.buttonContent}>
-              <Image
-                source={require("../../assets/placess.png")}
-                style={styles.icon}
-              />
-              <Text style={styles.buttonText}>Rating</Text>
-            </View>
-          </TouchableOpacity>
 
         <Text style={styles.text}>Packages</Text>
         <FlatList
