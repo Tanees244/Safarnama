@@ -40,7 +40,6 @@ const Login = () => {
     try {
       const response = await fetch(
         "http://192.168.100.12:8000/api/authRoutes/login",
-        "http://192.168.100:18:8000/api/authRoutes/login",
         {
           method: "POST",
           headers: {
