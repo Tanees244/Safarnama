@@ -30,7 +30,7 @@ const TouristRegister = () => {
       );
 
       console.log(response.data);
-      navigation.navigate("Login");
+      navigation.navigate("TouristPersonalDetail", { userId: response.data.userId });
     } catch (error) {
       console.error("Error during signup:", error);
       alert("Network Error: Unable to connect to the server.");

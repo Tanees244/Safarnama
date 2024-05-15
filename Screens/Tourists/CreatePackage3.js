@@ -85,6 +85,7 @@ const CreatePackage3 = () => {
   };
 
   const handleSubmit = () => {
+    console.log(package_id);
     navigation.navigate("Option", package_id);
   };
 

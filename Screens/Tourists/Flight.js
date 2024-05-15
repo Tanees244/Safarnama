@@ -65,7 +65,7 @@ const Flight = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.0.104:8000/api/routes/railway-packages/"
+          "http://192.168.100:18:8000/api/routes/railway-packages/"
         );
         const response2 = await axios.get(
           "http://192.168.0.104:8000/api/routes/airline-packages/"

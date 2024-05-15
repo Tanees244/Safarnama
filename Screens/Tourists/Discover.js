@@ -17,6 +17,25 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+const packageImages = [
+  {
+      id: "7",
+      image: require("../../assets/Naran1.png"),
+  },
+  {
+      id: "8",
+      image: require("../../assets/Naran2.png"),
+  },
+  {
+      id: "9",
+      image: require("../../assets/Naran3.png"),
+  },
+  {
+      id: "10",
+      image: require("../../assets/Naran4.png"),
+  },
+];
+
 const HorizontalCard = ({ item, onPress }) => {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -66,11 +85,22 @@ const HorizontalCard = ({ item, onPress }) => {
 };
 
 const VerticalCard = ({ item }) => {
+
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
   const containerHeight = screenHeight * 0.5;
   const containerWidth = screenWidth * 0.8;
   const navigation = useNavigation();
+  const [randomImage, setRandomImage] = useState(null);
+
+  const selectRandomImage = () => {
+    const index = Math.floor(Math.random() * packageImages.length);
+    setRandomImage(packageImages[index].image);
+
+    useEffect(() => {
+      selectRandomImage(); // Automatically select a random image on component mount or when packageImages changes
+    }, [packageImages]);
+  };
 
   const navigatetopackages = () => {
     navigation.navigate("Packages");
@@ -83,7 +113,7 @@ const VerticalCard = ({ item }) => {
         { width: containerWidth, height: containerHeight },
       ]}
     >
-      <ImageBackground source={item.image} style={styles.verticalImage}>
+      <ImageBackground source={randomImage} style={styles.verticalImage}>
         <View style={styles.blurContainer}>
           <View style={styles.cardContent}>
             <Text style={styles.packageDetail}>
@@ -101,7 +131,7 @@ const VerticalCard = ({ item }) => {
               style={styles.arrowbutton}
               onPress={navigatetopackages}
             >
-              <Text style = {styles.buttonText}>View More</Text>
+              <Text style={styles.buttonText}>View More</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -226,7 +256,7 @@ const Discover = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/packages/"
+        "http://192.168.100.18:8000/api/routes/packages/"
       );
       setPackageData(response.data);
     } catch (error) {
@@ -237,7 +267,7 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/top-rated-places"
+        "http://192.168.100.18:8000/api/routes/top-rated-places"
         
       );
       setPlaceData(response.data);
@@ -249,7 +279,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/hotel-details"
+        "http://192.168.100.18:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {
