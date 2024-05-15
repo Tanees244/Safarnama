@@ -74,6 +74,7 @@ import LoadingScreen from './Screens/Tourists/LoadingScreen.js';
 import Details from './Screens/Tourists/Details.js';
 import PaymentFormModal from './Screens/Tourists/PaymentFormModal.js';
 import Rating from './Screens/Tourists/Rating.js';
+import Paymentpackage from './Screens/Tourists/Paymentpackage.js';
 
 import { useFonts } from 'expo-font';
 
@@ -182,6 +183,8 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='LoadingScreen' component={LoadingScreen} />
         <Stack.Screen options={{ headerShown: false }} name='Details' component={Details} />
         <Stack.Screen options={{ headerShown: false }} name='Rating' component={Rating} />
+        <Stack.Screen options={{ headerShown: false }} name='Paymentpackage' component={Paymentpackage} />
+        
         
 
       </Stack.Navigator>

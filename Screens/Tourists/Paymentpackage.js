@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-const PaymentFormModal = () => {
+const Paymentpackage = () => {
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.95;
   const buttonWidth = containerWidth * 0.95;
@@ -42,17 +42,15 @@ const PaymentFormModal = () => {
 
         // Fetch hotel booking price
         const hotelBookingResponse = await axios.get(
-          "http://192.168.100.12:8000/api/VendorsRoutes/hotel-booking-price",
+          "http://192.168.100.12:8000/api/VendorsRoutes/hotel-package-price",
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+        setData(hotelBookingResponse.data);
 
-        setData(hotelBookingResponse.data.hotelBookingResults);
-
-        console.log(hotelBookingResponse.data);
         // Fetch package price
         const packagePriceResponse = await axios.get(
           "http://192.168.100.12:8000/api/VendorsRoutes/package-price",
@@ -376,4 +374,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentFormModal;
+export default Paymentpackage;

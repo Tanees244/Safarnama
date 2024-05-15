@@ -226,7 +226,7 @@ const Discover = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/packages/"
+        "http://192.168.100.12:8000/api/routes/packages/"
       );
       setPackageData(response.data);
     } catch (error) {
@@ -249,7 +249,7 @@ const Discover = () => {
   const fetchHotelData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/hotel-details"
+        "http://192.168.100.12:8000/api/routes/hotel-details"
       );
       setHotelData(response.data);
     } catch (error) {

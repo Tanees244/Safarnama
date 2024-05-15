@@ -19,6 +19,7 @@ import { StripeProvider, usePaymentSheet } from '@stripe/stripe-react-native';
 const PaymentGateway = ({ route }) => {
   const navigation = useNavigation();
   const { email, totalPrice } = route.params;
+  const [PaymentPrice, setPaymentPrice] = useState([totalPrice]);
   const screenWidth = Dimensions.get("window").width;
   const containerWidth = screenWidth * 0.95;
   const buttonWidth = containerWidth * 0.95;
@@ -63,7 +64,7 @@ useEffect(() => {
     };
 
     const fetchPaymentSheetParams = async () => {
-      const response = await fetch(`http://192.168.100.18:8000/api/PaymentRoutes/payment-intent`, {
+      const response = await fetch(`http://192.168.100.12:8000/api/PaymentRoutes/payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +91,13 @@ useEffect(() => {
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
+      setPaymentPrice(0);
+
       Alert.alert('Success', 'Your order is confirmed!');
+      setTimeout(() => {
+        navigation.navigate('Discover');
+      }, 3000);
+      
       setReady(false);
     }
   };
@@ -127,7 +134,7 @@ useEffect(() => {
                 color: "white",
               }}
             >
-             {totalPrice} PKR
+             {PaymentPrice} PKR
             </Text>
           </View>
           <StripeProvider publishableKey="pk_test_51N4iDhKsAkXEeSiVqAMxPzEdV665Osiy3pdcg2h3tI4ANiO6JPPW6P3wkSOPc8Z122WPv6Eyx3C48hXY4oj6sWge00ohqxmG8d">

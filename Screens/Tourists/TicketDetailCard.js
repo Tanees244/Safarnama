@@ -32,7 +32,7 @@ const TicketDetailCard = () => {
     const fetchTicketDetails = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.100.18:8000/api/routes/airline-packages/${ticketId}`
+          `http://192.168.100.12:8000/api/routes/airline-packages/${ticketId}`
         );
         setTicketDetails(response.data);
         setLoading(false);

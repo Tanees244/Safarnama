@@ -45,7 +45,7 @@ const Itinerary = () => {
 
   const fetchData = async (token) => {
     try {
-      const response = await fetch('http://192.168.0.101:8000/api/routes/Itinerary', {
+      const response = await fetch('http://192.168.100.12:8000/api/routes/Itinerary', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

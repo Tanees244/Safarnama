@@ -73,9 +73,10 @@ const HorizontalCard = ({ item, onPress }) => {
         </View>
       </View>
       <View style={styles.CardbuttonContainer}>
-        <TouchableOpacity style={styles.Cardbutton} onPress={toggleModal(item.package_id)}>
-          <Text style={styles.CardbuttonText}>Rate Package</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.Cardbutton} onPress={() => toggleModal(item.package_id)}>
+  <Text style={styles.CardbuttonText}>Rate Package</Text>
+</TouchableOpacity>
+
       </View>
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
@@ -155,7 +156,7 @@ const Rating = () => {
       const token = await AsyncStorage.getItem("authToken");
       console.log(token);
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/tourist-unrated-packages",
+        "http://192.168.100.12:8000/api/routes/tourist-unrated-packages",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -174,7 +175,7 @@ const Rating = () => {
       const token = await AsyncStorage.getItem("authToken");
       console.log(token);
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/tourist-rated-packages",
+        "http://192.168.100.12:8000/api/routes/tourist-rated-packages",
         {
           headers: {
             Authorization: `Bearer ${token}`,

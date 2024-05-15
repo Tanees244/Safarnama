@@ -163,8 +163,6 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
       adults: adults,
       children: children,
       rooms: rooms,
-      checkInDate: checkInDate.toLocaleDateString(),
-      checkOutDate: checkOutDate.toLocaleDateString(),
       hotel_details_id: hotel_details_id,
       package_id : package_id,
       day : day,
@@ -196,7 +194,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
         const token = await AsyncStorage.getItem("authToken");
         axios
           .post(
-            "http://192.168.100.18:8000/api/routes/hotel-booking",
+            "http://192.168.100.12:8000/api/routes/hotel-booking",
             SelectedRoomDetails,
             {
               headers: {
@@ -356,40 +354,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>
-                      {checkInDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckInPicker && (
-                    <DateTimePicker
-                      value={checkInDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckInChange}
-                    />
-                  )}
-                </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>
-                      {checkOutDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckOutPicker && (
-                    <DateTimePicker
-                      value={checkOutDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckOutChange}
-                    />
-                  )}
-                </View>
+
               </View>
               <TouchableOpacity
                 style={styles.modalButton}
@@ -447,41 +412,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>
-                      {checkInDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckInPicker && (
-                    <DateTimePicker
-                      value={checkInDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckInChange}
-                    />
-                  )}
                 </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>
-                      {checkOutDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckOutPicker && (
-                    <DateTimePicker
-                      value={checkOutDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckOutChange}
-                    />
-                  )}
-                </View>
-              </View>
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {
@@ -534,41 +465,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>
-                      {checkInDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckInPicker && (
-                    <DateTimePicker
-                      value={checkInDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckInChange}
-                    />
-                  )}
-                </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>
-                      {checkOutDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckOutPicker && (
-                    <DateTimePicker
-                      value={checkOutDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckOutChange}
-                    />
-                  )}
-                </View>
-              </View>
+               </View>
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {
@@ -621,41 +518,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
                     <Text style={styles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-in Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckInPicker}>
-                    <Text style={styles.dateText}>
-                      {checkInDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckInPicker && (
-                    <DateTimePicker
-                      value={checkInDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckInChange}
-                    />
-                  )}
                 </View>
-                <View style={styles.fieldContainer}>
-                  <Text style={styles.fieldLabel}>Check-out Date:</Text>
-                  <TouchableOpacity onPress={toggleCheckOutPicker}>
-                    <Text style={styles.dateText}>
-                      {checkOutDate.toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                  {showCheckOutPicker && (
-                    <DateTimePicker
-                      value={checkOutDate}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={handleCheckOutChange}
-                    />
-                  )}
-                </View>
-              </View>
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {

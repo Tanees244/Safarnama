@@ -123,7 +123,7 @@ const PlaceLists = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/places"
+        "http://192.168.100.12:8000/api/routes/places"
       );
       setPlaces(response.data);
       setFilteredPlaces(response.data);
@@ -136,7 +136,7 @@ const PlaceLists = () => {
   const fetchTopData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/top-rated-places"
+        "http://192.168.100.12:8000/api/routes/top-rated-places"
       );
       setTopPlaces(response.data);
     } catch (error) {

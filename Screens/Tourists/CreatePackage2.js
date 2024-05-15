@@ -49,7 +49,7 @@ const CreatePackage2 = () => {
         if (route.params && route.params.transportType) {
           const { transportType } = route.params;
           console.log(transportType);
-          const baseEndpoint = "http://192.168.100.18:8000/api/routes";
+          const baseEndpoint = "http://192.168.100.12:8000/api/routes";
 
           switch (transportType) {
             case "airline":
@@ -104,7 +104,11 @@ const CreatePackage2 = () => {
       if (transportType === "airline") {
         try {
           const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-airline-package-details/${ticketId}`, { package_id }
+            `http://192.168.100.12:8000/api/routes/add-airline-package-details/${ticketId}`,
+             { 
+              package_id: package_id,
+              ticket_price: ticketDetails.ticket_price
+            }
           );
           // alert("Ticket data inserted successfully for airline!");
           console.log(response.data);
@@ -116,7 +120,11 @@ const CreatePackage2 = () => {
       } else if (transportType === "bus") {
         try {
           const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-bus-package-details/${ticketId}`, { package_id }
+            `http://192.168.100.12:8000/api/routes/add-bus-package-details/${ticketId}`, 
+            { 
+              package_id: package_id,
+              ticket_price: ticketDetails.ticket_price
+            }
           );
           // alert("Ticket data inserted successfully for bus!");
           navigation.navigate("CreatePackage3", { package_id });
@@ -127,7 +135,11 @@ const CreatePackage2 = () => {
       } else if (transportType === "railway") {
         try {
           const response = await axios.post(
-            `http://192.168.100.18:8000/api/routes/add-railway-package-details/${ticketId}`, { package_id }
+            `http://192.168.100.12:8000/api/routes/add-railway-package-details/${ticketId}`, 
+            { 
+              package_id: package_id,
+              ticket_price: ticketDetails.ticket_price
+            }
           );
           // alert("Ticket data inserted successfully for railway!");
           navigation.navigate("CreatePackage3", { package_id });

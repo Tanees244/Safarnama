@@ -27,7 +27,6 @@ const TouristPersonalDetail = () => {
       [field]: value,
     }));
   };
-
   const handleUploadDocuments = () => {
     // Your previous validation here if needed
 
