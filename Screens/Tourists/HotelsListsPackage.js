@@ -283,12 +283,14 @@ const styles = StyleSheet.create({
     top: -100,
     zIndex: -1,
   },
+
   title: {
     paddingLeft: 18,
     fontSize: 20,
     color: "black",
     fontFamily: "Poppins-SemiBold",
   },
+  
   subdescription: {
     fontSize: 14,
     paddingLeft: 18,

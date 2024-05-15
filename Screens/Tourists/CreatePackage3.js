@@ -59,7 +59,7 @@ const CreatePackage3 = () => {
   const fetchDates = async (packageId) => {
     try {
       const response = await fetch(
-        `http://192.168.100.18:8000/api/routes/packages/${packageId}`
+        `http://192.168.100.12:8000/api/routes/packages/${packageId}`
       );
 
       if (!response.ok) {
@@ -135,13 +135,7 @@ const CreatePackage3 = () => {
                 >
                   <Text style={styles.buttonText}>Book Hotel</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  style={styles.buttons}
-                  onPress={navigateToPlacesLists}
-                >
-                  <Text style={styles.buttonText}>Places</Text>
-                </TouchableOpacity>
+
               </>
             )}
           </View>

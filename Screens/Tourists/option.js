@@ -39,10 +39,10 @@ const Option = () => {
   const fetchTransportData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/car-rental-service/"
+        "http://192.168.100.12:8000/api/routes/car-rental-service/"
       );
       setTransportData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching transport data:", error);
     }
@@ -51,10 +51,10 @@ const Option = () => {
   const fetchGuideData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.18:8000/api/routes/guide-service"
+        "http://192.168.100.12:8000/api/routes/guide-service"
       );
       setGuideData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching guide data:", error);
     }
@@ -89,11 +89,11 @@ const Option = () => {
       }
   
       const response = await axios.post(
-        "http://192.168.100.18:8000/api/routes/update-package-details",
+        "http://192.168.100.12:8000/api/routes/update-package-details",
         requestData
       );
-      console.log(requestData); // Log success message
-      navigation.navigate("PaymentGateway");
+      // console.log(requestData); // Log success message
+      navigation.navigate("PaymentFormModal");
     } catch (error) {
       console.error("Error updating package details:", error);
     }
