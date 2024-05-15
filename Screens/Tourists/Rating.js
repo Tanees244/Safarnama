@@ -17,28 +17,45 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Modal from "react-native-modal";
 
-const HorizontalCard = ({ item, onPress }) => {
+const HorizontalCard = ({ item, onPress, isUnrated }) => {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  const containerHeight = screenHeight * 0.8;
+  const containerHeight = screenHeight * 0.35;
   const containerWidth = screenWidth * 0.85;
   const [modalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState("");
+  const [packageId, setPackageId] = useState("");
 
-  const toggleModal = () => {
+  const toggleModal = (id) => {
+    setPackageId(id);
     setModalVisible(!modalVisible);
   };
 
-  const handleSubmitRating = () => {
+  const handleSubmitRating = async () => {
     if (rating >= 1 && rating <= 5) {
-      console.log("Package ID:", packageId);
-      console.log("Rating:", rating);
-      // Implement logic to submit rating to the database
-      setModalVisible(false);
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        const response = await axios.post(
+          "http://192.168.100.18:8000/api/routes/update-rating",
+          { package_id: packageId, rating },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Rating updated successfully:", response.data);
+        setModalVisible(false);
+        // You can update the local state or fetch data again if needed
+      } catch (error) {
+        console.error("Error updating rating:", error);
+        // Handle error or show an error message to the user
+      }
     } else {
       alert("Please enter a valid rating between 1 and 5.");
     }
   };
+  
 
   return (
     <View
@@ -58,12 +75,9 @@ const HorizontalCard = ({ item, onPress }) => {
         ]}
       >
         <View style={styles.contentContainer}>
-          <Text style={styles.title}>Destination: {item.package_id}</Text>
+          <Text style={styles.title}>{item.destination}</Text>
           <Text style={styles.subdescription}>
             Number Of Person: {item.no_of_person}
-          </Text>
-          <Text style={styles.subdescription}>
-            Tourist id: {item.tourist_id}
           </Text>
           <View style={styles.descriptionContainer}>
             <Text style={styles.description}>
@@ -72,12 +86,17 @@ const HorizontalCard = ({ item, onPress }) => {
           </View>
         </View>
       </View>
-      <View style={styles.CardbuttonContainer}>
-      <TouchableOpacity style={styles.Cardbutton} onPress={() => toggleModal(item.package_id)}>
-  <Text style={styles.CardbuttonText}>Rate Package</Text>
-</TouchableOpacity>
+      {isUnrated && ( 
+        <View style={styles.CardbuttonContainer}>
+          <TouchableOpacity
+            style={styles.Cardbutton}
+            onPress={() => toggleModal(item.package_id)}
+          >
+            <Text style={styles.CardbuttonText}>Rate Package</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
-      </View>
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Rate Package</Text>
@@ -95,7 +114,7 @@ const HorizontalCard = ({ item, onPress }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.closeButton}
-            onPress={toggleModal}
+            onPress={() => setModalVisible(false)}
           >
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
@@ -109,8 +128,6 @@ const Rating = () => {
   const navigation = useNavigation();
 
   const screenWidth = Dimensions.get("window").width;
-  const containerWidth = screenWidth * 0.9;
-
   const PackageWidth1 = screenWidth * 0.72;
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -156,7 +173,7 @@ const Rating = () => {
       const token = await AsyncStorage.getItem("authToken");
       console.log(token);
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/tourist-unrated-packages",
+        "http://192.168.100.18:8000/api/routes/tourist-unrated-packages",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -166,7 +183,6 @@ const Rating = () => {
       setPlaces(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Handle error or set an appropriate state
     }
   };
 
@@ -175,7 +191,7 @@ const Rating = () => {
       const token = await AsyncStorage.getItem("authToken");
       console.log(token);
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/tourist-rated-packages",
+        "http://192.168.100.18:8000/api/routes/tourist-rated-packages",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -258,7 +274,7 @@ const Rating = () => {
         <Text style={styles.text}>
           Un
           <Text style={[styles.text, { color: "#2D78A2" }]}>
-            Rated Pakcages
+            Rated Packages
           </Text>
         </Text>
         <FlatList
@@ -266,7 +282,7 @@ const Rating = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <HorizontalCard item={item} onPress={navigateToPlacesInfo} />
+            <HorizontalCard item={item} onPress={navigateToPlacesInfo} isUnrated={true}/>
           )}
           keyExtractor={(item) => item.id}
         />
@@ -386,7 +402,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   contentContainer: {
-    top: 130,
+    top: 150,
   },
   content: {
     padding: 10,

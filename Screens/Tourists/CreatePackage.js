@@ -27,10 +27,12 @@ const CreatePackage = () => {
   const cities = [
     "Balakot",
     "Naran",
+    "Murree",
     "Kaghan",
-    "Gilgit Baltistan",
-    "Kashmir",
+    "Gilgit",
+    "Azad Kashmir",
     "Muzaffarabad",
+    "Hunza",
   ];
   const preference = ["Solo", "Partner", "Friends", "Family"];
 
@@ -74,7 +76,7 @@ const CreatePackage = () => {
         numberOfIndividuals,
       };
 
-      const response = await fetch("http://192.168.100.12:8000/api/routes/create-package/", {
+      const response = await fetch("http://192.168.100.18:8000/api/routes/create-package/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -313,7 +315,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: "center",
     justifyContent: "center",
-    height: 120,
+    height: 140,
     backgroundColor: "#032844",
   },
   headerText: {

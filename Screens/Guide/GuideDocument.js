@@ -19,30 +19,30 @@ const GuideDocument = () => {
   const route = useRoute();
   const { guideId } = route.params;
 
-  const pickImage = async (index) => {
-    try {
-      console.log(index);
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 1,
-      });
-    
-      console.log("ImagePicker Result:", result);
-    
-      if (!result.canceled && result.assets.length > 0) {
-        const newImages = [...images];
-        newImages[index] = result.assets[0].uri; // Accessing URI from the first asset
-        setImages(newImages);
-        console.log("Selected Image URI:", result.assets[0].uri);
-      } else {
-        console.log("Image picking cancelled.");
+    const pickImage = async (index) => {
+      try {
+        console.log(index);
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 4],
+          quality: 1,
+        });
+      
+        console.log("ImagePicker Result:", result);
+      
+        if (!result.canceled && result.assets.length > 0) {
+          const newImages = [...images];
+          newImages[index] = result.assets[0].uri; // Accessing URI from the first asset
+          setImages(newImages);
+          console.log("Selected Image URI:", result.assets[0].uri);
+        } else {
+          console.log("Image picking cancelled.");
+        }
+      } catch (error) {
+        console.error("Error picking image:", error);
       }
-    } catch (error) {
-      console.error("Error picking image:", error);
-    }
-  };
+    };
   
   
   const handleSubmit = async () => {

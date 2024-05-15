@@ -13,7 +13,9 @@ import {
 import axios from "axios";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-const Option = () => {
+const Option = ({ route }) => {
+
+  const navigation = useNavigation();
   const [selectedTransport, setSelectedTransport] = useState(null);
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -32,6 +34,11 @@ const Option = () => {
   }, [route.params]);
 
   console.log("package: ", packageId);
+ 
+
+
+  const { package_id } = route.params;
+  console.log(package_id);
 
   useEffect(() => {
     fetchTransportData();
@@ -41,7 +48,7 @@ const Option = () => {
   const fetchTransportData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/car-rental-service/"
+        "http://192.168.100.18:8000/api/routes/car-rental-service/"
       );
       setTransportData(response.data);
       // console.log(response.data);
@@ -53,7 +60,7 @@ const Option = () => {
   const fetchGuideData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/guide-service"
+        "http://192.168.100.18:8000/api/routes/guide-service"
       );
       setGuideData(response.data);
       // console.log(response.data);
@@ -91,12 +98,12 @@ const Option = () => {
       } else {
         requestData.carRentalId = null;
       }
-  
+  console.log(requestData);
       const response = await axios.post(
-        "http://192.168.100.12:8000/api/routes/update-package-details",
+        "http://192.168.100.18:8000/api/routes/update-package-details",
         requestData
       );
-      console.log(requestData); // Log success message
+      console.log(response); // Log success message
       navigation.navigate("PaymentFormModal");
     } catch (error) {
       console.error("Error updating package details:", error);
@@ -288,15 +295,16 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   header: {
-    height: 120,
-    backgroundColor: "#032844",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    height: 140,
+    backgroundColor: "#032844",
   },
   headerText: {
     fontSize: 30,
     color: "white",
     fontFamily: "Poppins-Bold",
+    marginTop: 40,
   },
   buttonText: {
     color: "white",
