@@ -49,7 +49,7 @@ const CreatePackage2 = () => {
         if (route.params && route.params.transportType) {
           const { transportType } = route.params;
           console.log(transportType);
-          const baseEndpoint = "http://192.168.100.12:8000/api/routes";
+          const baseEndpoint = "http://192.168.100.18:8000/api/routes";
 
           switch (transportType) {
             case "airline":
@@ -104,7 +104,7 @@ const CreatePackage2 = () => {
       if (transportType === "airline") {
         try {
           const response = await axios.post(
-            `http://192.168.100.12:8000/api/routes/add-airline-package-details/${ticketId}`,
+            `http://192.168.100.18:8000/api/routes/add-airline-package-details/${ticketId}`,
              { 
               package_id: package_id,
               ticket_price: ticketDetails.ticket_price
@@ -120,7 +120,7 @@ const CreatePackage2 = () => {
       } else if (transportType === "bus") {
         try {
           const response = await axios.post(
-            `http://192.168.100.12:8000/api/routes/add-bus-package-details/${ticketId}`, 
+            `http://192.168.100.18:8000/api/routes/add-bus-package-details/${ticketId}`, 
             { 
               package_id: package_id,
               ticket_price: ticketDetails.ticket_price
@@ -135,7 +135,7 @@ const CreatePackage2 = () => {
       } else if (transportType === "railway") {
         try {
           const response = await axios.post(
-            `http://192.168.100.12:8000/api/routes/add-railway-package-details/${ticketId}`, 
+            `http://192.168.100.18:8000/api/routes/add-railway-package-details/${ticketId}`, 
             { 
               package_id: package_id,
               ticket_price: ticketDetails.ticket_price
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: "center",
     justifyContent: "center",
-    height: 120,
+    height: 140,
     backgroundColor: "#032844",
   },
   headerText: {

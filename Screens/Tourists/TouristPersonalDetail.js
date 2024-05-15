@@ -132,6 +132,7 @@ const TouristPersonalDetail = () => {
 
   const handleSubmit = async () => {
     console.log("Submit button pressed");
+    console.log(userId);
 
     if (!formData.image) {
       console.log("Form data or image is invalid");
@@ -141,6 +142,7 @@ const TouristPersonalDetail = () => {
     try {
       const token = await AsyncStorage.getItem("authToken");
       console.log(token);
+      
       const formDataWithImage = new FormData();
       formDataWithImage.append("image", {
         uri: formData.image,

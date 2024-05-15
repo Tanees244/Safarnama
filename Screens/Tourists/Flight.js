@@ -65,13 +65,13 @@ const Flight = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.100:18:8000/api/routes/railway-packages/"
+          "http://192.168.100.18:8000/api/routes/railway-packages/"
         );
         const response2 = await axios.get(
-          "http://192.168.100.12:8000/api/routes/airline-packages/"
+          "http://192.168.100.18:8000/api/routes/airline-packages/"
         );
         const response3 = await axios.get(
-          "http://192.168.100.12:8000/api/routes/bus-packages/"
+          "http://192.168.100.18:8000/api/routes/bus-packages/"
         );
 
         setAirline(response2.data);
@@ -243,27 +243,12 @@ const Flight = () => {
               {item.journey_duration || item.flight_duration}
             </Text>
           </View>
-        </View>
-
-        <View style={styles.seatsContainer}>
-          <TouchableOpacity onPress={() => handleDecrement(item.id)}>
-            <Ionicons
-              name="remove-circle"
-              size={24}
-              color="black"
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <Text style={styles.seatsText}>{item.totalSeats}</Text>
-          <TouchableOpacity onPress={() => handleIncrement(item.id)}>
-            <Ionicons
-              name="add-circle"
-              size={24}
-              color="black"
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <Text style={styles.labelText}>Seats</Text>
+          <View style={styles.DTime1}>
+            <Text style={styles.title2}>Price : </Text>
+            <Text style={styles.ticketText2}>
+              {item.ticket_price}
+            </Text>
+          </View>
         </View>
 
         <TouchableOpacity
@@ -520,7 +505,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginRight: 0,
     padding: 10,
-    width: 95,
+    // width: 95,
     marginRight: 10,
   },
   ticketImage: {

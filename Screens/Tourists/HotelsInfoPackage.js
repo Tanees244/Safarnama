@@ -194,7 +194,7 @@ const ReservationSection = ({ room, day, package_id, hotel_details_id }) => {
         const token = await AsyncStorage.getItem("authToken");
         axios
           .post(
-            "http://192.168.100.12:8000/api/routes/hotel-booking",
+            "http://192.168.100.18:8000/api/routes/hotel-booking",
             SelectedRoomDetails,
             {
               headers: {

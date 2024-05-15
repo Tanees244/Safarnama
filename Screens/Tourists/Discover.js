@@ -256,7 +256,7 @@ const Discover = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.101:8000/api/routes/packages/"
+        "http://192.168.100.18:8000/api/routes/packages/"
       );
       setPackageData(response.data);
     } catch (error) {
