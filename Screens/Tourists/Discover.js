@@ -271,7 +271,8 @@ const Discover = () => {
   const fetchPlaceData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.12:8000/api/routes/places"
+        "http://192.168.100.12:8000/api/routes/top-rated-places"
+        
       );
       setPlaceData(response.data);
     } catch (error) {
