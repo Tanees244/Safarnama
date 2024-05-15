@@ -73,6 +73,7 @@ import Plantrip from './Screens/Tourists/Plantrip.js';
 import LoadingScreen from './Screens/Tourists/LoadingScreen.js';
 import Details from './Screens/Tourists/Details.js';
 import PaymentFormModal from './Screens/Tourists/PaymentFormModal.js';
+import Rating from './Screens/Tourists/Rating.js';
 
 import { useFonts } from 'expo-font';
 
@@ -180,7 +181,7 @@ export default function App() {
         <Stack.Screen options={{ headerShown: false }} name='Plantrip' component={Plantrip} />
         <Stack.Screen options={{ headerShown: false }} name='LoadingScreen' component={LoadingScreen} />
         <Stack.Screen options={{ headerShown: false }} name='Details' component={Details} />
-        
+        <Stack.Screen options={{ headerShown: false }} name='Rating' component={Rating} />
         
 
       </Stack.Navigator>

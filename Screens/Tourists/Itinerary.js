@@ -1,44 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Svg, { Ellipse } from 'react-native-svg';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
 import ItineraryDay from './ItineraryDay';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Itinerary = () => {
-  
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const containerWidth = screenWidth * 0.9;
 
-  const itineraryData = [
-    { day: 1, destination: 'Naran', hotel: 'PC-Hotel', image: require('../../assets/Place1.jpg') },
-    { day: 2, destination: 'Kaghan', hotel: 'PC-Hotel', image: require('../../assets/Place2.jpg') },
-    { day: 3, destination: 'Shogran', hotel: 'PC-Hotel', image: require('../../assets/Place3.jpg') },
-  ];
-
+  const [dayWiseData, setDayWiseData] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedDestination, setSelectedDestination] = useState('');
   const [selectedDayData, setSelectedDayData] = useState(null);
 
   useEffect(() => {
-    const getToken = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        if (token !== null) {
+    AsyncStorage.getItem("authToken")
+      .then((token) => {
+        console.log("Token retrieved from AsyncStorage:", token);
+        if (token) {
           fetchData(token);
+        } else {
+          console.log("Token not found. Redirecting to login...");
+          Alert.alert(
+            "Sign In Required",
+            "Please sign in to view your profile.",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              { text: "Sign In", onPress: () => navigation.navigate("Login") },
+            ],
+            { cancelable: false }
+          );
         }
-      } catch (error) {
-        console.error('Error retrieving token:', error);
-      }
-    };
-    getToken();
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
   }, []);
 
   const fetchData = async (token) => {
     try {
-      const response = await fetch('https://example.com/api/data', {
-        method: 'GET',
+      const response = await fetch('http://192.168.0.101:8000/api/routes/Itinerary', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -46,13 +53,35 @@ const Itinerary = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        setDayWiseData(organizeDataByDays(data));
+        return data;
       } else {
         console.error('Failed to fetch data');
+        return [];
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      return [];
     }
+  };
+
+  const organizeDataByDays = (data) => {
+    const dayWise = {};
+    data.hotelBookingDetails.forEach((booking) => {
+      const day = booking.day;
+      if (!dayWise[day]) {
+        dayWise[day] = {
+          hotelBookingDetails: [],
+          hotelDetails: [],
+        };
+      }
+      const hotelBooking = data.hotelDetails.find(
+        (hotel) => hotel.hotel_booking_id === booking.hotel_booking_id
+      );
+      dayWise[day].hotelBookingDetails.push(booking);
+      dayWise[day].hotelDetails.push(hotelBooking);
+    });
+    return dayWise;
   };
 
   const toggleModal = (dayData) => {
@@ -73,7 +102,7 @@ const Itinerary = () => {
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <Text style={styles.text}>Tour Itinerary</Text>
-          {itineraryData.map((day, index) => (
+          {Object.keys(dayWiseData).map((day, index) => (
             <View
               key={index}
               style={[
@@ -82,35 +111,20 @@ const Itinerary = () => {
                 index % 2 === 0 ? styles.leftCard : styles.rightCard,
               ]}
             >
-              {index % 2 === 0 ? (
-                <>
-                  <Image source={day.image} style={styles.cardImage} />
-                  <View style={styles.cardText}>
-                    <Text style={styles.cardSubtitle}>{day.destination}</Text>
-                    <Text style={styles.cardTitle}>Day {day.day}</Text>
-                    <TouchableOpacity onPress={() => toggleModal(day)}>
-                      <Text style={styles.readMore}>Read More</Text>
-                    </TouchableOpacity>
-                  </View>
-                </>
-              ) : (
-                <>
-                  <View style={styles.cardText}>
-                    <Text style={styles.cardSubtitle}>{day.destination}</Text>
-                    <Text style={styles.cardTitle}>Day {day.day}</Text>
-                    <TouchableOpacity onPress={() => toggleModal(day)}>
-                      <Text style={styles.readMore}>Read More</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <Image source={day.image} style={styles.cardImage} />
-                </>
-              )}
+              <View style={styles.cardText}>
+                <Text style={styles.cardTitle}>Day {day}</Text>
+                {dayWiseData[day].hotelBookingDetails.map((booking, i) => (
+                  <TouchableOpacity key={i} onPress={() => toggleModal(dayWiseData[day])}>
+                    <Text style={styles.readMore}>Hotel : {dayWiseData[day].hotelDetails[i].name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
           ))}
         </ScrollView>
 
         <Modal isVisible={isModalVisible} style={styles.modalContent}>
-          <ItineraryDay dayData={selectedDayData} />
+          <ItineraryDay dayWiseData={selectedDayData} />
           <TouchableOpacity onPress={() => setIsModalVisible(false)}>
             <Text style={styles.closeModal}>Close</Text>
           </TouchableOpacity>

@@ -63,7 +63,7 @@ useEffect(() => {
     };
 
     const fetchPaymentSheetParams = async () => {
-      const response = await fetch(`http://192.168.100.12:8000/api/PaymentRoutes/payment-intent`, {
+      const response = await fetch(`http://192.168.100.18:8000/api/PaymentRoutes/payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
